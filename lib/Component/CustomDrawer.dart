@@ -4,6 +4,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:maintenance/CheckListDocument/CheckListDocument.dart';
 import 'package:maintenance/Component/AppConfig.dart';
 import 'package:maintenance/Component/CheckInternet.dart';
 import 'package:maintenance/Component/CustomColor.dart';
@@ -68,7 +69,10 @@ class _CustomDrawerState extends State<CustomDrawer> {
                         style: TextStyle(color: headColor),
                       ),
                       children: [
-                        InkWell(
+                        ListTile(
+                          onTap: (){
+                            Get.to(()=>CheckListDocument(0));
+                          },
                           // onTap: () async {
                           //   await clearSalesQuotationData();
                           //   getLastDocNum("SQ", context)
@@ -81,8 +85,8 @@ class _CustomDrawerState extends State<CustomDrawer> {
                           //       DocNum += 1;
                           //       salesQuotation.GeneralData
                           //           .TransId = DateTime.now()
-                          //               .millisecondsSinceEpoch
-                          //               .toString() +
+                          //           .millisecondsSinceEpoch
+                          //           .toString() +
                           //           "U0" +
                           //           userModel.ID.toString() +
                           //           "_" +
@@ -90,12 +94,12 @@ class _CustomDrawerState extends State<CustomDrawer> {
                           //           "/" +
                           //           DocNum.toString();
                           //     } while (
-                          //         await isSQTransIdAvailable(
-                          //             context,
-                          //             salesQuotation
-                          //                     .GeneralData
-                          //                     .TransId ??
-                          //                 ""));
+                          //     await isSQTransIdAvailable(
+                          //         context,
+                          //         salesQuotation
+                          //             .GeneralData
+                          //             .TransId ??
+                          //             ""));
                           //
                           //     //
                           //     // updateDocNum(snapshot[0].ID, val, context);
@@ -104,13 +108,13 @@ class _CustomDrawerState extends State<CustomDrawer> {
                           //     if (userModel.Type ==
                           //         "Customer") {
                           //       salesQuotation.GeneralData
-                          //               .customerCode =
+                          //           .customerCode =
                           //           userModel.UserCode;
                           //       salesQuotation.GeneralData
-                          //               .customerName =
+                          //           .customerName =
                           //           userModel.Name;
                           //       salesQuotation.GeneralData
-                          //               .MobileNo =
+                          //           .MobileNo =
                           //           userModel.MobileNo;
                           //     }
                           //
@@ -121,16 +125,14 @@ class _CustomDrawerState extends State<CustomDrawer> {
                           //                 SalesQuotation(0)));
                           //   });
                           // },
-                          child: ListTile(
-                            title: Text(
-                              'Check List Document',
-                              style: TextStyle(color: Colors.white),
-                            ),
-                            leading:
-                                Icon(MdiIcons.account, color: Colors.white),
-                            trailing: Icon(Icons.keyboard_arrow_right,
-                                color: Colors.white),
+                          title: Text(
+                            'Check List Document',
+                            style: TextStyle(color: Colors.white),
                           ),
+                          leading:
+                              Icon(MdiIcons.account, color: Colors.white),
+                          trailing: Icon(Icons.keyboard_arrow_right,
+                              color: Colors.white),
                         ),
                       ],
                     ),
