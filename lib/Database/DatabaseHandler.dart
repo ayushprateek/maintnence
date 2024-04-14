@@ -1,3 +1,3 @@
 class DatabaseHandler {
-  static int currentDBVersion = 21;
+  static int currentDBVersion = 20;
 }

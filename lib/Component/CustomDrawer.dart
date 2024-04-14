@@ -4,26 +4,17 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
 import 'package:maintenance/Component/AppConfig.dart';
 import 'package:maintenance/Component/CheckInternet.dart';
-import 'package:maintenance/Component/ClearTextFieldData.dart';
 import 'package:maintenance/Component/CustomColor.dart';
 import 'package:maintenance/Component/CustomFont.dart';
-import 'package:maintenance/Component/GetCredentials.dart';
-import 'package:maintenance/Component/GetLastDocNum.dart';
 import 'package:maintenance/Component/IsAPIWorking.dart';
-import 'package:maintenance/Component/IsAvailableTransId.dart';
 import 'package:maintenance/Component/IsValidAppVersion.dart';
 import 'package:maintenance/Component/LogFileFunctions.dart';
 import 'package:maintenance/Component/MenuDescription.dart';
 import 'package:maintenance/Component/SnackbarComponent.dart';
-import 'package:maintenance/Component/UploadImageToServer.dart';
-
 import 'package:maintenance/Sync/DataSync.dart';
-import 'package:maintenance/Sync/SyncModels/ORTP.dart';
 import 'package:maintenance/Sync/SyncModels/ORTU.dart';
-
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 import '../main.dart';
@@ -67,117 +58,191 @@ class _CustomDrawerState extends State<CustomDrawer> {
                     accountEmail: null,
                   ),
                   if (isAppVersionValid == RxBool(true)) ...[
-                    FutureBuilder(
-                        future: retrieveModuleVisibilityData(
-                            ControllerName: 'SalesAndPlanning'),
-                        builder:
-                            (context, AsyncSnapshot<List<ORTUModel>> snapshot) {
-                          if (!snapshot.hasData || snapshot.data?.length == 0) {
-                            return Container();
-                          } else {
-                            if (snapshot.data![0].Active == true) {
-                              return ExpansionTile(
-                                // initiallyExpanded: true,
-                                collapsedBackgroundColor: barColor,
-                                backgroundColor: barColor,
-                                leading: Icon(MdiIcons.currencyUsd,
-                                    color: Colors.white),
-                                title: Text(
-                                  "Sales & Planning",
-                                  style: TextStyle(color: headColor),
-                                ),
-                                children: [
-                                  FutureBuilder(
-                                      future: retrieveFormVisibilityData(
-                                          ControllerName:
-                                              MenuDescription.salesQuotation),
-                                      builder: (context,
-                                          AsyncSnapshot<List<ORTUModel>>
-                                              snapshot) {
-                                        if (!snapshot.hasData ||
-                                            snapshot.data?.length == 0) {
-                                          return Container();
-                                        }
-                                        if (snapshot.data![0].Active == true) {
-                                          return InkWell(
-                                            // onTap: () async {
-                                            //   await clearSalesQuotationData();
-                                            //   getLastDocNum("SQ", context)
-                                            //       .then((snapshot) async {
-                                            //     int DocNum =
-                                            //         snapshot[0].DocNumber - 1;
-                                            //     // print("Last doc num is ${DocNum.toString()}");
-                                            //
-                                            //     do {
-                                            //       DocNum += 1;
-                                            //       salesQuotation.GeneralData
-                                            //           .TransId = DateTime.now()
-                                            //               .millisecondsSinceEpoch
-                                            //               .toString() +
-                                            //           "U0" +
-                                            //           userModel.ID.toString() +
-                                            //           "_" +
-                                            //           snapshot[0].DocName +
-                                            //           "/" +
-                                            //           DocNum.toString();
-                                            //     } while (
-                                            //         await isSQTransIdAvailable(
-                                            //             context,
-                                            //             salesQuotation
-                                            //                     .GeneralData
-                                            //                     .TransId ??
-                                            //                 ""));
-                                            //
-                                            //     //
-                                            //     // updateDocNum(snapshot[0].ID, val, context);
-                                            //     //generalData['TransId']=DateTime.now().millisecondsSinceEpoch.toString()+"U0"+userModel.ID.toString()+"_"+generalData['MTransId'].substring(1);
-                                            //
-                                            //     if (userModel.Type ==
-                                            //         "Customer") {
-                                            //       salesQuotation.GeneralData
-                                            //               .customerCode =
-                                            //           userModel.UserCode;
-                                            //       salesQuotation.GeneralData
-                                            //               .customerName =
-                                            //           userModel.Name;
-                                            //       salesQuotation.GeneralData
-                                            //               .MobileNo =
-                                            //           userModel.MobileNo;
-                                            //     }
-                                            //
-                                            //     Navigator.push(
-                                            //         context,
-                                            //         MaterialPageRoute(
-                                            //             builder: (context) =>
-                                            //                 SalesQuotation(0)));
-                                            //   });
-                                            // },
-                                            child: ListTile(
-                                              title: Text(
-                                                'Sales Quotation',
-                                                style: TextStyle(
-                                                    color: Colors.white),
-                                              ),
-                                              leading: Icon(MdiIcons.account,
-                                                  color: Colors.white),
-                                              trailing: Icon(
-                                                  Icons.keyboard_arrow_right,
-                                                  color: Colors.white),
-                                            ),
-                                          );
-                                        } else {
-                                          return Container();
-                                        }
-                                      }),
-
-                                ],
-                              );
-                            } else {
-                              return Container();
-                            }
-                          }
-                        }),
-
+                    ExpansionTile(
+                      // initiallyExpanded: true,
+                      collapsedBackgroundColor: barColor,
+                      backgroundColor: barColor,
+                      leading: Icon(MdiIcons.currencyUsd, color: Colors.white),
+                      title: Text(
+                        "Maintenance",
+                        style: TextStyle(color: headColor),
+                      ),
+                      children: [
+                        InkWell(
+                          // onTap: () async {
+                          //   await clearSalesQuotationData();
+                          //   getLastDocNum("SQ", context)
+                          //       .then((snapshot) async {
+                          //     int DocNum =
+                          //         snapshot[0].DocNumber - 1;
+                          //     // print("Last doc num is ${DocNum.toString()}");
+                          //
+                          //     do {
+                          //       DocNum += 1;
+                          //       salesQuotation.GeneralData
+                          //           .TransId = DateTime.now()
+                          //               .millisecondsSinceEpoch
+                          //               .toString() +
+                          //           "U0" +
+                          //           userModel.ID.toString() +
+                          //           "_" +
+                          //           snapshot[0].DocName +
+                          //           "/" +
+                          //           DocNum.toString();
+                          //     } while (
+                          //         await isSQTransIdAvailable(
+                          //             context,
+                          //             salesQuotation
+                          //                     .GeneralData
+                          //                     .TransId ??
+                          //                 ""));
+                          //
+                          //     //
+                          //     // updateDocNum(snapshot[0].ID, val, context);
+                          //     //generalData['TransId']=DateTime.now().millisecondsSinceEpoch.toString()+"U0"+userModel.ID.toString()+"_"+generalData['MTransId'].substring(1);
+                          //
+                          //     if (userModel.Type ==
+                          //         "Customer") {
+                          //       salesQuotation.GeneralData
+                          //               .customerCode =
+                          //           userModel.UserCode;
+                          //       salesQuotation.GeneralData
+                          //               .customerName =
+                          //           userModel.Name;
+                          //       salesQuotation.GeneralData
+                          //               .MobileNo =
+                          //           userModel.MobileNo;
+                          //     }
+                          //
+                          //     Navigator.push(
+                          //         context,
+                          //         MaterialPageRoute(
+                          //             builder: (context) =>
+                          //                 SalesQuotation(0)));
+                          //   });
+                          // },
+                          child: ListTile(
+                            title: Text(
+                              'Check List Document',
+                              style: TextStyle(color: Colors.white),
+                            ),
+                            leading:
+                                Icon(MdiIcons.account, color: Colors.white),
+                            trailing: Icon(Icons.keyboard_arrow_right,
+                                color: Colors.white),
+                          ),
+                        ),
+                      ],
+                    ),
+                    // FutureBuilder(
+                    //     future: retrieveModuleVisibilityData(
+                    //         ControllerName: 'SalesAndPlanning'),
+                    //     builder:
+                    //         (context, AsyncSnapshot<List<ORTUModel>> snapshot) {
+                    //       if (!snapshot.hasData || snapshot.data?.length == 0) {
+                    //         return Container();
+                    //       } else {
+                    //         if (snapshot.data![0].Active == true) {
+                    //           return ExpansionTile(
+                    //             // initiallyExpanded: true,
+                    //             collapsedBackgroundColor: barColor,
+                    //             backgroundColor: barColor,
+                    //             leading: Icon(MdiIcons.currencyUsd,
+                    //                 color: Colors.white),
+                    //             title: Text(
+                    //               "Sales & Planning",
+                    //               style: TextStyle(color: headColor),
+                    //             ),
+                    //             children: [
+                    //               FutureBuilder(
+                    //                   future: retrieveFormVisibilityData(
+                    //                       ControllerName:
+                    //                           MenuDescription.salesQuotation),
+                    //                   builder: (context,
+                    //                       AsyncSnapshot<List<ORTUModel>>
+                    //                           snapshot) {
+                    //                     if (!snapshot.hasData ||
+                    //                         snapshot.data?.length == 0) {
+                    //                       return Container();
+                    //                     }
+                    //                     if (snapshot.data![0].Active == true) {
+                    //                       return InkWell(
+                    //                         // onTap: () async {
+                    //                         //   await clearSalesQuotationData();
+                    //                         //   getLastDocNum("SQ", context)
+                    //                         //       .then((snapshot) async {
+                    //                         //     int DocNum =
+                    //                         //         snapshot[0].DocNumber - 1;
+                    //                         //     // print("Last doc num is ${DocNum.toString()}");
+                    //                         //
+                    //                         //     do {
+                    //                         //       DocNum += 1;
+                    //                         //       salesQuotation.GeneralData
+                    //                         //           .TransId = DateTime.now()
+                    //                         //               .millisecondsSinceEpoch
+                    //                         //               .toString() +
+                    //                         //           "U0" +
+                    //                         //           userModel.ID.toString() +
+                    //                         //           "_" +
+                    //                         //           snapshot[0].DocName +
+                    //                         //           "/" +
+                    //                         //           DocNum.toString();
+                    //                         //     } while (
+                    //                         //         await isSQTransIdAvailable(
+                    //                         //             context,
+                    //                         //             salesQuotation
+                    //                         //                     .GeneralData
+                    //                         //                     .TransId ??
+                    //                         //                 ""));
+                    //                         //
+                    //                         //     //
+                    //                         //     // updateDocNum(snapshot[0].ID, val, context);
+                    //                         //     //generalData['TransId']=DateTime.now().millisecondsSinceEpoch.toString()+"U0"+userModel.ID.toString()+"_"+generalData['MTransId'].substring(1);
+                    //                         //
+                    //                         //     if (userModel.Type ==
+                    //                         //         "Customer") {
+                    //                         //       salesQuotation.GeneralData
+                    //                         //               .customerCode =
+                    //                         //           userModel.UserCode;
+                    //                         //       salesQuotation.GeneralData
+                    //                         //               .customerName =
+                    //                         //           userModel.Name;
+                    //                         //       salesQuotation.GeneralData
+                    //                         //               .MobileNo =
+                    //                         //           userModel.MobileNo;
+                    //                         //     }
+                    //                         //
+                    //                         //     Navigator.push(
+                    //                         //         context,
+                    //                         //         MaterialPageRoute(
+                    //                         //             builder: (context) =>
+                    //                         //                 SalesQuotation(0)));
+                    //                         //   });
+                    //                         // },
+                    //                         child: ListTile(
+                    //                           title: Text(
+                    //                             'Sales Quotation',
+                    //                             style: TextStyle(
+                    //                                 color: Colors.white),
+                    //                           ),
+                    //                           leading: Icon(MdiIcons.account,
+                    //                               color: Colors.white),
+                    //                           trailing: Icon(
+                    //                               Icons.keyboard_arrow_right,
+                    //                               color: Colors.white),
+                    //                         ),
+                    //                       );
+                    //                     } else {
+                    //                       return Container();
+                    //                     }
+                    //                   }),
+                    //             ],
+                    //           );
+                    //         } else {
+                    //           return Container();
+                    //         }
+                    //       }
+                    //     }),
 
                     // InkWell(
                     //   onTap: (){

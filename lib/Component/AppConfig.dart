@@ -9,8 +9,8 @@
 
 //----------FOR SALES (MSL)-------------
 const logoPath = 'images/logo.png';
-String appName = 'MSL';
-String appPkg = 'com.litsales.litsales';
+String appName = 'Maintenance';
+String appPkg = 'com.litpl.maintenance';
 bool displayDashboardMap = true;
 bool displayMenus = true;
 bool displayTakeSS = false;
