@@ -16,6 +16,7 @@ import 'package:maintenance/Component/MenuDescription.dart';
 import 'package:maintenance/Component/SnackbarComponent.dart';
 import 'package:maintenance/GoodsIssue/GoodsIssue.dart';
 import 'package:maintenance/JobCard/JobCard.dart';
+import 'package:maintenance/PurchaseRequest/PurchaseRequest.dart';
 import 'package:maintenance/Sync/DataSync.dart';
 import 'package:maintenance/Sync/SyncModels/ORTU.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
@@ -219,6 +220,32 @@ class _CustomDrawerState extends State<CustomDrawer> {
                           },
                           title: Text(
                             'Goods Issue',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                          leading:
+                              Icon(MdiIcons.account, color: Colors.white),
+                          trailing: Icon(Icons.keyboard_arrow_right,
+                              color: Colors.white),
+                        ),
+                      ],
+                    ),
+
+                    ExpansionTile(
+                      // initiallyExpanded: true,
+                      collapsedBackgroundColor: barColor,
+                      backgroundColor: barColor,
+                      leading: Icon(MdiIcons.currencyUsd, color: Colors.white),
+                      title: Text(
+                        "Purchase",
+                        style: TextStyle(color: headColor),
+                      ),
+                      children: [
+                        ListTile(
+                          onTap: (){
+                            Get.to(()=>PurchaseRequest(0));
+                          },
+                          title: Text(
+                            'Purchase Request',
                             style: TextStyle(color: Colors.white),
                           ),
                           leading:
