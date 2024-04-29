@@ -21,7 +21,7 @@ class MNJCD2{
   int? PRRowId;
   DateTime? CreateDate;
   DateTime? UpdateDate;
-  bool? IsSendableItem;
+  bool IsSendableItem;
   MNJCD2({
     this.ID,
     this.TransId,
@@ -35,7 +35,7 @@ class MNJCD2{
     this.PRRowId,
     this.CreateDate,
     this.UpdateDate,
-    this.IsSendableItem,
+    this.IsSendableItem=false,
   });
   factory MNJCD2.fromJson(Map<String,dynamic> json)=>MNJCD2(
     ID : int.tryParse(json['ID'].toString())??0,

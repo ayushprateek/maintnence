@@ -16,7 +16,7 @@ class MNJCD1{
   String? ItemName;
   double? Qunatity;
   String? UOM;
-  bool? IsFromStock;
+  bool IsFromStock;
   String? SupplierCode;
   String? SupplierName;
   DateTime? RequestDate;
@@ -28,8 +28,8 @@ class MNJCD1{
   int? MNITRowId;
   DateTime? CreateDate;
   DateTime? UpdateDate;
-  bool? IsConsumption;
-  bool? IsRequest;
+  bool IsConsumption;
+  bool IsRequest;
   MNJCD1({
     this.ID,
     this.TransId,
@@ -38,7 +38,7 @@ class MNJCD1{
     this.ItemName,
     this.Qunatity,
     this.UOM,
-    this.IsFromStock,
+    this.IsFromStock=false,
     this.SupplierCode,
     this.SupplierName,
     this.RequestDate,
@@ -50,8 +50,8 @@ class MNJCD1{
     this.MNITRowId,
     this.CreateDate,
     this.UpdateDate,
-    this.IsConsumption,
-    this.IsRequest,
+    this.IsConsumption=false,
+    this.IsRequest=false,
   });
   factory MNJCD1.fromJson(Map<String,dynamic> json)=>MNJCD1(
     ID : int.tryParse(json['ID'].toString())??0,
