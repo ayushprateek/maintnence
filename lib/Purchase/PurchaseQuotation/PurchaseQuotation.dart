@@ -3,24 +3,24 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:maintenance/Component/CustomColor.dart';
 import 'package:maintenance/Component/CustomFont.dart';
 import 'package:maintenance/Dashboard.dart';
-import 'package:maintenance/PurchaseRequest/GeneralData.dart';
-import 'package:maintenance/PurchaseRequest/ItemDetails.dart';
+import 'package:maintenance/Purchase/PurchaseQuotation/GeneralData.dart';
+import 'package:maintenance/Purchase/PurchaseQuotation/ItemDetails.dart';
 
-class PurchaseRequest extends StatefulWidget {
+class PurchaseQuotation extends StatefulWidget {
   static bool saveButtonPressed = false;
   int index = 0;
 
-  PurchaseRequest(int index, {this.onBackPressed}) {
+  PurchaseQuotation(int index, {this.onBackPressed}) {
     this.index = index;
   }
 
   Function? onBackPressed;
 
   @override
-  _JobCardState createState() => _JobCardState();
+  _PurchaseQuotation createState() => _PurchaseQuotation();
 }
 
-class _JobCardState extends State<PurchaseRequest> {
+class _PurchaseQuotation extends State<PurchaseQuotation> {
   List lists = [];
   int numOfAddress = 0;
   var future_address;
@@ -159,7 +159,7 @@ class _JobCardState extends State<PurchaseRequest> {
                   //             Navigator.push(
                   //                 context,
                   //                 MaterialPageRoute(
-                  //                     builder: (context) => PurchaseRequest(0)));
+                  //                     builder: (context) => PurchaseQuotation(0)));
                   //           });
                   //         });
                   //   } else {
@@ -188,7 +188,7 @@ class _JobCardState extends State<PurchaseRequest> {
                   //       Navigator.push(
                   //           context,
                   //           MaterialPageRoute(
-                  //               builder: (context) => PurchaseRequest(0)));
+                  //               builder: (context) => PurchaseQuotation(0)));
                   //     });
                   //   }
                   // },

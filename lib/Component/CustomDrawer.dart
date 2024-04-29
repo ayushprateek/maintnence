@@ -16,7 +16,7 @@ import 'package:maintenance/Component/MenuDescription.dart';
 import 'package:maintenance/Component/SnackbarComponent.dart';
 import 'package:maintenance/GoodsIssue/GoodsIssue.dart';
 import 'package:maintenance/JobCard/JobCard.dart';
-import 'package:maintenance/PurchaseRequest/PurchaseRequest.dart';
+import 'package:maintenance/Purchase/PurchaseRequest/PurchaseRequest.dart';
 import 'package:maintenance/Sync/DataSync.dart';
 import 'package:maintenance/Sync/SyncModels/ORTU.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
