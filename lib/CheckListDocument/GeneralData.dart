@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:maintenance/CheckListDocument/CheckListDocument.dart';
+import 'package:maintenance/CheckListDocument/EquipmentCodeLokup.dart';
 import 'package:maintenance/Component/GetFormattedDate.dart';
 import 'package:maintenance/Component/GetTextField.dart';
 
@@ -96,56 +97,65 @@ class _GeneralDataState extends State<GeneralData> {
   List<String> status = ['Yes', 'No'];
   String Status = 'No';
 
-
-
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: Column(
         children: [
-          getTextFieldWithoutLookup(
+          const SizedBox(
+            height: 25,
+          ),
+          getDisabledTextField(
               controller: _permanentTransId, labelText: 'Permanent Trans Id'),
-          getTextFieldWithoutLookup(
-              controller: _docNum, labelText: 'ERP Docnum'),
-          getTextFieldWithoutLookup(
-              controller: _transId, labelText: 'Trans Id'),
-          getTextFieldWithoutLookup(
-              controller: _docEntry, labelText: 'Doc Entry'),
-          getTextFieldWithoutLookup(
+          getDisabledTextField(controller: _docNum, labelText: 'ERP Docnum'),
+          getDisabledTextField(controller: _transId, labelText: 'Trans Id'),
+          getDisabledTextField(controller: _docEntry, labelText: 'Doc Entry'),
+          getDisabledTextField(
               controller: _postingDate, labelText: 'Posting Date'),
-          getTextFieldWithoutLookup(
+          getDisabledTextField(
               controller: _validUntill, labelText: 'Valid Until'),
-          getTextFieldWithoutLookup(
-              controller: _equipmentCode, labelText: 'Equipment Code'),
-          getTextFieldWithoutLookup(
+          getDisabledTextField(
+              controller: _equipmentCode,
+              labelText: 'Equipment Code',
+              enableLookup: true,
+            onLookupPressed: (){
+                Get.to(()=>EquipmentCodeLookup());
+            }
+          ),
+          getDisabledTextField(
               controller: _equipmentName, labelText: 'Equipment Name'),
-          getTextFieldWithoutLookup(
-              controller: _checkListCode, labelText: 'Check List Code'),
-          getTextFieldWithoutLookup(
+          getDisabledTextField(
+              controller: _checkListCode,
+              labelText: 'Check List Code',
+              enableLookup: true),
+          getDisabledTextField(
               controller: _checkListName, labelText: 'CheckList Name'),
-          getTextFieldWithoutLookup(
-              controller: _workCenterCode, labelText: 'WorkCenter Code'),
-          getTextFieldWithoutLookup(
+          getDisabledTextField(
+              controller: _workCenterCode,
+              labelText: 'WorkCenter Code',
+              enableLookup: true),
+          getDisabledTextField(
               controller: _workCenterName, labelText: 'WorkCenter Name'),
-          getTextFieldWithoutLookup(
-              controller: _docStatus, labelText: 'Doc Status'),
-          getTextFieldWithoutLookup(
+          getDisabledTextField(controller: _docStatus, labelText: 'Doc Status'),
+          getDisabledTextField(
               controller: _approvalStatus, labelText: 'Approval Status'),
-          getTextFieldWithoutLookup(
+          getTextField(
               controller: _checkListStatus, labelText: 'Check List Status'),
-          getTextFieldWithoutLookup(
-              controller: _openDate, labelText: 'Open Date'),
-          getTextFieldWithoutLookup(
-              controller: _closeDate, labelText: 'Close Date'),
-          getTextFieldWithoutLookup(
-              controller: _currentReading, labelText: 'Current Reading'),
-          getTextFieldWithoutLookup(
+          getDisabledTextField(controller: _openDate, labelText: 'Open Date'),
+          getDisabledTextField(controller: _closeDate, labelText: 'Close Date'),
+          getTextField(
+              controller: _currentReading,
+              labelText: 'Current Reading',
+              keyboardType: TextInputType.number),
+          getDisabledTextField(
               controller: _lastReadingDate, labelText: 'Last Reading Date'),
-          getTextFieldWithoutLookup(
+          getDisabledTextField(
               controller: _lastReading, labelText: 'Last Reading'),
-          getTextFieldWithoutLookup(
-              controller: _assignedUserCode, labelText: 'Technician Code'),
-          getTextFieldWithoutLookup(
+          getDisabledTextField(
+              controller: _assignedUserCode,
+              labelText: 'Technician Code',
+              enableLookup: true),
+          getDisabledTextField(
               controller: _assignedUserName, labelText: 'Technician Name'),
           Padding(
             padding: const EdgeInsets.only(
@@ -177,9 +187,9 @@ class _GeneralDataState extends State<GeneralData> {
                         setState(() {
                           Status = val ?? Status;
                           if (Status == 'Yes') {
-                            CheckListDocument.numOfTabs.value=4;
+                            CheckListDocument.numOfTabs.value = 4;
                           } else {
-                            CheckListDocument.numOfTabs.value=3;
+                            CheckListDocument.numOfTabs.value = 3;
                           }
                         });
                       },
@@ -197,7 +207,7 @@ class _GeneralDataState extends State<GeneralData> {
               ),
             ),
           ),
-          getTextFieldWithoutLookup(controller: _remarks, labelText: 'Remarks'),
+          getTextField(controller: _remarks, labelText: 'Remarks'),
         ],
       ),
     );
