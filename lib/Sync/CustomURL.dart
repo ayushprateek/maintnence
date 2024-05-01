@@ -19,7 +19,7 @@ String googleAPiKey =
     "AIzaSyBuDwHxhIiioaJHEDZYoJveXb9ZEVTn5vQ"; //DEVELOPMENT API KEY
 // String googleAPiKey = "AIzaSyDClvq3oYi0iJzwGzxj1vBPncXrIKQ7SKg"; //LIVE API KEY
 
-String prefix = "http://103.191.130.12:6004/"; //DEVELOPMENT
+String prefix = "http://103.191.130.12:6006/"; //DEVELOPMENT
 //http://103.191.130.12:6001/ DEVELOPMENT WEBSITE
 
 // String prefix = "http://103.191.130.12:7000/";//MANSA
@@ -34,7 +34,7 @@ String credentials = '';
 const batchSize = 1000;
 
 Codec<String, String> stringToBase64 = utf8.fuse(base64);
-String secretKey='sjiuashfuiasfuiUIHGYFUFFGFIG7sfguguguGYFUfgi8778fhugyfus';
+String secretKey='IDH3FUSuifhiu4HUIFhsgu98fjeiujfU5H8fuishf8h84hfuishgusheg';
 String encoded = stringToBase64.encode(credentials+secretKey);
 Map<String, String>? header = {
   'Authorization': 'Basic $encoded',

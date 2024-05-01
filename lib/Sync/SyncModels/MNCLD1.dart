@@ -1,201 +1,126 @@
-import 'package:maintenance/Component/LogFileFunctions.dart';
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:maintenance/Component/LogFileFunctions.dart';
 import 'package:maintenance/Component/SnackbarComponent.dart';
 import 'package:maintenance/DatabaseInitialization.dart';
 import 'package:maintenance/Sync/CustomURL.dart';
 import 'package:maintenance/Sync/DataSync.dart';
+
 import 'dart:convert';
 import 'package:sqflite/sqlite_api.dart';
 class MNCLD1{
   int? ID;
-  String? Code;
-  String? FirstName;
-  String? MiddleName;
-  String? LastName;
-  String? Group;
-  String? SubGroup;
-  String? Currency;
-  String? Telephone;
-  String? MobileNo;
-  String? Address;
-  String? CityCode;
-  String? CityName;
-  String? StateCode;
-  String? StateName;
-  String? CountryCode;
-  String? CountryName;
-  String? Email;
-  String? Website;
-  bool? SAPCustomer;
-  String? PaymentTermCode;
-  String? PaymentTermName;
-  int? PaymentTermDays;
-  double? CreditLimit;
-  bool? Active;
-  String? Latitude;
-  String? Longitude;
-  int? ShopSize;
+  String? TransId;
+  int? RowId;
+  String? ItemCode;
+  String? ItemName;
+  String? UOM;
+  String? Description;
+  String? Remarks;
+  String? UserRemarks;
+  bool? IsChecked;
+  bool? IsFromStock;
+  double? ConsumptionQty;
+  String? MNGITransId;
+  int? MNGIRowId;
+  String? PRTransId;
+  int? PRRowId;
+  String? MNITTransId;
+  int? MNITRowId;
+  String? SupplierCode;
+  String? SupplierName;
   DateTime? CreateDate;
-  bool? Competitor;
-  bool? ISSAP;
-  bool? ISPORTAL;
-  String? BPType;
-  String? CreatedBy;
-  String? UpdatedBy;
-  String? BranchId;
-  String? PriceListCode;
-  String? TerritoryCode;
-  String? TerritoryName;
-  bool? IsTemporary;
-  String? CardGroupName;
-  String? CardSubGroupName;
-  String? SAPCARDCODE;
   DateTime? UpdateDate;
-  int? hasCreated;
-  int? hasUpdated;
+  bool? IsConsumption;
+  bool? IsRequest;
+  DateTime? RequiredDate;
+  bool? hasCreated;
+  bool? hasUpdated;
   MNCLD1({
     this.ID,
-    this.Code,
-    this.FirstName,
-    this.MiddleName,
-    this.LastName,
-    this.Group,
-    this.SubGroup,
-    this.Currency,
-    this.Telephone,
-    this.MobileNo,
-    this.Address,
-    this.CityCode,
-    this.CityName,
-    this.StateCode,
-    this.StateName,
-    this.CountryCode,
-    this.CountryName,
-    this.Email,
-    this.Website,
-    this.SAPCustomer,
-    this.PaymentTermCode,
-    this.PaymentTermName,
-    this.PaymentTermDays,
-    this.CreditLimit,
-    this.Active,
-    this.Latitude,
-    this.Longitude,
-    this.ShopSize,
+    this.TransId,
+    this.RowId,
+    this.ItemCode,
+    this.ItemName,
+    this.UOM,
+    this.Description,
+    this.Remarks,
+    this.UserRemarks,
+    this.IsChecked,
+    this.IsFromStock,
+    this.ConsumptionQty,
+    this.MNGITransId,
+    this.MNGIRowId,
+    this.PRTransId,
+    this.PRRowId,
+    this.MNITTransId,
+    this.MNITRowId,
+    this.SupplierCode,
+    this.SupplierName,
     this.CreateDate,
-    this.Competitor,
-    this.ISSAP,
-    this.ISPORTAL,
-    this.BPType,
-    this.CreatedBy,
-    this.UpdatedBy,
-    this.BranchId,
-    this.PriceListCode,
-    this.TerritoryCode,
-    this.TerritoryName,
-    this.IsTemporary,
-    this.CardGroupName,
-    this.CardSubGroupName,
-    this.SAPCARDCODE,
     this.UpdateDate,
+    this.IsConsumption,
+    this.IsRequest,
+    this.RequiredDate,
     this.hasCreated,
     this.hasUpdated,
   });
   factory MNCLD1.fromJson(Map<String,dynamic> json)=>MNCLD1(
     ID : int.tryParse(json['ID'].toString())??0,
-    Code : json['Code'],
-    FirstName : json['FirstName'],
-    MiddleName : json['MiddleName'],
-    LastName : json['LastName'],
-    Group : json['Group'],
-    SubGroup : json['SubGroup'],
-    Currency : json['Currency'],
-    Telephone : json['Telephone'],
-    MobileNo : json['MobileNo'],
-    Address : json['Address'],
-    CityCode : json['CityCode'],
-    CityName : json['CityName'],
-    StateCode : json['StateCode'],
-    StateName : json['StateName'],
-    CountryCode : json['CountryCode'],
-    CountryName : json['CountryName'],
-    Email : json['Email'],
-    Website : json['Website'],
-    SAPCustomer : json['SAPCustomer'] is bool ? json['SAPCustomer'] : json['SAPCustomer']==1,
-    PaymentTermCode : json['PaymentTermCode'],
-    PaymentTermName : json['PaymentTermName'],
-    PaymentTermDays : int.tryParse(json['PaymentTermDays'].toString())??0,
-    CreditLimit : double.tryParse(json['CreditLimit'].toString())??0.0,
-    Active : json['Active'] is bool ? json['Active'] : json['Active']==1,
-    Latitude : json['Latitude'],
-    Longitude : json['Longitude'],
-    ShopSize : int.tryParse(json['ShopSize'].toString())??0,
+    TransId : json['TransId']?.toString()??'',
+    RowId : int.tryParse(json['RowId'].toString())??0,
+    ItemCode : json['ItemCode']?.toString()??'',
+    ItemName : json['ItemName']?.toString()??'',
+    UOM : json['UOM']?.toString()??'',
+    Description : json['Description']?.toString()??'',
+    Remarks : json['Remarks']?.toString()??'',
+    UserRemarks : json['UserRemarks']?.toString()??'',
+    IsChecked : json['IsChecked'] is bool ? json['IsChecked'] : json['IsChecked']==1,
+    IsFromStock : json['IsFromStock'] is bool ? json['IsFromStock'] : json['IsFromStock']==1,
+    ConsumptionQty : double.tryParse(json['ConsumptionQty'].toString())??0.0,
+    MNGITransId : json['MNGITransId']?.toString()??'',
+    MNGIRowId : int.tryParse(json['MNGIRowId'].toString())??0,
+    PRTransId : json['PRTransId']?.toString()??'',
+    PRRowId : int.tryParse(json['PRRowId'].toString())??0,
+    MNITTransId : json['MNITTransId']?.toString()??'',
+    MNITRowId : int.tryParse(json['MNITRowId'].toString())??0,
+    SupplierCode : json['SupplierCode']?.toString()??'',
+    SupplierName : json['SupplierName']?.toString()??'',
     CreateDate : DateTime.tryParse(json['CreateDate'].toString()),
-    Competitor : json['Competitor'] is bool ? json['Competitor'] : json['Competitor']==1,
-    ISSAP : json['ISSAP'] is bool ? json['ISSAP'] : json['ISSAP']==1,
-    ISPORTAL : json['ISPORTAL'] is bool ? json['ISPORTAL'] : json['ISPORTAL']==1,
-    BPType : json['BPType'],
-    CreatedBy : json['CreatedBy'],
-    UpdatedBy : json['UpdatedBy'],
-    BranchId : json['BranchId'],
-    PriceListCode : json['PriceListCode'],
-    TerritoryCode : json['TerritoryCode'],
-    TerritoryName : json['TerritoryName'],
-    IsTemporary : json['IsTemporary'] is bool ? json['IsTemporary'] : json['IsTemporary']==1,
-    CardGroupName : json['CardGroupName'],
-    CardSubGroupName : json['CardSubGroupName'],
-    SAPCARDCODE : json['SAPCARDCODE'],
     UpdateDate : DateTime.tryParse(json['UpdateDate'].toString()),
-    hasCreated : int.tryParse(json['has_created'].toString())??0,
-    hasUpdated : int.tryParse(json['has_updated'].toString())??0,
+    IsConsumption : json['IsConsumption'] is bool ? json['IsConsumption'] : json['IsConsumption']==1,
+    IsRequest : json['IsRequest'] is bool ? json['IsRequest'] : json['IsRequest']==1,
+    RequiredDate : DateTime.tryParse(json['RequiredDate'].toString()),
+    hasCreated : json['has_created'] is bool ? json['has_created'] : json['has_created']==1,
+    hasUpdated : json['has_updated'] is bool ? json['has_updated'] : json['has_updated']==1,
   );
   Map<String,dynamic> toJson()=>{
     'ID' : ID,
-    'Code' : Code,
-    'FirstName' : FirstName,
-    'MiddleName' : MiddleName,
-    'LastName' : LastName,
-    'Group' : Group,
-    'SubGroup' : SubGroup,
-    'Currency' : Currency,
-    'Telephone' : Telephone,
-    'MobileNo' : MobileNo,
-    'Address' : Address,
-    'CityCode' : CityCode,
-    'CityName' : CityName,
-    'StateCode' : StateCode,
-    'StateName' : StateName,
-    'CountryCode' : CountryCode,
-    'CountryName' : CountryName,
-    'Email' : Email,
-    'Website' : Website,
-    'SAPCustomer' : SAPCustomer,
-    'PaymentTermCode' : PaymentTermCode,
-    'PaymentTermName' : PaymentTermName,
-    'PaymentTermDays' : PaymentTermDays,
-    'CreditLimit' : CreditLimit,
-    'Active' : Active,
-    'Latitude' : Latitude,
-    'Longitude' : Longitude,
-    'ShopSize' : ShopSize,
+    'TransId' : TransId,
+    'RowId' : RowId,
+    'ItemCode' : ItemCode,
+    'ItemName' : ItemName,
+    'UOM' : UOM,
+    'Description' : Description,
+    'Remarks' : Remarks,
+    'UserRemarks' : UserRemarks,
+    'IsChecked' : IsChecked,
+    'IsFromStock' : IsFromStock,
+    'ConsumptionQty' : ConsumptionQty,
+    'MNGITransId' : MNGITransId,
+    'MNGIRowId' : MNGIRowId,
+    'PRTransId' : PRTransId,
+    'PRRowId' : PRRowId,
+    'MNITTransId' : MNITTransId,
+    'MNITRowId' : MNITRowId,
+    'SupplierCode' : SupplierCode,
+    'SupplierName' : SupplierName,
     'CreateDate' : CreateDate?.toIso8601String(),
-    'Competitor' : Competitor,
-    'ISSAP' : ISSAP,
-    'ISPORTAL' : ISPORTAL,
-    'BPType' : BPType,
-    'CreatedBy' : CreatedBy,
-    'UpdatedBy' : UpdatedBy,
-    'BranchId' : BranchId,
-    'PriceListCode' : PriceListCode,
-    'TerritoryCode' : TerritoryCode,
-    'TerritoryName' : TerritoryName,
-    'IsTemporary' : IsTemporary,
-    'CardGroupName' : CardGroupName,
-    'CardSubGroupName' : CardSubGroupName,
-    'SAPCARDCODE' : SAPCARDCODE,
     'UpdateDate' : UpdateDate?.toIso8601String(),
+    'IsConsumption' : IsConsumption,
+    'IsRequest' : IsRequest,
+    'RequiredDate' : RequiredDate?.toIso8601String(),
     'has_created' : hasCreated,
     'has_updated' : hasUpdated,
   };
@@ -412,3 +337,86 @@ Future<void> updateMNCLD1OnServer(BuildContext? context, {String? condition, Lis
   } while (i < list.length && sentSuccessInServer == true);
 }
 
+// static String? iD;
+// static String? transId;
+// static String? rowId;
+// static String? itemCode;
+// static String? itemName;
+// static String? uOM;
+// static String? description;
+// static String? remarks;
+// static String? userRemarks;
+// static bool? isChecked;
+// static bool? isFromStock;
+// static String? consumptionQty;
+// static String? mNGITransId;
+// static String? mNGIRowId;
+// static String? pRTransId;
+// static String? pRRowId;
+// static String? mNITTransId;
+// static String? mNITRowId;
+// static String? supplierCode;
+// static String? supplierName;
+// static DateTime? createDate;
+// static DateTime? updateDate;
+// static bool? isConsumption;
+// static bool? isRequest;
+// static DateTime? requiredDate;
+// static bool? has_created;
+// static bool? has_updated;
+// final TextEditingController _iD=TextEditingController(text:GeneralData.iD);
+// final TextEditingController _transId=TextEditingController(text:GeneralData.transId);
+// final TextEditingController _rowId=TextEditingController(text:GeneralData.rowId);
+// final TextEditingController _itemCode=TextEditingController(text:GeneralData.itemCode);
+// final TextEditingController _itemName=TextEditingController(text:GeneralData.itemName);
+// final TextEditingController _uOM=TextEditingController(text:GeneralData.uOM);
+// final TextEditingController _description=TextEditingController(text:GeneralData.description);
+// final TextEditingController _remarks=TextEditingController(text:GeneralData.remarks);
+// final TextEditingController _userRemarks=TextEditingController(text:GeneralData.userRemarks);
+// final TextEditingController _isChecked=TextEditingController(text:GeneralData.isChecked);
+// final TextEditingController _isFromStock=TextEditingController(text:GeneralData.isFromStock);
+// final TextEditingController _consumptionQty=TextEditingController(text:GeneralData.consumptionQty);
+// final TextEditingController _mNGITransId=TextEditingController(text:GeneralData.mNGITransId);
+// final TextEditingController _mNGIRowId=TextEditingController(text:GeneralData.mNGIRowId);
+// final TextEditingController _pRTransId=TextEditingController(text:GeneralData.pRTransId);
+// final TextEditingController _pRRowId=TextEditingController(text:GeneralData.pRRowId);
+// final TextEditingController _mNITTransId=TextEditingController(text:GeneralData.mNITTransId);
+// final TextEditingController _mNITRowId=TextEditingController(text:GeneralData.mNITRowId);
+// final TextEditingController _supplierCode=TextEditingController(text:GeneralData.supplierCode);
+// final TextEditingController _supplierName=TextEditingController(text:GeneralData.supplierName);
+// final TextEditingController _createDate=TextEditingController(text:GeneralData.createDate);
+// final TextEditingController _updateDate=TextEditingController(text:GeneralData.updateDate);
+// final TextEditingController _isConsumption=TextEditingController(text:GeneralData.isConsumption);
+// final TextEditingController _isRequest=TextEditingController(text:GeneralData.isRequest);
+// final TextEditingController _requiredDate=TextEditingController(text:GeneralData.requiredDate);
+// final TextEditingController _has_created=TextEditingController(text:GeneralData.has_created);
+// final TextEditingController _has_updated=TextEditingController(text:GeneralData.has_updated);
+// clearMNCLD1TextFields(){
+//   GeneralData.iD='';
+//   GeneralData.transId='';
+//   GeneralData.rowId='';
+//   GeneralData.itemCode='';
+//   GeneralData.itemName='';
+//   GeneralData.uOM='';
+//   GeneralData.description='';
+//   GeneralData.remarks='';
+//   GeneralData.userRemarks='';
+//   GeneralData.isChecked=false;
+//   GeneralData.isFromStock=false;
+//   GeneralData.consumptionQty='';
+//   GeneralData.mNGITransId='';
+//   GeneralData.mNGIRowId='';
+//   GeneralData.pRTransId='';
+//   GeneralData.pRRowId='';
+//   GeneralData.mNITTransId='';
+//   GeneralData.mNITRowId='';
+//   GeneralData.supplierCode='';
+//   GeneralData.supplierName='';
+//   GeneralData.createDate=DateTime.now();
+//   GeneralData.updateDate=DateTime.now();
+//   GeneralData.isConsumption=false;
+//   GeneralData.isRequest=false;
+//   GeneralData.requiredDate=DateTime.now();
+//   GeneralData.has_created=false;
+//   GeneralData.has_updated=false;
+// }

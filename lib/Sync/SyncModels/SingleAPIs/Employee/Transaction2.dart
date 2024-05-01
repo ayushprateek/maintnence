@@ -146,70 +146,76 @@ class Transaction2 {
         "SUPRU1": List<dynamic>.from(supru1 ?? [].map((x) => x.toJson())),
       };
 
-  getTransaction2FromWeb(bool isFirstTimeSync) async {
-    if (isFirstTimeSync) {
-      print("Syncing First Time");
-    } else {
-      print("Not Syncing First Time");
-    }
-    credentials = getCredentials();
-    String encoded = stringToBase64.encode(credentials+secretKey);
-    header = {
-      'Authorization': 'Basic $encoded',
-      "content-type": "application/json",
-      "connection": "keep-alive"
-    };
-    bool isSuccess = false;
-    late Transaction2 transactions;
-    while (!isSuccess) {
-      try {
-        var res = await http.get(
-            headers: header,
-            Uri.parse(isFirstTimeSync
-                ? prefix + "CompressedMaster/Transaction_2"
-                : prefix + "CompressedMaster/Transaction_Date_2"));
-        // print(res.body);
-        // print(res.bodyBytes);
-        final xxx = utf8.decode(res.bodyBytes);
-        print(xxx);
-        transactions = Transaction2.fromJson(jsonDecode(xxx));
-        print(transactions.toJson());
-        isSuccess = true;
-      } catch (e) {
-        writeToLogFile(
-            text: e.toString(),
-            fileName: StackTrace.current.toString(),
-            lineNo: 141);
-        print(e.toString());
-        // getErrorSnackBar(e.toString());
-      }
-    }
+  //todo:
+  // getTransaction2FromWeb(bool isFirstTimeSync)
+  // async {
+  //   if (isFirstTimeSync) {
+  //     print("Syncing First Time");
+  //   } else {
+  //     print("Not Syncing First Time");
+  //   }
+  //   credentials = getCredentials();
+  //   String encoded = stringToBase64.encode(credentials+secretKey);
+  //   header = {
+  //     'Authorization': 'Basic $encoded',
+  //     "content-type": "application/json",
+  //     "connection": "keep-alive"
+  //   };
+  //   bool isSuccess = false;
+  //   late Transaction2 transactions;
+  //   while (!isSuccess) {
+  //     try {
+  //       var res = await http.get(
+  //           headers: header,
+  //           Uri.parse(isFirstTimeSync
+  //               ? prefix + "CompressedMaster/Transaction_2"
+  //               : prefix + "CompressedMaster/Transaction_Date_2"));
+  //       // print(res.body);
+  //       // print(res.bodyBytes);
+  //       final xxx = utf8.decode(res.bodyBytes);
+  //       print(xxx);
+  //       transactions = Transaction2.fromJson(jsonDecode(xxx));
+  //       print(transactions.toJson());
+  //       isSuccess = true;
+  //     } catch (e) {
+  //       writeToLogFile(
+  //           text: e.toString(),
+  //           fileName: StackTrace.current.toString(),
+  //           lineNo: 141);
+  //       print(e.toString());
+  //       // getErrorSnackBar(e.toString());
+  //     }
+  //   }
+  //
+  //   Database db = await initializeDB(null);
+  //   await insertRCT1(db, list: transactions.rct1);
+  //   await insertORCT(db, list: transactions.orct);
+  //   await insertECP1(db, list: transactions.ecp1);
+  //   await insertOCRO(db, list: transactions.ocro);
+  //   await insertOVUL(db, list: transactions.ovul);
+  //   await insertVUL1(db, list: transactions.vul1);
+  //   await insertCRT1(db, list: transactions.crt1);
+  //   await insertSUOISU(db, list: transactions.suoisu);
+  //   await insertSUISU1(db, list: transactions.suisu1);
+  //   await insertSUOTSL(db, list: transactions.suotsl);
+  //   // await insertSUAOPC(db, list: transactions.suaopc);
+  //   // await insertSUAPC1(db, list: transactions.suapc1);
+  //   await insertSUISU1(db, list: transactions.suisu1);
+  //   await insertSUOATE(db, list: transactions.suoate);
+  //   await insertSUOISU(db, list: transactions.suoisu);
+  //   await insertSUOORG(db, list: transactions.suoorg);
+  //   await insertSUOPDT(db, list: transactions.suopdt);
+  //   await insertSUOPRC(db, list: transactions.suoprc);
+  //   await insertSUOPRM(db, list: transactions.suoprm);
+  //   await insertSUOPRP(db, list: transactions.suoprp);
+  //   await insertSUOPRU(db, list: transactions.suopru);
+  //   await insertSUOTSL(db, list: transactions.suotsl);
+  //   await insertSUPRM1(db, list: transactions.suprm1);
+  //   await insertSUPRP1(db, list: transactions.suprp1);
+  //   await insertSUPRU1(db, list: transactions.supru1);
+  // }
 
-    Database db = await initializeDB(null);
-    await insertRCT1(db, list: transactions.rct1);
-    await insertORCT(db, list: transactions.orct);
-    await insertECP1(db, list: transactions.ecp1);
-    await insertOCRO(db, list: transactions.ocro);
-    await insertOVUL(db, list: transactions.ovul);
-    await insertVUL1(db, list: transactions.vul1);
-    await insertCRT1(db, list: transactions.crt1);
-    await insertSUOISU(db, list: transactions.suoisu);
-    await insertSUISU1(db, list: transactions.suisu1);
-    await insertSUOTSL(db, list: transactions.suotsl);
-    // await insertSUAOPC(db, list: transactions.suaopc);
-    // await insertSUAPC1(db, list: transactions.suapc1);
-    await insertSUISU1(db, list: transactions.suisu1);
-    await insertSUOATE(db, list: transactions.suoate);
-    await insertSUOISU(db, list: transactions.suoisu);
-    await insertSUOORG(db, list: transactions.suoorg);
-    await insertSUOPDT(db, list: transactions.suopdt);
-    await insertSUOPRC(db, list: transactions.suoprc);
-    await insertSUOPRM(db, list: transactions.suoprm);
-    await insertSUOPRP(db, list: transactions.suoprp);
-    await insertSUOPRU(db, list: transactions.suopru);
-    await insertSUOTSL(db, list: transactions.suotsl);
-    await insertSUPRM1(db, list: transactions.suprm1);
-    await insertSUPRP1(db, list: transactions.suprp1);
-    await insertSUPRU1(db, list: transactions.supru1);
+  getTransaction2FromWeb(bool isFirstTimeSync)
+  async {
   }
 }

@@ -79,7 +79,7 @@ class GetAllMaster2 {
     this.ocdc,
     this.otrm,
     this.oprf,
-    this.prf1,
+    // this.prf1,
   });
 
 //----------- VARIABLES ----------
@@ -91,7 +91,7 @@ class GetAllMaster2 {
   List<CRD1Model>? crd1;
   List<CRD2Model>? crd2;
   List<CRD3Model>? crd3;
-  List<PRF1>? prf1;
+  // List<PRF1>? prf1;
 
   // List<OROLModel>? orol;
   List<ORTUModel>? ortu;
@@ -140,7 +140,7 @@ class GetAllMaster2 {
         iwhs: List<IWHS>.from(json["IWHS"].map((x) => IWHS.fromJson(x))),
         oepo: List<OEPO>.from(json["OEPO"].map((x) => OEPO.fromJson(x))),
         ocdc: List<OCDC>.from(json["OCDC"].map((x) => OCDC.fromJson(x))),
-        prf1: List<PRF1>.from(json["PRF1"].map((x) => PRF1.fromJson(x))),
+        // prf1: List<PRF1>.from(json["PRF1"].map((x) => PRF1.fromJson(x))),
         ouom: List<OUOMModel>.from(
             json["OUOM"].map((x) => OUOMModel.fromJson(x))),
         // ecp1: List<ECP1>.from(json["ECP1"].map((x) => ECP1.fromJson(x))),
@@ -210,7 +210,7 @@ class GetAllMaster2 {
         "OCINP": List<dynamic>.from(ocinp ?? [].map((x) => x.toJson())),
         "OTRM": List<dynamic>.from(otrm ?? [].map((x) => x.toJson())),
         "OEJT": List<dynamic>.from(oejt ?? [].map((x) => x.toJson())),
-        "PRF1": List<dynamic>.from(prf1 ?? [].map((x) => x.toJson())),
+        // "PRF1": List<dynamic>.from(prf1 ?? [].map((x) => x.toJson())),
         "SecondaryCalendar":
             List<dynamic>.from(secondaryCalendar ?? [].map((x) => x.toJson())),
         "SecondaryCalendarYears": List<dynamic>.from(
@@ -288,7 +288,7 @@ class GetAllMaster2 {
     await insertOCDC(db, list: getAll.ocdc);
     await insertOTRM(db, list: getAll.otrm);
     await insertOPRF(db, list: getAll.oprf);
-    await insertPRF1(db, list: getAll.prf1);
+    // await insertPRF1(db, list: getAll.prf1);
     await insertSecondaryCalendar(db, list: getAll.secondaryCalendar);
     await insertSecondaryCalendarYears(db, list: getAll.secondaryCalendarYears);
   }

@@ -11,6 +11,7 @@ import 'package:maintenance/Sync/SyncModels/DGLMAPPING.dart';
 import 'package:maintenance/Sync/SyncModels/DOC1.dart';
 import 'package:maintenance/Sync/SyncModels/DOCN.dart';
 import 'package:maintenance/Sync/SyncModels/EXR1.dart';
+import 'package:maintenance/Sync/SyncModels/MNOCLM.dart';
 import 'package:maintenance/Sync/SyncModels/OAMR.dart';
 import 'package:maintenance/Sync/SyncModels/OAPRV.dart';
 import 'package:maintenance/Sync/SyncModels/OBDT.dart';
@@ -102,6 +103,7 @@ class GetAllMaster1 {
     this.vul1,
     this.xpm1,
     this.crd8,
+    this.mnoclm,
   });
 
 //----------- VARIABLES ----------
@@ -145,6 +147,7 @@ class GetAllMaster1 {
 
   // List<SQDocStatusModel>? sqdocstatus;
   List<VCL1Model>? vcl1;
+  List<MNOCLM>? mnoclm;
   List<VCL2Model>? vcl2;
   List<VCLDModel>? vcld;
   List<VUL1Model>? vul1;
@@ -232,6 +235,8 @@ class GetAllMaster1 {
             json["VUL1"].map((x) => VUL1Model.fromJson(x))),
         xpm1: List<XPM1Model>.from(
             json["XPM1"].map((x) => XPM1Model.fromJson(x))),
+    mnoclm: List<MNOCLM>.from(
+            json["MNOCLM"].map((x) => MNOCLM.fromJson(x))),
       );
 
 //----------- TO JSON ----------
@@ -279,6 +284,7 @@ class GetAllMaster1 {
         "VCLD": List<dynamic>.from(vcld ?? [].map((x) => x.toJson())),
         "VUL1": List<dynamic>.from(vul1 ?? [].map((x) => x.toJson())),
         "XPM1": List<dynamic>.from(xpm1 ?? [].map((x) => x.toJson())),
+        "MNOCLM": List<dynamic>.from(mnoclm ?? [].map((x) => x.toJson())),
       };
 
 //----------- INSERT ----------
@@ -431,5 +437,6 @@ class GetAllMaster1 {
     await insertVCLD(db, list: getAll.vcld);
     await insertVUL1(db, list: getAll.vul1);
     await insertXPM1(db, list: getAll.xpm1);
+    await insertMNOCLM(db, list: getAll.mnoclm);
   }
 }

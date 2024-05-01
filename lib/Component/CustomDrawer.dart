@@ -15,6 +15,8 @@ import 'package:maintenance/Component/LogFileFunctions.dart';
 import 'package:maintenance/Component/MenuDescription.dart';
 import 'package:maintenance/Component/SnackbarComponent.dart';
 import 'package:maintenance/GoodsIssue/GoodsIssue.dart';
+import 'package:maintenance/GoodsReceiptNote/GoodsReceiptNote.dart';
+import 'package:maintenance/InternalRequest/InternalRequest.dart';
 import 'package:maintenance/JobCard/JobCard.dart';
 import 'package:maintenance/Purchase/PurchaseRequest/PurchaseRequest.dart';
 import 'package:maintenance/Sync/DataSync.dart';
@@ -246,6 +248,32 @@ class _CustomDrawerState extends State<CustomDrawer> {
                           },
                           title: Text(
                             'Purchase Request',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                          leading:
+                              Icon(MdiIcons.account, color: Colors.white),
+                          trailing: Icon(Icons.keyboard_arrow_right,
+                              color: Colors.white),
+                        ),
+                        ListTile(
+                          onTap: (){
+                            Get.to(()=>GoodsRecepitNote(0));
+                          },
+                          title: Text(
+                            'Goods Receipt Note',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                          leading:
+                              Icon(MdiIcons.account, color: Colors.white),
+                          trailing: Icon(Icons.keyboard_arrow_right,
+                              color: Colors.white),
+                        ),
+                        ListTile(
+                          onTap: (){
+                            Get.to(()=>InternalRequest(0));
+                          },
+                          title: Text(
+                            'Internal Request',
                             style: TextStyle(color: Colors.white),
                           ),
                           leading:

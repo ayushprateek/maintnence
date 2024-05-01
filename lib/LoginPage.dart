@@ -430,7 +430,7 @@ class _LoginPageState extends State<LoginPage> {
       print(jsonEncode(res.body));
       localStorage?.setString('user', res.body);
       localStorage?.setString(
-          'TableCreationScript', jsonDecode(res.body)['TableCreationScript']);
+          'MaintenanceTransactionTableCreationScript', jsonDecode(res.body)['MaintenanceTransactionTableCreationScript']);
       String? str = localStorage?.getString('user');
       Map<String, dynamic> m = jsonDecode(str ?? '');
       print(m);
