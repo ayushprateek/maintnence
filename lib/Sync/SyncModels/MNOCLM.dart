@@ -212,9 +212,20 @@ Future<void> updateMNOCLM(int id, Map<String, dynamic> values, BuildContext cont
 Future<void> deleteMNOCLM(Database db) async {
   await db.delete('MNOCLM');
 }
-Future<List<MNOCLM>> retrieveMNOCLMById(BuildContext? context, String str, List l) async {
+Future<List<MNOCLM>> retrieveMNOCLMById(BuildContext? context, String str, List l,{
+  int? limit
+}) async {
   final Database db = await initializeDB(context);
-  final List<Map<String, Object?>> queryResult = await db.query('MNOCLM', where: str, whereArgs: l);
+  final List<Map<String, Object?>> queryResult = await db.query('MNOCLM', where: str, whereArgs: l,limit: limit);
+  return queryResult.map((e) => MNOCLM.fromJson(e)).toList();
+}
+Future<List<MNOCLM>> retrieveMNOCLMForSearch({
+  int? limit,
+  String? query,
+}) async {
+  query="%${query}%";
+  final Database db = await initializeDB(null);
+  final List<Map<String, Object?>> queryResult = await db.rawQuery('SELECT * FROM MNOCLM WHERE Code LIKE "$query" OR Name LIKE "$query" ');
   return queryResult.map((e) => MNOCLM.fromJson(e)).toList();
 }
 Future<String> insertMNOCLMToServer(BuildContext? context, {String? TransId, int? id}) async {

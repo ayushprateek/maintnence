@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:maintenance/CheckListDocument/CheckListCodeLookup.dart';
 import 'package:maintenance/CheckListDocument/CheckListDocument.dart';
 import 'package:maintenance/CheckListDocument/EquipmentCodeLokup.dart';
 import 'package:maintenance/Component/GetFormattedDate.dart';
@@ -127,6 +128,9 @@ class _GeneralDataState extends State<GeneralData> {
           getDisabledTextField(
               controller: _checkListCode,
               labelText: 'Check List Code',
+              onLookupPressed: (){
+                Get.to(()=>CheckListCodeLookup());
+              },
               enableLookup: true),
           getDisabledTextField(
               controller: _checkListName, labelText: 'CheckList Name'),
