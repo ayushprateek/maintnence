@@ -66,6 +66,7 @@ class OCRDModel {
     this.CustomerBalance,
     this.CardGroupName,
     this.CardSubGroupName,
+    this.Name,
     this.isNearby = false,
   });
 
@@ -116,6 +117,7 @@ class OCRDModel {
 
   ///CREATE CustomerBalance FORT DEVELOPMENT PURPOSE ONLY
   double? CustomerBalance;
+  String? Name;
   String? CreatedBy;
   String? UpdatedBy;
   String? BranchId;
@@ -128,6 +130,7 @@ class OCRDModel {
         CustomerBalance:
             double.tryParse(json["CustomerBalance"].toString()) ?? 0,
         CardSubGroupName: json["CardSubGroupName"] ?? "",
+        Name: json["Name"] ?? "",
         Code: json["Code"] ?? "",
         FirstName: json["FirstName"] ?? "",
         MiddleName: json["MiddleName"] ?? "",
@@ -221,6 +224,16 @@ class OCRDModel {
         'BranchId': BranchId,
         'PriceListCode': PriceListCode,
       };
+}
+
+Future<List<OCRDModel>> retrieveSupplierForSearch({
+  int? limit,
+  String? query,
+}) async {
+  query="%$query%";
+  final Database db = await initializeDB(null);
+  final List<Map<String, Object?>> queryResult = await db.rawQuery('SELECT FirstName || MiddleName ||  LastName as Name,* FROM OCRD WHERE (BPType="T" OR BPType="S") and (Name LIKE "$query" OR Name LIKE "$query") LIMIT $limit');
+  return queryResult.map((e) => OCRDModel.fromJson(e)).toList();
 }
 
 // Future<void> insertOCRD(Database db, {List? list}) async {

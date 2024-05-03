@@ -131,7 +131,15 @@ Future<void> updateOITM(
     getErrorSnackBar("Sync Error " + e.toString());
   }
 }
-
+Future<List<OITMModel>> retrieveOITMForSearch({
+  int? limit,
+  String? query,
+}) async {
+  query="%$query%";
+  final Database db = await initializeDB(null);
+  final List<Map<String, Object?>> queryResult = await db.rawQuery('SELECT * FROM OITM WHERE ItemCode LIKE "$query" OR ItemName LIKE "$query" LIMIT $limit');
+  return queryResult.map((e) => OITMModel.fromJson(e)).toList();
+}
 Future<void> deleteOITM(Database db) async {
   await db.delete('OITM');
 }

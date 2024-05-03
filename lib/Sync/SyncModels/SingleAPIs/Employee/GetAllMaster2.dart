@@ -55,7 +55,7 @@ class GetAllMaster2 {
     this.ovcl,
     this.iuom,
     this.iwhs,
-    this.ouom,
+    // this.ouom,
     // this.ecp1,
     this.ooal,
     this.oac1,
@@ -98,7 +98,7 @@ class GetAllMaster2 {
   List<OVCLModel>? ovcl;
   List<IUOM>? iuom;
   List<IWHS>? iwhs;
-  List<OUOMModel>? ouom;
+  // List<OUOMModel>? ouom;
   List<BPSG>? bpsg;
 
   // List<ECP1>? ecp1;
@@ -141,8 +141,8 @@ class GetAllMaster2 {
         oepo: List<OEPO>.from(json["OEPO"].map((x) => OEPO.fromJson(x))),
         ocdc: List<OCDC>.from(json["OCDC"].map((x) => OCDC.fromJson(x))),
         // prf1: List<PRF1>.from(json["PRF1"].map((x) => PRF1.fromJson(x))),
-        ouom: List<OUOMModel>.from(
-            json["OUOM"].map((x) => OUOMModel.fromJson(x))),
+        // ouom: List<OUOMModel>.from(
+        //     json["OUOM"].map((x) => OUOMModel.fromJson(x))),
         // ecp1: List<ECP1>.from(json["ECP1"].map((x) => ECP1.fromJson(x))),
         ooal: List<LITPL_OOAL>.from(
             json["LITPL_OOAL"].map((x) => LITPL_OOAL.fromJson(x))),
@@ -189,7 +189,7 @@ class GetAllMaster2 {
         "OVCL": List<dynamic>.from(ovcl ?? [].map((x) => x.toJson())),
         "IUOM": List<dynamic>.from(iuom ?? [].map((x) => x.toJson())),
         "IWHS": List<dynamic>.from(iwhs ?? [].map((x) => x.toJson())),
-        "OUOM": List<dynamic>.from(ouom ?? [].map((x) => x.toJson())),
+        // "OUOM": List<dynamic>.from(ouom ?? [].map((x) => x.toJson())),
         "CVOMTP": List<dynamic>.from(cvomtp ?? [].map((x) => x.toJson())),
         "CVMTP1": List<dynamic>.from(cvmtp1 ?? [].map((x) => x.toJson())),
         "OEPO": List<dynamic>.from(oepo ?? [].map((x) => x.toJson())),
@@ -266,7 +266,7 @@ class GetAllMaster2 {
     await insertOVCL(db, list: getAll.ovcl);
     await insertIUOM(db, list: getAll.iuom);
     await insertIWHS(db, list: getAll.iwhs);
-    await insertOUOM(db, list: getAll.ouom);
+    // await insertOUOM(db, list: getAll.ouom);
     await insertCVOMTP(db, list: getAll.cvomtp);
     await insertCVMTP1(db, list: getAll.cvmtp1);
     await insertBPSG(db, list: getAll.bpsg);

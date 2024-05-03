@@ -41,8 +41,8 @@ class OUOMModel {
         UpdateDate: DateTime.tryParse(json["UpdateDate"].toString()) ??
             DateTime.parse("1900-01-01"),
         hasCreated: json['has_created'] == 1,
-        UomCode: json["UomCode"] ?? "",
-        UomName: json["UomName"] ?? "",
+        UomCode: json["UomCode"]?.toString() ?? "",
+        UomName: json["UomName"]?.toString() ?? "",
         Active: json["Active"] is bool ? json["Active"] : json["Active"] == 1,
       );
 
@@ -273,6 +273,16 @@ WHERE T1.UomCode IS NULL;
   // // await batch3.commit(noResult: true);
   await db.delete('OUOM_Temp');
   // stopwatch.stop();
+}
+
+Future<List<OUOMModel>> retrieveOUOMForSearch({
+  int? limit,
+  String? query,
+}) async {
+  query="%$query%";
+  final Database db = await initializeDB(null);
+  final List<Map<String, Object?>> queryResult = await db.rawQuery('SELECT * FROM OUOM WHERE UomCode LIKE "$query" OR UomName LIKE "$query" LIMIT $limit');
+  return queryResult.map((e) => OUOMModel.fromJson(e)).toList();
 }
 
 

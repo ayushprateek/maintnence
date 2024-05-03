@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:maintenance/CheckListDocument/Attachments.dart';
-import 'package:maintenance/CheckListDocument/CheckListDetails.dart';
+import 'package:maintenance/CheckListDocument/CheckListDetails/CheckListDetails.dart';
 import 'package:maintenance/CheckListDocument/GeneralData.dart';
 import 'package:maintenance/Component/CustomColor.dart';
 import 'package:maintenance/Component/CustomFont.dart';
