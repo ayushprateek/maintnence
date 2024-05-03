@@ -133,7 +133,15 @@ Future<List<OVCLModel>> retrieveOVCL(BuildContext context) async {
   final List<Map<String, Object?>> queryResult = await db.query('OVCL');
   return queryResult.map((e) => OVCLModel.fromJson(e)).toList();
 }
-
+Future<List<OVCLModel>> retrieveOVCLForSearch({
+  int? limit,
+  String? query,
+}) async {
+  query="%$query%";
+  final Database db = await initializeDB(null);
+  final List<Map<String, Object?>> queryResult = await db.rawQuery('SELECT * FROM OVCL WHERE Code LIKE "$query" LIMIT $limit');
+  return queryResult.map((e) => OVCLModel.fromJson(e)).toList();
+}
 Future<void> updateOVCL(
     int id, Map<String, dynamic> values, BuildContext context) async {
   final db = await initializeDB(context);

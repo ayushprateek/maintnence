@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:maintenance/CheckListDocument/CheckListDocument.dart';
+import 'package:maintenance/CheckListDocument/GeneralData.dart';
 import 'package:maintenance/Component/CustomColor.dart';
 import 'package:maintenance/Component/CustomFont.dart';
 import 'package:maintenance/Component/GetTextField.dart';
 import 'package:maintenance/Sync/SyncModels/MNOCLM.dart';
+
 class CheckListCodeLookup extends StatefulWidget {
   const CheckListCodeLookup({super.key});
 
@@ -60,10 +64,8 @@ class _CheckListCodeLookupState extends State<CheckListCodeLookup> {
                       flex: 3,
                       child: getTextFieldWithoutLookup(
                         controller: _query,
-                        onChanged: (val){
-                          setState(() {
-
-                          });
+                        onChanged: (val) {
+                          setState(() {});
                         },
                         labelText: 'Search',
                         suffixIcon: IconButton(
@@ -122,10 +124,8 @@ class _CheckListCodeLookupState extends State<CheckListCodeLookup> {
             ),
             FutureBuilder(
                 future: retrieveMNOCLMForSearch(
-                    query: _query.text,
-                    limit: _currentMax),
-                builder: (context,
-                    AsyncSnapshot<List<MNOCLM>> snapshot) {
+                    query: _query.text, limit: _currentMax),
+                builder: (context, AsyncSnapshot<List<MNOCLM>> snapshot) {
                   if (!snapshot.hasData) return Container();
 
                   return Column(
@@ -187,7 +187,14 @@ class _CheckListCodeLookupState extends State<CheckListCodeLookup> {
                               return Container();
                             }
                             return InkWell(
+                              onDoubleTap: () {
 
+                                GeneralData.checkListCode =
+                                    snapshot.data![index].Code;
+                                GeneralData.checkListName =
+                                    snapshot.data![index].Name;
+                                Get.offAll(() => CheckListDocument(0));
+                              },
                               child: Container(
                                 decoration: BoxDecoration(
                                   color: Colors.white,
@@ -209,32 +216,29 @@ class _CheckListCodeLookupState extends State<CheckListCodeLookup> {
                                     children: [
                                       Flexible(
                                         child: Padding(
-                                          padding: const EdgeInsets.only(
-                                              left: 8.0),
+                                          padding:
+                                              const EdgeInsets.only(left: 8.0),
                                           child: Align(
                                             alignment: Alignment.topLeft,
                                             child: getHeadingText(
-                                              text: snapshot.data![index]
-                                                  .Code
-                                                  .toString() ==
-                                                  ""
+                                              text: snapshot.data![index].Code
+                                                          .toString() ==
+                                                      ""
                                                   ? "ABC"
-                                                  : snapshot
-                                                  .data![index].Code
-                                                  .toString(),
+                                                  : snapshot.data![index].Code
+                                                      .toString(),
                                             ),
                                           ),
                                         ),
                                       ),
                                       Flexible(
                                         child: Padding(
-                                          padding: const EdgeInsets.only(
-                                              right: 8.0),
+                                          padding:
+                                              const EdgeInsets.only(right: 8.0),
                                           child: Align(
                                             alignment: Alignment.centerLeft,
                                             child: getSubHeadingText(
-                                              text: snapshot
-                                                  .data![index].Name,
+                                              text: snapshot.data![index].Name,
                                             ),
                                           ),
                                         ),

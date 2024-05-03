@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:maintenance/Component/GetCredentials.dart';
 import 'package:maintenance/Component/LogFileFunctions.dart';
@@ -12,6 +11,7 @@ import 'package:maintenance/Sync/SyncModels/DOC1.dart';
 import 'package:maintenance/Sync/SyncModels/DOCN.dart';
 import 'package:maintenance/Sync/SyncModels/EXR1.dart';
 import 'package:maintenance/Sync/SyncModels/MNOCLM.dart';
+import 'package:maintenance/Sync/SyncModels/MNOWCM.dart';
 import 'package:maintenance/Sync/SyncModels/OAMR.dart';
 import 'package:maintenance/Sync/SyncModels/OAPRV.dart';
 import 'package:maintenance/Sync/SyncModels/OBDT.dart';
@@ -104,6 +104,7 @@ class GetAllMaster1 {
     this.xpm1,
     this.crd8,
     this.mnoclm,
+    this.mnowcm,
   });
 
 //----------- VARIABLES ----------
@@ -152,6 +153,7 @@ class GetAllMaster1 {
   List<VCLDModel>? vcld;
   List<VUL1Model>? vul1;
   List<XPM1Model>? xpm1;
+  List<MNOWCM>? mnowcm;
 
 //----------- FROM JSON ----------
   factory GetAllMaster1.fromJson(Map<String, dynamic> json) => GetAllMaster1(
@@ -167,7 +169,7 @@ class GetAllMaster1 {
             json["EXR1"].map((x) => EXR1Model.fromJson(x))),
         oamr: List<OAMRModel>.from(
             json["OAMR"].map((x) => OAMRModel.fromJson(x))),
-    crd8: List<CRD8Model>.from(
+        crd8: List<CRD8Model>.from(
             json["CRD8"].map((x) => CRD8Model.fromJson(x))),
         oaprv: List<OAPRVModel>.from(
             json["OAPRV"].map((x) => OAPRVModel.fromJson(x))),
@@ -214,7 +216,7 @@ class GetAllMaster1 {
             json["OUOM"].map((x) => OUOMModel.fromJson(x))),
         ousr: List<OUSRModel>.from(
             json["OUSR"].map((x) => OUSRModel.fromJson(x))),
-    usr1: List<USR1Model>.from(
+        usr1: List<USR1Model>.from(
             json["USR1"].map((x) => USR1Model.fromJson(x))),
         ovul: List<OVULModel>.from(
             json["OVUL"].map((x) => OVULModel.fromJson(x))),
@@ -235,8 +237,10 @@ class GetAllMaster1 {
             json["VUL1"].map((x) => VUL1Model.fromJson(x))),
         xpm1: List<XPM1Model>.from(
             json["XPM1"].map((x) => XPM1Model.fromJson(x))),
-    mnoclm: List<MNOCLM>.from(
-            json["MNOCLM"].map((x) => MNOCLM.fromJson(x))),
+        mnoclm:
+            List<MNOCLM>.from(json["MNOCLM"].map((x) => MNOCLM.fromJson(x))),
+        mnowcm:
+            List<MNOWCM>.from(json["MNOWCM"].map((x) => MNOWCM.fromJson(x))),
       );
 
 //----------- TO JSON ----------
@@ -285,6 +289,7 @@ class GetAllMaster1 {
         "VUL1": List<dynamic>.from(vul1 ?? [].map((x) => x.toJson())),
         "XPM1": List<dynamic>.from(xpm1 ?? [].map((x) => x.toJson())),
         "MNOCLM": List<dynamic>.from(mnoclm ?? [].map((x) => x.toJson())),
+        "MNOWCM": List<dynamic>.from(mnowcm ?? [].map((x) => x.toJson())),
       };
 
 //----------- INSERT ----------
@@ -295,7 +300,7 @@ class GetAllMaster1 {
       print("Not Syncing First Time");
     }
     credentials = getCredentials();
-    String encoded = stringToBase64.encode(credentials+secretKey);
+    String encoded = stringToBase64.encode(credentials + secretKey);
     header = {
       'Authorization': 'Basic $encoded',
       "content-type": "application/json",
@@ -438,5 +443,6 @@ class GetAllMaster1 {
     await insertVUL1(db, list: getAll.vul1);
     await insertXPM1(db, list: getAll.xpm1);
     await insertMNOCLM(db, list: getAll.mnoclm);
+    await insertMNOWCM(db, list: getAll.mnowcm);
   }
 }

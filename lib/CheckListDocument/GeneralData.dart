@@ -3,6 +3,8 @@ import 'package:get/get.dart';
 import 'package:maintenance/CheckListDocument/CheckListCodeLookup.dart';
 import 'package:maintenance/CheckListDocument/CheckListDocument.dart';
 import 'package:maintenance/CheckListDocument/EquipmentCodeLokup.dart';
+import 'package:maintenance/CheckListDocument/TechnicianCodeLookup.dart';
+import 'package:maintenance/CheckListDocument/WorkCenterLookup.dart';
 import 'package:maintenance/Component/GetFormattedDate.dart';
 import 'package:maintenance/Component/GetTextField.dart';
 
@@ -137,7 +139,10 @@ class _GeneralDataState extends State<GeneralData> {
           getDisabledTextField(
               controller: _workCenterCode,
               labelText: 'WorkCenter Code',
-              enableLookup: true),
+              enableLookup: true,
+            onLookupPressed: (){
+              Get.to(()=>WorkCenterLookup());
+            },),
           getDisabledTextField(
               controller: _workCenterName, labelText: 'WorkCenter Name'),
           getDisabledTextField(controller: _docStatus, labelText: 'Doc Status'),
@@ -158,7 +163,10 @@ class _GeneralDataState extends State<GeneralData> {
           getDisabledTextField(
               controller: _assignedUserCode,
               labelText: 'Technician Code',
-              enableLookup: true),
+              enableLookup: true,
+            onLookupPressed: (){
+              Get.to(()=>TechnicianCodeLookup());
+            },),
           getDisabledTextField(
               controller: _assignedUserName, labelText: 'Technician Name'),
           Padding(

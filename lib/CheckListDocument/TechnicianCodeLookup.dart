@@ -5,16 +5,17 @@ import 'package:maintenance/CheckListDocument/GeneralData.dart';
 import 'package:maintenance/Component/CustomColor.dart';
 import 'package:maintenance/Component/CustomFont.dart';
 import 'package:maintenance/Component/GetTextField.dart';
-import 'package:maintenance/Sync/SyncModels/OVCL.dart';
+import 'package:maintenance/Sync/SyncModels/MNOWCM.dart';
+import 'package:maintenance/Sync/SyncModels/OEMP.dart';
 
-class EquipmentCodeLookup extends StatefulWidget {
-  const EquipmentCodeLookup({super.key});
+class TechnicianCodeLookup extends StatefulWidget {
+  const TechnicianCodeLookup({super.key});
 
   @override
-  State<EquipmentCodeLookup> createState() => _EquipmentCodeLookupState();
+  State<TechnicianCodeLookup> createState() => _TechnicianCodeLookupState();
 }
 
-class _EquipmentCodeLookupState extends State<EquipmentCodeLookup> {
+class _TechnicianCodeLookupState extends State<TechnicianCodeLookup> {
   ScrollController _scrollController = ScrollController();
   final TextEditingController _query = TextEditingController();
   int _currentMax = 15;
@@ -41,7 +42,7 @@ class _EquipmentCodeLookupState extends State<EquipmentCodeLookup> {
       appBar: AppBar(
         backgroundColor: barColor,
         title: Text(
-          "Equipment Code Lookup",
+          "Technician Code Lookup",
           style: TextStyle(color: Colors.white),
         ),
       ),
@@ -123,9 +124,9 @@ class _EquipmentCodeLookupState extends State<EquipmentCodeLookup> {
               ),
             ),
             FutureBuilder(
-                future: retrieveOVCLForSearch(
+                future: retrieveTechnicianForSearch(
                     query: _query.text, limit: _currentMax),
-                builder: (context, AsyncSnapshot<List<OVCLModel>> snapshot) {
+                builder: (context, AsyncSnapshot<List<OEMPModel>> snapshot) {
                   if (!snapshot.hasData) return Container();
 
                   return ListView.builder(
@@ -142,11 +143,12 @@ class _EquipmentCodeLookupState extends State<EquipmentCodeLookup> {
                           return Container();
                         }
                         return InkWell(
-                          onDoubleTap: (){
-                            GeneralData.equipmentCode=snapshot.data![index].Code;
-                            GeneralData.equipmentName=snapshot.data![index].Code;
-                            Get.offAll(()=>CheckListDocument(0));
-
+                          onDoubleTap: () {
+                            GeneralData.assignedUserCode =
+                                snapshot.data![index].Code;
+                            GeneralData.assignedUserName =
+                                snapshot.data![index].Name;
+                            Get.offAll(() => CheckListDocument(0));
                           },
                           child: Container(
                             decoration: BoxDecoration(
@@ -166,15 +168,13 @@ class _EquipmentCodeLookupState extends State<EquipmentCodeLookup> {
                             child: Padding(
                               padding: const EdgeInsets.all(8),
                               child: Column(
-                                crossAxisAlignment:
-                                CrossAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
                                   Row(
                                     crossAxisAlignment:
                                     CrossAxisAlignment.start,
-                                    mainAxisAlignment:
-                                    MainAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
                                       Expanded(
                                           child: Column(
@@ -206,7 +206,7 @@ class _EquipmentCodeLookupState extends State<EquipmentCodeLookup> {
                                                         text: 'Name'),
                                                     getPoppinsTextSpanDetails(
                                                         text: snapshot
-                                                            .data![index].Code),
+                                                            .data![index].Name),
                                                   ],
                                                 ),
                                               ),

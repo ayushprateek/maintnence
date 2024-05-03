@@ -223,9 +223,9 @@ Future<List<MNOCLM>> retrieveMNOCLMForSearch({
   int? limit,
   String? query,
 }) async {
-  query="%${query}%";
+  query="%$query%";
   final Database db = await initializeDB(null);
-  final List<Map<String, Object?>> queryResult = await db.rawQuery('SELECT * FROM MNOCLM WHERE Code LIKE "$query" OR Name LIKE "$query" ');
+  final List<Map<String, Object?>> queryResult = await db.rawQuery('SELECT * FROM MNOCLM WHERE Code LIKE "$query" OR Name LIKE "$query" LIMIT $limit');
   return queryResult.map((e) => MNOCLM.fromJson(e)).toList();
 }
 Future<String> insertMNOCLMToServer(BuildContext? context, {String? TransId, int? id}) async {

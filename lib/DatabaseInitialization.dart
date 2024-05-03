@@ -13,7 +13,7 @@ Future<Database> initializeDB(BuildContext? context) async {
   String path = await getDatabasesPath();
 
 
-  String? str = localStorage?.getString('user');
+  String? str = localStorage?.getString('tableScript');
   Map m = jsonDecode(str ?? '');
   // print(m);
   // String xmlString = m['MaintenanceTableCreationScript'];

@@ -52,6 +52,7 @@ class OEMPModel {
     required this.Active,
     this.IsSalesExecutive = false,
     this.IsTeamLeader = false,
+    this.IsTechnician = false,
     required this.Attachment,
     required this.EmpGroupId,
     required this.EMPGD,
@@ -63,10 +64,12 @@ class OEMPModel {
     this.ReportingToEmpName,
     this.EngagedRPTransId,
     this.AvailabilityStatus,
+    this.Name,
   });
 
   int ID;
   String Code;
+
   String FirstName;
   String MiddleName;
   String LastName;
@@ -74,6 +77,7 @@ class OEMPModel {
   DateTime CreateDate;
   DateTime UpdateDate;
   bool hasCreated;
+  bool IsTechnician;
   String Position;
   String MobileNo;
   String Gender;
@@ -106,6 +110,9 @@ class OEMPModel {
   String? UpdatedBy;
   String? EngagedRPTransId;
   String? AvailabilityStatus;
+
+  /// FOR DEV PURPOSE ONLY
+  String? Name;
 
   factory OEMPModel.fromJson(Map<String, dynamic> json) => OEMPModel(
         ID: int.tryParse(json["ID"].toString()) ?? 0,
@@ -146,12 +153,16 @@ class OEMPModel {
         StateName: json["StateName"] ?? "",
         CountryCode: json["CountryCode"] ?? "",
         CountryName: json["CountryName"] ?? "",
+        Name: json["Name"] ?? "",
         NrcNo: json['NrcNo'] ?? '',
         CreatedBy: json['CreatedBy'] ?? '',
         UpdatedBy: json['UpdatedBy'] ?? '',
         IsTeamLeader: json["IsTeamLeader"] is bool
             ? json["IsTeamLeader"]
             : json["IsTeamLeader"] == 1,
+    IsTechnician: json["IsTechnician"] is bool
+            ? json["IsTechnician"]
+            : json["IsTechnician"] == 1,
         IsSalesExecutive: json["IsSalesExecutive"] is bool
             ? json["IsSalesExecutive"]
             : json["IsSalesExecutive"] == 1,
@@ -198,6 +209,7 @@ class OEMPModel {
         'CreatedBy': CreatedBy,
         'UpdatedBy': UpdatedBy,
         "IsTeamLeader": IsTeamLeader == true ? 1 : 0,
+        "IsTechnician": IsTechnician == true ? 1 : 0,
         "IsSalesExecutive": IsSalesExecutive == true ? 1 : 0,
         "Active": Active == true ? 1 : 0,
         "EngagedRPTransId": EngagedRPTransId,
@@ -219,10 +231,18 @@ Future<List<OEMPModel>> retrieveOEMP(BuildContext? context) async {
   return queryResult.map((e) => OEMPModel.fromJson(e)).toList();
 }
 
-Future<List<OEMPModel>> retrieveOEMPForSearch({required String query}) async {
+Future<List<OEMPModel>> retrieveOEMPForSearch(
+    {required String query, int? limit}) async {
   final Database db = await initializeDB(null);
   final List<Map<String, Object?>> queryResult = await db.rawQuery(
-      "SELECT FirstName || MiddleName || LastName as Name,* FROM OEMP where Name LIKE \'%$query%\' COLLATE NOCASE");
+      "SELECT FirstName || MiddleName || LastName as Name,* FROM OEMP where Name LIKE \'%$query%\' COLLATE NOCASE LIMIT $limit");
+  return queryResult.map((e) => OEMPModel.fromJson(e)).toList();
+}
+Future<List<OEMPModel>> retrieveTechnicianForSearch(
+    {required String query, int? limit}) async {
+  final Database db = await initializeDB(null);
+  final List<Map<String, Object?>> queryResult = await db.rawQuery(
+      "SELECT FirstName || MiddleName || LastName as Name,* FROM OEMP where IsTechnician=1 AND  Name LIKE \'%$query%\' COLLATE NOCASE LIMIT $limit");
   return queryResult.map((e) => OEMPModel.fromJson(e)).toList();
 }
 
