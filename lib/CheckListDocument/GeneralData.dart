@@ -5,7 +5,6 @@ import 'package:maintenance/CheckListDocument/CheckListDocument.dart';
 import 'package:maintenance/CheckListDocument/EquipmentCodeLokup.dart';
 import 'package:maintenance/CheckListDocument/TechnicianCodeLookup.dart';
 import 'package:maintenance/CheckListDocument/WorkCenterLookup.dart';
-import 'package:maintenance/Component/GetFormattedDate.dart';
 import 'package:maintenance/Component/GetTextField.dart';
 
 class GeneralData extends StatefulWidget {
@@ -27,11 +26,11 @@ class GeneralData extends StatefulWidget {
   static String? checkListName;
   static String? workCenterCode;
   static String? workCenterName;
-  static DateTime? openDate;
-  static DateTime? closeDate;
-  static DateTime? postingDate;
-  static DateTime? validUntill;
-  static DateTime? lastReadingDate;
+  static String? openDate;
+  static String? closeDate;
+  static String? postingDate;
+  static String? validUntill;
+  static String? lastReadingDate;
   static String? lastReading;
   static String? assignedUserCode;
   static String? assignedUserName;
@@ -40,8 +39,8 @@ class GeneralData extends StatefulWidget {
   static String? createdBy;
   static String? updatedBy;
   static String? branchId;
-  static DateTime? createDate;
-  static DateTime? updateDate;
+  static String? createDate;
+  static String? updateDate;
   static String? currentReading;
   static bool? isConsumption;
   static bool? isRequest;
@@ -78,15 +77,15 @@ class _GeneralDataState extends State<GeneralData> {
   final TextEditingController _workCenterName =
       TextEditingController(text: GeneralData.workCenterName);
   final TextEditingController _openDate =
-      TextEditingController(text: getFormattedDate(GeneralData.openDate));
+      TextEditingController(text: GeneralData.openDate);
   final TextEditingController _closeDate =
-      TextEditingController(text: getFormattedDate(GeneralData.closeDate));
+      TextEditingController(text: GeneralData.closeDate);
   final TextEditingController _postingDate =
-      TextEditingController(text: getFormattedDate(GeneralData.postingDate));
+      TextEditingController(text: GeneralData.postingDate);
   final TextEditingController _validUntill =
-      TextEditingController(text: getFormattedDate(GeneralData.validUntill));
-  final TextEditingController _lastReadingDate = TextEditingController(
-      text: getFormattedDate(GeneralData.lastReadingDate));
+      TextEditingController(text: GeneralData.validUntill);
+  final TextEditingController _lastReadingDate =
+      TextEditingController(text: GeneralData.lastReadingDate);
   final TextEditingController _lastReading =
       TextEditingController(text: GeneralData.lastReading);
   final TextEditingController _assignedUserCode =
@@ -113,36 +112,46 @@ class _GeneralDataState extends State<GeneralData> {
           getDisabledTextField(controller: _docNum, labelText: 'ERP Docnum'),
           getDisabledTextField(controller: _transId, labelText: 'Trans Id'),
           getDisabledTextField(controller: _docEntry, labelText: 'Doc Entry'),
-          getDisabledTextField(
-              controller: _postingDate, labelText: 'Posting Date'),
-          getDisabledTextField(
-              controller: _validUntill, labelText: 'Valid Until'),
+          getDateTextField(
+              controller: _postingDate,
+              labelText: 'Posting Date',
+              localCurrController: TextEditingController(),
+              onChanged: (val) {
+                _postingDate.text = GeneralData.postingDate = val;
+              }),
+          getDateTextField(
+              controller: _validUntill,
+              labelText: 'Valid Until',
+              localCurrController: TextEditingController(),
+              onChanged: (val) {
+                _validUntill.text = GeneralData.validUntill = val;
+              }),
           getDisabledTextField(
               controller: _equipmentCode,
               labelText: 'Equipment Code',
               enableLookup: true,
-            onLookupPressed: (){
-                Get.to(()=>EquipmentCodeLookup());
-            }
-          ),
+              onLookupPressed: () {
+                Get.to(() => EquipmentCodeLookup());
+              }),
           getDisabledTextField(
               controller: _equipmentName, labelText: 'Equipment Name'),
           getDisabledTextField(
               controller: _checkListCode,
               labelText: 'Check List Code',
-              onLookupPressed: (){
-                Get.to(()=>CheckListCodeLookup());
+              onLookupPressed: () {
+                Get.to(() => CheckListCodeLookup());
               },
               enableLookup: true),
           getDisabledTextField(
               controller: _checkListName, labelText: 'CheckList Name'),
           getDisabledTextField(
-              controller: _workCenterCode,
-              labelText: 'WorkCenter Code',
-              enableLookup: true,
-            onLookupPressed: (){
-              Get.to(()=>WorkCenterLookup());
-            },),
+            controller: _workCenterCode,
+            labelText: 'WorkCenter Code',
+            enableLookup: true,
+            onLookupPressed: () {
+              Get.to(() => WorkCenterLookup());
+            },
+          ),
           getDisabledTextField(
               controller: _workCenterName, labelText: 'WorkCenter Name'),
           getDisabledTextField(controller: _docStatus, labelText: 'Doc Status'),
@@ -150,23 +159,42 @@ class _GeneralDataState extends State<GeneralData> {
               controller: _approvalStatus, labelText: 'Approval Status'),
           getTextField(
               controller: _checkListStatus, labelText: 'Check List Status'),
-          getDisabledTextField(controller: _openDate, labelText: 'Open Date'),
-          getDisabledTextField(controller: _closeDate, labelText: 'Close Date'),
+          getDateTextField(
+              controller: _openDate,
+              labelText: 'Open Date',
+              localCurrController: TextEditingController(),
+              onChanged: (val) {
+                _openDate.text = GeneralData.openDate = val;
+              }),
+          getDateTextField(
+              controller: _closeDate,
+              labelText: 'Close Date',
+              localCurrController: TextEditingController(),
+              onChanged: (val) {
+                _closeDate.text = GeneralData.closeDate = val;
+              }),
+
           getTextField(
               controller: _currentReading,
               labelText: 'Current Reading',
               keyboardType: TextInputType.number),
-          getDisabledTextField(
-              controller: _lastReadingDate, labelText: 'Last Reading Date'),
+          getDateTextField(
+              controller: _lastReadingDate,
+              labelText: 'Last Reading Date',
+              localCurrController: TextEditingController(),
+              onChanged: (val) {
+                _lastReadingDate.text = GeneralData.lastReadingDate = val;
+              }),
           getDisabledTextField(
               controller: _lastReading, labelText: 'Last Reading'),
           getDisabledTextField(
-              controller: _assignedUserCode,
-              labelText: 'Technician Code',
-              enableLookup: true,
-            onLookupPressed: (){
-              Get.to(()=>TechnicianCodeLookup());
-            },),
+            controller: _assignedUserCode,
+            labelText: 'Technician Code',
+            enableLookup: true,
+            onLookupPressed: () {
+              Get.to(() => TechnicianCodeLookup());
+            },
+          ),
           getDisabledTextField(
               controller: _assignedUserName, labelText: 'Technician Name'),
           Padding(

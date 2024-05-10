@@ -17,6 +17,21 @@ Future<bool> isSQTransIdAvailable(BuildContext context, String TransId,{ Transac
       .rawQuery("SELECT * FROM OQUT WHERE SUBSTR(TransId,14) = '${TransId}'");
   return queryResult.isNotEmpty;
 }
+Future<bool> isMNCLTransIdAvailable(BuildContext? context, String TransId,{ Transaction? txn}) async {
+  var db;
+  if(txn==null)
+  {
+    db = await initializeDB(context);
+  }
+  else
+  {
+    db=txn;
+  }
+  TransId = TransId.substring(13);
+  final List<Map<String, Object?>> queryResult = await db
+      .rawQuery("SELECT * FROM MNOCLD WHERE SUBSTR(TransId,14) = '${TransId}'");
+  return queryResult.isNotEmpty;
+}
 
 Future<bool> isSOTransIdAvailable(BuildContext context, String TransId,{ Transaction? txn}) async {
   var db;

@@ -7,9 +7,12 @@ import 'package:get/get.dart';
 import 'package:maintenance/CheckListDocument/CheckListDocument.dart';
 import 'package:maintenance/Component/AppConfig.dart';
 import 'package:maintenance/Component/CheckInternet.dart';
+import 'package:maintenance/Component/ClearTextFieldData.dart';
 import 'package:maintenance/Component/CustomColor.dart';
 import 'package:maintenance/Component/CustomFont.dart';
+import 'package:maintenance/Component/GetLastDocNum.dart';
 import 'package:maintenance/Component/IsAPIWorking.dart';
+import 'package:maintenance/Component/IsAvailableTransId.dart';
 import 'package:maintenance/Component/IsValidAppVersion.dart';
 import 'package:maintenance/Component/LogFileFunctions.dart';
 import 'package:maintenance/Component/MenuDescription.dart';
@@ -24,6 +27,7 @@ import 'package:maintenance/Sync/SyncModels/ORTU.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 import '../main.dart';
+import 'package:maintenance/CheckListDocument/GeneralData.dart' as checkListGenData;
 
 class CustomDrawer extends StatefulWidget {
   static bool hasEnabledLocation = false;
@@ -75,61 +79,9 @@ class _CustomDrawerState extends State<CustomDrawer> {
                       ),
                       children: [
                         ListTile(
-                          onTap: (){
-                            Get.to(()=>CheckListDocument(0));
+                          onTap: () {
+                            goToNewCheckListDocument();
                           },
-                          // onTap: () async {
-                          //   await clearSalesQuotationData();
-                          //   getLastDocNum("SQ", context)
-                          //       .then((snapshot) async {
-                          //     int DocNum =
-                          //         snapshot[0].DocNumber - 1;
-                          //     // print("Last doc num is ${DocNum.toString()}");
-                          //
-                          //     do {
-                          //       DocNum += 1;
-                          //       salesQuotation.GeneralData
-                          //           .TransId = DateTime.now()
-                          //           .millisecondsSinceEpoch
-                          //           .toString() +
-                          //           "U0" +
-                          //           userModel.ID.toString() +
-                          //           "_" +
-                          //           snapshot[0].DocName +
-                          //           "/" +
-                          //           DocNum.toString();
-                          //     } while (
-                          //     await isSQTransIdAvailable(
-                          //         context,
-                          //         salesQuotation
-                          //             .GeneralData
-                          //             .TransId ??
-                          //             ""));
-                          //
-                          //     //
-                          //     // updateDocNum(snapshot[0].ID, val, context);
-                          //     //generalData['TransId']=DateTime.now().millisecondsSinceEpoch.toString()+"U0"+userModel.ID.toString()+"_"+generalData['MTransId'].substring(1);
-                          //
-                          //     if (userModel.Type ==
-                          //         "Customer") {
-                          //       salesQuotation.GeneralData
-                          //           .customerCode =
-                          //           userModel.UserCode;
-                          //       salesQuotation.GeneralData
-                          //           .customerName =
-                          //           userModel.Name;
-                          //       salesQuotation.GeneralData
-                          //           .MobileNo =
-                          //           userModel.MobileNo;
-                          //     }
-                          //
-                          //     Navigator.push(
-                          //         context,
-                          //         MaterialPageRoute(
-                          //             builder: (context) =>
-                          //                 SalesQuotation(0)));
-                          //   });
-                          // },
                           title: Text(
                             'Check List Document',
                             style: TextStyle(color: Colors.white),
