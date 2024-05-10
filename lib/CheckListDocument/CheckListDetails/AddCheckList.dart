@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:maintenance/CheckListDocument/CheckListDetails/CheckListDetails.dart';
 import 'package:maintenance/CheckListDocument/CheckListDetails/EditCheckList.dart';
+import 'package:maintenance/Component/ClearTextFieldData.dart';
 import 'package:maintenance/Component/CustomColor.dart';
 import 'package:maintenance/Component/CustomFont.dart';
 import 'package:maintenance/Component/GetTextField.dart';
@@ -226,8 +227,7 @@ class _AddCheckListState extends State<AddCheckList> {
                                         snapshot.data![index].ItemName +
                                             " is already added");
                                   } else {
-                                    EditCheckList.itemCode=snapshot.data![index].ItemCode;
-                                    EditCheckList.itemName=snapshot.data![index].ItemName;
+                                    ClearCheckListDoc.clearEditCheckList();
                                     Get.to(()=>EditCheckList());
 
                                   }

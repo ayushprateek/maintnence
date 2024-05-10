@@ -1,18 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:maintenance/CheckListDocument/CheckListDetails/CheckListDetails.dart';
+import 'package:maintenance/CheckListDocument/CheckListDocument.dart';
 import 'package:maintenance/Component/CustomColor.dart';
-import 'package:maintenance/Component/CustomFont.dart';
 import 'package:maintenance/Component/GetTextField.dart';
 import 'package:maintenance/Component/IsNumeric.dart';
 import 'package:maintenance/Component/SnackbarComponent.dart';
 import 'package:maintenance/Lookups/SupplierLookup.dart';
 import 'package:maintenance/Lookups/UOMLookup.dart';
-import 'package:maintenance/Sync/SyncModels/IUOM.dart';
+import 'package:maintenance/Sync/SyncModels/MNCLD1.dart';
 import 'package:maintenance/Sync/SyncModels/OCRD.dart';
 import 'package:maintenance/Sync/SyncModels/OUOM.dart';
 
 class EditCheckList extends StatefulWidget {
+  static String? id;
   static String? description;
+  static String? transId;
+  static String? rowId;
   static String? itemCode;
   static String? itemName;
   static String? consumptionQty;
@@ -21,6 +25,7 @@ class EditCheckList extends StatefulWidget {
   static String? supplierName;
   static String? supplierCode;
   static String? userRemarks;
+  static String? requiredDate;
   static String? remark;
   static bool isChecked = false;
   static bool fromStock = false;
@@ -57,6 +62,9 @@ class _EditCheckListState extends State<EditCheckList> {
       TextEditingController(text: EditCheckList.userRemarks);
   final TextEditingController _remark =
       TextEditingController(text: EditCheckList.remark);
+  final TextEditingController _requiredDate =
+      TextEditingController(text: EditCheckList.requiredDate);
+
   // List<String>  uomCode = [];
   // // List<IWHS> whsCodeList = [];
   // List<IUOM> uomCodeList = [];
@@ -65,6 +73,7 @@ class _EditCheckListState extends State<EditCheckList> {
     // getUOMCode();
     super.initState();
   }
+
   // getUOMCode() async {
   //
   //   uomCodeList =
@@ -89,11 +98,25 @@ class _EditCheckListState extends State<EditCheckList> {
             const SizedBox(
               height: 20,
             ),
-            getTextField(controller: _description, labelText: 'Description'),
-            getDisabledTextField(controller: _itemCode, labelText: 'Item Code'),
+            getTextField(
+                controller: _description,
+                labelText: 'Description',
+                onChanged: (val) {
+                  EditCheckList.description = val;
+                }),
+            getDisabledTextField(
+                controller: _itemCode,
+                labelText: 'Item Code',
+                onChanged: (val) {
+                  EditCheckList.itemCode = val;
+                }),
             getDisabledTextField(controller: _itemName, labelText: 'Item Name'),
             getTextField(
-                controller: _consumptionQty, labelText: 'Consumption Qty',
+              controller: _consumptionQty,
+              labelText: 'Consumption Qty',
+              onChanged: (val) {
+                EditCheckList.consumptionQty = val;
+              },
               keyboardType: getDecimalKeyboardType(),
               inputFormatters: [getDecimalRegEx()],
             ),
@@ -134,34 +157,55 @@ class _EditCheckListState extends State<EditCheckList> {
             //     ),
             //   ),
             getDisabledTextField(
-                controller: _uomName, labelText: 'UOM', enableLookup: true,
-              onLookupPressed: (){
-                  Get.to(()=>UOMLookup(onSelected: (OUOMModel ouomModel){
-
-                    setState(() {
-                      _uomCode.text=ouomModel.UomCode;
-                      _uomName.text=ouomModel.UomName;
-                    });
-                  }));
-              }
-            ),
+                controller: _uomName,
+                labelText: 'UOM',
+                enableLookup: true,
+                onLookupPressed: () {
+                  Get.to(() => UOMLookup(onSelected: (OUOMModel ouomModel) {
+                        setState(() {
+                          EditCheckList.uomCode =
+                              _uomCode.text = ouomModel.UomCode;
+                          EditCheckList.uomName =
+                              _uomName.text = ouomModel.UomName;
+                        });
+                      }));
+                }),
             getDisabledTextField(
                 controller: _supplierCode,
                 labelText: 'Supplier Code',
                 enableLookup: true,
-              onLookupPressed: (){
-                  Get.to(()=>SupplierLookup(onSelected: (OCRDModel ocrdModel){
-                    setState(() {
-                      _supplierCode.text=ocrdModel.Code;
-                      _supplierName.text=ocrdModel.Name??'';
-                    });
-                  }));
-              }
-            ),
+                onLookupPressed: () {
+                  Get.to(
+                      () => SupplierLookup(onSelected: (OCRDModel ocrdModel) {
+                            setState(() {
+                              EditCheckList.supplierCode =
+                                  _supplierCode.text = ocrdModel.Code;
+                              EditCheckList.supplierName =
+                                  _supplierName.text = ocrdModel.Name ?? '';
+                            });
+                          }));
+                }),
             getDisabledTextField(
                 controller: _supplierName, labelText: 'Supplier Name'),
-            getTextField(controller: _userRemarks, labelText: 'User Remarks'),
-            getTextField(controller: _remark, labelText: 'Remarks'),
+            getTextField(
+                controller: _userRemarks,
+                labelText: 'User Remarks',
+                onChanged: (val) {
+                  EditCheckList.userRemarks = val;
+                }),
+            getTextField(
+                controller: _remark,
+                labelText: 'Remarks',
+                onChanged: (val) {
+                  EditCheckList.remark = val;
+                }),
+            getDateTextField(
+                controller: _requiredDate,
+                localCurrController: TextEditingController(),
+                labelText: 'Required Text',
+                onChanged: (val) {
+                  _requiredDate.text = EditCheckList.requiredDate = val;
+                }),
             Align(
               alignment: Alignment.centerRight,
               child: Container(
@@ -173,132 +217,80 @@ class _EditCheckListState extends State<EditCheckList> {
                     color: barColor,
                     elevation: 0.0,
                     child: MaterialButton(
-                      // onPressed: () async {
-                      //   if (!isNumeric(_consumptionQty.text)) {
-                      //     getErrorSnackBar(
-                      //         "Quantity must be numeric");
-                      //   } else if (double.parse(_consumptionQty.text) <=
-                      //       0.0) {
-                      //     getErrorSnackBar(
-                      //         "Quantity can not be less that or equal to 0");
-                      //   } else {
-                      //     if (EditCheckList.isUpdating) {
-                      //
-                      //
-                      //       for (int i = 0;
-                      //       i < ItemDetails.items.length;
-                      //       i++)
-                      //         if (EditCheckList.originaltemCode ==
-                      //             ItemDetails.items[i].ItemCode) {
-                      //           ItemDetails.items[i].UOM =
-                      //               UOM.text;
-                      //           ItemDetails.items[i].TaxRate =
-                      //               double.parse(TaxRate.text);
-                      //           ItemDetails.items[i].TaxCode =
-                      //               TaxCode.text;
-                      //           ItemDetails.items[i].Quantity =
-                      //               double.parse(Quantity.text);
-                      //           ItemDetails.items[i].Price =
-                      //               double.parse(Price.text);
-                      //           ItemDetails.items[i].LineTotal =
-                      //               double.parse(LineTotal.text);
-                      //           ItemDetails.items[i].ItemName =
-                      //               ItemName.text;
-                      //           ItemDetails.items[i].ItemCode =
-                      //               ItemCode.text;
-                      //           ItemDetails.items[i].ID =
-                      //               int.parse(ID.text);
-                      //           ItemDetails.items[i].Discount =
-                      //               double.parse(Discount.text);
-                      //           ItemDetails.items[i].MSP =
-                      //               double.tryParse(MSP.text) ??
-                      //                   0.0;
-                      //           if (ItemDetails.items[i]
-                      //               .insertedIntoDatabase) {
-                      //             Map<String, dynamic> values = {
-                      //               "UOM": UOM.text,
-                      //               "RowId": ItemDetails
-                      //                   .items[i].RowId,
-                      //               "TaxRate": double.parse(
-                      //                   TaxRate.text),
-                      //               "TaxCode": TaxCode.text,
-                      //               "Quantity": double.parse(
-                      //                   Quantity.text),
-                      //               "Price":
-                      //               double.parse(Price.text),
-                      //               "LineTotal": double.parse(
-                      //                   LineTotal.text),
-                      //               "ItemName": ItemName.text,
-                      //               "ItemCode": ItemCode.text,
-                      //               "ID": int.parse(ID.text),
-                      //               "Discount": double.parse(
-                      //                   Discount.text),
-                      //               "MSP": double.tryParse(
-                      //                   MSP.text) ??
-                      //                   0.0,
-                      //               "UpdateDate":DateTime.now().toIso8601String(),
-                      //               "has_updated":1
-                      //             };
-                      //             final Database db =
-                      //             await initializeDB(context);
-                      //             await db.update(
-                      //                 DBName.DB1, values,
-                      //                 where: "ItemCode = ?",
-                      //                 whereArgs: [
-                      //                   EditCheckList.originaltemCode
-                      //                 ]);
-                      //           }
-                      //         }
-                      //       calculateINV();
-                      //       getSuccessSnackBar("Data Updated");
-                      //       Navigator.pop(context);
-                      //       Navigator.pop(context);
-                      //       Navigator.push(
-                      //           context,
-                      //           MaterialPageRoute(
-                      //               builder: ((context) =>
-                      //                   ARInvoice(1))));
-                      //     } else {
-                      //       INV1Model i = INV1Model(
-                      //         DSTranId: "",
-                      //         RowId: 0,
-                      //         OpenQty: 0.0,
-                      //         LineStatus: "",
-                      //         insertedIntoDatabase: false,
-                      //         ID: int.parse(ID.text),
-                      //         BaseTransId: "",
-                      //         Discount:
-                      //         double.parse(Discount.text),
-                      //         ItemCode: ItemCode.text,
-                      //         ItemName: ItemName.text,
-                      //         LineTotal:
-                      //         double.parse(LineTotal.text),
-                      //         Price: double.parse(Price.text),
-                      //         Quantity:
-                      //         double.parse(Quantity.text),
-                      //         TaxCode: TaxCode.text,
-                      //         TaxRate: double.parse(TaxRate.text),
-                      //         MSP: double.tryParse(MSP.text) ??
-                      //             0.0,
-                      //         TransId: TransId.text,
-                      //         UOM: UOM.text,
-                      //       );
-                      //       ItemDetails.items.add(i);
-                      //       calculateINV();
-                      //
-                      //       Navigator.pop(context);
-                      //       Navigator.pop(context);
-                      //       Navigator.pop(context);
-                      //       Navigator.push(
-                      //           context,
-                      //           MaterialPageRoute(
-                      //               builder: ((context) =>
-                      //                   ARInvoice(1))));
-                      //     }
-                      //   }
-                      // },
                       minWidth: MediaQuery.of(context).size.width,
-                      onPressed: () {  },
+                      onPressed: () async {
+                        if (_description.text.isEmpty) {
+                          getErrorSnackBar("Description can not be empty");
+                        } else if (!isNumeric(_consumptionQty.text)) {
+                          getErrorSnackBar(
+                              "Consumption Quantity must be numeric");
+                        } else if (double.parse(_consumptionQty.text) <= 0.0) {
+                          getErrorSnackBar(
+                              "Consumption Quantity can not be less that or equal to 0");
+                        } else if (_uomCode.text.isEmpty) {
+                          getErrorSnackBar("UOM can not be empty");
+                        } else if (_supplierCode.text.isEmpty) {
+                          getErrorSnackBar("Supplier can not be empty");
+                        } else if (_userRemarks.text.isEmpty) {
+                          getErrorSnackBar("User Remarks can not be empty");
+                        } else if (_requiredDate.text.isEmpty) {
+                          getErrorSnackBar("Required Date can not be empty");
+                        } else {
+                          if (EditCheckList.isUpdating) {
+                            for (int i = 0;
+                                i < CheckListDetails.items.length;
+                                i++)
+                              if (EditCheckList.itemCode ==
+                                  CheckListDetails.items[i].ItemCode) {
+                                CheckListDetails.items[i].UOM =
+                                    EditCheckList.uomCode;
+                                //todo: updating
+                              }
+
+                            Get.offAll(() => CheckListDocument(1));
+
+                            getSuccessSnackBar("Check List Updated");
+                          } else {
+                            MNCLD1 mncld1 = MNCLD1(
+                              ID: int.tryParse(EditCheckList.id ?? ''),
+                              TransId: EditCheckList.transId,
+                              RowId: CheckListDetails.items.length,
+                              ItemCode: EditCheckList.itemCode.toString() ?? '',
+                              ItemName: EditCheckList.itemName.toString() ?? '',
+                              UOM: EditCheckList.uomCode.toString() ?? '',
+                              Description:
+                                  EditCheckList.description.toString() ?? '',
+                              Remarks: EditCheckList.remark.toString() ?? '',
+                              UserRemarks:
+                                  EditCheckList.userRemarks.toString() ?? '',
+                              IsChecked: EditCheckList.isChecked,
+                              IsFromStock: EditCheckList.fromStock,
+                              ConsumptionQty: double.tryParse(EditCheckList
+                                      .consumptionQty
+                                      .toString()) ??
+                                  0.0,
+                              // MNGITransId :EditCheckList.MNGITransId.toString()??'',
+                              // MNGIRowId : int.tryParse(json['MNGIRowId'].toString())??0,
+                              // PRTransId :EditCheckList.PRTransId.toString()??'',
+                              // PRRowId : int.tryParse(json['PRRowId'].toString())??0,
+                              // MNITTransId :EditCheckList.MNITTransId.toString()??'',
+                              // MNITRowId : int.tryParse(json['MNITRowId'].toString())??0,
+                              SupplierCode:
+                                  EditCheckList.supplierCode.toString() ?? '',
+                              SupplierName:
+                                  EditCheckList.supplierName.toString() ?? '',
+
+                              IsConsumption: EditCheckList.consumption,
+                              IsRequest: EditCheckList.request,
+                              RequiredDate:
+                                  DateTime.tryParse(_requiredDate.text),
+                            );
+                            CheckListDetails.items.add(mncld1);
+
+                            Get.offAll(() => CheckListDocument(1));
+                          }
+                        }
+                      },
                       child: Text(
                         "Save",
                         textAlign: TextAlign.center,

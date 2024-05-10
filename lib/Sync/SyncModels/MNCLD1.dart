@@ -19,8 +19,8 @@ class MNCLD1{
   String? Description;
   String? Remarks;
   String? UserRemarks;
-  bool? IsChecked;
-  bool? IsFromStock;
+  bool IsChecked;
+  bool IsFromStock;
   double? ConsumptionQty;
   String? MNGITransId;
   int? MNGIRowId;
@@ -32,8 +32,8 @@ class MNCLD1{
   String? SupplierName;
   DateTime? CreateDate;
   DateTime? UpdateDate;
-  bool? IsConsumption;
-  bool? IsRequest;
+  bool IsConsumption;
+  bool IsRequest;
   DateTime? RequiredDate;
   bool? hasCreated;
   bool? hasUpdated;
@@ -47,8 +47,8 @@ class MNCLD1{
     this.Description,
     this.Remarks,
     this.UserRemarks,
-    this.IsChecked,
-    this.IsFromStock,
+    this.IsChecked=false,
+    this.IsFromStock=false,
     this.ConsumptionQty,
     this.MNGITransId,
     this.MNGIRowId,
@@ -60,8 +60,8 @@ class MNCLD1{
     this.SupplierName,
     this.CreateDate,
     this.UpdateDate,
-    this.IsConsumption,
-    this.IsRequest,
+    this.IsConsumption=false,
+    this.IsRequest=false,
     this.RequiredDate,
     this.hasCreated,
     this.hasUpdated,
