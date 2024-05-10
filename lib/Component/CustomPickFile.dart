@@ -4,6 +4,9 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:maintenance/Component/AnimatedDialogBox.dart';
+import 'package:maintenance/Component/CustomColor.dart';
 import 'package:maintenance/Component/LogFileFunctions.dart';
 import 'package:maintenance/Component/SnackbarComponent.dart';
 import 'package:maintenance/main.dart';
@@ -50,7 +53,7 @@ Future pickFile({required BuildContext context}) async {
     //     ].request();
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
-      allowedExtensions: ['jpg', 'jpeg', 'png', 'pdf', 'doc', 'docx'],
+      allowedExtensions: ['jpg', 'jpeg', 'png'],
     );
     if (result != null) {
       String path = result.paths[0] ?? '';
@@ -82,6 +85,16 @@ Future pickFile({required BuildContext context}) async {
     } else {
       getErrorSnackBar('Permission denied');
     }
+  }
+}
+
+Future<File?> customPickImage(ImageSource source) async {
+  final picker = ImagePicker();
+  final pickedFile = await picker.pickImage(source: source);
+  if (pickedFile != null && isFileSizeValidate(file: File(pickedFile.path))) {
+    return File(pickedFile.path);
+  } else {
+    return null;
   }
 }
 
@@ -138,7 +151,6 @@ showUpdateAppAlertDialog() {
     isShowNegative: false,
     context: Get.context!,
     barrierDismissible: false,
-
   );
 }
 

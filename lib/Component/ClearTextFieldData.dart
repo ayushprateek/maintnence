@@ -3,6 +3,7 @@ import 'package:maintenance/CheckListDocument/CheckListDocument.dart';
 import 'package:maintenance/CheckListDocument/GeneralData.dart' as checkListDoc;
 import 'package:maintenance/CheckListDocument/CheckListDetails/EditCheckList.dart' as editCheckList;
 import 'package:maintenance/CheckListDocument/CheckListDetails/CheckListDetails.dart' as checkListDetails;
+import 'package:maintenance/CheckListDocument/Attachments.dart' as checkListAttachments;
 import 'package:maintenance/Component/GetFormattedDate.dart';
 import 'package:maintenance/Component/GetLastDocNum.dart';
 import 'package:maintenance/Component/IsAvailableTransId.dart';
@@ -65,12 +66,22 @@ class ClearCheckListDoc{
     checkListDoc.GeneralData.isConsumption = false;
     checkListDoc.GeneralData.isRequest = false;
   }
+  static clearCheckListAttachments(){
+    checkListAttachments.Attachments.attachments.clear();
+    checkListAttachments.Attachments.imageFile=null;
+    checkListAttachments.Attachments.attachment='';
+    checkListAttachments.Attachments.docName='';
+    checkListAttachments.Attachments.rowId='';
+    checkListAttachments.Attachments.Remarks='';
+  }
 }
 
 goToNewCheckListDocument() async {
   await ClearCheckListDoc.clearCheckListDocTextFields();
   await ClearCheckListDoc.clearEditCheckList();
+  await ClearCheckListDoc.clearCheckListAttachments();
   checkListDetails.CheckListDetails.items.clear();
+
   getLastDocNum("MNCL", null).then((snapshot) async {
     int DocNum = snapshot[0].DocNumber - 1;
 
