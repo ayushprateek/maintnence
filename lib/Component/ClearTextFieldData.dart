@@ -13,6 +13,14 @@ import 'package:maintenance/Component/IsAvailableTransId.dart';
 
 //---------------------------------JOB CARD IMPORTS
 import 'package:maintenance/JobCard/GeneralData.dart' as jcdGenData;
+import 'package:maintenance/JobCard/ItemDetails/EditJobCardItem.dart'
+    as editJCDItems;
+import 'package:maintenance/JobCard/ServiceDetails/EditService.dart'
+    as editJCDService;
+import 'package:maintenance/JobCard/ItemDetails/ItemDetails.dart'
+    as jcdItemDetails;
+import 'package:maintenance/JobCard/ServiceDetails/ServiceDetails.dart'
+    as jcdServiceDetails;
 import 'package:maintenance/JobCard/JobCard.dart';
 import 'package:maintenance/main.dart';
 
@@ -127,6 +135,38 @@ class ClearJobCardDoc {
     jcdGenData.GeneralData.isConsumption = false;
     jcdGenData.GeneralData.isRequest = false;
   }
+
+  static clearEditItems() {
+    editJCDItems.EditJobCardItem.id = '';
+    editJCDItems.EditJobCardItem.transId = '';
+    editJCDItems.EditJobCardItem.rowId = '';
+    editJCDItems.EditJobCardItem.itemCode = '';
+    editJCDItems.EditJobCardItem.itemName = '';
+    editJCDItems.EditJobCardItem.quantity = '';
+    editJCDItems.EditJobCardItem.uomCode = '';
+    editJCDItems.EditJobCardItem.uomName = '';
+    editJCDItems.EditJobCardItem.supplierName = '';
+    editJCDItems.EditJobCardItem.supplierCode = '';
+    editJCDItems.EditJobCardItem.requiredDate = '';
+    editJCDItems.EditJobCardItem.isChecked = false;
+    editJCDItems.EditJobCardItem.fromStock = false;
+    editJCDItems.EditJobCardItem.consumption = false;
+    editJCDItems.EditJobCardItem.request = false;
+    editJCDItems.EditJobCardItem.isUpdating = false;
+  }
+
+  static clearEditService() {
+    editJCDService.EditService.id = '';
+    editJCDService.EditService.transId = '';
+    editJCDService.EditService.rowId = '';
+    editJCDService.EditService.serviceCode = '';
+    editJCDService.EditService.serviceName = '';
+    editJCDService.EditService.infoPrice = '';
+    editJCDService.EditService.supplierName = '';
+    editJCDService.EditService.supplierCode = '';
+    editJCDService.EditService.isUpdating = false;
+    editJCDService.EditService.isSendable = false;
+  }
 }
 
 goToNewCheckListDocument() async {
@@ -158,8 +198,8 @@ goToNewCheckListDocument() async {
 
 goToNewJobCardDocument() async {
   await ClearJobCardDoc.clearGeneralData();
-  ;
-
+  jcdItemDetails.ItemDetails.items.clear();
+  jcdServiceDetails.ServiceDetails.items.clear();
   getLastDocNum("MNJC", null).then((snapshot) async {
     int DocNum = snapshot[0].DocNumber - 1;
 

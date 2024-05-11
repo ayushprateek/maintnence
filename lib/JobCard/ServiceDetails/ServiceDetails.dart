@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:maintenance/Component/CustomColor.dart';
 import 'package:maintenance/Component/CustomFont.dart';
+import 'package:maintenance/JobCard/ServiceDetails/AddServiceItem.dart';
 import 'package:maintenance/Sync/SyncModels/MNJCD2.dart';
+
 class ServiceDetails extends StatefulWidget {
   const ServiceDetails({super.key});
-  static List<MNJCD2> items=[MNJCD2(
 
-  )];
+  static List<MNJCD2> items = [];
 
   @override
   State<ServiceDetails> createState() => _ServiceDetailsState();
@@ -24,7 +26,7 @@ class _ServiceDetailsState extends State<ServiceDetails> {
               alignment: Alignment.centerRight,
               child: TextButton(
                 child: Text(
-                  "+ Add Item",
+                  "+ Add Service",
                   style: TextStyle(
                     color: barColor,
                     fontSize: 16,
@@ -43,6 +45,7 @@ class _ServiceDetailsState extends State<ServiceDetails> {
                   // } else
                   //   Navigator.push(context,
                   //       MaterialPageRoute(builder: ((context) => AddItems())));
+                  Get.to(() => AddServiceItem());
                 },
               ),
             ),
@@ -52,10 +55,10 @@ class _ServiceDetailsState extends State<ServiceDetails> {
             child: Container(
               decoration: ServiceDetails.items.isNotEmpty
                   ? BoxDecoration(
-                  border: Border.all(),
-                  borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(16),
-                      topRight: Radius.circular(16)))
+                      border: Border.all(),
+                      borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(16),
+                          topRight: Radius.circular(16)))
                   : null,
               child: SingleChildScrollView(
                 child: Column(
@@ -68,8 +71,7 @@ class _ServiceDetailsState extends State<ServiceDetails> {
                       shrinkWrap: true,
                       physics: const ScrollPhysics(),
                       itemBuilder: (BuildContext context, int index) {
-                        MNJCD2 mnjcd1 = ServiceDetails.items[index];
-
+                        MNJCD2 mnjcd2 = ServiceDetails.items[index];
 
                         return Stack(
                           fit: StackFit.loose,
@@ -135,15 +137,15 @@ class _ServiceDetailsState extends State<ServiceDetails> {
                                 width: MediaQuery.of(context).size.width,
                                 child: Padding(
                                   padding: const EdgeInsets.all(8.0),
-                                  child:Row(
+                                  child: Row(
                                     crossAxisAlignment:
-                                    CrossAxisAlignment.start,
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Expanded(
                                         flex: 8,
                                         child: Column(
                                           mainAxisAlignment:
-                                          MainAxisAlignment.start,
+                                              MainAxisAlignment.start,
                                           children: [
                                             Padding(
                                               padding: const EdgeInsets.only(
@@ -158,9 +160,12 @@ class _ServiceDetailsState extends State<ServiceDetails> {
                                                     TextSpan(
                                                       children: [
                                                         getPoppinsTextSpanHeading(
-                                                            text: 'Service Code'),
+                                                            text:
+                                                                'Service Code'),
                                                         getPoppinsTextSpanDetails(
-                                                            text: "XXX"),
+                                                            text: mnjcd2
+                                                                    .ServiceCode ??
+                                                                ''),
                                                       ],
                                                     ),
                                                   ),
@@ -180,14 +185,14 @@ class _ServiceDetailsState extends State<ServiceDetails> {
                                                       getPoppinsTextSpanHeading(
                                                           text: 'Service Name'),
                                                       getPoppinsTextSpanDetails(
-                                                          text:
-                                                          "XYZ"),
+                                                          text: mnjcd2
+                                                                  .ServiceName ??
+                                                              ''),
                                                     ],
                                                   ),
                                                 ),
                                               ),
                                             ),
-
                                             Padding(
                                               padding: const EdgeInsets.only(
                                                   left: 8.0,
@@ -201,9 +206,12 @@ class _ServiceDetailsState extends State<ServiceDetails> {
                                                     TextSpan(
                                                       children: [
                                                         getPoppinsTextSpanHeading(
-                                                            text: 'Supplier Code'),
+                                                            text:
+                                                                'Supplier Code'),
                                                         getPoppinsTextSpanDetails(
-                                                            text: "XXX"),
+                                                            text: mnjcd2
+                                                                    .SupplierCode ??
+                                                                ''),
                                                       ],
                                                     ),
                                                   ),
@@ -221,18 +229,17 @@ class _ServiceDetailsState extends State<ServiceDetails> {
                                                   TextSpan(
                                                     children: [
                                                       getPoppinsTextSpanHeading(
-                                                          text: 'Supplier Name'),
-                                                      getPoppinsTextSpanDetails(
                                                           text:
-                                                          "XYZ"),
+                                                              'Supplier Name'),
+                                                      getPoppinsTextSpanDetails(
+                                                          text: mnjcd2
+                                                                  .SupplierName ??
+                                                              ''),
                                                     ],
                                                   ),
                                                 ),
                                               ),
                                             ),
-
-
-
                                           ],
                                         ),
                                       ),
@@ -240,10 +247,8 @@ class _ServiceDetailsState extends State<ServiceDetails> {
                                         flex: 8,
                                         child: Column(
                                           mainAxisAlignment:
-                                          MainAxisAlignment.start,
+                                              MainAxisAlignment.start,
                                           children: [
-
-
                                             Padding(
                                               padding: const EdgeInsets.only(
                                                   left: 8.0,
@@ -259,8 +264,10 @@ class _ServiceDetailsState extends State<ServiceDetails> {
                                                         getPoppinsTextSpanHeading(
                                                             text: 'Info Price'),
                                                         getPoppinsTextSpanDetails(
-                                                            text:
-                                                            "XYZ"),
+                                                            text: mnjcd2.InfoPrice
+                                                                    ?.toStringAsFixed(
+                                                                        2) ??
+                                                                '0.0'),
                                                       ],
                                                     ),
                                                   ),
@@ -269,50 +276,34 @@ class _ServiceDetailsState extends State<ServiceDetails> {
                                             ),
                                             Padding(
                                               padding: const EdgeInsets.only(
-                                                  left: 8.0,
-                                                  right: 8.0,
-                                                  top: 4.0),
-                                              child: Align(
-                                                alignment: Alignment.topLeft,
-                                                child: FittedBox(
-                                                  fit: BoxFit.contain,
-                                                  child: Text.rich(
-                                                    TextSpan(
-                                                      children: [
-                                                        getPoppinsTextSpanHeading(
-                                                            text: 'UOM'),
-                                                        getPoppinsTextSpanDetails(
-                                                            text:
-                                                            "XYZ"),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-
-                                            Padding(
-                                              padding: const EdgeInsets.only(top: 4.0,bottom: 4),
+                                                  top: 4.0, bottom: 4),
                                               child: SizedBox(
                                                 height: 20,
                                                 child: Row(
-                                                  mainAxisAlignment: MainAxisAlignment.start,
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.start,
                                                   children: [
                                                     Checkbox(
-                                                      value: mnjcd1.IsSendableItem, onChanged: (bool? value) {
-                                                      setState(() {
-                                                        mnjcd1.IsSendableItem=!mnjcd1.IsSendableItem;
-                                                      });
-                                                    },
+                                                      value:
+                                                          mnjcd2.IsSendableItem,
+                                                      onChanged: (bool? value) {
+                                                        setState(() {
+                                                          mnjcd2.IsSendableItem =
+                                                              !mnjcd2
+                                                                  .IsSendableItem;
+                                                        });
+                                                      },
                                                     ),
-                                                    Expanded(child: getPoppinsText(text: 'Is Sendable Item',
-                                                        textAlign: TextAlign.start)),
+                                                    Expanded(
+                                                        child: getPoppinsText(
+                                                            text:
+                                                                'Is Sendable Item',
+                                                            textAlign: TextAlign
+                                                                .start)),
                                                   ],
                                                 ),
                                               ),
                                             ),
-
-
                                           ],
                                         ),
                                       ),
@@ -333,24 +324,34 @@ class _ServiceDetailsState extends State<ServiceDetails> {
                                         builder: (BuildContext context) {
                                           return AlertDialog(
                                             content: Container(
-                                              height: MediaQuery.of(context).size.height / 20,
-                                              width: MediaQuery.of(context).size.width / 1.5,
+                                              height: MediaQuery.of(context)
+                                                      .size
+                                                      .height /
+                                                  20,
+                                              width: MediaQuery.of(context)
+                                                      .size
+                                                      .width /
+                                                  1.5,
                                               child: Text(
                                                 "Are you sure you want to delete this row?",
                                                 style: TextStyle(
-                                                    color: Colors.black, fontWeight: FontWeight.bold),
+                                                    color: Colors.black,
+                                                    fontWeight:
+                                                        FontWeight.bold),
                                               ),
                                             ),
                                             actions: [
                                               MaterialButton(
                                                 // OPTIONAL BUTTON
                                                 shape: RoundedRectangleBorder(
-                                                  borderRadius: BorderRadius.circular(40),
+                                                  borderRadius:
+                                                      BorderRadius.circular(40),
                                                 ),
                                                 color: barColor,
                                                 child: Text(
                                                   'No',
-                                                  style: TextStyle(color: Colors.white),
+                                                  style: TextStyle(
+                                                      color: Colors.white),
                                                 ),
                                                 onPressed: () {
                                                   Navigator.pop(context);
@@ -359,15 +360,20 @@ class _ServiceDetailsState extends State<ServiceDetails> {
                                               MaterialButton(
                                                 // OPTIONAL BUTTON
                                                 shape: RoundedRectangleBorder(
-                                                  borderRadius: BorderRadius.circular(40),
+                                                  borderRadius:
+                                                      BorderRadius.circular(40),
                                                 ),
                                                 color: Colors.red,
                                                 child: Text(
                                                   'Yes',
-                                                  style: TextStyle(color: Colors.white),
+                                                  style: TextStyle(
+                                                      color: Colors.white),
                                                 ),
                                                 onPressed: () async {
                                                   Navigator.pop(context);
+                                                  setState(() {
+                                                    ServiceDetails.items.removeAt(index);
+                                                  });
                                                 },
                                               ),
                                             ],
@@ -385,7 +391,6 @@ class _ServiceDetailsState extends State<ServiceDetails> {
                         );
                       },
                     ),
-
                     SizedBox(
                       height: MediaQuery.of(context).size.height / 10,
                     )

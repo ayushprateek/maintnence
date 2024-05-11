@@ -7,8 +7,8 @@ import 'package:maintenance/Component/CustomFont.dart';
 import 'package:maintenance/Dashboard.dart';
 import 'package:maintenance/JobCard/Attachment.dart';
 import 'package:maintenance/JobCard/GeneralData.dart';
-import 'package:maintenance/JobCard/ItemDetails.dart';
-import 'package:maintenance/JobCard/ServiceDetails.dart';
+import 'package:maintenance/JobCard/ItemDetails/ItemDetails.dart';
+import 'package:maintenance/JobCard/ServiceDetails/ServiceDetails.dart';
 import 'package:maintenance/JobCard/TyreMaintenance.dart';
 
 class JobCard extends StatefulWidget {
