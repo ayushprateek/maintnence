@@ -93,60 +93,8 @@ class _CustomDrawerState extends State<CustomDrawer> {
                         ),
                         ListTile(
                           onTap: (){
-                            Get.to(()=>JobCard(0));
+                            goToNewJobCardDocument();
                           },
-                          // onTap: () async {
-                          //   await clearSalesQuotationData();
-                          //   getLastDocNum("SQ", context)
-                          //       .then((snapshot) async {
-                          //     int DocNum =
-                          //         snapshot[0].DocNumber - 1;
-                          //     // print("Last doc num is ${DocNum.toString()}");
-                          //
-                          //     do {
-                          //       DocNum += 1;
-                          //       salesQuotation.GeneralData
-                          //           .TransId = DateTime.now()
-                          //           .millisecondsSinceEpoch
-                          //           .toString() +
-                          //           "U0" +
-                          //           userModel.ID.toString() +
-                          //           "_" +
-                          //           snapshot[0].DocName +
-                          //           "/" +
-                          //           DocNum.toString();
-                          //     } while (
-                          //     await isSQTransIdAvailable(
-                          //         context,
-                          //         salesQuotation
-                          //             .GeneralData
-                          //             .TransId ??
-                          //             ""));
-                          //
-                          //     //
-                          //     // updateDocNum(snapshot[0].ID, val, context);
-                          //     //generalData['TransId']=DateTime.now().millisecondsSinceEpoch.toString()+"U0"+userModel.ID.toString()+"_"+generalData['MTransId'].substring(1);
-                          //
-                          //     if (userModel.Type ==
-                          //         "Customer") {
-                          //       salesQuotation.GeneralData
-                          //           .customerCode =
-                          //           userModel.UserCode;
-                          //       salesQuotation.GeneralData
-                          //           .customerName =
-                          //           userModel.Name;
-                          //       salesQuotation.GeneralData
-                          //           .MobileNo =
-                          //           userModel.MobileNo;
-                          //     }
-                          //
-                          //     Navigator.push(
-                          //         context,
-                          //         MaterialPageRoute(
-                          //             builder: (context) =>
-                          //                 SalesQuotation(0)));
-                          //   });
-                          // },
                           title: Text(
                             'Job Card',
                             style: TextStyle(color: Colors.white),

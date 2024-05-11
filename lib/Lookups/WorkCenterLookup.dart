@@ -5,16 +5,18 @@ import 'package:maintenance/CheckListDocument/GeneralData.dart';
 import 'package:maintenance/Component/CustomColor.dart';
 import 'package:maintenance/Component/CustomFont.dart';
 import 'package:maintenance/Component/GetTextField.dart';
-import 'package:maintenance/Sync/SyncModels/OVCL.dart';
+import 'package:maintenance/Sync/SyncModels/MNOWCM.dart';
 
-class EquipmentCodeLookup extends StatefulWidget {
-  const EquipmentCodeLookup({super.key});
+class WorkCenterLookup extends StatefulWidget {
+  Function(MNOWCM) onSelection;
+  WorkCenterLookup({super.key,
+  required this.onSelection});
 
   @override
-  State<EquipmentCodeLookup> createState() => _EquipmentCodeLookupState();
+  State<WorkCenterLookup> createState() => _WorkCenterLookupState();
 }
 
-class _EquipmentCodeLookupState extends State<EquipmentCodeLookup> {
+class _WorkCenterLookupState extends State<WorkCenterLookup> {
   ScrollController _scrollController = ScrollController();
   final TextEditingController _query = TextEditingController();
   int _currentMax = 15;
@@ -41,7 +43,7 @@ class _EquipmentCodeLookupState extends State<EquipmentCodeLookup> {
       appBar: AppBar(
         backgroundColor: barColor,
         title: Text(
-          "Equipment Code Lookup",
+          "Work Center Lookup",
           style: TextStyle(color: Colors.white),
         ),
       ),
@@ -123,9 +125,9 @@ class _EquipmentCodeLookupState extends State<EquipmentCodeLookup> {
               ),
             ),
             FutureBuilder(
-                future: retrieveOVCLForSearch(
+                future: retrieveMNOWCMForSearch(
                     query: _query.text, limit: _currentMax),
-                builder: (context, AsyncSnapshot<List<OVCLModel>> snapshot) {
+                builder: (context, AsyncSnapshot<List<MNOWCM>> snapshot) {
                   if (!snapshot.hasData) return Container();
 
                   return ListView.builder(
@@ -142,11 +144,9 @@ class _EquipmentCodeLookupState extends State<EquipmentCodeLookup> {
                           return Container();
                         }
                         return InkWell(
-                          onDoubleTap: (){
-                            GeneralData.equipmentCode=snapshot.data![index].Code;
-                            GeneralData.equipmentName=snapshot.data![index].Code;
-                            Get.offAll(()=>CheckListDocument(0));
-
+                          onDoubleTap: () {
+                            widget.onSelection(snapshot.data![index]);
+                            Get.back();
                           },
                           child: Container(
                             decoration: BoxDecoration(
@@ -166,52 +166,50 @@ class _EquipmentCodeLookupState extends State<EquipmentCodeLookup> {
                             child: Padding(
                               padding: const EdgeInsets.all(8),
                               child: Column(
-                                crossAxisAlignment:
-                                CrossAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
                                   Row(
                                     crossAxisAlignment:
-                                    CrossAxisAlignment.start,
-                                    mainAxisAlignment:
-                                    MainAxisAlignment.start,
+                                        CrossAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
                                       Expanded(
                                           child: Column(
-                                            crossAxisAlignment:
+                                        crossAxisAlignment:
                                             CrossAxisAlignment.start,
-                                            children: [
-                                              Text.rich(
-                                                TextSpan(
-                                                  children: [
-                                                    getPoppinsTextSpanHeading(
-                                                        text: 'Code'),
-                                                    getPoppinsTextSpanDetails(
-                                                        text: snapshot
-                                                            .data![index].Code),
-                                                  ],
-                                                ),
-                                              ),
-                                            ],
-                                          )),
+                                        children: [
+                                          Text.rich(
+                                            TextSpan(
+                                              children: [
+                                                getPoppinsTextSpanHeading(
+                                                    text: 'Code'),
+                                                getPoppinsTextSpanDetails(
+                                                    text: snapshot
+                                                        .data![index].Code),
+                                              ],
+                                            ),
+                                          ),
+                                        ],
+                                      )),
                                       Expanded(
                                           child: Column(
-                                            crossAxisAlignment:
+                                        crossAxisAlignment:
                                             CrossAxisAlignment.start,
-                                            children: [
-                                              Text.rich(
-                                                TextSpan(
-                                                  children: [
-                                                    getPoppinsTextSpanHeading(
-                                                        text: 'Name'),
-                                                    getPoppinsTextSpanDetails(
-                                                        text: snapshot
-                                                            .data![index].Code),
-                                                  ],
-                                                ),
-                                              ),
-                                            ],
-                                          )),
+                                        children: [
+                                          Text.rich(
+                                            TextSpan(
+                                              children: [
+                                                getPoppinsTextSpanHeading(
+                                                    text: 'Name'),
+                                                getPoppinsTextSpanDetails(
+                                                    text: snapshot
+                                                        .data![index].Code),
+                                              ],
+                                            ),
+                                          ),
+                                        ],
+                                      )),
                                     ],
                                   ),
                                 ],

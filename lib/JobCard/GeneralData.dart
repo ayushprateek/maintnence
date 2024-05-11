@@ -1,6 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:maintenance/Component/GetFormattedDate.dart';
 import 'package:maintenance/Component/GetTextField.dart';
+import 'package:maintenance/Lookups/CheckListCodeLookup.dart';
+import 'package:maintenance/Lookups/EquipmentCodeLokup.dart';
+import 'package:maintenance/Lookups/WorkCenterLookup.dart';
+import 'package:maintenance/Sync/SyncModels/MNOCLM.dart';
+import 'package:maintenance/Sync/SyncModels/MNOWCM.dart';
+import 'package:maintenance/Sync/SyncModels/OVCL.dart';
 class GeneralData extends StatefulWidget {
   const GeneralData({super.key});
   static String? iD;
@@ -19,11 +26,11 @@ class GeneralData extends StatefulWidget {
   static String? checkListName;
   static String? workCenterCode;
   static String? workCenterName;
-  static DateTime? openDate;
-  static DateTime? closeDate;
-  static DateTime? postingDate;
-  static DateTime? validUntill;
-  static DateTime? lastReadingDate;
+  static String? openDate;
+  static String? closeDate;
+  static String? postingDate;
+  static String? validUntill;
+  static String? lastReadingDate;
   static String? lastReading;
   static String? assignedUserCode;
   static String? assignedUserName;
@@ -32,11 +39,11 @@ class GeneralData extends StatefulWidget {
   static String? createdBy;
   static String? updatedBy;
   static String? branchId;
-  static DateTime? createDate;
-  static DateTime? updateDate;
+  static String? createDate;
+  static String? updateDate;
 
-  static bool? isConsumption;
-  static bool? isRequest;
+  static bool isConsumption=false;
+  static bool isRequest=false;
 
   @override
   State<GeneralData> createState() => _GeneralDataState();
@@ -70,15 +77,15 @@ class _GeneralDataState extends State<GeneralData> {
   final TextEditingController _workCenterName =
   TextEditingController(text: GeneralData.workCenterName);
   final TextEditingController _openDate =
-  TextEditingController(text: getFormattedDate(GeneralData.openDate));
+  TextEditingController(text: GeneralData.openDate);
   final TextEditingController _closeDate =
-  TextEditingController(text: getFormattedDate(GeneralData.closeDate));
+  TextEditingController(text: GeneralData.closeDate);
   final TextEditingController _postingDate =
-  TextEditingController(text: getFormattedDate(GeneralData.postingDate));
+  TextEditingController(text: GeneralData.postingDate);
   final TextEditingController _validUntill =
-  TextEditingController(text: getFormattedDate(GeneralData.validUntill));
+  TextEditingController(text: GeneralData.validUntill);
   final TextEditingController _lastReadingDate = TextEditingController(
-      text: getFormattedDate(GeneralData.lastReadingDate));
+      text: GeneralData.lastReadingDate);
   final TextEditingController _lastReading =
   TextEditingController(text: GeneralData.lastReading);
   final TextEditingController _assignedUserCode =
@@ -115,7 +122,16 @@ class _GeneralDataState extends State<GeneralData> {
               labelText: 'Equipment Code',
               enableLookup: true,
               onLookupPressed: (){
-                // Get.to(()=>EquipmentCodeLookup());
+                Get.to(() => EquipmentCodeLookup(
+                  onSelection: (OVCLModel ovcl) {
+                    setState(() {
+                      GeneralData.equipmentCode =
+                          _equipmentCode.text = ovcl.Code;
+                      GeneralData.equipmentName =
+                          _equipmentName.text = ovcl.Code;
+                    });
+                  },
+                ));
               }
           ),
           getDisabledTextField(
@@ -123,13 +139,37 @@ class _GeneralDataState extends State<GeneralData> {
           getDisabledTextField(
               controller: _checkListCode,
               labelText: 'Check List Code',
-              enableLookup: true),
+              enableLookup: true,
+          onLookupPressed: (){
+            Get.to(() => CheckListCodeLookup(
+              onSelection: (MNOCLM mnoclm) {
+                setState(() {
+                  GeneralData.checkListCode =
+                      _checkListCode.text = mnoclm.Code ?? '';
+                  GeneralData.checkListName =
+                      _checkListName.text = mnoclm.Name ?? '';
+                });
+              },
+            ));
+          }),
           getDisabledTextField(
               controller: _checkListName, labelText: 'CheckList Name'),
           getDisabledTextField(
               controller: _workCenterCode,
               labelText: 'WorkCenter Code',
-              enableLookup: true),
+              enableLookup: true,
+            onLookupPressed: () {
+              Get.to(() => WorkCenterLookup(
+                onSelection: (MNOWCM mnowcm) {
+                  setState(() {
+                    GeneralData.workCenterCode =
+                        _workCenterCode.text = mnowcm.Code ?? '';
+                    GeneralData.workCenterName =
+                        _workCenterName.text = mnowcm.Name ?? '';
+                  });
+                },
+              ));
+            },),
           getDisabledTextField(
               controller: _workCenterName, labelText: 'WorkCenter Name'),
           getDisabledTextField(controller: _docStatus, labelText: 'Doc Status'),

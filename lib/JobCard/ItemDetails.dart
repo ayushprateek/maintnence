@@ -6,7 +6,7 @@ import 'package:maintenance/Sync/SyncModels/MNJCD1.dart';
 class ItemDetails extends StatefulWidget {
   const ItemDetails({super.key});
 
-  static List<MNJCD1> items = [MNJCD1()];
+  static List<MNJCD1> items = [];
 
   @override
   State<ItemDetails> createState() => _ItemDetailsState();

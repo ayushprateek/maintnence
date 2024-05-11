@@ -9,7 +9,9 @@ import 'package:maintenance/Sync/SyncModels/MNOWCM.dart';
 import 'package:maintenance/Sync/SyncModels/OEMP.dart';
 
 class TechnicianCodeLookup extends StatefulWidget {
-  const TechnicianCodeLookup({super.key});
+  Function(OEMPModel) onSelection;
+   TechnicianCodeLookup({super.key,
+   required this.onSelection});
 
   @override
   State<TechnicianCodeLookup> createState() => _TechnicianCodeLookupState();
@@ -144,11 +146,8 @@ class _TechnicianCodeLookupState extends State<TechnicianCodeLookup> {
                         }
                         return InkWell(
                           onDoubleTap: () {
-                            GeneralData.assignedUserCode =
-                                snapshot.data![index].Code;
-                            GeneralData.assignedUserName =
-                                snapshot.data![index].Name;
-                            Get.offAll(() => CheckListDocument(0));
+                            widget.onSelection(snapshot.data![index]);
+                            Get.back();
                           },
                           child: Container(
                             decoration: BoxDecoration(

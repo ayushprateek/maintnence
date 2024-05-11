@@ -8,7 +8,9 @@ import 'package:maintenance/Component/GetTextField.dart';
 import 'package:maintenance/Sync/SyncModels/MNOCLM.dart';
 
 class CheckListCodeLookup extends StatefulWidget {
-  const CheckListCodeLookup({super.key});
+  Function(MNOCLM) onSelection;
+   CheckListCodeLookup({super.key,
+  required this.onSelection});
 
   @override
   State<CheckListCodeLookup> createState() => _CheckListCodeLookupState();
@@ -189,11 +191,8 @@ class _CheckListCodeLookupState extends State<CheckListCodeLookup> {
                             return InkWell(
                               onDoubleTap: () {
 
-                                GeneralData.checkListCode =
-                                    snapshot.data![index].Code;
-                                GeneralData.checkListName =
-                                    snapshot.data![index].Name;
-                                Get.offAll(() => CheckListDocument(0));
+                               widget.onSelection(snapshot.data![index]);
+                                Get.back();
                               },
                               child: Container(
                                 decoration: BoxDecoration(

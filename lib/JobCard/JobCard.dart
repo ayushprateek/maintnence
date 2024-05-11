@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:maintenance/Component/BackPressedWarning.dart';
+import 'package:maintenance/Component/ClearTextFieldData.dart';
 import 'package:maintenance/Component/CustomColor.dart';
 import 'package:maintenance/Component/CustomFont.dart';
 import 'package:maintenance/Dashboard.dart';
@@ -10,7 +12,6 @@ import 'package:maintenance/JobCard/ServiceDetails.dart';
 import 'package:maintenance/JobCard/TyreMaintenance.dart';
 
 class JobCard extends StatefulWidget {
-
   static bool saveButtonPressed = false;
   int index = 0;
 
@@ -89,28 +90,27 @@ class _JobCardState extends State<JobCard> {
                       physics: const ScrollPhysics(),
                       unselectedLabelColor: Colors.white,
                       labelStyle:
-                      GoogleFonts.poppins(fontWeight: FontWeight.w500),
+                          GoogleFonts.poppins(fontWeight: FontWeight.w500),
                       tabs: [
                         Tab(
                           child: Text("General Data"),
                         ),
                         Tab(
                             child: Text(
-                              "Item Details",
-                            )),
+                          "Item Details",
+                        )),
                         Tab(
                             child: Text(
-                              "Service Details",
-                            )),
+                          "Service Details",
+                        )),
                         Tab(
                             child: Text(
-                              "Attachments",
-                            )),
+                          "Attachments",
+                        )),
                         Tab(
                             child: Text(
-                              "Tyre Maintenance",
-                            )),
-
+                          "Tyre Maintenance",
+                        )),
                       ],
                     ),
                   ],
@@ -137,73 +137,19 @@ class _JobCardState extends State<JobCard> {
                     Icons.add,
                     color: Colors.black,
                   ),
-                  onPressed: () {},
-                  // onPressed: () async {
-                  //   if (GeneralData.customerCode != '' ||
-                  //       ItemDetails.items.isNotEmpty) {
-                  //     showBackPressedWarning(
-                  //         text:
-                  //         'Your data is not saved. Are you sure you want to create new form?',
-                  //         onBackPressed: () async {
-                  //           await clearJobCardData();
-                  //           getLastDocNum("SQ", context).then((snapshot) async {
-                  //             int DocNum = snapshot[0].DocNumber - 1;
-                  //
-                  //             do {
-                  //               DocNum += 1;
-                  //               GeneralData.TransId = DateTime.now()
-                  //                   .millisecondsSinceEpoch
-                  //                   .toString() +
-                  //                   "U0" +
-                  //                   userModel.ID.toString() +
-                  //                   "_" +
-                  //                   snapshot[0].DocName +
-                  //                   "/" +
-                  //                   DocNum.toString();
-                  //             } while (await isSQTransIdAvailable(
-                  //                 context, GeneralData.TransId ?? ""));
-                  //             // Map<String, dynamic> val = {"DocNumber": DocNum};
-                  //             // updateDocNum(snapshot[0].ID, val, context);
-                  //             // GeneralData.MTransID="M"+snapshot[0].DocName+"/"+DocNum.toString();
-                  //             // GeneralData.TransId = DateTime.now().millisecondsSinceEpoch.toString()+"U0" + userModel.ID.toString() + "_" + snapshot[0].DocName + "/" + DocNum.toString();
-                  //             GeneralData.isSelected = false;
-                  //             Navigator.pop(context);
-                  //             Navigator.push(
-                  //                 context,
-                  //                 MaterialPageRoute(
-                  //                     builder: (context) => JobCard(0)));
-                  //           });
-                  //         });
-                  //   } else {
-                  //     await clearJobCardData();
-                  //     getLastDocNum("SQ", context).then((snapshot) async {
-                  //       int DocNum = snapshot[0].DocNumber - 1;
-                  //
-                  //       do {
-                  //         DocNum += 1;
-                  //         GeneralData.TransId =
-                  //             DateTime.now().millisecondsSinceEpoch.toString() +
-                  //                 "U0" +
-                  //                 userModel.ID.toString() +
-                  //                 "_" +
-                  //                 snapshot[0].DocName +
-                  //                 "/" +
-                  //                 DocNum.toString();
-                  //       } while (await isSQTransIdAvailable(
-                  //           context, GeneralData.TransId ?? ""));
-                  //       // Map<String, dynamic> val = {"DocNumber": DocNum};
-                  //       // updateDocNum(snapshot[0].ID, val, context);
-                  //       // GeneralData.MTransID="M"+snapshot[0].DocName+"/"+DocNum.toString();
-                  //       // GeneralData.TransId = DateTime.now().millisecondsSinceEpoch.toString()+"U0" + userModel.ID.toString() + "_" + snapshot[0].DocName + "/" + DocNum.toString();
-                  //       GeneralData.isSelected = false;
-                  //       Navigator.pop(context);
-                  //       Navigator.push(
-                  //           context,
-                  //           MaterialPageRoute(
-                  //               builder: (context) => JobCard(0)));
-                  //     });
-                  //   }
-                  // },
+                  onPressed: () async {
+                    if (GeneralData.equipmentCode != '' ||
+                        ItemDetails.items.isNotEmpty) {
+                      showBackPressedWarning(
+                          text:
+                              'Your data is not saved. Are you sure you want to create new form?',
+                          onBackPressed: () {
+                            goToNewJobCardDocument();
+                          });
+                    } else {
+                      goToNewJobCardDocument();
+                    }
+                  },
                 ),
                 // IconButton(
                 //   tooltip: "Cancel Document",
@@ -265,15 +211,12 @@ class _JobCardState extends State<JobCard> {
                 // ),
               ],
               title: getHeadingText(
-                  text: "Job Card",
-                  color: headColor,
-                  fontSize: 20)),
+                  text: "Job Card", color: headColor, fontSize: 20)),
           body: TabBarView(
             children: [
               GeneralData(),
               ItemDetails(),
               ServiceDetails(),
-
               Attachment(),
               TyreMaintenance(),
             ],

@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:maintenance/CheckListDocument/CheckListCodeLookup.dart';
 import 'package:maintenance/CheckListDocument/CheckListDocument.dart';
-import 'package:maintenance/CheckListDocument/EquipmentCodeLokup.dart';
-import 'package:maintenance/CheckListDocument/TechnicianCodeLookup.dart';
-import 'package:maintenance/CheckListDocument/WorkCenterLookup.dart';
+import 'package:maintenance/Lookups/TechnicianCodeLookup.dart';
+import 'package:maintenance/Lookups/WorkCenterLookup.dart';
 import 'package:maintenance/Component/CustomFont.dart';
 import 'package:maintenance/Component/GetTextField.dart';
+import 'package:maintenance/Lookups/CheckListCodeLookup.dart';
+import 'package:maintenance/Lookups/EquipmentCodeLokup.dart';
+import 'package:maintenance/Sync/SyncModels/MNOCLM.dart';
+import 'package:maintenance/Sync/SyncModels/MNOWCM.dart';
+import 'package:maintenance/Sync/SyncModels/OEMP.dart';
+import 'package:maintenance/Sync/SyncModels/OVCL.dart';
 
 class GeneralData extends StatefulWidget {
   GeneralData({super.key});
@@ -99,7 +102,13 @@ class _GeneralDataState extends State<GeneralData> {
   final TextEditingController _currentReading =
       TextEditingController(text: GeneralData.currentReading);
   List<String> tyreMaintenanceOptions = ['Yes', 'No'];
-  List<String> checkListStatusOptions=['Open','WIP','Close','Transfer To JobCard','Hold'];
+  List<String> checkListStatusOptions = [
+    'Open',
+    'WIP',
+    'Close',
+    'Transfer To JobCard',
+    'Hold'
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -133,7 +142,16 @@ class _GeneralDataState extends State<GeneralData> {
               labelText: 'Equipment Code',
               enableLookup: true,
               onLookupPressed: () {
-                Get.to(() => EquipmentCodeLookup());
+                 Get.to(() => EquipmentCodeLookup(
+                      onSelection: (OVCLModel ovcl) {
+                        setState(() {
+                          GeneralData.equipmentCode =
+                              _equipmentCode.text = ovcl.Code;
+                          GeneralData.equipmentName =
+                              _equipmentName.text = ovcl.Code;
+                        });
+                      },
+                    ));
               }),
           getDisabledTextField(
               controller: _equipmentName, labelText: 'Equipment Name'),
@@ -141,7 +159,16 @@ class _GeneralDataState extends State<GeneralData> {
               controller: _checkListCode,
               labelText: 'Check List Code',
               onLookupPressed: () {
-                Get.to(() => CheckListCodeLookup());
+                Get.to(() => CheckListCodeLookup(
+                      onSelection: (MNOCLM mnoclm) {
+                        setState(() {
+                          GeneralData.checkListCode =
+                              _checkListCode.text = mnoclm.Code ?? '';
+                          GeneralData.checkListName =
+                              _checkListName.text = mnoclm.Name ?? '';
+                        });
+                      },
+                    ));
               },
               enableLookup: true),
           getDisabledTextField(
@@ -151,7 +178,16 @@ class _GeneralDataState extends State<GeneralData> {
             labelText: 'WorkCenter Code',
             enableLookup: true,
             onLookupPressed: () {
-              Get.to(() => WorkCenterLookup());
+              Get.to(() => WorkCenterLookup(
+                    onSelection: (MNOWCM mnowcm) {
+                      setState(() {
+                        GeneralData.workCenterCode =
+                            _workCenterCode.text = mnowcm.Code ?? '';
+                        GeneralData.workCenterName =
+                            _workCenterName.text = mnowcm.Name ?? '';
+                      });
+                    },
+                  ));
             },
           ),
           getDisabledTextField(
@@ -159,42 +195,40 @@ class _GeneralDataState extends State<GeneralData> {
           getDisabledTextField(controller: _docStatus, labelText: 'Doc Status'),
           getDisabledTextField(
               controller: _approvalStatus, labelText: 'Approval Status'),
-
-            Padding(
-              padding: const EdgeInsets.only(
-                left: 10,
-                right: 8,
-              ),
-              child: Row(
-                children: [
-                  Container(
-                    color: Colors.white,
-                    child: getHeadingText(text: 'Check List Status : '),
-                  ),
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: Padding(
-                      padding:
-                      const EdgeInsets.only(left: 20.0),
-                      child: DropdownButton<String>(
-                        items: checkListStatusOptions.map((String value) {
-                          return DropdownMenuItem<String>(
-                            value: value,
-                            child: Text(value),
-                          );
-                        }).toList(),
-                        onChanged: (val) {
-                          setState(() {
-                            GeneralData.checkListStatus = val;
-                          });
-                        },
-                        value: GeneralData.checkListStatus,
-                      ),
+          Padding(
+            padding: const EdgeInsets.only(
+              left: 10,
+              right: 8,
+            ),
+            child: Row(
+              children: [
+                Container(
+                  color: Colors.white,
+                  child: getHeadingText(text: 'Check List Status : '),
+                ),
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 20.0),
+                    child: DropdownButton<String>(
+                      items: checkListStatusOptions.map((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        );
+                      }).toList(),
+                      onChanged: (val) {
+                        setState(() {
+                          GeneralData.checkListStatus = val;
+                        });
+                      },
+                      value: GeneralData.checkListStatus,
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
+          ),
           getDateTextField(
               controller: _openDate,
               labelText: 'Open Date',
@@ -209,15 +243,13 @@ class _GeneralDataState extends State<GeneralData> {
               onChanged: (val) {
                 _closeDate.text = GeneralData.closeDate = val;
               }),
-
           getTextField(
               controller: _currentReading,
               labelText: 'Current Reading',
               keyboardType: TextInputType.number,
-            inputFormatters: [
-              getIntegerRegEx(),
-            ]
-          ),
+              inputFormatters: [
+                getIntegerRegEx(),
+              ]),
           getDateTextField(
               controller: _lastReadingDate,
               labelText: 'Last Reading Date',
@@ -232,7 +264,12 @@ class _GeneralDataState extends State<GeneralData> {
             labelText: 'Technician Code',
             enableLookup: true,
             onLookupPressed: () {
-              Get.to(() => TechnicianCodeLookup());
+              Get.to(() => TechnicianCodeLookup(onSelection: (OEMPModel oemp){
+                setState(() {
+                  GeneralData.assignedUserCode=_assignedUserCode.text=oemp.Code;
+                  GeneralData.assignedUserName=_assignedUserName.text=oemp.Name??'';
+                });
+              },));
             },
           ),
           getDisabledTextField(
@@ -265,7 +302,8 @@ class _GeneralDataState extends State<GeneralData> {
                       }).toList(),
                       onChanged: (val) {
                         setState(() {
-                          GeneralData.tyreMaintenance = val ?? GeneralData.tyreMaintenance;
+                          GeneralData.tyreMaintenance =
+                              val ?? GeneralData.tyreMaintenance;
                           if (GeneralData.tyreMaintenance == 'Yes') {
                             CheckListDocument.numOfTabs.value = 4;
                           } else {
