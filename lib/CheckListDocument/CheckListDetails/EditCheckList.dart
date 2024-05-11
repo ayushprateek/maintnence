@@ -202,10 +202,46 @@ class _EditCheckListState extends State<EditCheckList> {
             getDateTextField(
                 controller: _requiredDate,
                 localCurrController: TextEditingController(),
-                labelText: 'Required Text',
+                labelText: 'Required Date',
                 onChanged: (val) {
                   _requiredDate.text = EditCheckList.requiredDate = val;
                 }),
+            CheckboxListTile(
+              controlAffinity: ListTileControlAffinity.leading,
+              value: EditCheckList.fromStock,
+              onChanged: (bool ?val) {
+                setState(() {
+                  EditCheckList.fromStock=val??!EditCheckList.fromStock;
+                });
+              },
+
+              title: Text('From Stock'),
+
+            ),
+            CheckboxListTile(
+              controlAffinity: ListTileControlAffinity.leading,
+              value: EditCheckList.consumption,
+              onChanged: (bool ?val) {
+                setState(() {
+                  EditCheckList.consumption=val??!EditCheckList.consumption;
+                });
+              },
+
+              title: Text('Consumption'),
+
+            ),
+            CheckboxListTile(
+              controlAffinity: ListTileControlAffinity.leading,
+              value: EditCheckList.request,
+              onChanged: (bool ?val) {
+                setState(() {
+                  EditCheckList.request=val??!EditCheckList.request;
+                });
+              },
+
+              title: Text('Request'),
+
+            ),
             Align(
               alignment: Alignment.centerRight,
               child: Container(

@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:maintenance/CheckListDocument/CheckListCodeLookup.dart';
 import 'package:maintenance/CheckListDocument/CheckListDocument.dart';
 import 'package:maintenance/CheckListDocument/EquipmentCodeLokup.dart';
 import 'package:maintenance/CheckListDocument/TechnicianCodeLookup.dart';
 import 'package:maintenance/CheckListDocument/WorkCenterLookup.dart';
+import 'package:maintenance/Component/CustomFont.dart';
 import 'package:maintenance/Component/GetTextField.dart';
 
 class GeneralData extends StatefulWidget {
@@ -44,6 +46,7 @@ class GeneralData extends StatefulWidget {
   static String? currentReading;
   static bool? isConsumption;
   static bool? isRequest;
+  static String tyreMaintenance = 'No';
 
   @override
   State<GeneralData> createState() => _GeneralDataState();
@@ -62,8 +65,7 @@ class _GeneralDataState extends State<GeneralData> {
       TextEditingController(text: GeneralData.docStatus);
   final TextEditingController _approvalStatus =
       TextEditingController(text: GeneralData.approvalStatus);
-  final TextEditingController _checkListStatus =
-      TextEditingController(text: GeneralData.checkListStatus);
+
   final TextEditingController _equipmentCode =
       TextEditingController(text: GeneralData.equipmentCode);
   final TextEditingController _equipmentName =
@@ -96,8 +98,8 @@ class _GeneralDataState extends State<GeneralData> {
       TextEditingController(text: GeneralData.remarks);
   final TextEditingController _currentReading =
       TextEditingController(text: GeneralData.currentReading);
-  List<String> status = ['Yes', 'No'];
-  String Status = 'No';
+  List<String> tyreMaintenanceOptions = ['Yes', 'No'];
+  List<String> checkListStatusOptions=['Open','WIP','Close','Transfer To JobCard','Hold'];
 
   @override
   Widget build(BuildContext context) {
@@ -157,8 +159,42 @@ class _GeneralDataState extends State<GeneralData> {
           getDisabledTextField(controller: _docStatus, labelText: 'Doc Status'),
           getDisabledTextField(
               controller: _approvalStatus, labelText: 'Approval Status'),
-          getTextField(
-              controller: _checkListStatus, labelText: 'Check List Status'),
+
+            Padding(
+              padding: const EdgeInsets.only(
+                left: 10,
+                right: 8,
+              ),
+              child: Row(
+                children: [
+                  Container(
+                    color: Colors.white,
+                    child: getHeadingText(text: 'Check List Status : '),
+                  ),
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: Padding(
+                      padding:
+                      const EdgeInsets.only(left: 20.0),
+                      child: DropdownButton<String>(
+                        items: checkListStatusOptions.map((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
+                        onChanged: (val) {
+                          setState(() {
+                            GeneralData.checkListStatus = val;
+                          });
+                        },
+                        value: GeneralData.checkListStatus,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
           getDateTextField(
               controller: _openDate,
               labelText: 'Open Date',
@@ -177,7 +213,11 @@ class _GeneralDataState extends State<GeneralData> {
           getTextField(
               controller: _currentReading,
               labelText: 'Current Reading',
-              keyboardType: TextInputType.number),
+              keyboardType: TextInputType.number,
+            inputFormatters: [
+              getIntegerRegEx(),
+            ]
+          ),
           getDateTextField(
               controller: _lastReadingDate,
               labelText: 'Last Reading Date',
@@ -217,7 +257,7 @@ class _GeneralDataState extends State<GeneralData> {
                   Expanded(
                     flex: 2,
                     child: DropdownButton<String>(
-                      items: status.map((String value) {
+                      items: tyreMaintenanceOptions.map((String value) {
                         return DropdownMenuItem<String>(
                           value: value,
                           child: Text(value),
@@ -225,15 +265,15 @@ class _GeneralDataState extends State<GeneralData> {
                       }).toList(),
                       onChanged: (val) {
                         setState(() {
-                          Status = val ?? Status;
-                          if (Status == 'Yes') {
+                          GeneralData.tyreMaintenance = val ?? GeneralData.tyreMaintenance;
+                          if (GeneralData.tyreMaintenance == 'Yes') {
                             CheckListDocument.numOfTabs.value = 4;
                           } else {
                             CheckListDocument.numOfTabs.value = 3;
                           }
                         });
                       },
-                      value: Status,
+                      value: GeneralData.tyreMaintenance,
                     ),
                   ),
                   IconButton(

@@ -650,6 +650,9 @@ Future<void> getTimePopup({
 FilteringTextInputFormatter getDecimalRegEx() {
   return FilteringTextInputFormatter.allow(RegExp(r'[0-9]+[,.]{0,1}[0-9]*'));
 }
+FilteringTextInputFormatter getIntegerRegEx() {
+  return  FilteringTextInputFormatter.allow(RegExp(r'[0-9]'));
+}
 
 TextInputType getDecimalKeyboardType() {
   return TextInputType.numberWithOptions(decimal: true);

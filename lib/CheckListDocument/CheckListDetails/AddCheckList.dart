@@ -228,6 +228,8 @@ class _AddCheckListState extends State<AddCheckList> {
                                             " is already added");
                                   } else {
                                     ClearCheckListDoc.clearEditCheckList();
+                                    EditCheckList.itemCode=snapshot.data![index].ItemCode;
+                                    EditCheckList.itemName=snapshot.data![index].ItemName;
                                     Get.to(()=>EditCheckList());
 
                                   }

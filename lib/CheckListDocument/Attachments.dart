@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:maintenance/CheckListDocument/GeneralData.dart';
 import 'package:maintenance/Component/AnimatedDialogBox.dart';
+import 'package:maintenance/Component/AppConfig.dart';
 import 'package:maintenance/Component/CustomColor.dart';
 import 'package:maintenance/Component/CustomFont.dart';
 import 'package:maintenance/Component/CustomPickFile.dart';
@@ -126,7 +127,7 @@ class _AttachmentsState extends State<Attachments> {
                   : InkWell(
                       onTap: () {
                         if (Attachments.attachment != null) {
-                          if (Attachments.attachment!.contains("litsales")) {
+                          if (Attachments.attachment!.contains(appPkg)) {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
@@ -287,7 +288,7 @@ class _AttachmentsState extends State<Attachments> {
                             String attachment =
                                 Attachments.attachments[index].Attachment ?? '';
                             if (attachment != "") {
-                              if (attachment.contains("litsales")) {
+                              if (attachment.contains(appPkg)) {
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(

@@ -1,36 +1,42 @@
 import 'package:get/get.dart';
 import 'package:maintenance/CheckListDocument/CheckListDocument.dart';
 import 'package:maintenance/CheckListDocument/GeneralData.dart' as checkListDoc;
-import 'package:maintenance/CheckListDocument/CheckListDetails/EditCheckList.dart' as editCheckList;
-import 'package:maintenance/CheckListDocument/CheckListDetails/CheckListDetails.dart' as checkListDetails;
-import 'package:maintenance/CheckListDocument/Attachments.dart' as checkListAttachments;
+import 'package:maintenance/CheckListDocument/CheckListDetails/EditCheckList.dart'
+    as editCheckList;
+import 'package:maintenance/CheckListDocument/CheckListDetails/CheckListDetails.dart'
+    as checkListDetails;
+import 'package:maintenance/CheckListDocument/Attachments.dart'
+    as checkListAttachments;
 import 'package:maintenance/Component/GetFormattedDate.dart';
 import 'package:maintenance/Component/GetLastDocNum.dart';
 import 'package:maintenance/Component/IsAvailableTransId.dart';
 import 'package:maintenance/main.dart';
-class ClearCheckListDoc{
-  static clearEditCheckList(){
-    editCheckList.EditCheckList.id='';
-    editCheckList.EditCheckList.description='';
-    editCheckList.EditCheckList.transId='';
-    editCheckList.EditCheckList.rowId='';
-    editCheckList.EditCheckList.itemCode='';
-    editCheckList.EditCheckList.itemName='';
-    editCheckList.EditCheckList.consumptionQty='';
-    editCheckList.EditCheckList.uomCode='';
-    editCheckList.EditCheckList.uomName='';
-    editCheckList.EditCheckList.supplierName='';
-    editCheckList.EditCheckList.supplierCode='';
-    editCheckList.EditCheckList.userRemarks='';
-    editCheckList.EditCheckList.requiredDate='';
-    editCheckList.EditCheckList.remark='';
+
+class ClearCheckListDoc {
+  static clearEditCheckList() {
+    editCheckList.EditCheckList.id = '';
+    editCheckList.EditCheckList.description = '';
+    editCheckList.EditCheckList.transId = '';
+    editCheckList.EditCheckList.rowId = '';
+    editCheckList.EditCheckList.itemCode = '';
+    editCheckList.EditCheckList.itemName = '';
+    editCheckList.EditCheckList.consumptionQty = '';
+    editCheckList.EditCheckList.uomCode = '';
+    editCheckList.EditCheckList.uomName = '';
+    editCheckList.EditCheckList.supplierName = '';
+    editCheckList.EditCheckList.supplierCode = '';
+    editCheckList.EditCheckList.userRemarks = '';
+    editCheckList.EditCheckList.requiredDate = '';
+    editCheckList.EditCheckList.remark = '';
     editCheckList.EditCheckList.isChecked = false;
     editCheckList.EditCheckList.fromStock = false;
     editCheckList.EditCheckList.consumption = false;
     editCheckList.EditCheckList.request = false;
     editCheckList.EditCheckList.isUpdating = false;
   }
+
   static clearCheckListDocTextFields() {
+    CheckListDocument.numOfTabs.value=3;
     checkListDoc.GeneralData.iD = '';
     checkListDoc.GeneralData.permanentTransId = '';
     checkListDoc.GeneralData.transId = '';
@@ -38,8 +44,9 @@ class ClearCheckListDoc{
     checkListDoc.GeneralData.docNum = '';
     checkListDoc.GeneralData.canceled = '';
     checkListDoc.GeneralData.docStatus = 'Open';
-    checkListDoc.GeneralData.approvalStatus = '';
-    checkListDoc.GeneralData.checkListStatus = '';
+    checkListDoc.GeneralData.approvalStatus = 'Pending';
+    checkListDoc.GeneralData.checkListStatus = 'WIP';
+    checkListDoc.GeneralData.tyreMaintenance = 'No';
     checkListDoc.GeneralData.objectCode = '';
     checkListDoc.GeneralData.equipmentCode = '';
     checkListDoc.GeneralData.equipmentName = '';
@@ -66,13 +73,14 @@ class ClearCheckListDoc{
     checkListDoc.GeneralData.isConsumption = false;
     checkListDoc.GeneralData.isRequest = false;
   }
-  static clearCheckListAttachments(){
+
+  static clearCheckListAttachments() {
     checkListAttachments.Attachments.attachments.clear();
-    checkListAttachments.Attachments.imageFile=null;
-    checkListAttachments.Attachments.attachment='';
-    checkListAttachments.Attachments.docName='';
-    checkListAttachments.Attachments.rowId='';
-    checkListAttachments.Attachments.Remarks='';
+    checkListAttachments.Attachments.imageFile = null;
+    checkListAttachments.Attachments.attachment = '';
+    checkListAttachments.Attachments.docName = '';
+    checkListAttachments.Attachments.rowId = '';
+    checkListAttachments.Attachments.Remarks = '';
   }
 }
 
