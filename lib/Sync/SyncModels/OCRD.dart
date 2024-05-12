@@ -232,7 +232,7 @@ Future<List<OCRDModel>> retrieveSupplierForSearch({
 }) async {
   query="%$query%";
   final Database db = await initializeDB(null);
-  final List<Map<String, Object?>> queryResult = await db.rawQuery('SELECT FirstName || MiddleName ||  LastName as Name,* FROM OCRD WHERE (BPType="T" OR BPType="S") and (Name LIKE "$query" OR Name LIKE "$query") LIMIT $limit');
+  final List<Map<String, Object?>> queryResult = await db.rawQuery('SELECT FirstName || MiddleName ||  LastName as Name,* FROM OCRD WHERE (BPType="T" OR BPType="S") and (Code LIKE "$query" OR Name LIKE "$query") LIMIT $limit');
   return queryResult.map((e) => OCRDModel.fromJson(e)).toList();
 }
 
