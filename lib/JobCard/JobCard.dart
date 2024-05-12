@@ -217,7 +217,7 @@ class _JobCardState extends State<JobCard> {
               GeneralData(),
               ItemDetails(),
               ServiceDetails(),
-              Attachment(),
+              Attachments(),
               TyreMaintenance(),
             ],
           ),
