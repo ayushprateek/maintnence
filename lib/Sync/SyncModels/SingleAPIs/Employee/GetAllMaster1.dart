@@ -10,8 +10,16 @@ import 'package:maintenance/Sync/SyncModels/DGLMAPPING.dart';
 import 'package:maintenance/Sync/SyncModels/DOC1.dart';
 import 'package:maintenance/Sync/SyncModels/DOCN.dart';
 import 'package:maintenance/Sync/SyncModels/EXR1.dart';
+import 'package:maintenance/Sync/SyncModels/MNEQG1.dart';
+import 'package:maintenance/Sync/SyncModels/MNEQG2.dart';
 import 'package:maintenance/Sync/SyncModels/MNOCLM.dart';
+import 'package:maintenance/Sync/SyncModels/MNOCLT.dart';
+import 'package:maintenance/Sync/SyncModels/MNODTM.dart';
+import 'package:maintenance/Sync/SyncModels/MNOEQG.dart';
+import 'package:maintenance/Sync/SyncModels/MNOVCL.dart';
 import 'package:maintenance/Sync/SyncModels/MNOWCM.dart';
+import 'package:maintenance/Sync/SyncModels/MNVCL1.dart';
+import 'package:maintenance/Sync/SyncModels/MNVCL2.dart';
 import 'package:maintenance/Sync/SyncModels/OAMR.dart';
 import 'package:maintenance/Sync/SyncModels/OAPRV.dart';
 import 'package:maintenance/Sync/SyncModels/OBDT.dart';
@@ -41,6 +49,12 @@ import 'package:maintenance/Sync/SyncModels/OWHS.dart';
 import 'package:maintenance/Sync/SyncModels/OXPM.dart';
 import 'package:maintenance/Sync/SyncModels/OXPT.dart';
 import 'package:maintenance/Sync/SyncModels/ROUT.dart';
+import 'package:maintenance/Sync/SyncModels/TREMM1.dart';
+import 'package:maintenance/Sync/SyncModels/TROBTY.dart';
+import 'package:maintenance/Sync/SyncModels/TROEMM.dart';
+import 'package:maintenance/Sync/SyncModels/TROFUL.dart';
+import 'package:maintenance/Sync/SyncModels/TROTRS.dart';
+import 'package:maintenance/Sync/SyncModels/TROTYR.dart';
 import 'package:maintenance/Sync/SyncModels/USR1.dart';
 import 'package:maintenance/Sync/SyncModels/VCL1.dart';
 import 'package:maintenance/Sync/SyncModels/VCL2.dart';
@@ -105,6 +119,20 @@ class GetAllMaster1 {
     this.crd8,
     this.mnoclm,
     this.mnowcm,
+    this.mneqg1,
+    this.mneqg2,
+    this.mnoclt,
+    this.mnoeqg,
+    this.mnovcl,
+    this.mnvcl1,
+    this.mnvcl2,
+    this.troful,
+    this.trotrs,
+    this.trotyr,
+    this.tremm1,
+    this.trobty,
+    this.troemm,
+    this.mnodtm,
   });
 
 //----------- VARIABLES ----------
@@ -153,7 +181,23 @@ class GetAllMaster1 {
   List<VCLDModel>? vcld;
   List<VUL1Model>? vul1;
   List<XPM1Model>? xpm1;
+
+  //------------------------
   List<MNOWCM>? mnowcm;
+  List<MNEQG1>? mneqg1;
+  List<MNEQG2>? mneqg2;
+  List<MNOCLT>? mnoclt;
+  List<MNOEQG>? mnoeqg;
+  List<MNOVCL>? mnovcl;
+  List<MNVCL1>? mnvcl1;
+  List<MNVCL2>? mnvcl2;
+  List<TROFUL>? troful;
+  List<TROTRS>? trotrs;
+  List<TROTYR>? trotyr;
+  List<TREMM1>? tremm1;
+  List<TROBTY>? trobty;
+  List<TROEMM>? troemm;
+  List<MNODTM>? mnodtm;
 
 //----------- FROM JSON ----------
   factory GetAllMaster1.fromJson(Map<String, dynamic> json) => GetAllMaster1(
@@ -241,6 +285,34 @@ class GetAllMaster1 {
             List<MNOCLM>.from(json["MNOCLM"].map((x) => MNOCLM.fromJson(x))),
         mnowcm:
             List<MNOWCM>.from(json["MNOWCM"].map((x) => MNOWCM.fromJson(x))),
+        mneqg1:
+            List<MNEQG1>.from(json["MNEQG1"].map((x) => MNEQG1.fromJson(x))),
+        mneqg2:
+            List<MNEQG2>.from(json["MNEQG2"].map((x) => MNEQG2.fromJson(x))),
+        mnoclt:
+            List<MNOCLT>.from(json["MNOCLT"].map((x) => MNOCLT.fromJson(x))),
+        mnoeqg:
+            List<MNOEQG>.from(json["MNOEQG"].map((x) => MNOEQG.fromJson(x))),
+        mnovcl:
+            List<MNOVCL>.from(json["MNOVCL"].map((x) => MNOVCL.fromJson(x))),
+        mnvcl1:
+            List<MNVCL1>.from(json["MNVCL1"].map((x) => MNVCL1.fromJson(x))),
+        mnvcl2:
+            List<MNVCL2>.from(json["MNVCL2"].map((x) => MNVCL2.fromJson(x))),
+        troful:
+            List<TROFUL>.from(json["TROFUL"].map((x) => TROFUL.fromJson(x))),
+        trotrs:
+            List<TROTRS>.from(json["TROTRS"].map((x) => TROTRS.fromJson(x))),
+        trotyr:
+            List<TROTYR>.from(json["TROTYR"].map((x) => TROTYR.fromJson(x))),
+        tremm1:
+            List<TREMM1>.from(json["TREMM1"].map((x) => TREMM1.fromJson(x))),
+        trobty:
+            List<TROBTY>.from(json["TROBTY"].map((x) => TROBTY.fromJson(x))),
+        troemm:
+            List<TROEMM>.from(json["TROEMM"].map((x) => TROEMM.fromJson(x))),
+        mnodtm:
+            List<MNODTM>.from(json["MNODTM"].map((x) => MNODTM.fromJson(x))),
       );
 
 //----------- TO JSON ----------
@@ -290,6 +362,20 @@ class GetAllMaster1 {
         "XPM1": List<dynamic>.from(xpm1 ?? [].map((x) => x.toJson())),
         "MNOCLM": List<dynamic>.from(mnoclm ?? [].map((x) => x.toJson())),
         "MNOWCM": List<dynamic>.from(mnowcm ?? [].map((x) => x.toJson())),
+        "MNEQG1": List<dynamic>.from(mneqg1 ?? [].map((x) => x.toJson())),
+        "MNEQG2": List<dynamic>.from(mneqg2 ?? [].map((x) => x.toJson())),
+        "MNOCLT": List<dynamic>.from(mnoclt ?? [].map((x) => x.toJson())),
+        "MNOEQG": List<dynamic>.from(mnoeqg ?? [].map((x) => x.toJson())),
+        "MNOVCL": List<dynamic>.from(mnovcl ?? [].map((x) => x.toJson())),
+        "MNVCL1": List<dynamic>.from(mnvcl1 ?? [].map((x) => x.toJson())),
+        "MNVCL2": List<dynamic>.from(mnvcl2 ?? [].map((x) => x.toJson())),
+        "TROFUL": List<dynamic>.from(troful ?? [].map((x) => x.toJson())),
+        "TROTRS": List<dynamic>.from(trotrs ?? [].map((x) => x.toJson())),
+        "TROTYR": List<dynamic>.from(trotyr ?? [].map((x) => x.toJson())),
+        "TREMM1": List<dynamic>.from(tremm1 ?? [].map((x) => x.toJson())),
+        "TROBTY": List<dynamic>.from(trobty ?? [].map((x) => x.toJson())),
+        "TROEMM": List<dynamic>.from(troemm ?? [].map((x) => x.toJson())),
+        "MNODTM": List<dynamic>.from(mnodtm ?? [].map((x) => x.toJson())),
       };
 
 //----------- INSERT ----------
@@ -444,5 +530,19 @@ class GetAllMaster1 {
     await insertXPM1(db, list: getAll.xpm1);
     await insertMNOCLM(db, list: getAll.mnoclm);
     await insertMNOWCM(db, list: getAll.mnowcm);
+    await insertMNEQG1(db, list: getAll.mneqg1);
+    await insertMNEQG2(db, list: getAll.mneqg2);
+    await insertMNOCLT(db, list: getAll.mnoclt);
+    await insertMNOEQG(db, list: getAll.mnoeqg);
+    await insertMNOVCL(db, list: getAll.mnovcl);
+    await insertMNVCL1(db, list: getAll.mnvcl1);
+    await insertMNVCL2(db, list: getAll.mnvcl2);
+    await insertTROFUL(db, list: getAll.troful);
+    await insertTROTRS(db, list: getAll.trotrs);
+    await insertTROTYR(db, list: getAll.trotyr);
+    await insertTREMM1(db, list: getAll.tremm1);
+    await insertTROBTY(db, list: getAll.trobty);
+    await insertTROEMM(db, list: getAll.troemm);
+    await insertMNODTM(db, list: getAll.mnodtm);
   }
 }

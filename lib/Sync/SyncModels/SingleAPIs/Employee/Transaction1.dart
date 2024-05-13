@@ -5,57 +5,44 @@ import 'package:maintenance/Component/GetCredentials.dart';
 import 'package:maintenance/Component/LogFileFunctions.dart';
 import 'package:maintenance/DatabaseInitialization.dart';
 import 'package:maintenance/Sync/CustomURL.dart';
-import 'package:maintenance/Sync/SyncModels/ACT1.dart';
-import 'package:maintenance/Sync/SyncModels/ACT2.dart';
-import 'package:maintenance/Sync/SyncModels/ACT3.dart';
-import 'package:maintenance/Sync/SyncModels/CVCVP1.dart';
-import 'package:maintenance/Sync/SyncModels/CVOCVP.dart';
-import 'package:maintenance/Sync/SyncModels/DLN1.dart';
-import 'package:maintenance/Sync/SyncModels/DLN2.dart';
-import 'package:maintenance/Sync/SyncModels/DLN3.dart';
-import 'package:maintenance/Sync/SyncModels/DPT1.dart';
-import 'package:maintenance/Sync/SyncModels/DSC1.dart';
-import 'package:maintenance/Sync/SyncModels/DSC2.dart';
-import 'package:maintenance/Sync/SyncModels/INV1.dart';
-import 'package:maintenance/Sync/SyncModels/INV2.dart';
-import 'package:maintenance/Sync/SyncModels/INV3.dart';
 import 'package:maintenance/Sync/SyncModels/MNCLD1.dart';
 import 'package:maintenance/Sync/SyncModels/MNCLD2.dart';
 import 'package:maintenance/Sync/SyncModels/MNCLD3.dart';
+import 'package:maintenance/Sync/SyncModels/MNJCD1.dart';
+import 'package:maintenance/Sync/SyncModels/MNJCD2.dart';
+import 'package:maintenance/Sync/SyncModels/MNJCD3.dart';
+import 'package:maintenance/Sync/SyncModels/MNJCD4.dart';
 import 'package:maintenance/Sync/SyncModels/MNOCLD.dart';
-import 'package:maintenance/Sync/SyncModels/OACT.dart';
-import 'package:maintenance/Sync/SyncModels/OCRT.dart';
-import 'package:maintenance/Sync/SyncModels/OCSH.dart';
-import 'package:maintenance/Sync/SyncModels/ODLN.dart';
-import 'package:maintenance/Sync/SyncModels/ODPT.dart';
-import 'package:maintenance/Sync/SyncModels/ODSC.dart';
-import 'package:maintenance/Sync/SyncModels/OECP.dart';
-import 'package:maintenance/Sync/SyncModels/OEXR.dart';
-import 'package:maintenance/Sync/SyncModels/OINV.dart';
-import 'package:maintenance/Sync/SyncModels/OPTR.dart';
-import 'package:maintenance/Sync/SyncModels/OQUT.dart';
-import 'package:maintenance/Sync/SyncModels/ORDR.dart';
-import 'package:maintenance/Sync/SyncModels/ORTP.dart';
-import 'package:maintenance/Sync/SyncModels/OSTK.dart';
-import 'package:maintenance/Sync/SyncModels/OVLD.dart';
-import 'package:maintenance/Sync/SyncModels/QUT1.dart';
-import 'package:maintenance/Sync/SyncModels/QUT2.dart';
-import 'package:maintenance/Sync/SyncModels/QUT3.dart';
-import 'package:maintenance/Sync/SyncModels/RDR1.dart';
-import 'package:maintenance/Sync/SyncModels/RDR2.dart';
-import 'package:maintenance/Sync/SyncModels/RDR3.dart';
-import 'package:maintenance/Sync/SyncModels/RTN1.dart';
-import 'package:maintenance/Sync/SyncModels/RTN2.dart';
-import 'package:maintenance/Sync/SyncModels/RTN3.dart';
-import 'package:maintenance/Sync/SyncModels/RTP1.dart';
-import 'package:maintenance/Sync/SyncModels/RTP2.dart';
-import 'package:maintenance/Sync/SyncModels/STK1.dart';
-import 'package:maintenance/Sync/SyncModels/SUATP1.dart';
-import 'package:maintenance/Sync/SyncModels/SUITA1.dart';
-import 'package:maintenance/Sync/SyncModels/SUITA2.dart';
-import 'package:maintenance/Sync/SyncModels/SUOATP.dart';
-import 'package:maintenance/Sync/SyncModels/SUOITA.dart';
-import 'package:maintenance/Sync/SyncModels/VLD1.dart';
+import 'package:maintenance/Sync/SyncModels/MNOJCD.dart';
+import 'package:maintenance/Sync/SyncModels/OPCNA1.dart';
+import 'package:maintenance/Sync/SyncModels/OPCNA2.dart';
+import 'package:maintenance/Sync/SyncModels/OPCNA3.dart';
+import 'package:maintenance/Sync/SyncModels/OPCNA4.dart';
+import 'package:maintenance/Sync/SyncModels/OPOCNA.dart';
+import 'package:maintenance/Sync/SyncModels/OPOTRE.dart';
+import 'package:maintenance/Sync/SyncModels/OPOTRP.dart';
+import 'package:maintenance/Sync/SyncModels/OPTRE1.dart';
+import 'package:maintenance/Sync/SyncModels/OPTRP1.dart';
+import 'package:maintenance/Sync/SyncModels/PRINV1.dart';
+import 'package:maintenance/Sync/SyncModels/PRINV2.dart';
+import 'package:maintenance/Sync/SyncModels/PRINV3.dart';
+import 'package:maintenance/Sync/SyncModels/PRITR1.dart';
+import 'package:maintenance/Sync/SyncModels/PROINV.dart';
+import 'package:maintenance/Sync/SyncModels/PROITR.dart';
+import 'package:maintenance/Sync/SyncModels/PROPDN.dart';
+import 'package:maintenance/Sync/SyncModels/PROPOR.dart';
+import 'package:maintenance/Sync/SyncModels/PROPRQ.dart';
+import 'package:maintenance/Sync/SyncModels/PROQUT.dart';
+import 'package:maintenance/Sync/SyncModels/PRPDN1.dart';
+import 'package:maintenance/Sync/SyncModels/PRPDN2.dart';
+import 'package:maintenance/Sync/SyncModels/PRPDN3.dart';
+import 'package:maintenance/Sync/SyncModels/PRPOR1.dart';
+import 'package:maintenance/Sync/SyncModels/PRPOR2.dart';
+import 'package:maintenance/Sync/SyncModels/PRPOR3.dart';
+import 'package:maintenance/Sync/SyncModels/PRPRQ1.dart';
+import 'package:maintenance/Sync/SyncModels/PRQUT1.dart';
+import 'package:maintenance/Sync/SyncModels/PRQUT2.dart';
+import 'package:maintenance/Sync/SyncModels/PRQUT3.dart';
 import 'package:sqflite/sqlite_api.dart';
 
 class Transaction1 {
@@ -114,6 +101,40 @@ class Transaction1 {
     this.mncld1,
     this.mncld2,
     this.mncld3,
+    this.mnjcd1,
+    this.mnjcd2,
+    this.mnjcd3,
+    this.mnjcd4,
+    this.mnojcd,
+    this.opcna1,
+    this.opcna2,
+    this.opcna3,
+    this.opcna4,
+    this.opocna,
+    this.opotre,
+    this.opotrp,
+    this.optre1,
+    this.optrp1,
+    this.prinv1,
+    this.prinv2,
+    this.prinv3,
+    this.pritr1,
+    this.proinv,
+    this.proitr,
+    this.propdn,
+    this.propor,
+    this.proprq,
+    this.proqut,
+    this.prpdn1,
+    this.prpdn2,
+    this.prpdn3,
+    this.prpor1,
+    this.prpor2,
+    this.prpor3,
+    this.prprq1,
+    this.prqut1,
+    this.prqut2,
+    this.prqut3,
   });
 
 //----------- VARIABLES ----------
@@ -168,6 +189,42 @@ class Transaction1 {
   List<MNCLD1>? mncld1;
   List<MNCLD2>? mncld2;
   List<MNCLD3>? mncld3;
+
+  //--------------------
+  List<MNJCD1>? mnjcd1;
+  List<MNJCD2>? mnjcd2;
+  List<MNJCD3>? mnjcd3;
+  List<MNJCD4>? mnjcd4;
+  List<MNOJCD>? mnojcd;
+  List<OPCNA1>? opcna1;
+  List<OPCNA2>? opcna2;
+  List<OPCNA3>? opcna3;
+  List<OPCNA4>? opcna4;
+  List<OPOCNA>? opocna;
+  List<OPOTRE>? opotre;
+  List<OPOTRP>? opotrp;
+  List<OPTRE1>? optre1;
+  List<OPTRP1>? optrp1;
+  List<PRINV1>? prinv1;
+  List<PRINV2>? prinv2;
+  List<PRINV3>? prinv3;
+  List<PRITR1>? pritr1;
+  List<PROINV>? proinv;
+  List<PROITR>? proitr;
+  List<PROPDN>? propdn;
+  List<PROPOR>? propor;
+  List<PROPRQ>? proprq;
+  List<PROQUT>? proqut;
+  List<PRPDN1>? prpdn1;
+  List<PRPDN2>? prpdn2;
+  List<PRPDN3>? prpdn3;
+  List<PRPOR1>? prpor1;
+  List<PRPOR2>? prpor2;
+  List<PRPOR3>? prpor3;
+  List<PRPRQ1>? prprq1;
+  List<PRQUT1>? prqut1;
+  List<PRQUT2>? prqut2;
+  List<PRQUT3>? prqut3;
 
 //----------- FROM JSON ----------
   factory Transaction1.fromJson(Map<String, dynamic> json) => Transaction1(
@@ -262,11 +319,82 @@ class Transaction1 {
         //     List<SUOATP>.from(json["SUOATP"].map((x) => SUOATP.fromJson(x))),
         // suatp1:
         //     List<SUATP1>.from(json["SUATP1"].map((x) => SUATP1.fromJson(x))),
-    mnocld:List<MNOCLD>.from(json["MNOCLD"].map((x) => MNOCLD.fromJson(x))),
-    mncld1:List<MNCLD1>.from(json["MNCLD1"].map((x) => MNCLD1.fromJson(x))),
-    mncld2:List<MNCLD2>.from(json["MNCLD2"].map((x) => MNCLD2.fromJson(x))),
-    mncld3:List<MNCLD3>.from(json["MNCLD3"].map((x) => MNCLD3.fromJson(x))),
-
+        mnocld:
+            List<MNOCLD>.from(json["MNOCLD"].map((x) => MNOCLD.fromJson(x))),
+        mncld1:
+            List<MNCLD1>.from(json["MNCLD1"].map((x) => MNCLD1.fromJson(x))),
+        mncld2:
+            List<MNCLD2>.from(json["MNCLD2"].map((x) => MNCLD2.fromJson(x))),
+        mncld3:
+            List<MNCLD3>.from(json["MNCLD3"].map((x) => MNCLD3.fromJson(x))),
+        mnjcd1:
+            List<MNJCD1>.from(json["MNJCD1"].map((x) => MNJCD1.fromJson(x))),
+        mnjcd2:
+            List<MNJCD2>.from(json["MNJCD2"].map((x) => MNJCD2.fromJson(x))),
+        mnjcd3:
+            List<MNJCD3>.from(json["MNJCD3"].map((x) => MNJCD3.fromJson(x))),
+        mnjcd4:
+            List<MNJCD4>.from(json["MNJCD4"].map((x) => MNJCD4.fromJson(x))),
+        mnojcd:
+            List<MNOJCD>.from(json["MNOJCD"].map((x) => MNOJCD.fromJson(x))),
+        opcna1:
+            List<OPCNA1>.from(json["OPCNA1"].map((x) => OPCNA1.fromJson(x))),
+        opcna2:
+            List<OPCNA2>.from(json["OPCNA2"].map((x) => OPCNA2.fromJson(x))),
+        opcna3:
+            List<OPCNA3>.from(json["OPCNA3"].map((x) => OPCNA3.fromJson(x))),
+        opcna4:
+            List<OPCNA4>.from(json["OPCNA4"].map((x) => OPCNA4.fromJson(x))),
+        opocna:
+            List<OPOCNA>.from(json["OPOCNA"].map((x) => OPOCNA.fromJson(x))),
+        opotre:
+            List<OPOTRE>.from(json["OPOTRE"].map((x) => OPOTRE.fromJson(x))),
+        opotrp:
+            List<OPOTRP>.from(json["OPOTRP"].map((x) => OPOTRP.fromJson(x))),
+        optre1:
+            List<OPTRE1>.from(json["OPTRE1"].map((x) => OPTRE1.fromJson(x))),
+        optrp1:
+            List<OPTRP1>.from(json["OPTRP1"].map((x) => OPTRP1.fromJson(x))),
+        prinv1:
+            List<PRINV1>.from(json["PRINV1"].map((x) => PRINV1.fromJson(x))),
+        prinv2:
+            List<PRINV2>.from(json["PRINV2"].map((x) => PRINV2.fromJson(x))),
+        prinv3:
+            List<PRINV3>.from(json["PRINV3"].map((x) => PRINV3.fromJson(x))),
+        pritr1:
+            List<PRITR1>.from(json["PRITR1"].map((x) => PRITR1.fromJson(x))),
+        proinv:
+            List<PROINV>.from(json["PROINV"].map((x) => PROINV.fromJson(x))),
+        proitr:
+            List<PROITR>.from(json["PROITR"].map((x) => PROITR.fromJson(x))),
+        propdn:
+            List<PROPDN>.from(json["PROPDN"].map((x) => PROPDN.fromJson(x))),
+        propor:
+            List<PROPOR>.from(json["PROPOR"].map((x) => PROPOR.fromJson(x))),
+        proprq:
+            List<PROPRQ>.from(json["PROPRQ"].map((x) => PROPRQ.fromJson(x))),
+        proqut:
+            List<PROQUT>.from(json["PROQUT"].map((x) => PROQUT.fromJson(x))),
+        prpdn1:
+            List<PRPDN1>.from(json["PRPDN1"].map((x) => PRPDN1.fromJson(x))),
+        prpdn2:
+            List<PRPDN2>.from(json["PRPDN2"].map((x) => PRPDN2.fromJson(x))),
+        prpdn3:
+            List<PRPDN3>.from(json["PRPDN3"].map((x) => PRPDN3.fromJson(x))),
+        prpor1:
+            List<PRPOR1>.from(json["PRPOR1"].map((x) => PRPOR1.fromJson(x))),
+        prpor2:
+            List<PRPOR2>.from(json["PRPOR2"].map((x) => PRPOR2.fromJson(x))),
+        prpor3:
+            List<PRPOR3>.from(json["PRPOR3"].map((x) => PRPOR3.fromJson(x))),
+        prprq1:
+            List<PRPRQ1>.from(json["PRPRQ1"].map((x) => PRPRQ1.fromJson(x))),
+        prqut1:
+            List<PRQUT1>.from(json["PRQUT1"].map((x) => PRQUT1.fromJson(x))),
+        prqut2:
+            List<PRQUT2>.from(json["PRQUT2"].map((x) => PRQUT2.fromJson(x))),
+        prqut3:
+            List<PRQUT3>.from(json["PRQUT3"].map((x) => PRQUT3.fromJson(x))),
       );
 
 //----------- TO JSON ----------
@@ -322,6 +450,40 @@ class Transaction1 {
         "MNCLD1": List<dynamic>.from(mncld1 ?? [].map((x) => x.toJson())),
         "MNCLD2": List<dynamic>.from(mncld2 ?? [].map((x) => x.toJson())),
         "MNCLD3": List<dynamic>.from(mncld3 ?? [].map((x) => x.toJson())),
+        "MNJCD1": List<dynamic>.from(mnjcd1 ?? [].map((x) => x.toJson())),
+        "MNJCD2": List<dynamic>.from(mnjcd2 ?? [].map((x) => x.toJson())),
+        "MNJCD3": List<dynamic>.from(mnjcd3 ?? [].map((x) => x.toJson())),
+        "MNJCD4": List<dynamic>.from(mnjcd4 ?? [].map((x) => x.toJson())),
+        "MNOJCD": List<dynamic>.from(mnojcd ?? [].map((x) => x.toJson())),
+        "OPCNA1": List<dynamic>.from(opcna1 ?? [].map((x) => x.toJson())),
+        "OPCNA2": List<dynamic>.from(opcna2 ?? [].map((x) => x.toJson())),
+        "OPCNA3": List<dynamic>.from(opcna3 ?? [].map((x) => x.toJson())),
+        "OPCNA4": List<dynamic>.from(opcna4 ?? [].map((x) => x.toJson())),
+        "OPOCNA": List<dynamic>.from(opocna ?? [].map((x) => x.toJson())),
+        "OPOTRE": List<dynamic>.from(opotre ?? [].map((x) => x.toJson())),
+        "OPOTRP": List<dynamic>.from(opotrp ?? [].map((x) => x.toJson())),
+        "OPTRE1": List<dynamic>.from(optre1 ?? [].map((x) => x.toJson())),
+        "OPTRP1": List<dynamic>.from(optrp1 ?? [].map((x) => x.toJson())),
+        "PRINV1": List<dynamic>.from(prinv1 ?? [].map((x) => x.toJson())),
+        "PRINV2": List<dynamic>.from(prinv2 ?? [].map((x) => x.toJson())),
+        "PRINV3": List<dynamic>.from(prinv3 ?? [].map((x) => x.toJson())),
+        "PRITR1": List<dynamic>.from(pritr1 ?? [].map((x) => x.toJson())),
+        "PROINV": List<dynamic>.from(proinv ?? [].map((x) => x.toJson())),
+        "PROITR": List<dynamic>.from(proitr ?? [].map((x) => x.toJson())),
+        "PROPDN": List<dynamic>.from(propdn ?? [].map((x) => x.toJson())),
+        "PROPOR": List<dynamic>.from(propor ?? [].map((x) => x.toJson())),
+        "PROPRQ": List<dynamic>.from(proprq ?? [].map((x) => x.toJson())),
+        "PROQUT": List<dynamic>.from(proqut ?? [].map((x) => x.toJson())),
+        "PRPDN1": List<dynamic>.from(prpdn1 ?? [].map((x) => x.toJson())),
+        "PRPDN2": List<dynamic>.from(prpdn2 ?? [].map((x) => x.toJson())),
+        "PRPDN3": List<dynamic>.from(prpdn3 ?? [].map((x) => x.toJson())),
+        "PRPOR1": List<dynamic>.from(prpor1 ?? [].map((x) => x.toJson())),
+        "PRPOR2": List<dynamic>.from(prpor2 ?? [].map((x) => x.toJson())),
+        "PRPOR3": List<dynamic>.from(prpor3 ?? [].map((x) => x.toJson())),
+        "PRPRQ1": List<dynamic>.from(prprq1 ?? [].map((x) => x.toJson())),
+        "PRQUT1": List<dynamic>.from(prqut1 ?? [].map((x) => x.toJson())),
+        "PRQUT2": List<dynamic>.from(prqut2 ?? [].map((x) => x.toJson())),
+        "PRQUT3": List<dynamic>.from(prqut3 ?? [].map((x) => x.toJson())),
       };
 
 //----------- INSERT ----------
@@ -332,7 +494,7 @@ class Transaction1 {
       print("Not Syncing First Time");
     }
     credentials = getCredentials();
-    String encoded = stringToBase64.encode(credentials+secretKey);
+    String encoded = stringToBase64.encode(credentials + secretKey);
     header = {
       'Authorization': 'Basic $encoded',
       "content-type": "application/json",
@@ -416,5 +578,39 @@ class Transaction1 {
     await insertMNCLD1(db, list: transactions.mncld1);
     await insertMNCLD2(db, list: transactions.mncld2);
     await insertMNCLD3(db, list: transactions.mncld3);
+    await insertMNJCD1(db, list: transactions.mnjcd1);
+    await insertMNJCD2(db, list: transactions.mnjcd2);
+    await insertMNJCD3(db, list: transactions.mnjcd3);
+    await insertMNJCD4(db, list: transactions.mnjcd4);
+    await insertMNOJCD(db, list: transactions.mnojcd);
+    await insertOPCNA1(db, list: transactions.opcna1);
+    await insertOPCNA2(db, list: transactions.opcna2);
+    await insertOPCNA3(db, list: transactions.opcna3);
+    await insertOPCNA4(db, list: transactions.opcna4);
+    await insertOPOCNA(db, list: transactions.opocna);
+    await insertOPOTRE(db, list: transactions.opotre);
+    await insertOPOTRP(db, list: transactions.opotrp);
+    await insertOPTRE1(db, list: transactions.optre1);
+    await insertOPTRP1(db, list: transactions.optrp1);
+    await insertPRINV1(db, list: transactions.prinv1);
+    await insertPRINV2(db, list: transactions.prinv2);
+    await insertPRINV3(db, list: transactions.prinv3);
+    await insertPRITR1(db, list: transactions.pritr1);
+    await insertPROINV(db, list: transactions.proinv);
+    await insertPROITR(db, list: transactions.proitr);
+    await insertPROPDN(db, list: transactions.propdn);
+    await insertPROPOR(db, list: transactions.propor);
+    await insertPROPRQ(db, list: transactions.proprq);
+    await insertPROQUT(db, list: transactions.proqut);
+    await insertPRPDN1(db, list: transactions.prpdn1);
+    await insertPRPDN2(db, list: transactions.prpdn2);
+    await insertPRPDN3(db, list: transactions.prpdn3);
+    await insertPRPOR1(db, list: transactions.prpor1);
+    await insertPRPOR2(db, list: transactions.prpor2);
+    await insertPRPOR3(db, list: transactions.prpor3);
+    await insertPRPRQ1(db, list: transactions.prprq1);
+    await insertPRQUT1(db, list: transactions.prqut1);
+    await insertPRQUT2(db, list: transactions.prqut2);
+    await insertPRQUT3(db, list: transactions.prqut3);
   }
 }
