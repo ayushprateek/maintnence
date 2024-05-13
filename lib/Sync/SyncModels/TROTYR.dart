@@ -52,23 +52,23 @@ class TROTYR {
 
   factory TROTYR.fromJson(Map<String, dynamic> json) => TROTYR(
         ID: int.tryParse(json['ID'].toString()) ?? 0,
-        ItemCode: json['ItemCode'],
-        ItemName: json['ItemName'],
-        UOM: json['UOM'],
-        ManufacturedBy: json['ManufacturedBy'],
-        ManufacturedByName: json['ManufacturedByName'],
-        TyreType: json['TyreType'],
-        TyreSize: json['TyreSize'],
-        Tread: json['Tread'],
+        ItemCode: json['ItemCode']?.toString() ?? '',
+        ItemName: json['ItemName']?.toString() ?? '',
+        UOM: json['UOM']?.toString() ?? '',
+        ManufacturedBy: json['ManufacturedBy']?.toString() ?? '',
+        ManufacturedByName: json['ManufacturedByName']?.toString() ?? '',
+        TyreType: json['TyreType']?.toString() ?? '',
+        TyreSize: json['TyreSize']?.toString() ?? '',
+        Tread: json['Tread']?.toString() ?? '',
         InStock:
             json['InStock'] is bool ? json['InStock'] : json['InStock'] == 1,
-        Remarks: json['Remarks'],
-        CreatedBy: json['CreatedBy'],
+        Remarks: json['Remarks']?.toString() ?? '',
+        CreatedBy: json['CreatedBy']?.toString() ?? '',
         CreateDate: DateTime.tryParse(json['CreateDate'].toString()),
         UpdateDate: DateTime.tryParse(json['UpdateDate'].toString()),
-        BranchId: json['BranchId'],
-        UpdatedBy: json['UpdatedBy'],
-        Pressure: json['Pressure'],
+        BranchId: json['BranchId']?.toString() ?? '',
+        UpdatedBy: json['UpdatedBy']?.toString() ?? '',
+        Pressure: json['Pressure']?.toString() ?? '',
         TyreDesign: double.tryParse(json['TyreDesign'].toString()) ?? 0.0,
       );
 
@@ -166,8 +166,8 @@ Future<void> insertTROTYR(Database db, {List? list}) async {
         try {
           batch.update("TROTYR", element,
               where:
-                  "TransId = ? AND ifnull(has_created,0) <> ? AND ifnull(has_updated,0) <> ?",
-              whereArgs: [element["TransId"], 1, 1]);
+                  "ItemCode = ? AND ifnull(has_created,0) <> ? AND ifnull(has_updated,0) <> ?",
+              whereArgs: [element["ItemCode"], 1, 1]);
         } catch (e) {
           writeToLogFile(
               text: e.toString(),
@@ -188,8 +188,8 @@ Future<void> insertTROTYR(Database db, {List? list}) async {
   var v = await db.rawQuery('''
     SELECT T0.*
 FROM TROTYR_Temp T0
-LEFT JOIN TROTYR T1 ON T0.TransId = T1.TransId 
-WHERE T1.TransId IS NULL;
+LEFT JOIN TROTYR T1 ON T0.ItemCode = T1.ItemCode 
+WHERE T1.ItemCode IS NULL;
 ''');
   for (var i = 0; i < v.length; i += batchSize) {
     var end = (i + batchSize < v.length) ? i + batchSize : v.length;
@@ -289,8 +289,8 @@ Future<String> insertTROTYRToServer(BuildContext? context,
             map = jsonDecode(res.body);
             map["has_created"] = 0;
             var x = await db.update("TROTYR", map,
-                where: "TransId = ? AND RowId = ?",
-                whereArgs: [map["TransId"], map["RowId"]]);
+                where: "ItemCode = ?",
+                whereArgs: [map["ItemCode"]]);
             print(x.toString());
           }
         }
@@ -332,8 +332,8 @@ Future<void> updateTROTYROnServer(BuildContext? context,
           final Database db = await initializeDB(context);
           map["has_updated"] = 0;
           var x = await db.update("TROTYR", map,
-              where: "TransId = ? AND RowId = ?",
-              whereArgs: [map["TransId"], map["RowId"]]);
+              where: "ItemCode = ?",
+              whereArgs: [map["ItemCode"]]);
           print(x.toString());
         }
       }

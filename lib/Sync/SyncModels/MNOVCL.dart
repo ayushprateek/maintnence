@@ -49,23 +49,23 @@ class MNOVCL{
   });
   factory MNOVCL.fromJson(Map<String,dynamic> json)=>MNOVCL(
     ID : int.tryParse(json['ID'].toString())??0,
-    Code : json['Code'],
-    ObjectCode : json['ObjectCode'],
-    EquipmentGroupCode : json['EquipmentGroupCode'],
-    EquipmentGroupName : json['EquipmentGroupName'],
+    Code : json['Code']?.toString() ?? '',
+    ObjectCode : json['ObjectCode']?.toString() ?? '',
+    EquipmentGroupCode : json['EquipmentGroupCode']?.toString() ?? '',
+    EquipmentGroupName : json['EquipmentGroupName']?.toString() ?? '',
     FromDate : DateTime.tryParse(json['FromDate'].toString()),
     ToDate : DateTime.tryParse(json['ToDate'].toString()),
     InstalledDate : DateTime.tryParse(json['InstalledDate'].toString()),
-    InstalledByCode : json['InstalledByCode'],
-    InstalledByName : json['InstalledByName'],
+    InstalledByCode : json['InstalledByCode']?.toString() ?? '',
+    InstalledByName : json['InstalledByName']?.toString() ?? '',
     WarrantyFromDate : DateTime.tryParse(json['WarrantyFromDate'].toString()),
     WarrantyToDate : DateTime.tryParse(json['WarrantyToDate'].toString()),
-    WarrantyByCode : json['WarrantyByCode'],
-    WarrantyByName : json['WarrantyByName'],
-    Remarks : json['Remarks'],
+    WarrantyByCode : json['WarrantyByCode']?.toString() ?? '',
+    WarrantyByName : json['WarrantyByName']?.toString() ?? '',
+    Remarks : json['Remarks']?.toString() ?? '',
     CreateDate : DateTime.tryParse(json['CreateDate'].toString()),
     UpdateDate : DateTime.tryParse(json['UpdateDate'].toString()),
-    LastReading : json['LastReading'],
+    LastReading : json['LastReading']?.toString() ?? '',
   );
   Map<String,dynamic> toJson()=>{
     'ID' : ID,
@@ -153,8 +153,8 @@ Future<void> insertMNOVCL(Database db, {List? list}) async {
       for (var element in batchRecords) {
         try {
           batch.update("MNOVCL", element,
-              where: "TransId = ? AND ifnull(has_created,0) <> ? AND ifnull(has_updated,0) <> ?",
-              whereArgs: [element["TransId"], 1, 1]);
+              where: "Code = ? AND ifnull(has_created,0) <> ? AND ifnull(has_updated,0) <> ?",
+              whereArgs: [element["Code"], 1, 1]);
 
         } catch (e) {
           writeToLogFile(
@@ -176,8 +176,8 @@ Future<void> insertMNOVCL(Database db, {List? list}) async {
   var v = await db.rawQuery('''
     SELECT T0.*
 FROM MNOVCL_Temp T0
-LEFT JOIN MNOVCL T1 ON T0.TransId = T1.TransId 
-WHERE T1.TransId IS NULL;
+LEFT JOIN MNOVCL T1 ON T0.Code = T1.Code 
+WHERE T1.Code IS NULL;
 ''');
   for (var i = 0; i < v.length; i += batchSize) {
     var end = (i + batchSize < v.length) ? i + batchSize : v.length;
@@ -257,7 +257,7 @@ Future<String> insertMNOVCLToServer(BuildContext? context, {String? TransId, int
             final Database db = await initializeDB(context);
             map=jsonDecode(res.body);
             map["has_created"] = 0;
-            var x = await db.update("MNOVCL", map, where: "TransId = ? AND RowId = ?", whereArgs: [map["TransId"], map["RowId"]]);
+            var x = await db.update("MNOVCL", map, where: "Code = ?", whereArgs: [map["Code"]]);
             print(x.toString());}}
         print(res.body);
       } catch (e) {
@@ -285,7 +285,7 @@ Future<void> updateMNOVCLOnServer(BuildContext? context, {String? condition, Lis
         if (res.statusCode == 201) {
           final Database db = await initializeDB(context);
           map["has_updated"] = 0;
-          var x = await db.update("MNOVCL", map, where: "TransId = ? AND RowId = ?", whereArgs: [map["TransId"], map["RowId"]]);
+          var x = await db.update("MNOVCL", map, where: "Code = ?", whereArgs: [map["Code"]]);
           print(x.toString());
         }
       }

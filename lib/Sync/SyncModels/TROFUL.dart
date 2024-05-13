@@ -69,33 +69,33 @@ class TROFUL{
   });
   factory TROFUL.fromJson(Map<String,dynamic> json)=>TROFUL(
     ID : int.tryParse(json['ID'].toString())??0,
-    Code : json['Code'],
-    Name : json['Name'],
-    Remarks : json['Remarks'],
-    TruckType : json['TruckType'],
-    RefuelByType : json['RefuelByType'],
-    LoadStatus : json['LoadStatus'],
-    RoadType : json['RoadType'],
-    CargoType : json['CargoType'],
-    CargoDimension : json['CargoDimension'],
-    TrailerType : json['TrailerType'],
+    Code : json['Code']?.toString() ?? '',
+    Name : json['Name']?.toString() ?? '',
+    Remarks : json['Remarks']?.toString() ?? '',
+    TruckType : json['TruckType']?.toString() ?? '',
+    RefuelByType : json['RefuelByType']?.toString() ?? '',
+    LoadStatus : json['LoadStatus']?.toString() ?? '',
+    RoadType : json['RoadType']?.toString() ?? '',
+    CargoType : json['CargoType']?.toString() ?? '',
+    CargoDimension : json['CargoDimension']?.toString() ?? '',
+    TrailerType : json['TrailerType']?.toString() ?? '',
     Tonnage : double.tryParse(json['Tonnage'].toString())??0.0,
     FuelRatio : double.tryParse(json['FuelRatio'].toString())??0.0,
     Variance : double.tryParse(json['Variance'].toString())??0.0,
-    CreatedBy : json['CreatedBy'],
+    CreatedBy : json['CreatedBy']?.toString() ?? '',
     CreateDate : DateTime.tryParse(json['CreateDate'].toString()),
     UpdateDate : DateTime.tryParse(json['UpdateDate'].toString()),
-    BranchId : json['BranchId'],
-    UpdatedBy : json['UpdatedBy'],
+    BranchId : json['BranchId']?.toString() ?? '',
+    UpdatedBy : json['UpdatedBy']?.toString() ?? '',
     FullLoadAverage : double.tryParse(json['FullLoadAverage'].toString())??0.0,
     EmptyLoadAverage : double.tryParse(json['EmptyLoadAverage'].toString())??0.0,
     PartialLoadAverage : double.tryParse(json['PartialLoadAverage'].toString())??0.0,
-    EquipmentGroupCode : json['EquipmentGroupCode'],
-    EquipmentGroupName : json['EquipmentGroupName'],
+    EquipmentGroupCode : json['EquipmentGroupCode']?.toString() ?? '',
+    EquipmentGroupName : json['EquipmentGroupName']?.toString() ?? '',
     MinForEmpty : double.tryParse(json['MinForEmpty'].toString())??0.0,
     MaxForFull : double.tryParse(json['MaxForFull'].toString())??0.0,
-    ItemCode : json['ItemCode'],
-    ItemName : json['ItemName'],
+    ItemCode : json['ItemCode']?.toString() ?? '',
+    ItemName : json['ItemName']?.toString() ?? '',
   );
   Map<String,dynamic> toJson()=>{
     'ID' : ID,
@@ -193,8 +193,8 @@ Future<void> insertTROFUL(Database db, {List? list}) async {
       for (var element in batchRecords) {
         try {
           batch.update("TROFUL", element,
-              where: "TransId = ? AND ifnull(has_created,0) <> ? AND ifnull(has_updated,0) <> ?",
-              whereArgs: [element["TransId"], 1, 1]);
+              where: "Code = ? AND ifnull(has_created,0) <> ? AND ifnull(has_updated,0) <> ?",
+              whereArgs: [element["Code"], 1, 1]);
 
         } catch (e) {
           writeToLogFile(
@@ -216,8 +216,8 @@ Future<void> insertTROFUL(Database db, {List? list}) async {
   var v = await db.rawQuery('''
     SELECT T0.*
 FROM TROFUL_Temp T0
-LEFT JOIN TROFUL T1 ON T0.TransId = T1.TransId 
-WHERE T1.TransId IS NULL;
+LEFT JOIN TROFUL T1 ON T0.Code = T1.Code 
+WHERE T1.Code IS NULL;
 ''');
   for (var i = 0; i < v.length; i += batchSize) {
     var end = (i + batchSize < v.length) ? i + batchSize : v.length;
@@ -297,7 +297,7 @@ Future<String> insertTROFULToServer(BuildContext? context, {String? TransId, int
             final Database db = await initializeDB(context);
             map=jsonDecode(res.body);
             map["has_created"] = 0;
-            var x = await db.update("TROFUL", map, where: "TransId = ? AND RowId = ?", whereArgs: [map["TransId"], map["RowId"]]);
+            var x = await db.update("TROFUL", map, where: "Code = ?", whereArgs: [map["Code"]]);
             print(x.toString());}}
         print(res.body);
       } catch (e) {
@@ -325,7 +325,7 @@ Future<void> updateTROFULOnServer(BuildContext? context, {String? condition, Lis
         if (res.statusCode == 201) {
           final Database db = await initializeDB(context);
           map["has_updated"] = 0;
-          var x = await db.update("TROFUL", map, where: "TransId = ? AND RowId = ?", whereArgs: [map["TransId"], map["RowId"]]);
+          var x = await db.update("TROFUL", map, where: "Code = ?", whereArgs: [map["Code"]]);
           print(x.toString());
         }
       }

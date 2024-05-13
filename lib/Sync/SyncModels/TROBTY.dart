@@ -39,18 +39,18 @@ class TROBTY{
   });
   factory TROBTY.fromJson(Map<String,dynamic> json)=>TROBTY(
     ID : int.tryParse(json['ID'].toString())??0,
-    Code : json['Code'],
-    Name : json['Name'],
-    ManufacturedBy : json['ManufacturedBy'],
-    ManufacturedByName : json['ManufacturedByName'],
+    Code : json['Code']?.toString() ?? '',
+    Name : json['Name']?.toString() ?? '',
+    ManufacturedBy : json['ManufacturedBy']?.toString() ?? '',
+    ManufacturedByName : json['ManufacturedByName']?.toString() ?? '',
     Capacity : double.tryParse(json['Capacity'].toString())??0.0,
     Voltage : double.tryParse(json['Voltage'].toString())??0.0,
-    Remarks : json['Remarks'],
-    CreatedBy : json['CreatedBy'],
+    Remarks : json['Remarks']?.toString() ?? '',
+    CreatedBy : json['CreatedBy']?.toString() ?? '',
     CreateDate : DateTime.tryParse(json['CreateDate'].toString()),
     UpdateDate : DateTime.tryParse(json['UpdateDate'].toString()),
-    BranchId : json['BranchId'],
-    UpdatedBy : json['UpdatedBy'],
+    BranchId : json['BranchId']?.toString() ?? '',
+    UpdatedBy : json['UpdatedBy']?.toString() ?? '',
   );
   Map<String,dynamic> toJson()=>{
     'ID' : ID,
@@ -133,8 +133,8 @@ Future<void> insertTROBTY(Database db, {List? list}) async {
       for (var element in batchRecords) {
         try {
           batch.update("TROBTY", element,
-              where: "TransId = ? AND ifnull(has_created,0) <> ? AND ifnull(has_updated,0) <> ?",
-              whereArgs: [element["TransId"], 1, 1]);
+              where: "Code = ? AND ifnull(has_created,0) <> ? AND ifnull(has_updated,0) <> ?",
+              whereArgs: [element["Code"], 1, 1]);
 
         } catch (e) {
           writeToLogFile(
@@ -156,8 +156,8 @@ Future<void> insertTROBTY(Database db, {List? list}) async {
   var v = await db.rawQuery('''
     SELECT T0.*
 FROM TROBTY_Temp T0
-LEFT JOIN TROBTY T1 ON T0.TransId = T1.TransId 
-WHERE T1.TransId IS NULL;
+LEFT JOIN TROBTY T1 ON T0.Code = T1.Code 
+WHERE T1.Code IS NULL;
 ''');
   for (var i = 0; i < v.length; i += batchSize) {
     var end = (i + batchSize < v.length) ? i + batchSize : v.length;
@@ -237,7 +237,7 @@ Future<String> insertTROBTYToServer(BuildContext? context, {String? TransId, int
             final Database db = await initializeDB(context);
             map=jsonDecode(res.body);
             map["has_created"] = 0;
-            var x = await db.update("TROBTY", map, where: "TransId = ? AND RowId = ?", whereArgs: [map["TransId"], map["RowId"]]);
+            var x = await db.update("TROBTY", map, where: "Code = ?", whereArgs: [map["Code"]]);
             print(x.toString());}}
         print(res.body);
       } catch (e) {
@@ -265,7 +265,7 @@ Future<void> updateTROBTYOnServer(BuildContext? context, {String? condition, Lis
         if (res.statusCode == 201) {
           final Database db = await initializeDB(context);
           map["has_updated"] = 0;
-          var x = await db.update("TROBTY", map, where: "TransId = ? AND RowId = ?", whereArgs: [map["TransId"], map["RowId"]]);
+          var x = await db.update("TROBTY", map, where: "Code = ?", whereArgs: [map["Code"]]);
           print(x.toString());
         }
       }

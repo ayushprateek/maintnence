@@ -33,14 +33,14 @@ class MNOEQG{
   });
   factory MNOEQG.fromJson(Map<String,dynamic> json)=>MNOEQG(
     ID : int.tryParse(json['ID'].toString())??0,
-    Code : json['Code'],
-    Name : json['Name'],
-    Remarks : json['Remarks'],
+    Code : json['Code']?.toString() ?? '',
+    Name : json['Name']?.toString() ?? '',
+    Remarks : json['Remarks']?.toString() ?? '',
     CreateDate : DateTime.tryParse(json['CreateDate'].toString()),
     UpdateDate : DateTime.tryParse(json['UpdateDate'].toString()),
-    CreatedBy : json['CreatedBy'],
-    UpdatedBy : json['UpdatedBy'],
-    BranchId : json['BranchId'],
+    CreatedBy : json['CreatedBy']?.toString() ?? '',
+    UpdatedBy : json['UpdatedBy']?.toString() ?? '',
+    BranchId : json['BranchId']?.toString() ?? '',
     Active : json['Active'] is bool ? json['Active'] : json['Active']==1,
   );
   Map<String,dynamic> toJson()=>{
@@ -121,8 +121,8 @@ Future<void> insertMNOEQG(Database db, {List? list}) async {
       for (var element in batchRecords) {
         try {
           batch.update("MNOEQG", element,
-              where: "TransId = ? AND ifnull(has_created,0) <> ? AND ifnull(has_updated,0) <> ?",
-              whereArgs: [element["TransId"], 1, 1]);
+              where: "Code = ? AND ifnull(has_created,0) <> ? AND ifnull(has_updated,0) <> ?",
+              whereArgs: [element["Code"], 1, 1]);
 
         } catch (e) {
           writeToLogFile(
@@ -144,8 +144,8 @@ Future<void> insertMNOEQG(Database db, {List? list}) async {
   var v = await db.rawQuery('''
     SELECT T0.*
 FROM MNOEQG_Temp T0
-LEFT JOIN MNOEQG T1 ON T0.TransId = T1.TransId 
-WHERE T1.TransId IS NULL;
+LEFT JOIN MNOEQG T1 ON T0.Code = T1.Code 
+WHERE T1.Code IS NULL;
 ''');
   for (var i = 0; i < v.length; i += batchSize) {
     var end = (i + batchSize < v.length) ? i + batchSize : v.length;
@@ -225,7 +225,7 @@ Future<String> insertMNOEQGToServer(BuildContext? context, {String? TransId, int
             final Database db = await initializeDB(context);
             map=jsonDecode(res.body);
             map["has_created"] = 0;
-            var x = await db.update("MNOEQG", map, where: "TransId = ? AND RowId = ?", whereArgs: [map["TransId"], map["RowId"]]);
+            var x = await db.update("MNOEQG", map, where: "Code = ?", whereArgs: [map["Code"]]);
             print(x.toString());}}
         print(res.body);
       } catch (e) {
@@ -253,7 +253,7 @@ Future<void> updateMNOEQGOnServer(BuildContext? context, {String? condition, Lis
         if (res.statusCode == 201) {
           final Database db = await initializeDB(context);
           map["has_updated"] = 0;
-          var x = await db.update("MNOEQG", map, where: "TransId = ? AND RowId = ?", whereArgs: [map["TransId"], map["RowId"]]);
+          var x = await db.update("MNOEQG", map, where: "Code = ?", whereArgs: [map["Code"]]);
           print(x.toString());
         }
       }

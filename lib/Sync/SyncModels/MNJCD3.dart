@@ -27,10 +27,10 @@ class MNJCD3{
   });
   factory MNJCD3.fromJson(Map<String,dynamic> json)=>MNJCD3(
     ID : int.tryParse(json['ID'].toString())??0,
-    TransId : json['TransId'],
+    TransId : json['TransId']?.toString() ?? '',
     RowId : int.tryParse(json['RowId'].toString())??0,
-    Attachment : json['Attachment'],
-    Remarks : json['Remarks'],
+    Attachment : json['Attachment']?.toString() ?? '',
+    Remarks : json['Remarks']?.toString() ?? '',
     CreateDate : DateTime.tryParse(json['CreateDate'].toString()),
     UpdateDate : DateTime.tryParse(json['UpdateDate'].toString()),
   );

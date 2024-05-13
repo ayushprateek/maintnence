@@ -1,14 +1,15 @@
-import 'package:maintenance/Component/LogFileFunctions.dart';
 import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:maintenance/Component/LogFileFunctions.dart';
 import 'package:maintenance/Component/SnackbarComponent.dart';
 import 'package:maintenance/DatabaseInitialization.dart';
 import 'package:maintenance/Sync/CustomURL.dart';
 import 'package:maintenance/Sync/DataSync.dart';
-import 'dart:convert';
 import 'package:sqflite/sqlite_api.dart';
-class PRQUT3{
+
+class PRQUT3 {
   int? ID;
   String? TransId;
   int? RowId;
@@ -27,6 +28,7 @@ class PRQUT3{
   String? BaseObjectCode;
   int? DocEntry;
   String? DocNum;
+
   PRQUT3({
     this.ID,
     this.TransId,
@@ -47,55 +49,63 @@ class PRQUT3{
     this.DocEntry,
     this.DocNum,
   });
-  factory PRQUT3.fromJson(Map<String,dynamic> json)=>PRQUT3(
-    ID : int.tryParse(json['ID'].toString())??0,
-    TransId : json['TransId'],
-    RowId : int.tryParse(json['RowId'].toString())??0,
-    AddressCode : json['AddressCode'],
-    Address : json['Address'],
-    CityCode : json['CityCode'],
-    CityName : json['CityName'],
-    StateCode : json['StateCode'],
-    StateName : json['StateName'],
-    CountryCode : json['CountryCode'],
-    CountryName : json['CountryName'],
-    Latitude : json['Latitude'],
-    Longitude : json['Longitude'],
-    CreateDate : DateTime.tryParse(json['CreateDate'].toString()),
-    UpdateDate : DateTime.tryParse(json['UpdateDate'].toString()),
-    BaseObjectCode : json['BaseObjectCode'],
-    DocEntry : int.tryParse(json['DocEntry'].toString())??0,
-    DocNum : json['DocNum'],
-  );
-  Map<String,dynamic> toJson()=>{
-    'ID' : ID,
-    'TransId' : TransId,
-    'RowId' : RowId,
-    'AddressCode' : AddressCode,
-    'Address' : Address,
-    'CityCode' : CityCode,
-    'CityName' : CityName,
-    'StateCode' : StateCode,
-    'StateName' : StateName,
-    'CountryCode' : CountryCode,
-    'CountryName' : CountryName,
-    'Latitude' : Latitude,
-    'Longitude' : Longitude,
-    'CreateDate' : CreateDate?.toIso8601String(),
-    'UpdateDate' : UpdateDate?.toIso8601String(),
-    'BaseObjectCode' : BaseObjectCode,
-    'DocEntry' : DocEntry,
-    'DocNum' : DocNum,
-  };
+
+  factory PRQUT3.fromJson(Map<String, dynamic> json) => PRQUT3(
+        ID: int.tryParse(json['ID'].toString()) ?? 0,
+        TransId: json['TransId']?.toString() ?? '',
+        RowId: int.tryParse(json['RowId'].toString()) ?? 0,
+        AddressCode: json['AddressCode']?.toString() ?? '',
+        Address: json['Address']?.toString() ?? '',
+        CityCode: json['CityCode']?.toString() ?? '',
+        CityName: json['CityName']?.toString() ?? '',
+        StateCode: json['StateCode']?.toString() ?? '',
+        StateName: json['StateName']?.toString() ?? '',
+        CountryCode: json['CountryCode']?.toString() ?? '',
+        CountryName: json['CountryName']?.toString() ?? '',
+        Latitude: json['Latitude']?.toString() ?? '',
+        Longitude: json['Longitude']?.toString() ?? '',
+        CreateDate: DateTime.tryParse(json['CreateDate'].toString()),
+        UpdateDate: DateTime.tryParse(json['UpdateDate'].toString()),
+        BaseObjectCode: json['BaseObjectCode']?.toString() ?? '',
+        DocEntry: int.tryParse(json['DocEntry'].toString()) ?? 0,
+        DocNum: json['DocNum']?.toString() ?? '',
+      );
+
+  Map<String, dynamic> toJson() => {
+        'ID': ID,
+        'TransId': TransId,
+        'RowId': RowId,
+        'AddressCode': AddressCode,
+        'Address': Address,
+        'CityCode': CityCode,
+        'CityName': CityName,
+        'StateCode': StateCode,
+        'StateName': StateName,
+        'CountryCode': CountryCode,
+        'CountryName': CountryName,
+        'Latitude': Latitude,
+        'Longitude': Longitude,
+        'CreateDate': CreateDate?.toIso8601String(),
+        'UpdateDate': UpdateDate?.toIso8601String(),
+        'BaseObjectCode': BaseObjectCode,
+        'DocEntry': DocEntry,
+        'DocNum': DocNum,
+      };
 }
-List<PRQUT3> pRQUT3FromJson(String str) => List<PRQUT3>.from(
-    json.decode(str).map((x) => PRQUT3.fromJson(x)));
+
+List<PRQUT3> pRQUT3FromJson(String str) =>
+    List<PRQUT3>.from(json.decode(str).map((x) => PRQUT3.fromJson(x)));
+
 String pRQUT3ToJson(List<PRQUT3> data) =>
     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+
 Future<List<PRQUT3>> dataSyncPRQUT3() async {
-  var res = await http.get(headers: header, Uri.parse(prefix + "PRQUT3" + postfix));
+  var res =
+      await http.get(headers: header, Uri.parse(prefix + "PRQUT3" + postfix));
   print(res.body);
-  return pRQUT3FromJson(res.body);}
+  return pRQUT3FromJson(res.body);
+}
+
 Future<void> insertPRQUT3(Database db, {List? list}) async {
   if (postfix.toLowerCase().contains('all')) {
     await deletePRQUT3(db);
@@ -110,7 +120,8 @@ Future<void> insertPRQUT3(Database db, {List? list}) async {
   Stopwatch stopwatch = Stopwatch();
   stopwatch.start();
   for (var i = 0; i < customers.length; i += batchSize) {
-    var end = (i + batchSize < customers.length) ? i + batchSize : customers.length;
+    var end =
+        (i + batchSize < customers.length) ? i + batchSize : customers.length;
     var batchRecords = customers.sublist(i, end);
     await db.transaction((txn) async {
       var batch = txn.batch();
@@ -153,9 +164,9 @@ Future<void> insertPRQUT3(Database db, {List? list}) async {
       for (var element in batchRecords) {
         try {
           batch.update("PRQUT3", element,
-              where: "TransId = ? AND ifnull(has_created,0) <> ? AND ifnull(has_updated,0) <> ?",
+              where:
+                  "TransId = ? AND ifnull(has_created,0) <> ? AND ifnull(has_updated,0) <> ?",
               whereArgs: [element["TransId"], 1, 1]);
-
         } catch (e) {
           writeToLogFile(
               text: e.toString(),
@@ -213,28 +224,44 @@ Future<List<PRQUT3>> retrievePRQUT3(BuildContext context) async {
   final List<Map<String, Object?>> queryResult = await db.query('PRQUT3');
   return queryResult.map((e) => PRQUT3.fromJson(e)).toList();
 }
-Future<void> updatePRQUT3(int id, Map<String, dynamic> values, BuildContext context) async {
+
+Future<void> updatePRQUT3(
+    int id, Map<String, dynamic> values, BuildContext context) async {
   final db = await initializeDB(context);
   try {
     db.transaction((db) async {
       await db.update('PRQUT3', values, where: 'ID = ?', whereArgs: [id]);
     });
   } catch (e) {
-    getErrorSnackBar('Sync Error ' + e.toString());}}
+    getErrorSnackBar('Sync Error ' + e.toString());
+  }
+}
+
 Future<void> deletePRQUT3(Database db) async {
   await db.delete('PRQUT3');
 }
-Future<List<PRQUT3>> retrievePRQUT3ById(BuildContext? context, String str, List l) async {
+
+Future<List<PRQUT3>> retrievePRQUT3ById(
+    BuildContext? context, String str, List l) async {
   final Database db = await initializeDB(context);
-  final List<Map<String, Object?>> queryResult = await db.query('PRQUT3', where: str, whereArgs: l);
+  final List<Map<String, Object?>> queryResult =
+      await db.query('PRQUT3', where: str, whereArgs: l);
   return queryResult.map((e) => PRQUT3.fromJson(e)).toList();
 }
-Future<String> insertPRQUT3ToServer(BuildContext? context, {String? TransId, int? id}) async {
+
+Future<String> insertPRQUT3ToServer(BuildContext? context,
+    {String? TransId, int? id}) async {
   String response = "";
-  List<PRQUT3> list = await retrievePRQUT3ById(context, TransId == null ? DataSync.getInsertToServerStr() : "TransId = ? AND ID = ?", TransId == null ? DataSync.getInsertToServerList() : [TransId, id]);
+  List<PRQUT3> list = await retrievePRQUT3ById(
+      context,
+      TransId == null
+          ? DataSync.getInsertToServerStr()
+          : "TransId = ? AND ID = ?",
+      TransId == null ? DataSync.getInsertToServerList() : [TransId, id]);
   if (TransId != null) {
     list[0].ID = 0;
-    var res = await http.post(Uri.parse(prefix + "PRQUT3/Add"), headers: header, body: jsonEncode(list[0].toJson()));
+    var res = await http.post(Uri.parse(prefix + "PRQUT3/Add"),
+        headers: header, body: jsonEncode(list[0].toJson()));
     response = res.body;
   } else if (list.isNotEmpty) {
     int i = 0;
@@ -244,9 +271,12 @@ Future<String> insertPRQUT3ToServer(BuildContext? context, {String? TransId, int
       try {
         Map<String, dynamic> map = list[i].toJson();
         map.remove('ID');
-        var res = await http.post(Uri.parse(prefix + "PRQUT3/Add"), headers: header,
-            body: jsonEncode(map)).timeout(Duration(seconds: 30), onTimeout: () {
-          return http.Response('Error', 500);});
+        var res = await http
+            .post(Uri.parse(prefix + "PRQUT3/Add"),
+                headers: header, body: jsonEncode(map))
+            .timeout(Duration(seconds: 30), onTimeout: () {
+          return http.Response('Error', 500);
+        });
         response = await res.body;
         print("eeaaae status");
         print(await res.statusCode);
@@ -255,20 +285,32 @@ Future<String> insertPRQUT3ToServer(BuildContext? context, {String? TransId, int
           if (res.statusCode == 201) {
             map['ID'] = jsonDecode(res.body)['ID'];
             final Database db = await initializeDB(context);
-            map=jsonDecode(res.body);
+            map = jsonDecode(res.body);
             map["has_created"] = 0;
-            var x = await db.update("PRQUT3", map, where: "TransId = ? AND RowId = ?", whereArgs: [map["TransId"], map["RowId"]]);
-            print(x.toString());}}
+            var x = await db.update("PRQUT3", map,
+                where: "TransId = ? AND RowId = ?",
+                whereArgs: [map["TransId"], map["RowId"]]);
+            print(x.toString());
+          }
+        }
         print(res.body);
       } catch (e) {
         print("Timeout " + e.toString());
-        sentSuccessInServer = true;}
+        sentSuccessInServer = true;
+      }
       print('i++;');
       print("INDEX = " + i.toString());
-    } while (i < list.length && sentSuccessInServer == true);}
-  return response;}
-Future<void> updatePRQUT3OnServer(BuildContext? context, {String? condition, List? l}) async {
-  List<PRQUT3> list = await retrievePRQUT3ById(context, l == null ? DataSync.getUpdateOnServerStr() : condition ?? "", l == null ? DataSync.getUpdateOnServerList() : l);
+    } while (i < list.length && sentSuccessInServer == true);
+  }
+  return response;
+}
+
+Future<void> updatePRQUT3OnServer(BuildContext? context,
+    {String? condition, List? l}) async {
+  List<PRQUT3> list = await retrievePRQUT3ById(
+      context,
+      l == null ? DataSync.getUpdateOnServerStr() : condition ?? "",
+      l == null ? DataSync.getUpdateOnServerList() : l);
   print(list);
   int i = 0;
   bool sentSuccessInServer = false;
@@ -276,7 +318,10 @@ Future<void> updatePRQUT3OnServer(BuildContext? context, {String? condition, Lis
     sentSuccessInServer = false;
     try {
       Map<String, dynamic> map = list[i].toJson();
-      var res = await http.put(Uri.parse(prefix + 'PRQUT3/Update'), headers: header, body: jsonEncode(map)).timeout(Duration(seconds: 30), onTimeout: () {
+      var res = await http
+          .put(Uri.parse(prefix + 'PRQUT3/Update'),
+              headers: header, body: jsonEncode(map))
+          .timeout(Duration(seconds: 30), onTimeout: () {
         return http.Response('Error', 500);
       });
       print(await res.statusCode);
@@ -285,7 +330,9 @@ Future<void> updatePRQUT3OnServer(BuildContext? context, {String? condition, Lis
         if (res.statusCode == 201) {
           final Database db = await initializeDB(context);
           map["has_updated"] = 0;
-          var x = await db.update("PRQUT3", map, where: "TransId = ? AND RowId = ?", whereArgs: [map["TransId"], map["RowId"]]);
+          var x = await db.update("PRQUT3", map,
+              where: "TransId = ? AND RowId = ?",
+              whereArgs: [map["TransId"], map["RowId"]]);
           print(x.toString());
         }
       }
@@ -299,4 +346,3 @@ Future<void> updatePRQUT3OnServer(BuildContext? context, {String? condition, Lis
     print("INDEX = " + i.toString());
   } while (i < list.length && sentSuccessInServer == true);
 }
-

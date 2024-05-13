@@ -37,16 +37,16 @@ class OPCNA4{
   });
   factory OPCNA4.fromJson(Map<String,dynamic> json)=>OPCNA4(
     ID : int.tryParse(json['ID'].toString())??0,
-    TransId : json['TransId'],
+    TransId : json['TransId']?.toString() ?? '',
     RowId : int.tryParse(json['RowId'].toString())??0,
-    VehCode : json['VehCode'],
-    TruckNo : json['TruckNo'],
-    ModelCode : json['ModelCode'],
+    VehCode : json['VehCode']?.toString() ?? '',
+    TruckNo : json['TruckNo']?.toString() ?? '',
+    ModelCode : json['ModelCode']?.toString() ?? '',
     CreateDate : DateTime.tryParse(json['CreateDate'].toString()),
     UpdateDate : DateTime.tryParse(json['UpdateDate'].toString()),
-    BaseObjectCode : json['BaseObjectCode'],
+    BaseObjectCode : json['BaseObjectCode']?.toString() ?? '',
     DocEntry : int.tryParse(json['DocEntry'].toString())??0,
-    DocNum : json['DocNum'],
+    DocNum : json['DocNum']?.toString() ?? '',
     NoOfEquipments : int.tryParse(json['NoOfEquipments'].toString())??0,
   );
   Map<String,dynamic> toJson()=>{

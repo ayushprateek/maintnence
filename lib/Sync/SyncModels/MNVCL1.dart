@@ -39,16 +39,16 @@ class MNVCL1{
   });
   factory MNVCL1.fromJson(Map<String,dynamic> json)=>MNVCL1(
     ID : int.tryParse(json['ID'].toString())??0,
-    Code : json['Code'],
+    Code : json['Code']?.toString() ?? '',
     RowId : int.tryParse(json['RowId'].toString())??0,
-    CheckListCode : json['CheckListCode'],
-    CheckListName : json['CheckListName'],
+    CheckListCode : json['CheckListCode']?.toString() ?? '',
+    CheckListName : json['CheckListName']?.toString() ?? '',
     Days : int.tryParse(json['Days'].toString())??0,
-    TechnicianCode : json['TechnicianCode'],
-    TechnicianName : json['TechnicianName'],
-    Unit : json['Unit'],
-    WorkCenterCode : json['WorkCenterCode'],
-    WorkCenterName : json['WorkCenterName'],
+    TechnicianCode : json['TechnicianCode']?.toString() ?? '',
+    TechnicianName : json['TechnicianName']?.toString() ?? '',
+    Unit : json['Unit']?.toString() ?? '',
+    WorkCenterCode : json['WorkCenterCode']?.toString() ?? '',
+    WorkCenterName : json['WorkCenterName']?.toString() ?? '',
     CreateDate : DateTime.tryParse(json['CreateDate'].toString()),
     UpdateDate : DateTime.tryParse(json['UpdateDate'].toString()),
   );
@@ -133,8 +133,8 @@ Future<void> insertMNVCL1(Database db, {List? list}) async {
       for (var element in batchRecords) {
         try {
           batch.update("MNVCL1", element,
-              where: "TransId = ? AND ifnull(has_created,0) <> ? AND ifnull(has_updated,0) <> ?",
-              whereArgs: [element["TransId"], 1, 1]);
+              where: "Code = ? AND RowId = ? AND ifnull(has_created,0) <> ? AND ifnull(has_updated,0) <> ?",
+              whereArgs: [element["Code"],element["RowId"], 1, 1]);
 
         } catch (e) {
           writeToLogFile(
@@ -156,8 +156,8 @@ Future<void> insertMNVCL1(Database db, {List? list}) async {
   var v = await db.rawQuery('''
     SELECT T0.*
 FROM MNVCL1_Temp T0
-LEFT JOIN MNVCL1 T1 ON T0.TransId = T1.TransId 
-WHERE T1.TransId IS NULL;
+LEFT JOIN MNVCL1 T1 ON T0.Code = T1.Code  AND T0.RowId = T1.RowId 
+WHERE T1.Code IS NULL AND T1.RowId IS NULL;
 ''');
   for (var i = 0; i < v.length; i += batchSize) {
     var end = (i + batchSize < v.length) ? i + batchSize : v.length;
@@ -237,7 +237,7 @@ Future<String> insertMNVCL1ToServer(BuildContext? context, {String? TransId, int
             final Database db = await initializeDB(context);
             map=jsonDecode(res.body);
             map["has_created"] = 0;
-            var x = await db.update("MNVCL1", map, where: "TransId = ? AND RowId = ?", whereArgs: [map["TransId"], map["RowId"]]);
+            var x = await db.update("MNVCL1", map, where: "Code = ? AND RowId = ?", whereArgs: [map["Code"], map["RowId"]]);
             print(x.toString());}}
         print(res.body);
       } catch (e) {
@@ -265,7 +265,7 @@ Future<void> updateMNVCL1OnServer(BuildContext? context, {String? condition, Lis
         if (res.statusCode == 201) {
           final Database db = await initializeDB(context);
           map["has_updated"] = 0;
-          var x = await db.update("MNVCL1", map, where: "TransId = ? AND RowId = ?", whereArgs: [map["TransId"], map["RowId"]]);
+          var x = await db.update("MNVCL1", map, where: "Code = ? AND RowId = ?", whereArgs: [map["Code"], map["RowId"]]);
           print(x.toString());
         }
       }

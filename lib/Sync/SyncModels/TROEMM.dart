@@ -57,8 +57,8 @@ class TROEMM{
   });
   factory TROEMM.fromJson(Map<String,dynamic> json)=>TROEMM(
     ID : int.tryParse(json['ID'].toString())??0,
-    Code : json['Code'],
-    Name : json['Name'],
+    Code : json['Code']?.toString() ?? '',
+    Name : json['Name']?.toString() ?? '',
     FuelCapacity : double.tryParse(json['FuelCapacity'].toString())??0.0,
     FrontAxleWeight : double.tryParse(json['FrontAxleWeight'].toString())??0.0,
     RearAxleWeight : double.tryParse(json['RearAxleWeight'].toString())??0.0,
@@ -66,18 +66,18 @@ class TROEMM{
     XAxles : int.tryParse(json['XAxles'].toString())??0,
     YTyres : int.tryParse(json['YTyres'].toString())??0,
     NoOfTyres : int.tryParse(json['NoOfTyres'].toString())??0,
-    BatteryCode : json['BatteryCode'],
-    BatteryName : json['BatteryName'],
-    Attachment : json['Attachment'],
+    BatteryCode : json['BatteryCode']?.toString() ?? '',
+    BatteryName : json['BatteryName']?.toString() ?? '',
+    Attachment : json['Attachment']?.toString() ?? '',
     Active : json['Active'] is bool ? json['Active'] : json['Active']==1,
-    ManufacturedBy : json['ManufacturedBy'],
-    ManufacturedByName : json['ManufacturedByName'],
-    Remarks : json['Remarks'],
-    CreatedBy : json['CreatedBy'],
+    ManufacturedBy : json['ManufacturedBy']?.toString() ?? '',
+    ManufacturedByName : json['ManufacturedByName']?.toString() ?? '',
+    Remarks : json['Remarks']?.toString() ?? '',
+    CreatedBy : json['CreatedBy']?.toString() ?? '',
     CreateDate : DateTime.tryParse(json['CreateDate'].toString()),
     UpdateDate : DateTime.tryParse(json['UpdateDate'].toString()),
-    BranchId : json['BranchId'],
-    UpdatedBy : json['UpdatedBy'],
+    BranchId : json['BranchId']?.toString() ?? '',
+    UpdatedBy : json['UpdatedBy']?.toString() ?? '',
   );
   Map<String,dynamic> toJson()=>{
     'ID' : ID,
@@ -169,8 +169,8 @@ Future<void> insertTROEMM(Database db, {List? list}) async {
       for (var element in batchRecords) {
         try {
           batch.update("TROEMM", element,
-              where: "TransId = ? AND ifnull(has_created,0) <> ? AND ifnull(has_updated,0) <> ?",
-              whereArgs: [element["TransId"], 1, 1]);
+              where: "Code = ? AND ifnull(has_created,0) <> ? AND ifnull(has_updated,0) <> ?",
+              whereArgs: [element["Code"], 1, 1]);
 
         } catch (e) {
           writeToLogFile(
@@ -192,8 +192,8 @@ Future<void> insertTROEMM(Database db, {List? list}) async {
   var v = await db.rawQuery('''
     SELECT T0.*
 FROM TROEMM_Temp T0
-LEFT JOIN TROEMM T1 ON T0.TransId = T1.TransId 
-WHERE T1.TransId IS NULL;
+LEFT JOIN TROEMM T1 ON T0.Code = T1.Code 
+WHERE T1.Code IS NULL;
 ''');
   for (var i = 0; i < v.length; i += batchSize) {
     var end = (i + batchSize < v.length) ? i + batchSize : v.length;
@@ -273,7 +273,7 @@ Future<String> insertTROEMMToServer(BuildContext? context, {String? TransId, int
             final Database db = await initializeDB(context);
             map=jsonDecode(res.body);
             map["has_created"] = 0;
-            var x = await db.update("TROEMM", map, where: "TransId = ? AND RowId = ?", whereArgs: [map["TransId"], map["RowId"]]);
+            var x = await db.update("TROEMM", map, where: "Code = ?", whereArgs: [map["Code"]]);
             print(x.toString());}}
         print(res.body);
       } catch (e) {
@@ -301,7 +301,7 @@ Future<void> updateTROEMMOnServer(BuildContext? context, {String? condition, Lis
         if (res.statusCode == 201) {
           final Database db = await initializeDB(context);
           map["has_updated"] = 0;
-          var x = await db.update("TROEMM", map, where: "TransId = ? AND RowId = ?", whereArgs: [map["TransId"], map["RowId"]]);
+          var x = await db.update("TROEMM", map, where: "Code = ?", whereArgs: [map["Code"]]);
           print(x.toString());
         }
       }
