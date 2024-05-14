@@ -24,7 +24,7 @@ import 'package:maintenance/JobCard/ServiceDetails/ServiceDetails.dart'
 import 'package:maintenance/JobCard/JobCard.dart';
 import 'package:maintenance/main.dart';
 //------------------------------ GOODS ISSUE IMPORTS------------
-import 'package:maintenance/GoodsIssue/GeneralData.dart' as goods;
+import 'package:maintenance/GoodsIssue/GeneralData.dart' as goodsGenData;
 
 
 class ClearCheckListDoc {
@@ -222,4 +222,47 @@ goToNewJobCardDocument() async {
 
     Get.offAll(() => JobCard(0));
   });
+}
+
+class ClearGoodsIssueDocument{
+  static clearPRF1TextFields(){
+    goodsGenData.GeneralData.iD='';
+    goodsGenData.GeneralData.transId='';
+    goodsGenData.GeneralData.requestedCode='';
+    goodsGenData.GeneralData.requestedName='';
+    goodsGenData.GeneralData.refNo='';
+    goodsGenData.GeneralData.mobileNo='';
+    goodsGenData.GeneralData.postingDate=getFormattedDate(DateTime.now());
+    goodsGenData.GeneralData.validUntill=getFormattedDate(DateTime.now().add(Duration(days: 7)));
+    goodsGenData.GeneralData.currency='';
+    goodsGenData.GeneralData.currRate='';
+    goodsGenData.GeneralData.approvalStatus='';
+    goodsGenData.GeneralData.docStatus='';
+    goodsGenData.GeneralData.totBDisc='';
+    goodsGenData.GeneralData.discPer='';
+    goodsGenData.GeneralData.discVal='';
+    goodsGenData.GeneralData.taxVal='';
+    goodsGenData.GeneralData.docTotal='';
+    goodsGenData.GeneralData.permanentTransId='';
+    goodsGenData.GeneralData.docEntry='';
+    goodsGenData.GeneralData.docNum='';
+    goodsGenData.GeneralData.createdBy='';
+    goodsGenData.GeneralData.createDate=getFormattedDate(DateTime.now());
+    goodsGenData.GeneralData.updateDate=getFormattedDate(DateTime.now().add(Duration(days: 7)));
+    goodsGenData.GeneralData.approvedBy='';
+    goodsGenData.GeneralData.error='';
+    goodsGenData.GeneralData.isPosted=false;
+    goodsGenData.GeneralData.draftKey='';
+    goodsGenData.GeneralData.latitude='';
+    goodsGenData.GeneralData.longitude='';
+    goodsGenData.GeneralData.objectCode='';
+    goodsGenData.GeneralData.toWhsCode='';
+    goodsGenData.GeneralData.remarks='';
+    goodsGenData.GeneralData.branchId='';
+    goodsGenData.GeneralData.updatedBy='';
+    goodsGenData.GeneralData.postingAddress='';
+    goodsGenData.GeneralData.tripTransId='';
+    goodsGenData.GeneralData.deptCode='';
+    goodsGenData.GeneralData.deptName='';
+  }
 }

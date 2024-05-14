@@ -1,92 +1,139 @@
 import 'package:flutter/material.dart';
-import 'package:maintenance/Component/GetFormattedDate.dart';
+import 'package:get/get.dart';
 import 'package:maintenance/Component/GetTextField.dart';
+import 'package:maintenance/Lookups/DepartmentLookup.dart';
+import 'package:maintenance/Lookups/OCRDLookup.dart';
+import 'package:maintenance/Sync/SyncModels/CRD1.dart';
+import 'package:maintenance/Sync/SyncModels/OCRD.dart';
+import 'package:maintenance/Sync/SyncModels/OUDP.dart';
+import 'package:maintenance/Sync/SyncModels/OWHS.dart';
+
+import '../Lookups/WarehouseLookup.dart';
+
 class GeneralData extends StatefulWidget {
-  const GeneralData({super.key});
+  GeneralData({super.key});
+
   static String? iD;
-  static String? permanentTransId;
   static String? transId;
+  static String? requestedCode;
+  static String? requestedName;
+  static String? refNo;
+  static String? mobileNo;
+  static String? postingDate;
+  static String? validUntill;
+  static String? currency;
+  static String? currRate;
+  static String? approvalStatus;
+  static String? docStatus;
+  static String? totBDisc;
+  static String? discPer;
+  static String? discVal;
+  static String? taxVal;
+  static String? docTotal;
+  static String? permanentTransId;
   static String? docEntry;
   static String? docNum;
-  static String? canceled;
-  static String? docStatus;
-  static String? approvalStatus;
-  static String? checkListStatus;
-  static String? objectCode;
-  static String? equipmentCode;
-  static String? equipmentName;
-  static String? checkListCode;
-  static String? checkListName;
-  static String? workCenterCode;
-  static String? workCenterName;
-  static DateTime? openDate;
-  static DateTime? closeDate;
-  static DateTime? postingDate;
-  static DateTime? validUntill;
-  static DateTime? lastReadingDate;
-  static String? lastReading;
-  static String? assignedUserCode;
-  static String? assignedUserName;
-  static String? mNJCTransId;
-  static String? remarks;
   static String? createdBy;
-  static String? updatedBy;
+  static String? createDate;
+  static String? updateDate;
+  static String? approvedBy;
+  static String? error;
+  static bool? isPosted;
+  static String? draftKey;
+  static String? latitude;
+  static String? longitude;
+  static String? objectCode;
+  static String? toWhsCode;
+  static String? remarks;
   static String? branchId;
-  static DateTime? createDate;
-  static DateTime? updateDate;
-
-  static bool? isConsumption;
-  static bool? isRequest;
+  static String? updatedBy;
+  static String? postingAddress;
+  static String? tripTransId;
+  static String? deptCode;
+  static String? deptName;
 
   @override
   State<GeneralData> createState() => _GeneralDataState();
 }
 
 class _GeneralDataState extends State<GeneralData> {
-  final TextEditingController _permanentTransId =
-  TextEditingController(text: GeneralData.permanentTransId);
+  final TextEditingController _iD = TextEditingController(text: GeneralData.iD);
   final TextEditingController _transId =
-  TextEditingController(text: GeneralData.transId);
-  final TextEditingController _docEntry =
-  TextEditingController(text: GeneralData.docEntry);
-  final TextEditingController _docNum =
-  TextEditingController(text: GeneralData.docNum);
-  final TextEditingController _docStatus =
-  TextEditingController(text: GeneralData.docStatus);
-  final TextEditingController _approvalStatus =
-  TextEditingController(text: GeneralData.approvalStatus);
-  final TextEditingController _checkListStatus =
-  TextEditingController(text: GeneralData.checkListStatus);
-  final TextEditingController _equipmentCode =
-  TextEditingController(text: GeneralData.equipmentCode);
-  final TextEditingController _equipmentName =
-  TextEditingController(text: GeneralData.equipmentName);
-  final TextEditingController _checkListCode =
-  TextEditingController(text: GeneralData.checkListCode);
-  final TextEditingController _checkListName =
-  TextEditingController(text: GeneralData.checkListName);
-  final TextEditingController _workCenterCode =
-  TextEditingController(text: GeneralData.workCenterCode);
-  final TextEditingController _workCenterName =
-  TextEditingController(text: GeneralData.workCenterName);
-  final TextEditingController _openDate =
-  TextEditingController(text: getFormattedDate(GeneralData.openDate));
-  final TextEditingController _closeDate =
-  TextEditingController(text: getFormattedDate(GeneralData.closeDate));
+      TextEditingController(text: GeneralData.transId);
+  final TextEditingController _requestedCode =
+      TextEditingController(text: GeneralData.requestedCode);
+  final TextEditingController _requestedName =
+      TextEditingController(text: GeneralData.requestedName);
+  final TextEditingController _refNo =
+      TextEditingController(text: GeneralData.refNo);
+  final TextEditingController _mobileNo =
+      TextEditingController(text: GeneralData.mobileNo);
   final TextEditingController _postingDate =
-  TextEditingController(text: getFormattedDate(GeneralData.postingDate));
+      TextEditingController(text: GeneralData.postingDate);
   final TextEditingController _validUntill =
-  TextEditingController(text: getFormattedDate(GeneralData.validUntill));
-  final TextEditingController _lastReadingDate = TextEditingController(
-      text: getFormattedDate(GeneralData.lastReadingDate));
-  final TextEditingController _lastReading =
-  TextEditingController(text: GeneralData.lastReading);
-  final TextEditingController _assignedUserCode =
-  TextEditingController(text: GeneralData.assignedUserCode);
-  final TextEditingController _assignedUserName =
-  TextEditingController(text: GeneralData.assignedUserName);
+      TextEditingController(text: GeneralData.validUntill);
+  final TextEditingController _currency =
+      TextEditingController(text: GeneralData.currency);
+  final TextEditingController _currRate =
+      TextEditingController(text: GeneralData.currRate);
+  final TextEditingController _approvalStatus =
+      TextEditingController(text: GeneralData.approvalStatus);
+  final TextEditingController _docStatus =
+      TextEditingController(text: GeneralData.docStatus);
+  final TextEditingController _totBDisc =
+      TextEditingController(text: GeneralData.totBDisc);
+  final TextEditingController _discPer =
+      TextEditingController(text: GeneralData.discPer);
+  final TextEditingController _discVal =
+      TextEditingController(text: GeneralData.discVal);
+  final TextEditingController _taxVal =
+      TextEditingController(text: GeneralData.taxVal);
+  final TextEditingController _docTotal =
+      TextEditingController(text: GeneralData.docTotal);
+  final TextEditingController _permanentTransId =
+      TextEditingController(text: GeneralData.permanentTransId);
+  final TextEditingController _docEntry =
+      TextEditingController(text: GeneralData.docEntry);
+  final TextEditingController _docNum =
+      TextEditingController(text: GeneralData.docNum);
+  final TextEditingController _createdBy =
+      TextEditingController(text: GeneralData.createdBy);
+  final TextEditingController _createDate =
+      TextEditingController(text: GeneralData.createDate);
+  final TextEditingController _updateDate =
+      TextEditingController(text: GeneralData.updateDate);
+  final TextEditingController _approvedBy =
+      TextEditingController(text: GeneralData.approvedBy);
+  final TextEditingController _error =
+      TextEditingController(text: GeneralData.error);
+
+  final TextEditingController _draftKey =
+      TextEditingController(text: GeneralData.draftKey);
+  final TextEditingController _latitude =
+      TextEditingController(text: GeneralData.latitude);
+  final TextEditingController _longitude =
+      TextEditingController(text: GeneralData.longitude);
+  final TextEditingController _objectCode =
+      TextEditingController(text: GeneralData.objectCode);
+  final TextEditingController _toWhsCode =
+      TextEditingController(text: GeneralData.toWhsCode);
   final TextEditingController _remarks =
-  TextEditingController(text: GeneralData.remarks);
+      TextEditingController(text: GeneralData.remarks);
+  final TextEditingController _branchId =
+      TextEditingController(text: GeneralData.branchId);
+  final TextEditingController _updatedBy =
+      TextEditingController(text: GeneralData.updatedBy);
+  final TextEditingController _postingAddress =
+      TextEditingController(text: GeneralData.postingAddress);
+  final TextEditingController _tripTransId =
+      TextEditingController(text: GeneralData.tripTransId);
+  final TextEditingController _deptCode =
+      TextEditingController(text: GeneralData.deptCode);
+  final TextEditingController _deptName =
+      TextEditingController(text: GeneralData.deptName);
+  final TextEditingController _contactPersonCode = TextEditingController();
+  final TextEditingController _contactPersonName = TextEditingController();
+  final TextEditingController _localDate = TextEditingController();
 
   List<String> typeList = ['Preventive', 'Breakdown'];
   String type = 'Preventive';
@@ -105,27 +152,89 @@ class _GeneralDataState extends State<GeneralData> {
               controller: _permanentTransId, labelText: 'Permanent Trans Id'),
           getDisabledTextField(controller: _docNum, labelText: 'ERP Docnum'),
           getDisabledTextField(controller: _transId, labelText: 'Trans Id'),
-          getDisabledTextField(controller: _docEntry, labelText: 'Department Name'),
-          getDisabledTextField(controller: _docEntry, labelText: 'TripTransId'),
-          getDisabledTextField(controller: _docEntry, labelText: 'Reference No'),
-          getDisabledTextField(controller: _docEntry, labelText: 'Request Code'),
-          getDisabledTextField(controller: _docEntry, labelText: 'Request Name*'),
-          getDisabledTextField(controller: _docEntry, labelText: 'Person Name'),
-          getDisabledTextField(controller: _docEntry, labelText: 'Mobile Number'),
-          getDisabledTextField(controller: _docEntry, labelText: 'To Warehouse'),
-          getDisabledTextField(controller: _docEntry, labelText: 'Remarks'),
-
           getDisabledTextField(
-              controller: _postingDate, labelText: 'Posting Date'),
+              controller: _deptCode,
+              labelText: 'Department Code',
+              enableLookup: true,
+              onLookupPressed: () {
+                Get.to(() => DepartmentLookup(
+                      onSelection: (OUDP oudp) {
+                        setState(() {
+                          GeneralData.deptCode =
+                              _deptCode.text = oudp.Code ?? '';
+                          GeneralData.deptName =
+                              _deptName.text = oudp.Name ?? '';
+                        });
+                      },
+                    ));
+              }),
           getDisabledTextField(
-              controller: _validUntill, labelText: 'Valid Until'),
-          getDisabledTextField(controller: _docEntry, labelText: 'Currency'),
-          getDisabledTextField(controller: _docEntry, labelText: 'Currency Rate'),
-          getDisabledTextField(controller: _docEntry, labelText: 'Doc Status'),
-          getDisabledTextField(controller: _docEntry, labelText: 'Approval Status'),
-          getDisabledTextField(controller: _docEntry, labelText: 'Local Date'),
-
-
+              controller: _deptName, labelText: 'Department Name'),
+          getTextField(controller: _tripTransId, labelText: 'TripTransId'),
+          getTextField(controller: _refNo, labelText: 'Reference No'),
+          getDisabledTextField(
+              controller: _requestedCode,
+              labelText: 'Request Code',
+              enableLookup: true,
+              onLookupPressed: () {
+                Get.to(() => OCRDLookup(onSelection:
+                        (OCRDModel ocrdModel, CRD1Model? crd1Model) {
+                      setState(() {
+                        GeneralData.requestedCode =
+                            _requestedCode.text = ocrdModel.Code;
+                        GeneralData.requestedName =
+                            _requestedName.text = ocrdModel.Name ?? '';
+                        GeneralData.mobileNo =
+                            _mobileNo.text = ocrdModel.MobileNo;
+                        if (crd1Model != null) {
+                          _contactPersonName.text =
+                              "${crd1Model.FirstName} ${crd1Model.MiddleName} ${crd1Model.LastName}";
+                        }
+                      });
+                    }));
+              }),
+          getDisabledTextField(
+              controller: _requestedName, labelText: 'Request Name*'),
+          getDisabledTextField(
+              controller: _contactPersonName, labelText: 'Person Name'),
+          getDisabledTextField(
+              controller: _mobileNo, labelText: 'Mobile Number'),
+          getDisabledTextField(
+              controller: _toWhsCode,
+              labelText: 'To Warehouse',
+              enableLookup: true,
+              onLookupPressed: () {
+                Get.to(() => WarehouseLookup(
+                      onSelection: (OWHS owhs) {
+                        setState(() {
+                          GeneralData.toWhsCode =
+                              _toWhsCode.text = owhs.WhsCode ?? '';
+                        });
+                      },
+                    ));
+              }),
+          getTextField(controller: _remarks, labelText: 'Remarks'),
+          getDateTextField(
+              controller: _postingDate,
+              labelText: 'Posting Date',
+              localCurrController: TextEditingController(),
+              onChanged: (val) {
+                _postingDate.text = GeneralData.postingDate = val;
+              }),
+          getDateTextField(
+              controller: _validUntill,
+              labelText: 'Valid Until',
+              localCurrController: TextEditingController(),
+              onChanged: (val) {
+                _validUntill.text = GeneralData.validUntill = val;
+              }),
+          getDisabledTextField(controller: _currency, labelText: 'Currency'),
+          getDisabledTextField(
+              controller: _currRate, labelText: 'Currency Rate'),
+          getDisabledTextField(controller: _docStatus, labelText: 'Doc Status'),
+          getDisabledTextField(
+              controller: _approvalStatus, labelText: 'Approval Status'),
+          getDisabledTextField(controller: _localDate, labelText: 'Local Date'),
         ],
       ),
     );

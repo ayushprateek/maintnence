@@ -93,6 +93,15 @@ Future<List<OUDP>> dataSyncOUDP() async {
   print(res.body);
   return oUDPFromJson(res.body);
 }
+Future<List<OUDP>> retrieveOUDPForSearch(
+    {required String query, int? limit}) async {
+  final Database db = await initializeDB(null);
+  query="%$query%";
+  String dbQuery="SELECT * FROM OUDP WHERE (Code LIKE '$query' OR Name LIKE '$query')  AND Active=1 LIMIT $limit";
+  final List<Map<String, Object?>> queryResult = await db.rawQuery(
+      dbQuery);
+  return queryResult.map((e) => OUDP.fromJson(e)).toList();
+}
 
 // Future<void> insertOUDP(Database db, {List? list}) async {
 //   if (postfix.toLowerCase().contains('all')) {

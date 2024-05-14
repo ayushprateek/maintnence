@@ -436,6 +436,50 @@ Future<List<OCRDModel>> retrieveOCRDById(
   return queryResult.map((e) => OCRDModel.fromJson(e)).toList();
 }
 
+// Future<List<OCRDModel>> retrieveOCRDForDisplay({
+//   String dbQuery='',
+//   int limit=15,
+//   bool isCompetitor=false
+// }) async {
+//   final Database db = await initializeDB(null);
+//   dbQuery='%$dbQuery%';
+//   String searchQuery='';
+//   if(isCompetitor)
+//     {
+//       searchQuery='''
+//      SELECT DISTINCT T1.Latitude,T1.Longitude,IFNULL(T2.DocTotal,0.0)-IFNULL(T3.DocTotal,0.0)-IFNULL(T4.Amount,0.0) as CustomerBalance,T1.*
+//  FROM OCRD T1
+//  Inner join CRD8 T5 on T1.Code=T5.Code
+//  Inner join USR1 T6 on T6.BranchId=T5.BPLID
+//  Inner join OUSR T7 on T7.UserCode=T6.UserCode
+//
+//  LEFT JOIN OINV T2 ON T1.Code=T2.CardCode
+//  LEFT JOIN ORTN T3 ON T1.Code=T3.CardCode
+//  LEFT JOIN OCRT T4 ON T1.Code=T4.CardCode
+//
+//  WHERE T7.UserCode='${userModel.UserCode}' AND BPType = 'C' AND T1.Active = 1 AND T1.Competitor=1 AND ( T1.FirstName || T1.MiddleName||T1.LastName LIKE '$dbQuery' OR T1.Code LIKE '$dbQuery') GROUP BY T1.Code LIMIT $limit
+//       ''';
+//     }
+//   else
+//     {
+//       searchQuery='''
+//      SELECT DISTINCT T1.Latitude,T1.Longitude,IFNULL(T2.DocTotal,0.0)-IFNULL(T3.DocTotal,0.0)-IFNULL(T4.Amount,0.0) as CustomerBalance,T1.*
+//  FROM OCRD T1
+//  Inner join CRD8 T5 on T1.Code=T5.Code
+//  Inner join USR1 T6 on T6.BranchId=T5.BPLID
+//  Inner join OUSR T7 on T7.UserCode=T6.UserCode
+//
+//  LEFT JOIN OINV T2 ON T1.Code=T2.CardCode
+//  LEFT JOIN ORTN T3 ON T1.Code=T3.CardCode
+//  LEFT JOIN OCRT T4 ON T1.Code=T4.CardCode
+//
+//  WHERE T7.UserCode='${userModel.UserCode}' AND BPType = 'C' AND T1.Active = 1 AND (T1.FirstName || T1.MiddleName||T1.LastName LIKE '$dbQuery' OR T1.Code LIKE '$dbQuery') GROUP BY T1.Code LIMIT $limit
+//       ''';
+//     }
+//   final List<Map<String, Object?>> queryResult = await db.rawQuery(searchQuery);
+//   return queryResult.map((e) => OCRDModel.fromJson(e)).toList();
+// }
+
 Future<List<OCRDModel>> retrieveOCRDForDisplay({
   String dbQuery='',
   int limit=15,
@@ -444,38 +488,16 @@ Future<List<OCRDModel>> retrieveOCRDForDisplay({
   final Database db = await initializeDB(null);
   dbQuery='%$dbQuery%';
   String searchQuery='';
-  if(isCompetitor)
-    {
-      searchQuery='''
-     SELECT DISTINCT T1.Latitude,T1.Longitude,IFNULL(T2.DocTotal,0.0)-IFNULL(T3.DocTotal,0.0)-IFNULL(T4.Amount,0.0) as CustomerBalance,T1.* 
+  searchQuery='''
+     SELECT DISTINCT T1.Latitude,T1.Longitude,T1.FirstName || T1.MiddleName||T1.LastName as Name,T1.* 
  FROM OCRD T1 
  Inner join CRD8 T5 on T1.Code=T5.Code
  Inner join USR1 T6 on T6.BranchId=T5.BPLID
  Inner join OUSR T7 on T7.UserCode=T6.UserCode 
-
- LEFT JOIN OINV T2 ON T1.Code=T2.CardCode 
- LEFT JOIN ORTN T3 ON T1.Code=T3.CardCode 
  LEFT JOIN OCRT T4 ON T1.Code=T4.CardCode 
 
  WHERE T7.UserCode='${userModel.UserCode}' AND BPType = 'C' AND T1.Active = 1 AND T1.Competitor=1 AND ( T1.FirstName || T1.MiddleName||T1.LastName LIKE '$dbQuery' OR T1.Code LIKE '$dbQuery') GROUP BY T1.Code LIMIT $limit
       ''';
-    }
-  else
-    {
-      searchQuery='''
-     SELECT DISTINCT T1.Latitude,T1.Longitude,IFNULL(T2.DocTotal,0.0)-IFNULL(T3.DocTotal,0.0)-IFNULL(T4.Amount,0.0) as CustomerBalance,T1.* 
- FROM OCRD T1 
- Inner join CRD8 T5 on T1.Code=T5.Code
- Inner join USR1 T6 on T6.BranchId=T5.BPLID
- Inner join OUSR T7 on T7.UserCode=T6.UserCode 
-
- LEFT JOIN OINV T2 ON T1.Code=T2.CardCode 
- LEFT JOIN ORTN T3 ON T1.Code=T3.CardCode 
- LEFT JOIN OCRT T4 ON T1.Code=T4.CardCode 
-
- WHERE T7.UserCode='${userModel.UserCode}' AND BPType = 'C' AND T1.Active = 1 AND (T1.FirstName || T1.MiddleName||T1.LastName LIKE '$dbQuery' OR T1.Code LIKE '$dbQuery') GROUP BY T1.Code LIMIT $limit
-      ''';
-    }
   final List<Map<String, Object?>> queryResult = await db.rawQuery(searchQuery);
   return queryResult.map((e) => OCRDModel.fromJson(e)).toList();
 }
