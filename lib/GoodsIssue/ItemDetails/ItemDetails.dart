@@ -5,6 +5,7 @@ import 'package:maintenance/Component/CustomFont.dart';
 
 class ItemDetails extends StatefulWidget {
   const ItemDetails({super.key});
+  static List items=[];
 
   // static List<MNJCD1> items = [MNJCD1()];
 

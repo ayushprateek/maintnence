@@ -10,6 +10,7 @@ import 'package:maintenance/CheckListDocument/GeneralData.dart' as checkListDoc;
 import 'package:maintenance/Component/GetFormattedDate.dart';
 import 'package:maintenance/Component/GetLastDocNum.dart';
 import 'package:maintenance/Component/IsAvailableTransId.dart';
+import 'package:maintenance/GoodsIssue/GoodsIssue.dart';
 
 //---------------------------------JOB CARD IMPORTS
 import 'package:maintenance/JobCard/GeneralData.dart' as jcdGenData;
@@ -25,6 +26,7 @@ import 'package:maintenance/JobCard/JobCard.dart';
 import 'package:maintenance/main.dart';
 //------------------------------ GOODS ISSUE IMPORTS------------
 import 'package:maintenance/GoodsIssue/GeneralData.dart' as goodsGenData;
+import 'package:maintenance/GoodsIssue/ItemDetails/ItemDetails.dart' as goodsItemDetails;
 
 
 class ClearCheckListDoc {
@@ -225,7 +227,7 @@ goToNewJobCardDocument() async {
 }
 
 class ClearGoodsIssueDocument{
-  static clearPRF1TextFields(){
+  static clearGeneralDataTextFields(){
     goodsGenData.GeneralData.iD='';
     goodsGenData.GeneralData.transId='';
     goodsGenData.GeneralData.requestedCode='';
@@ -265,4 +267,28 @@ class ClearGoodsIssueDocument{
     goodsGenData.GeneralData.deptCode='';
     goodsGenData.GeneralData.deptName='';
   }
+}
+goToNewGoodsIssueDocument() async {
+  await ClearGoodsIssueDocument.clearGeneralDataTextFields();
+  goodsItemDetails.ItemDetails.items.clear();
+
+  getLastDocNum("MNGI", null).then((snapshot) async {
+    int DocNum = snapshot[0].DocNumber - 1;
+
+    do {
+      DocNum += 1;
+      goodsGenData.GeneralData.transId =
+          DateTime.now().millisecondsSinceEpoch.toString() +
+              "U0" +
+              userModel.ID.toString() +
+              "_" +
+              snapshot[0].DocName +
+              "/" +
+              DocNum.toString();
+    } while (await isMNCLTransIdAvailable(
+        null, goodsGenData.GeneralData.transId ?? ""));
+    print(goodsGenData.GeneralData.transId);
+
+    Get.offAll(() => GoodsIssue(0));
+  });
 }

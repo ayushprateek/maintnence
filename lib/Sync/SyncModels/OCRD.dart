@@ -1,14 +1,12 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:maintenance/Component/LogFileFunctions.dart';
 import 'package:maintenance/Component/SnackbarComponent.dart';
 import 'package:maintenance/DatabaseInitialization.dart';
 import 'package:maintenance/Sync/CustomURL.dart';
 import 'package:maintenance/Sync/DataSync.dart';
-import 'package:maintenance/main.dart';
 import 'package:sqflite/sqlite_api.dart';
 
 List<OCRDModel> OCRDModelFromJson(String str) =>
@@ -61,7 +59,6 @@ class OCRDModel {
     this.BranchId,
     this.PriceListCode,
     this.ShopSizeUom,
-
     this.ATTransId,
     this.CustomerBalance,
     this.CardGroupName,
@@ -166,8 +163,11 @@ class OCRDModel {
         Latitude: json["Latitude"].toString(),
         Longitude: json["Longitude"] ?? "",
         ISSAP: json['ISSAP'] is bool ? json['ISSAP'] : json['ISSAP'] == 1,
-        ISPORTAL: json['ISPORTAL'] is bool ? json['ISPORTAL'] : json['ISPORTAL'] == 1,
-    IsTemporary: json['IsTemporary'] is bool ? json['IsTemporary'] : json['IsTemporary'] == 1,
+        ISPORTAL:
+            json['ISPORTAL'] is bool ? json['ISPORTAL'] : json['ISPORTAL'] == 1,
+        IsTemporary: json['IsTemporary'] is bool
+            ? json['IsTemporary']
+            : json['IsTemporary'] == 1,
         SAPCARDCODE: json['SAPCARDCODE'] ?? '',
         CreateDate: DateTime.tryParse(json['CreateDate'].toString()),
         UpdateDate: DateTime.tryParse(json['UpdateDate'].toString()),
@@ -230,9 +230,10 @@ Future<List<OCRDModel>> retrieveSupplierForSearch({
   int? limit,
   String? query,
 }) async {
-  query="%$query%";
+  query = "%$query%";
   final Database db = await initializeDB(null);
-  final List<Map<String, Object?>> queryResult = await db.rawQuery('SELECT FirstName || MiddleName ||  LastName as Name,* FROM OCRD WHERE (BPType="T" OR BPType="S") and (Code LIKE "$query" OR Name LIKE "$query") LIMIT $limit');
+  final List<Map<String, Object?>> queryResult = await db.rawQuery(
+      'SELECT FirstName || MiddleName ||  LastName as Name,* FROM OCRD WHERE (BPType="T" OR BPType="S") and (Code LIKE "$query" OR Name LIKE "$query") LIMIT $limit');
   return queryResult.map((e) => OCRDModel.fromJson(e)).toList();
 }
 
@@ -296,7 +297,7 @@ Future<void> insertOCRD(Database db, {List? list}) async {
   stopwatch.start();
   for (var i = 0; i < customers.length; i += batchSize) {
     var end =
-    (i + batchSize < customers.length) ? i + batchSize : customers.length;
+        (i + batchSize < customers.length) ? i + batchSize : customers.length;
     var batchRecords = customers.sublist(i, end);
     await db.transaction((txn) async {
       var batch = txn.batch();
@@ -336,9 +337,9 @@ Future<void> insertOCRD(Database db, {List? list}) async {
       for (var element in batchRecords) {
         try {
           batch.update("OCRD", element,
-              where: "Code = ? AND ifnull(has_created,0) <> ? AND ifnull(has_updated,0) <> ?",
+              where:
+                  "Code = ? AND ifnull(has_created,0) <> ? AND ifnull(has_updated,0) <> ?",
               whereArgs: [element["Code"], 1, 1]);
-
         } catch (e) {
           writeToLogFile(
               text: e.toString(),
@@ -480,24 +481,24 @@ Future<List<OCRDModel>> retrieveOCRDById(
 //   return queryResult.map((e) => OCRDModel.fromJson(e)).toList();
 // }
 
-Future<List<OCRDModel>> retrieveOCRDForDisplay({
-  String dbQuery='',
-  int limit=15,
-  bool isCompetitor=false
-}) async {
+Future<List<OCRDModel>> retrieveOCRDForDisplay(
+    {String dbQuery = '', int limit = 15, bool isCompetitor = false}) async {
   final Database db = await initializeDB(null);
-  dbQuery='%$dbQuery%';
-  String searchQuery='';
-  searchQuery='''
-     SELECT DISTINCT T1.Latitude,T1.Longitude,T1.FirstName || T1.MiddleName||T1.LastName as Name,T1.* 
- FROM OCRD T1 
- Inner join CRD8 T5 on T1.Code=T5.Code
- Inner join USR1 T6 on T6.BranchId=T5.BPLID
- Inner join OUSR T7 on T7.UserCode=T6.UserCode 
- LEFT JOIN OCRT T4 ON T1.Code=T4.CardCode 
-
- WHERE T7.UserCode='${userModel.UserCode}' AND BPType = 'C' AND T1.Active = 1 AND T1.Competitor=1 AND ( T1.FirstName || T1.MiddleName||T1.LastName LIKE '$dbQuery' OR T1.Code LIKE '$dbQuery') GROUP BY T1.Code LIMIT $limit
-      ''';
+  dbQuery = '%$dbQuery%';
+  String searchQuery = '';
+  //  searchQuery='''
+  //     SELECT DISTINCT T1.Latitude,T1.Longitude,T1.FirstName || T1.MiddleName||T1.LastName as Name,T1.*
+  // FROM OCRD T1
+  // Inner join CRD8 T5 on T1.Code=T5.Code
+  // Inner join USR1 T6 on T6.BranchId=T5.BPLID
+  // Inner join OUSR T7 on T7.UserCode=T6.UserCode
+  // LEFT JOIN OCRT T4 ON T1.Code=T4.CardCode
+  //
+  // WHERE T7.UserCode='${userModel.UserCode}' AND BPType = 'C' AND T1.Active = 1 AND T1.Competitor=1 AND ( T1.FirstName || T1.MiddleName||T1.LastName LIKE '$dbQuery' OR T1.Code LIKE '$dbQuery') GROUP BY T1.Code LIMIT $limit
+  //      ''';
+  searchQuery = '''
+  SELECT FirstName || MiddleName||LastName AS Name,* FROM OCRD WHERE Active = 1 AND BPType='C' AND (FirstName || MiddleName||LastName LIKE '$dbQuery' OR Code LIKE '$dbQuery') LIMIT $limit
+  ''';
   final List<Map<String, Object?>> queryResult = await db.rawQuery(searchQuery);
   return queryResult.map((e) => OCRDModel.fromJson(e)).toList();
 }

@@ -4,7 +4,7 @@ import 'package:maintenance/Component/CustomColor.dart';
 import 'package:maintenance/Component/CustomFont.dart';
 import 'package:maintenance/Dashboard.dart';
 import 'package:maintenance/GoodsIssue/GeneralData.dart';
-import 'package:maintenance/GoodsIssue/ItemDetails.dart';
+import 'package:maintenance/GoodsIssue/ItemDetails/ItemDetails.dart';
 
 class GoodsIssue extends StatefulWidget {
   static bool saveButtonPressed = false;
