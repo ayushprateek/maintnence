@@ -244,10 +244,10 @@ class ClearGoodsIssueDocument{
     goodsGenData.GeneralData.mobileNo='';
     goodsGenData.GeneralData.postingDate=getFormattedDate(DateTime.now());
     goodsGenData.GeneralData.validUntill=getFormattedDate(DateTime.now().add(Duration(days: 7)));
-    goodsGenData.GeneralData.currency='';
-    goodsGenData.GeneralData.currRate='';
-    goodsGenData.GeneralData.approvalStatus='';
-    goodsGenData.GeneralData.docStatus='';
+    goodsGenData.GeneralData.currency=userModel.Currency;
+    goodsGenData.GeneralData.currRate=userModel.Rate;
+    goodsGenData.GeneralData.approvalStatus='Pending';
+    goodsGenData.GeneralData.docStatus='Open';
     goodsGenData.GeneralData.totBDisc='';
     goodsGenData.GeneralData.discPer='';
     goodsGenData.GeneralData.discVal='';
@@ -274,6 +274,9 @@ class ClearGoodsIssueDocument{
     goodsGenData.GeneralData.tripTransId='';
     goodsGenData.GeneralData.deptCode='';
     goodsGenData.GeneralData.deptName='';
+    goodsGenData.GeneralData.isSelected = false;
+    goodsGenData.GeneralData.hasCreated = false;
+    goodsGenData.GeneralData.hasUpdated = false;
   }
 }
 goToNewGoodsIssueDocument() async {
