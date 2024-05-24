@@ -1,20 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:maintenance/Component/ClearTextFieldData.dart';
 import 'package:maintenance/Component/CustomColor.dart';
 import 'package:maintenance/Component/CustomFont.dart';
 import 'package:maintenance/Component/GetTextField.dart';
-import 'package:maintenance/Sync/SyncModels/OVCL.dart';
+import 'package:maintenance/Component/SnackbarComponent.dart';
+import 'package:maintenance/GoodsIssue/GeneralData.dart';
+import 'package:maintenance/GoodsIssue/ItemDetails/EditItems.dart';
+import 'package:maintenance/GoodsIssue/ItemDetails/ItemDetails.dart';
+import 'package:maintenance/Sync/SyncModels/OITM.dart';
 
-class VehicleCodeLookup extends StatefulWidget {
-  Function(OVCLModel) onSelected;
-
-  VehicleCodeLookup({required this.onSelected});
-
+class AddItems extends StatefulWidget {
   @override
-  _VehicleCodeLookupState createState() => _VehicleCodeLookupState();
+  _AddItemsState createState() => _AddItemsState();
 }
 
-class _VehicleCodeLookupState extends State<VehicleCodeLookup> {
+class _AddItemsState extends State<AddItems> {
   ScrollController _scrollController = ScrollController();
   final TextEditingController _query = TextEditingController();
   int _currentMax = 15;
@@ -41,7 +42,7 @@ class _VehicleCodeLookupState extends State<VehicleCodeLookup> {
       appBar: AppBar(
         backgroundColor: barColor,
         title: Text(
-          "Select Vehicle",
+          "Add Check List",
           style: TextStyle(color: Colors.white),
         ),
       ),
@@ -123,9 +124,9 @@ class _VehicleCodeLookupState extends State<VehicleCodeLookup> {
               ),
             ),
             FutureBuilder(
-                future: retrieveVehicleForSearch(
+                future: retrieveOITMForSearch(
                     query: _query.text, limit: _currentMax),
-                builder: (context, AsyncSnapshot<List<OVCLModel>> snapshot) {
+                builder: (context, AsyncSnapshot<List<OITMModel>> snapshot) {
                   if (!snapshot.hasData) return Container();
                   if (snapshot.data?.isEmpty == true) {
                     return AlertDialog(
@@ -153,7 +154,7 @@ class _VehicleCodeLookupState extends State<VehicleCodeLookup> {
                                           child: FittedBox(
                                               fit: BoxFit.contain,
                                               child: getHeadingText(
-                                                text: "Code ",
+                                                text: "Item Code ",
                                               )),
                                         ),
                                         Expanded(
@@ -164,7 +165,7 @@ class _VehicleCodeLookupState extends State<VehicleCodeLookup> {
                                           child: FittedBox(
                                               fit: BoxFit.contain,
                                               child: getHeadingText(
-                                                text: "Truck Number  ",
+                                                text: "Item Description  ",
                                               )),
                                         ),
                                       ],
@@ -191,62 +192,108 @@ class _VehicleCodeLookupState extends State<VehicleCodeLookup> {
                             if (index > snapshot.data!.length) {
                               return Container();
                             }
-                            return InkWell(
-                              onDoubleTap: () {
-                                widget.onSelected(snapshot.data![index]);
-                                Get.back();
-                              },
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  shape: BoxShape.rectangle,
-                                  borderRadius: BorderRadius.circular(16.0),
-                                  boxShadow: const [
-                                    BoxShadow(
-                                      color: Colors.black26,
-                                      blurRadius: 4.0,
-                                      offset: Offset(2.0, 2.0),
-                                    ),
-                                  ],
-                                ),
-                                margin: const EdgeInsets.all(15),
-                                width: MediaQuery.of(context).size.width,
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8),
-                                  child: Row(
-                                    children: [
-                                      Flexible(
-                                        child: Padding(
-                                          padding:
-                                              const EdgeInsets.only(left: 8.0),
-                                          child: Align(
-                                            alignment: Alignment.topLeft,
-                                            child: getHeadingText(
-                                              text:
-                                                  snapshot.data![index].Code ??
-                                                      "",
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      Flexible(
-                                        child: Padding(
-                                          padding:
-                                              const EdgeInsets.only(right: 8.0),
-                                          child: Align(
-                                            alignment: Alignment.centerLeft,
-                                            child: getSubHeadingText(
-                                              text:
-                                                  snapshot.data![index].TruckNo,
-                                            ),
-                                          ),
-                                        ),
+                            if (_query.text.isNotEmpty
+                                ? (snapshot.data![index].ItemCode
+                                        .toString()
+                                        .toUpperCase()
+                                        .contains(_query.text
+                                            .toString()
+                                            .toUpperCase()) ||
+                                    snapshot.data![index].ItemName
+                                        .toString()
+                                        .toUpperCase()
+                                        .contains(_query.text
+                                            .toString()
+                                            .toUpperCase()))
+                                : true) {
+                              return InkWell(
+                                onDoubleTap: () {
+                                  bool isAdded = false;
+                                  for (int i = 0;
+                                      i < ItemDetails.items.length;
+                                      i++) {
+                                    if (snapshot.data![index].ItemCode ==
+                                        ItemDetails.items[i].ItemCode) {
+                                      isAdded = true;
+                                      break;
+                                    }
+                                  }
+                                  if (isAdded) {
+                                    getErrorSnackBar(
+                                        snapshot.data![index].ItemName +
+                                            " is already added");
+                                  } else {
+                                    ClearCheckListDoc.clearEditCheckList();
+                                    EditItems.transId = GeneralData.transId;
+                                    EditItems.itemCode =
+                                        snapshot.data![index].ItemCode;
+                                    EditItems.itemName =
+                                        snapshot.data![index].ItemName;
+                                    Get.to(() => EditItems());
+                                  }
+                                },
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    shape: BoxShape.rectangle,
+                                    borderRadius: BorderRadius.circular(16.0),
+                                    boxShadow: const [
+                                      BoxShadow(
+                                        color: Colors.black26,
+                                        blurRadius: 4.0,
+                                        offset: Offset(2.0, 2.0),
                                       ),
                                     ],
                                   ),
+                                  margin: const EdgeInsets.all(15),
+                                  width: MediaQuery.of(context).size.width,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8),
+                                    child: Row(
+                                      children: [
+                                        Flexible(
+                                          child: Padding(
+                                            padding: const EdgeInsets.only(
+                                                left: 8.0),
+                                            child: Align(
+                                              alignment: Alignment.topLeft,
+                                              child: getHeadingText(
+                                                text: snapshot.data![index]
+                                                            .ItemCode
+                                                            .toString() ==
+                                                        ""
+                                                    ? "ABC"
+                                                    : snapshot
+                                                        .data![index].ItemCode
+                                                        .toString(),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        Flexible(
+                                          child: Padding(
+                                            padding: const EdgeInsets.only(
+                                                right: 8.0),
+                                            child: Align(
+                                              alignment: Alignment.centerLeft,
+                                              child: getSubHeadingText(
+                                                text: snapshot
+                                                    .data![index].ItemName,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
                                 ),
-                              ),
-                            );
+                              );
+                            } else {
+                              return SizedBox(
+                                height: 0.0,
+                                width: 0.0,
+                              );
+                            }
                           }),
                     ],
                   );

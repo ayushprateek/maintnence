@@ -3,18 +3,18 @@ import 'package:get/get.dart';
 import 'package:maintenance/Component/CustomColor.dart';
 import 'package:maintenance/Component/CustomFont.dart';
 import 'package:maintenance/Component/GetTextField.dart';
-import 'package:maintenance/Sync/SyncModels/OVCL.dart';
+import 'package:maintenance/Sync/SyncModels/OTAX.dart';
 
-class VehicleCodeLookup extends StatefulWidget {
-  Function(OVCLModel) onSelected;
+class TaxLookup extends StatefulWidget {
+  Function(OTAXModel) onSelected;
 
-  VehicleCodeLookup({required this.onSelected});
+  TaxLookup({required this.onSelected});
 
   @override
   _VehicleCodeLookupState createState() => _VehicleCodeLookupState();
 }
 
-class _VehicleCodeLookupState extends State<VehicleCodeLookup> {
+class _VehicleCodeLookupState extends State<TaxLookup> {
   ScrollController _scrollController = ScrollController();
   final TextEditingController _query = TextEditingController();
   int _currentMax = 15;
@@ -123,9 +123,9 @@ class _VehicleCodeLookupState extends State<VehicleCodeLookup> {
               ),
             ),
             FutureBuilder(
-                future: retrieveVehicleForSearch(
+                future: retrieveTaxForSearch(
                     query: _query.text, limit: _currentMax),
-                builder: (context, AsyncSnapshot<List<OVCLModel>> snapshot) {
+                builder: (context, AsyncSnapshot<List<OTAXModel>> snapshot) {
                   if (!snapshot.hasData) return Container();
                   if (snapshot.data?.isEmpty == true) {
                     return AlertDialog(
@@ -153,7 +153,7 @@ class _VehicleCodeLookupState extends State<VehicleCodeLookup> {
                                           child: FittedBox(
                                               fit: BoxFit.contain,
                                               child: getHeadingText(
-                                                text: "Code ",
+                                                text: "Tax Code ",
                                               )),
                                         ),
                                         Expanded(
@@ -164,7 +164,7 @@ class _VehicleCodeLookupState extends State<VehicleCodeLookup> {
                                           child: FittedBox(
                                               fit: BoxFit.contain,
                                               child: getHeadingText(
-                                                text: "Truck Number  ",
+                                                text: "Tax Rate  ",
                                               )),
                                         ),
                                       ],
@@ -222,9 +222,9 @@ class _VehicleCodeLookupState extends State<VehicleCodeLookup> {
                                           child: Align(
                                             alignment: Alignment.topLeft,
                                             child: getHeadingText(
-                                              text:
-                                                  snapshot.data![index].Code ??
-                                                      "",
+                                              text: snapshot
+                                                      .data![index].TaxCode ??
+                                                  "",
                                             ),
                                           ),
                                         ),
@@ -236,8 +236,7 @@ class _VehicleCodeLookupState extends State<VehicleCodeLookup> {
                                           child: Align(
                                             alignment: Alignment.centerLeft,
                                             child: getSubHeadingText(
-                                              text:
-                                                  snapshot.data![index].TruckNo,
+                                              text: snapshot.data![index].Rate.toStringAsFixed(2),
                                             ),
                                           ),
                                         ),

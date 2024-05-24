@@ -81,6 +81,16 @@ Future<List<OTAXModel>> retrieveOTAX(BuildContext context) async {
   return queryResult.map((e) => OTAXModel.fromJson(e)).toList();
 }
 
+Future<List<OTAXModel>> retrieveTaxForSearch({
+  int? limit,
+  String? query,
+}) async {
+  query="%$query%";
+  final Database db = await initializeDB(null);
+  final List<Map<String, Object?>> queryResult = await db.rawQuery('SELECT * FROM OTAX WHERE TaxCode LIKE "$query" LIMIT $limit');
+  return queryResult.map((e) => OTAXModel.fromJson(e)).toList();
+}
+
 Future<void> updateOTAX(
     int id, Map<String, dynamic> values, BuildContext context) async {
   final db = await initializeDB(context);

@@ -85,60 +85,30 @@ class _DashboardState extends State<Dashboard> {
 
   dashboardQuery() async {
     Database db = await initializeDB(null);
+    //TODO:UNCOMMENT (julianday('now') - julianday(IFNULL(MNOCLD.PostingDate, '1990-12-12'))) > MNOCLT.UnitValue AND
+
     String query = '''
-    SELECT MNOCLD.EquipmentCode, OVCLs.Code, MNVCL1.CheckListCode, MNOCLD.CheckListName,
-             MNOCLD.PostingDate, (julianday('now') - julianday(MNOCLD.PostingDate)) as DateDiff, *
-      FROM ovcl OVCLs
-      JOIN mnvcl1 MNVCL1 ON OVCLs.code = MNVCL1.Code
-      JOIN mnovcl MNOVCLs ON OVCLs.code = MNOVCLs.Code
-      LEFT JOIN MNOCLD MNOCLD ON MNOCLD.equipmentcode = OVCLs.code AND MNVCL1.CheckListCode = MNOCLD.CheckListCode
-      LEFT JOIN MNOCLT MNOCLT ON MNOCLT.CheckType = MNOCLD.CheckListCode
-      WHERE (julianday('now') - julianday(MNOCLD.PostingDate)) > MNOCLT.Unit
-      UNION ALL
-      SELECT MNOCLD.equipmentcode, OVCLs.code, MNVCL1.CheckListCode, MNOCLD.CheckListCode, 
-             MNOCLD.PostingDate, (julianday('now') - julianday(MNOCLD.PostingDate)) as DateDiff, *
-      FROM ovcl OVCLs
-      JOIN mnvcl1 MNVCL1 ON OVCLs.code = MNVCL1.Code
-      JOIN mnovcl MNOVCLs ON OVCLs.code = MNOVCLs.Code
-      LEFT JOIN MNOCLD MNOCLD ON MNOCLD.equipmentcode = OVCLs.code AND MNVCL1.CheckListCode = MNOCLD.CheckListCode
-      LEFT JOIN MNOCLT MNOCLT ON MNOCLT.CheckType = MNOCLD.CheckListCode
-      WHERE (julianday('now') - julianday(MNOCLD.PostingDate)) > MNOCLT.MediumPriorityDays
-      UNION ALL
-      SELECT MNOCLD.equipmentcode, OVCLs.code, MNVCL1.CheckListCode, MNOCLD.CheckListCode, 
-             MNOCLD.PostingDate, (julianday('now') - julianday(MNOCLD.PostingDate)) as DateDiff, *
-      FROM ovcl OVCLs
-      JOIN mnvcl1 MNVCL1 ON OVCLs.code = MNVCL1.Code
-      JOIN mnovcl MNOVCLs ON OVCLs.code = MNOVCLs.Code
-      LEFT JOIN MNOCLD MNOCLD ON MNOCLD.equipmentcode = OVCLs.code AND MNVCL1.CheckListCode = MNOCLD.CheckListCode
-      LEFT JOIN MNOCLT MNOCLT ON MNOCLT.CheckType = MNOCLD.CheckListCode
-      WHERE (julianday('now') - julianday(MNOCLD.PostingDate)) > MNOCLT.HighPriorityDays
-      UNION ALL
-      SELECT MNOCLD.equipmentcode, OVCLs.code, MNVCL1.CheckListCode, MNOCLD.CheckListCode, 
-             MNOCLD.PostingDate, (julianday('now') - julianday(MNOCLD.PostingDate)) as DateDiff, *
-      FROM ovcl OVCLs
-      JOIN mnvcl1 MNVCL1 ON OVCLs.code = MNVCL1.Code
-      JOIN mnovcl MNOVCLs ON OVCLs.code = MNOVCLs.Code
-      LEFT JOIN MNOCLD MNOCLD ON MNOCLD.equipmentcode = OVCLs.code AND MNVCL1.CheckListCode = MNOCLD.CheckListCode
-      LEFT JOIN MNOCLT MNOCLT ON MNOCLT.CheckType = MNOCLD.CheckListCode
-      WHERE (OVCLs.OdometerReading - MNOCLD.CurrentReading) > MNOCLT.Unit
-      UNION ALL
-      SELECT MNOCLD.equipmentcode, OVCLs.code, MNVCL1.CheckListCode, MNOCLD.CheckListCode, 
-             MNOCLD.PostingDate, (julianday('now') - julianday(MNOCLD.PostingDate)) as DateDiff, *
-      FROM ovcl OVCLs
-      JOIN mnvcl1 MNVCL1 ON OVCLs.code = MNVCL1.Code
-      JOIN mnovcl MNOVCLs ON OVCLs.code = MNOVCLs.Code
-      LEFT JOIN MNOCLD MNOCLD ON MNOCLD.equipmentcode = OVCLs.code AND MNVCL1.CheckListCode = MNOCLD.CheckListCode
-      LEFT JOIN MNOCLT MNOCLT ON MNOCLT.CheckType = MNOCLD.CheckListCode
-      WHERE (OVCLs.OdometerReading - MNOCLD.CurrentReading) > MNOCLT.MediumPriorityDays
-      UNION ALL
-      SELECT MNOCLD.equipmentcode, OVCLs.code, MNVCL1.CheckListCode, MNOCLD.CheckListCode, 
-             MNOCLD.PostingDate, (julianday('now') - julianday(MNOCLD.PostingDate)) as DateDiff, *
-      FROM ovcl OVCLs
-      JOIN mnvcl1 MNVCL1 ON OVCLs.code = MNVCL1.Code
-      JOIN mnovcl MNOVCLs ON OVCLs.code = MNOVCLs.Code
-      LEFT JOIN MNOCLD MNOCLD ON MNOCLD.equipmentcode = OVCLs.code AND MNVCL1.CheckListCode = MNOCLD.CheckListCode
-      LEFT JOIN MNOCLT MNOCLT ON MNOCLT.CheckType = MNOCLD.CheckListCode
-      WHERE (OVCLs.OdometerReading - MNOCLD.CurrentReading) > MNOCLT.HighPriorityDays
+    SELECT 
+    OVCLs.code AS "EquipmentCode", 
+    MNVCL1.CheckListCode, 
+    MNOCLD.PostingDate AS "LastPostingDate",
+    (julianday('now') - julianday(IFNULL(MNOCLD.PostingDate, '1990-12-12'))) AS "MaintenenceDueDays",
+    CASE 
+        WHEN (julianday('now') - julianday(IFNULL(MNOCLD.PostingDate, '1990-12-12'))) >= MNOCLT.UnitValue THEN 'Due'
+        WHEN (julianday('now') - julianday(IFNULL(MNOCLD.PostingDate, '1990-12-12'))) > MNOCLT.HighPriorityDays AND (julianday('now') - julianday(IFNULL(MNOCLD.PostingDate, '1990-12-12'))) <  MNOCLT.UnitValue THEN 'HighPriority'
+        WHEN (julianday('now') - julianday(IFNULL(MNOCLD.PostingDate, '1990-12-12'))) > MNOCLT.MediumPriorityDays AND (julianday('now') - julianday(IFNULL(MNOCLD.PostingDate, '1990-12-12'))) <= MNOCLT.HighPriorityDays THEN 'MediumPriority'
+    END AS 'Priority',
+    MNOCLT.UnitValue AS "MaintenenceFrequencyDays",
+    *
+FROM 
+    ovcl OVCLs
+    LEFT JOIN mnvcl1 MNVCL1 ON OVCLs.Code = MNVCL1.Code
+    LEFT JOIN mnovcl MNOVCLs ON OVCLs.Code = MNOVCLs.Code
+    LEFT JOIN MNOCLD MNOCLD ON MNOCLD.equipmentcode = OVCLs.code AND MNVCL1.CheckListCode = MNOCLD.CheckListCode
+    LEFT JOIN MNOCLT MNOCLT ON MNOCLT.Code = MNVCL1.CheckListCode
+WHERE 
+   --(julianday('now') - julianday(IFNULL(MNOCLD.PostingDate, '1990-12-12'))) > MNOCLT.UnitValue AND
+     MNOCLT.CheckType = 'Others'
     ''';
     List dataList = await db.rawQuery(query);
     if (dataList.isNotEmpty) {

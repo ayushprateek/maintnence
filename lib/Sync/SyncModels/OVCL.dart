@@ -34,6 +34,7 @@ class OVCLModel {
     required this.Own,
     required this.EmpId,
     required this.EmpDesc,
+    required this.OdometerReading,
     this.TransCode,
     this.TrnasName,
     this.CreatedBy,
@@ -55,6 +56,7 @@ class OVCLModel {
   bool hasCreated;
   String ChasisNo;
   double FuelCapacity;
+  double OdometerReading;
   bool Active;
   bool Own;
   String EmpId;
@@ -82,6 +84,7 @@ class OVCLModel {
         EngineNo: json["EngineNo"] ?? "",
         ChasisNo: json["ChasisNo"] ?? "",
         FuelCapacity: double.tryParse(json["FuelCapacity"].toString()) ?? 0.0,
+    OdometerReading: double.tryParse(json["OdometerReading"].toString()) ?? 0.0,
         Active: json["Active"] is bool ? json["Active"] : json["Active"] == 1,
         Own: json["Own"] is bool ? json["Own"] : json["Own"] == 1,
         EmpId: json["EmpId"] ?? "",
@@ -108,6 +111,7 @@ class OVCLModel {
         "EngineNo": EngineNo,
         "ChasisNo": ChasisNo,
         "FuelCapacity": FuelCapacity,
+        "OdometerReading": OdometerReading,
         "Active": Active == true ? 1 : 0,
         "Own": Own == true ? 1 : 0,
         "EmpId": EmpId,

@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:maintenance/Component/CustomColor.dart';
 import 'package:maintenance/Component/CustomFont.dart';
+import 'package:maintenance/GoodsIssue/ItemDetails/AddItems.dart';
+import 'package:maintenance/Sync/SyncModels/IMGDI1.dart';
 
 
 class ItemDetails extends StatefulWidget {
   const ItemDetails({super.key});
-  static List items=[];
+  static List<IMGDI1> items=[];
 
   // static List<MNJCD1> items = [MNJCD1()];
 
@@ -33,6 +36,7 @@ class _ItemDetailsState extends State<ItemDetails> {
                   ),
                 ),
                 onPressed: () {
+                  Get.to(()=>AddItems());
                   // if (GeneralData.customerCode?.isEmpty==true) {
                   //   getErrorSnackBar("Please select customer to continue");
                   // } else if (GeneralData.WhsCode?.isEmpty==true) {
