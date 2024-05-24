@@ -16,6 +16,9 @@ class MNCLD2{
   String? Remarks;
   DateTime? CreateDate;
   DateTime? UpdateDate;
+  bool insertedIntoDatabase;
+  bool? hasCreated;
+  bool? hasUpdated;
   MNCLD2({
     this.ID,
     this.TransId,
@@ -24,6 +27,9 @@ class MNCLD2{
     this.Remarks,
     this.CreateDate,
     this.UpdateDate,
+    this.insertedIntoDatabase = true,
+    this.hasCreated,
+    this.hasUpdated,
   });
   factory MNCLD2.fromJson(Map<String,dynamic> json)=>MNCLD2(
     ID : int.tryParse(json['ID'].toString())??0,
@@ -33,6 +39,8 @@ class MNCLD2{
     Remarks : json['Remarks']?.toString()??'',
     CreateDate : DateTime.tryParse(json['CreateDate'].toString()),
     UpdateDate : DateTime.tryParse(json['UpdateDate'].toString()),
+    hasCreated : json['has_created'] is bool ? json['has_created'] : json['has_created']==1,
+    hasUpdated : json['has_updated'] is bool ? json['has_updated'] : json['has_updated']==1,
   );
   Map<String,dynamic> toJson()=>{
     'ID' : ID,
@@ -42,6 +50,8 @@ class MNCLD2{
     'Remarks' : Remarks,
     'CreateDate' : CreateDate?.toIso8601String(),
     'UpdateDate' : UpdateDate?.toIso8601String(),
+    'has_created' : hasCreated,
+    'has_updated' : hasUpdated,
   };
 }
 List<MNCLD2> mNCLD2FromJson(String str) => List<MNCLD2>.from(

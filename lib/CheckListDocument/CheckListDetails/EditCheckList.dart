@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:maintenance/CheckListDocument/CheckListDetails/CheckListDetails.dart';
 import 'package:maintenance/CheckListDocument/CheckListDocument.dart';
 import 'package:maintenance/Component/CustomColor.dart';
+import 'package:maintenance/Component/GetFormattedDate.dart';
 import 'package:maintenance/Component/GetTextField.dart';
 import 'package:maintenance/Component/IsNumeric.dart';
 import 'package:maintenance/Component/SnackbarComponent.dart';
@@ -320,7 +321,8 @@ class _EditCheckListState extends State<EditCheckList> {
                               IsConsumption: EditCheckList.consumption,
                               IsRequest: EditCheckList.request,
                               RequiredDate:
-                                  DateTime.tryParse(_requiredDate.text),
+                                  getDateFromString(_requiredDate.text),
+                              insertedIntoDatabase: false,
                             );
                             CheckListDetails.items.add(mncld1);
 

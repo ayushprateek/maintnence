@@ -2,54 +2,24 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-
 // import 'package:flutter_map/flutter_map.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 import 'package:maintenance/Component/AppConfig.dart';
-import 'package:maintenance/Component/ClearTextFieldData.dart';
 import 'package:maintenance/Component/CompanyDetails.dart';
 import 'package:maintenance/Component/CustomColor.dart';
 import 'package:maintenance/Component/CustomDrawer.dart';
 import 'package:maintenance/Component/CustomFont.dart';
 import 'package:maintenance/Component/GetCurrentLocation.dart';
-import 'package:maintenance/Component/GetFormattedDate.dart';
-import 'package:maintenance/Component/GetLastDocNum.dart';
-import 'package:maintenance/Component/IsAvailableTransId.dart';
 import 'package:maintenance/Component/IsValidAppVersion.dart';
-import 'package:maintenance/Component/LogFileFunctions.dart';
-import 'package:maintenance/Component/MenuDescription.dart';
-import 'package:maintenance/Component/Mode.dart';
-import 'package:maintenance/Component/NavogateToForm.dart';
 import 'package:maintenance/Component/NotificationIcon.dart';
-import 'package:maintenance/Component/ShowLoader.dart';
 import 'package:maintenance/Component/SnackbarComponent.dart';
 import 'package:maintenance/CustomLocationPermission.dart';
 import 'package:maintenance/DatabaseInitialization.dart';
 import 'package:maintenance/LoginPage.dart';
-
-import 'package:maintenance/Sync/RecentDocument.dart';
-import 'package:maintenance/Sync/SyncModels/CVCVP1.dart';
-import 'package:maintenance/Sync/SyncModels/CVOCVP.dart';
-import 'package:maintenance/Sync/SyncModels/ECP1.dart';
-import 'package:maintenance/Sync/SyncModels/LITPL_OOAL.dart';
-import 'package:maintenance/Sync/SyncModels/OACT.dart';
-import 'package:maintenance/Sync/SyncModels/ODPT.dart';
-import 'package:maintenance/Sync/SyncModels/ODSC.dart';
-import 'package:maintenance/Sync/SyncModels/OECP.dart';
-import 'package:maintenance/Sync/SyncModels/OEMP.dart';
-import 'package:maintenance/Sync/SyncModels/OEXR.dart';
-import 'package:maintenance/Sync/SyncModels/ORTP.dart';
-import 'package:maintenance/Sync/SyncModels/ORTU.dart';
-import 'package:maintenance/Sync/SyncModels/XPM1.dart';
-
 import 'package:maintenance/main.dart';
 import 'package:package_info_plus/package_info_plus.dart';
-import 'package:pie_chart/pie_chart.dart' as pieChart;
 import 'package:sqflite/sqflite.dart';
-
-
 
 class Dashboard extends StatefulWidget {
   static var address;
@@ -69,6 +39,7 @@ class _DashboardState extends State<Dashboard> {
   List<Map>? expenseQueryResult = null;
   TextEditingController routeId = TextEditingController();
   PackageInfo? packageInfo;
+  Map dashboardData = {};
 
   Future getLocation() async {
     bool isLoading = true;
@@ -97,31 +68,91 @@ class _DashboardState extends State<Dashboard> {
     if (pos.latitude == 0.0) {
       CustomDrawer.hasEnabledLocation = false;
       getErrorSnackBar("Allow the app to access your location");
-    } else if (Platform.isAndroid) {
-      CustomDrawer.hasEnabledLocation = true;
-      // var methodChannel = MethodChannel("LITSales");
-      // String data = await methodChannel.invokeMethod("startService", {"user_id": userModel.Code, "dbPath": path});
     } else {
-      if (Platform.isIOS) {
+      if (Platform.isAndroid) {
+        CustomDrawer.hasEnabledLocation = true;
+        // var methodChannel = MethodChannel("LITSales");
+        // String data = await methodChannel.invokeMethod("startService", {"user_id": userModel.Code, "dbPath": path});
+      } else if (Platform.isIOS) {
         CustomDrawer.hasEnabledLocation = true;
         // var methodChannel = MethodChannel("LITSales");
         // String data = await methodChannel
         //     .invokeMethod("track_location", {"user_id": "1", "dbPath": path});
       }
+      dashboardQuery();
     }
   }
 
-
-
-
+  dashboardQuery() async {
+    Database db = await initializeDB(null);
+    String query = '''
+    SELECT MNOCLD.EquipmentCode, OVCLs.Code, MNVCL1.CheckListCode, MNOCLD.CheckListName,
+             MNOCLD.PostingDate, (julianday('now') - julianday(MNOCLD.PostingDate)) as DateDiff, *
+      FROM ovcl OVCLs
+      JOIN mnvcl1 MNVCL1 ON OVCLs.code = MNVCL1.Code
+      JOIN mnovcl MNOVCLs ON OVCLs.code = MNOVCLs.Code
+      LEFT JOIN MNOCLD MNOCLD ON MNOCLD.equipmentcode = OVCLs.code AND MNVCL1.CheckListCode = MNOCLD.CheckListCode
+      LEFT JOIN MNOCLT MNOCLT ON MNOCLT.CheckType = MNOCLD.CheckListCode
+      WHERE (julianday('now') - julianday(MNOCLD.PostingDate)) > MNOCLT.Unit
+      UNION ALL
+      SELECT MNOCLD.equipmentcode, OVCLs.code, MNVCL1.CheckListCode, MNOCLD.CheckListCode, 
+             MNOCLD.PostingDate, (julianday('now') - julianday(MNOCLD.PostingDate)) as DateDiff, *
+      FROM ovcl OVCLs
+      JOIN mnvcl1 MNVCL1 ON OVCLs.code = MNVCL1.Code
+      JOIN mnovcl MNOVCLs ON OVCLs.code = MNOVCLs.Code
+      LEFT JOIN MNOCLD MNOCLD ON MNOCLD.equipmentcode = OVCLs.code AND MNVCL1.CheckListCode = MNOCLD.CheckListCode
+      LEFT JOIN MNOCLT MNOCLT ON MNOCLT.CheckType = MNOCLD.CheckListCode
+      WHERE (julianday('now') - julianday(MNOCLD.PostingDate)) > MNOCLT.MediumPriorityDays
+      UNION ALL
+      SELECT MNOCLD.equipmentcode, OVCLs.code, MNVCL1.CheckListCode, MNOCLD.CheckListCode, 
+             MNOCLD.PostingDate, (julianday('now') - julianday(MNOCLD.PostingDate)) as DateDiff, *
+      FROM ovcl OVCLs
+      JOIN mnvcl1 MNVCL1 ON OVCLs.code = MNVCL1.Code
+      JOIN mnovcl MNOVCLs ON OVCLs.code = MNOVCLs.Code
+      LEFT JOIN MNOCLD MNOCLD ON MNOCLD.equipmentcode = OVCLs.code AND MNVCL1.CheckListCode = MNOCLD.CheckListCode
+      LEFT JOIN MNOCLT MNOCLT ON MNOCLT.CheckType = MNOCLD.CheckListCode
+      WHERE (julianday('now') - julianday(MNOCLD.PostingDate)) > MNOCLT.HighPriorityDays
+      UNION ALL
+      SELECT MNOCLD.equipmentcode, OVCLs.code, MNVCL1.CheckListCode, MNOCLD.CheckListCode, 
+             MNOCLD.PostingDate, (julianday('now') - julianday(MNOCLD.PostingDate)) as DateDiff, *
+      FROM ovcl OVCLs
+      JOIN mnvcl1 MNVCL1 ON OVCLs.code = MNVCL1.Code
+      JOIN mnovcl MNOVCLs ON OVCLs.code = MNOVCLs.Code
+      LEFT JOIN MNOCLD MNOCLD ON MNOCLD.equipmentcode = OVCLs.code AND MNVCL1.CheckListCode = MNOCLD.CheckListCode
+      LEFT JOIN MNOCLT MNOCLT ON MNOCLT.CheckType = MNOCLD.CheckListCode
+      WHERE (OVCLs.OdometerReading - MNOCLD.CurrentReading) > MNOCLT.Unit
+      UNION ALL
+      SELECT MNOCLD.equipmentcode, OVCLs.code, MNVCL1.CheckListCode, MNOCLD.CheckListCode, 
+             MNOCLD.PostingDate, (julianday('now') - julianday(MNOCLD.PostingDate)) as DateDiff, *
+      FROM ovcl OVCLs
+      JOIN mnvcl1 MNVCL1 ON OVCLs.code = MNVCL1.Code
+      JOIN mnovcl MNOVCLs ON OVCLs.code = MNOVCLs.Code
+      LEFT JOIN MNOCLD MNOCLD ON MNOCLD.equipmentcode = OVCLs.code AND MNVCL1.CheckListCode = MNOCLD.CheckListCode
+      LEFT JOIN MNOCLT MNOCLT ON MNOCLT.CheckType = MNOCLD.CheckListCode
+      WHERE (OVCLs.OdometerReading - MNOCLD.CurrentReading) > MNOCLT.MediumPriorityDays
+      UNION ALL
+      SELECT MNOCLD.equipmentcode, OVCLs.code, MNVCL1.CheckListCode, MNOCLD.CheckListCode, 
+             MNOCLD.PostingDate, (julianday('now') - julianday(MNOCLD.PostingDate)) as DateDiff, *
+      FROM ovcl OVCLs
+      JOIN mnvcl1 MNVCL1 ON OVCLs.code = MNVCL1.Code
+      JOIN mnovcl MNOVCLs ON OVCLs.code = MNOVCLs.Code
+      LEFT JOIN MNOCLD MNOCLD ON MNOCLD.equipmentcode = OVCLs.code AND MNVCL1.CheckListCode = MNOCLD.CheckListCode
+      LEFT JOIN MNOCLT MNOCLT ON MNOCLT.CheckType = MNOCLD.CheckListCode
+      WHERE (OVCLs.OdometerReading - MNOCLD.CurrentReading) > MNOCLT.HighPriorityDays
+    ''';
+    List dataList = await db.rawQuery(query);
+    if (dataList.isNotEmpty) {
+      setState(() {
+        dashboardData = dataList[0];
+      });
+    }
+  }
 
   Future<void> setVersion() async {
     packageInfo = await PackageInfo.fromPlatform();
   }
 
-  validateVersion({
-    required bool openDrawer
-  }) async {
+  validateVersion({required bool openDrawer}) async {
     await isValidAppVersion();
     if (isAppVersionValid == RxBool(true)) {
       setVersion();
@@ -143,7 +174,7 @@ class _DashboardState extends State<Dashboard> {
         if (seen != "True")
           Timer(
               Duration(milliseconds: 500),
-                  () => Navigator.push(
+              () => Navigator.push(
                   context,
                   new MaterialPageRoute(
                       builder: (context) => new CustomLocationPermission())));
@@ -152,7 +183,7 @@ class _DashboardState extends State<Dashboard> {
             getLocation();
           });
       } else {
-        if(openDrawer)
+        if (openDrawer)
           Timer(Duration(milliseconds: 100), () {
             key.currentState?.openDrawer();
           });
@@ -168,7 +199,7 @@ class _DashboardState extends State<Dashboard> {
         if (seen != "True")
           Timer(
               Duration(milliseconds: 500),
-                  () => Navigator.push(
+              () => Navigator.push(
                   context,
                   new MaterialPageRoute(
                       builder: (context) => new CustomLocationPermission())));
@@ -224,12 +255,12 @@ class _DashboardState extends State<Dashboard> {
 
       body: Obx(() => isAppVersionValid != RxBool(true)
           ? Center(
-        child: getHeadingText(
-            text: 'Please update the app to its latest version'),
-      )
+              child: getHeadingText(
+                  text: 'Please update the app to its latest version'),
+            )
           : SingleChildScrollView(
-        child: Column(),
-      )),
+              child: Column(),
+            )),
       bottomNavigationBar: Container(
         height: MediaQuery.of(context).size.height / 24,
         decoration: BoxDecoration(border: Border.all()),
@@ -245,5 +276,4 @@ class _DashboardState extends State<Dashboard> {
       //bottomNavigationBar: StickyFooter(),
     );
   }
-
 }

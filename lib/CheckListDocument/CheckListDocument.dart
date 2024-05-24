@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:maintenance/ApprovalStatus/ApprovalListUIComponent.dart';
 import 'package:maintenance/CheckListDocument/Attachments.dart';
 import 'package:maintenance/CheckListDocument/CheckListDetails/CheckListDetails.dart';
 import 'package:maintenance/CheckListDocument/GeneralData.dart';
@@ -8,8 +10,23 @@ import 'package:maintenance/Component/BackPressedWarning.dart';
 import 'package:maintenance/Component/ClearTextFieldData.dart';
 import 'package:maintenance/Component/CustomColor.dart';
 import 'package:maintenance/Component/CustomFont.dart';
+import 'package:maintenance/Component/GetCurrentLocation.dart';
+import 'package:maintenance/Component/LogFileFunctions.dart';
+import 'package:maintenance/Component/MenuDescription.dart';
+import 'package:maintenance/Component/Mode.dart';
+import 'package:maintenance/Component/ShowLoader.dart';
+import 'package:maintenance/Component/SnackbarComponent.dart';
 import 'package:maintenance/Dashboard.dart';
+import 'package:maintenance/DatabaseInitialization.dart';
+import 'package:maintenance/Sync/DataSync.dart';
+import 'package:maintenance/CheckListDocument/CheckListDetails/CheckListDetails.dart';
 import 'package:maintenance/Sync/SyncModels/ApprovalModel.dart';
+import 'package:maintenance/Sync/SyncModels/LITPL_OOAL.dart';
+import 'package:maintenance/Sync/SyncModels/MNCLD1.dart';
+import 'package:maintenance/Sync/SyncModels/MNCLD2.dart';
+import 'package:maintenance/Sync/SyncModels/MNOCLD.dart';
+import 'package:maintenance/main.dart';
+import 'package:sqflite/sqlite_api.dart';
 
 class CheckListDocument extends StatefulWidget {
   static var address;
@@ -43,7 +60,7 @@ class _CheckListDocumentState extends State<CheckListDocument> {
   _onBackButtonPressed() {
     Navigator.pushAndRemoveUntil(context,
         MaterialPageRoute(builder: (context) => Dashboard()), (route) => false);
-    // if (GeneralData.customerCode != '' || ItemDetails.items.isNotEmpty) {
+    // if (GeneralData.customerCode != '' || CheckListDetails.items.isNotEmpty) {
     //   showBackPressedWarning(onBackPressed: widget.onBackPressed);
     // } else if (widget.onBackPressed != null) {
     //   widget.onBackPressed!();
@@ -190,13 +207,13 @@ class _CheckListDocumentState extends State<CheckListDocument> {
                     //                     color: Colors.white
                     //                 ),),
                     //               onPressed: () async {
-                    //                 GeneralData.DocStatus="Cancelled";
+                    //                 GeneralData.docStatus="Cancelled";
                     //                 final db = await initializeDB(context);
                     //                 Map<String,dynamic> values={
-                    //                   "DocStatus":"Cancelled",
+                    //                   "docStatus":"Cancelled",
                     //                   "has_updated":1,
                     //                 };
-                    //                 await db.update(DBName.ODB, values, where: 'MTransId = ?', whereArgs: [GeneralData.MTransID]);
+                    //                 await db.update(MNOCLD, values, where: 'MTransId = ?', whereArgs: [GeneralData.MTransID]);
                     //                 Navigator.of(context).pop();
                     //                 Navigator.pop(context);
                     //                 Navigator.push(context, MaterialPageRoute(builder: (context)=>CheckListDocument(0)));
@@ -236,8 +253,219 @@ class _CheckListDocumentState extends State<CheckListDocument> {
           )),
     );
   }
+  bool isSelectedAndCancelled() {
+    bool flag = GeneralData.isSelected && GeneralData.docStatus == "Cancelled";
+    flag = flag || GeneralData.docStatus == "Close";
+    return flag;
+  }
 
-  save() {}
+  bool isSalesQuotationDocClosed() {
+    return GeneralData.docStatus == null
+        ? false
+        : (GeneralData.docStatus!.toUpperCase().contains('CLOSE') ||
+        GeneralData.approvalStatus != 'Pending');
+  }
 
-  syncWithServer() {}
+  bool isSelectedButNotCancelled() {
+    return GeneralData.isSelected && GeneralData.docStatus != "Cancelled";
+  }
+
+  save() async {
+    //GeneralData.isSelected
+    CheckListDocument.saveButtonPressed = false;
+    if (DataSync.isSyncing()) {
+      getErrorSnackBar(DataSync.syncingErrorMsg);
+    } else if (isSelectedAndCancelled()) {
+      getErrorSnackBar("This Document is already cancelled / closed");
+    } else if (!isSelectedButNotCancelled() &&
+        !(await Mode.isCreate(MenuDescription.salesQuotation))) {
+      getErrorSnackBar("You are not authorised to create this document");
+    } else if (isSelectedButNotCancelled() &&
+        !(await Mode.isEdit(MenuDescription.salesQuotation))) {
+      getErrorSnackBar("You are not authorised to edit this document");
+    }else {
+      if (!GeneralData.validate()) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Invalid General')),
+        );
+      }  else {
+        if (!CheckListDocument.saveButtonPressed) {
+          CheckListDocument.saveButtonPressed = true;
+          showLoader(context);
+          Position pos = await getCurrentLocation();
+          print(pos.latitude.toString());
+          print(pos.longitude.toString());
+          String str = 'TransId = ?';
+
+          String? data = GeneralData.transId;
+
+          final Database db = await initializeDB(context);
+          try {
+            await db.transaction((database) async {
+              //GENERAL DATA
+              MNOCLD generalData = GeneralData.getGeneralData();
+              if (!GeneralData.isSelected) {
+                if (CheckListDocument.approvalModel?.Add == true &&
+                    CheckListDocument.approvalModel?.Active == true) {
+                  List approvalList = await GetApprovalConfiguration_Multiple(
+                      db: database, docName: 'Check List Document');
+                  for (int i = 0; i < approvalList.length; i++) {
+                    ApprovalModel approvalModel =
+                    ApprovalModel.fromJson(approvalList[i]);
+
+                    LITPL_OOAL ooal = LITPL_OOAL(
+                      Level: 1,
+                      ACID: approvalModel.ACID,
+                      DocID: approvalModel.DocID,
+                      OUserCode: approvalModel.OUserCode,
+                      OUserName: approvalModel.OUserName,
+                      AUserCode: approvalModel.AUserCode,
+                      AUserName: approvalModel.AUserName,
+                      BranchId: userModel.BranchId.toString(),
+                      CreatedBy: userModel.UserCode,
+                      CreatedDate: DateTime.now(),
+                      TransDocID: generalData.ID,
+                      TransId: generalData.TransId,
+                      DocDate: generalData.PostingDate,
+                      DocStatus: generalData.DocStatus,
+                      DocNum: approvalModel.DocName,
+                      Approve: false,
+                      Reject: false,
+                      hasCreated: true,
+                    );
+                    if (generalData.DocStatus != 'Draft') {
+                      generalData.ApprovalStatus = 'Pending';
+                      await database.insert('LITPL_OOAL', ooal.toJson());
+                    }
+                  }
+                } else {
+                  generalData.ApprovalStatus = 'Approved';
+                }
+              }
+
+              print(generalData.toJson());
+              generalData
+                  .toJson()
+                  .removeWhere((key, value) => value == null || value == '');
+              print(generalData.toJson());
+              print(generalData);
+               if (isSelectedButNotCancelled()) {
+                //UpdateDate
+                generalData.UpdateDate = DateTime.now();
+                generalData.UpdatedBy = userModel.UserCode;
+                generalData.hasUpdated = true;
+                Map<String, Object?> map = generalData.toJson();
+                map.removeWhere((key, value) => value == null || value == '');
+                await database
+                    .update('MNOCLD', map, where: str, whereArgs: [data]);
+                getSuccessSnackBar("Sales Quotation Updated Successfully");
+              } else {
+                //CreateDate
+                getSuccessSnackBar("Creating Sales Quotation...");
+                generalData.CreateDate = DateTime.now();
+                generalData.UpdateDate = DateTime.now();
+                generalData.CreatedBy = userModel.UserCode;
+                generalData.BranchId = userModel.BranchId.toString();
+                generalData.hasCreated = true;
+                await database.insert('MNOCLD', generalData.toJson());
+              }
+
+              //ITEM DETAILS
+              print("Item Details ");
+               if (isSelectedButNotCancelled()) {
+                for (int i = 0; i < CheckListDetails.items.length; i++) {
+                  MNCLD1 qut1model = CheckListDetails.items[i];
+                  qut1model.RowId = i;
+
+                  if (!qut1model.insertedIntoDatabase) {
+                    qut1model.hasCreated = true;
+                    
+                    qut1model.CreateDate = DateTime.now();
+                    qut1model.UpdateDate = DateTime.now();
+                    
+                    await database.insert('MNCLD1', qut1model.toJson());
+                  } else {
+                    qut1model.hasUpdated = true;
+                    qut1model.UpdateDate = DateTime.now();
+                    Map<String, Object?> map = qut1model.toJson();
+                    map.removeWhere(
+                            (key, value) => value == null || value == '');
+                    await database.update('MNCLD1', map,
+                        where: 'TransId = ? AND RowId = ?',
+                        whereArgs: [qut1model.TransId, qut1model.RowId]);
+                  }
+                }
+
+
+                for (int i = 0; i < Attachments.attachments.length; i++) {
+                  MNCLD2 qut1model = Attachments.attachments[i];
+                  qut1model.RowId = i;
+
+                  if (!qut1model.insertedIntoDatabase) {
+                    qut1model.hasCreated = true;
+
+                    qut1model.CreateDate = DateTime.now();
+                    qut1model.UpdateDate = DateTime.now();
+
+                    await database.insert('MNCLD2', qut1model.toJson());
+                  } else {
+                    qut1model.hasUpdated = true;
+                    qut1model.UpdateDate = DateTime.now();
+                    Map<String, Object?> map = qut1model.toJson();
+                    map.removeWhere(
+                            (key, value) => value == null || value == '');
+                    await database.update('MNCLD2', map,
+                        where: 'TransId = ? AND RowId = ?',
+                        whereArgs: [qut1model.TransId, qut1model.RowId]);
+                  }
+                }
+
+              }
+               else {
+                for (int i = 0; i < CheckListDetails.items.length; i++) {
+                  MNCLD1 qut1model = CheckListDetails.items[i];
+                  qut1model.ID = i;
+                  qut1model.RowId = i;
+                  qut1model.hasCreated = true;
+                  qut1model.CreateDate = DateTime.now();
+
+                  if (!qut1model.insertedIntoDatabase) {
+
+                    qut1model.CreateDate = DateTime.now();
+                    qut1model.UpdateDate = DateTime.now();
+
+                    await database.insert('MNCLD1', qut1model.toJson());
+                  }
+                }
+                for (int i = 0; i < Attachments.attachments.length; i++) {
+                  MNCLD2 qut1model = Attachments.attachments[i];
+                  qut1model.ID = i;
+                  qut1model.RowId = i;
+                  qut1model.hasCreated = true;
+                  qut1model.CreateDate = DateTime.now();
+
+                  if (!qut1model.insertedIntoDatabase) {
+
+                    qut1model.CreateDate = DateTime.now();
+                    qut1model.UpdateDate = DateTime.now();
+
+                    await database.insert('MNCLD2', qut1model.toJson());
+                  }
+                }
+              }
+
+            });
+            goToNewCheckListDocument();
+          } catch (e) {
+            writeToLogFile(
+                text: e.toString(),
+                fileName: StackTrace.current.toString(),
+                lineNo: 141);
+            getErrorSnackBar("Something went wrong.\nData not saved...");
+          }
+        }
+      }
+    }
+  }
+  
 }

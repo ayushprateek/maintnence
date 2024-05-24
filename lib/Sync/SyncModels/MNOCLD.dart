@@ -43,6 +43,8 @@ class MNOCLD{
   String? CurrentReading;
   bool? IsConsumption;
   bool? IsRequest;
+  bool hasCreated;
+  bool hasUpdated;
   MNOCLD({
     this.ID,
     this.PermanentTransId,
@@ -78,6 +80,8 @@ class MNOCLD{
     this.CurrentReading,
     this.IsConsumption,
     this.IsRequest,
+    this.hasCreated = false,
+    this.hasUpdated = false,
   });
   factory MNOCLD.fromJson(Map<String,dynamic> json)=>MNOCLD(
     ID : int.tryParse(json['ID'].toString())??0,
@@ -87,6 +91,8 @@ class MNOCLD{
     DocNum : json['DocNum']?.toString()??'',
     Canceled : json['Canceled']?.toString()??'',
     DocStatus : json['DocStatus']?.toString()??'',
+    hasCreated: json['has_created'] == 1,
+    hasUpdated: json['has_updated'] == 1,
     ApprovalStatus : json['ApprovalStatus']?.toString()??'',
     CheckListStatus : json['CheckListStatus']?.toString()??'',
     ObjectCode : json['ObjectCode']?.toString()??'',
@@ -132,6 +138,8 @@ class MNOCLD{
     'CheckListName' : CheckListName,
     'WorkCenterCode' : WorkCenterCode,
     'WorkCenterName' : WorkCenterName,
+    "has_created": hasCreated ? 1 : 0,
+    "has_updated": hasUpdated ? 1 : 0,
     'OpenDate' : OpenDate?.toIso8601String(),
     'CloseDate' : CloseDate?.toIso8601String(),
     'PostingDate' : PostingDate?.toIso8601String(),

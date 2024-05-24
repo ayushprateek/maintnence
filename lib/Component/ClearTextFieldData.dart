@@ -90,6 +90,7 @@ class ClearCheckListDoc {
     checkListDoc.GeneralData.currentReading = '';
     checkListDoc.GeneralData.isConsumption = false;
     checkListDoc.GeneralData.isRequest = false;
+    checkListDoc.GeneralData.isSelected = false;
   }
 
   static clearCheckListAttachments() {

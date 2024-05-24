@@ -2,12 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:maintenance/CheckListDocument/CheckListDocument.dart';
 import 'package:maintenance/Component/CustomColor.dart';
+import 'package:maintenance/Component/GetFormattedDate.dart';
+import 'package:maintenance/Component/SnackbarComponent.dart';
 import 'package:maintenance/Lookups/TechnicianCodeLookup.dart';
 import 'package:maintenance/Lookups/WorkCenterLookup.dart';
 import 'package:maintenance/Component/CustomFont.dart';
 import 'package:maintenance/Component/GetTextField.dart';
 import 'package:maintenance/Lookups/CheckListCodeLookup.dart';
 import 'package:maintenance/Lookups/EquipmentCodeLokup.dart';
+import 'package:maintenance/Sync/SyncModels/MNOCLD.dart';
 import 'package:maintenance/Sync/SyncModels/MNOCLM.dart';
 import 'package:maintenance/Sync/SyncModels/MNOWCM.dart';
 import 'package:maintenance/Sync/SyncModels/OEMP.dart';
@@ -15,6 +18,8 @@ import 'package:maintenance/Sync/SyncModels/OVCL.dart';
 
 class GeneralData extends StatefulWidget {
   GeneralData({super.key});
+
+  static bool isSelected = false, hasCreated = false, hasUpdated = false;
 
   static String? iD;
   static String? permanentTransId;
@@ -50,7 +55,73 @@ class GeneralData extends StatefulWidget {
   static String? currentReading;
   static bool? isConsumption;
   static bool? isRequest;
+
   static String tyreMaintenance = 'No';
+  static bool validate() {
+    bool success = true;
+
+
+    if (transId == "" || transId == null) {
+      getErrorSnackBar("Invalid TransId");
+      success = false;
+    }
+    if (equipmentName == "" || equipmentName == null) {
+      getErrorSnackBar("Invalid Equipment");
+      success = false;
+    }
+    if (checkListName == "" || checkListName == null) {
+      getErrorSnackBar("Invalid Check List");
+      success = false;
+    }
+
+    if (workCenterName == "" || workCenterName == null) {
+      getErrorSnackBar("Invalid Work Center");
+      success = false;
+    }
+    if (assignedUserName == "" || assignedUserName == null) {
+      getErrorSnackBar("Invalid Technician");
+      success = false;
+    }
+
+    return success;
+  }
+  static MNOCLD getGeneralData() {
+    return MNOCLD(
+        ID: int.tryParse(iD ?? ''),
+        TransId: transId,
+        DocNum: docNum ?? '',
+        PermanentTransId: permanentTransId ?? '',
+
+        PostingDate: getDateFromString(postingDate ?? ""),
+        ValidUntill: getDateFromString(validUntill ?? ''),
+
+        hasCreated: hasCreated,
+        hasUpdated: hasUpdated,
+        ObjectCode: '23',
+        Remarks: remarks,
+        AssignedUserCode: assignedUserCode,
+        AssignedUserName: assignedUserName,
+        CheckListCode: checkListCode,
+        CheckListName: checkListName,
+        CheckListStatus: checkListStatus,
+        CurrentReading: currentReading,
+        EquipmentCode: equipmentCode,
+        EquipmentName: equipmentName,
+        IsConsumption: isConsumption,
+        IsRequest: isRequest,
+        WorkCenterCode: workCenterCode,
+        WorkCenterName: workCenterName,
+        MNJCTransId: mNJCTransId,
+        OpenDate: getDateFromString(openDate ?? ""),
+        CloseDate: getDateFromString(closeDate ?? ""),
+        LastReading: lastReading,
+        LastReadingDate: getDateFromString(lastReadingDate ?? ""),
+
+
+        ApprovalStatus: approvalStatus ?? "Pending",
+        DocStatus: docStatus,
+       );
+  }
 
   @override
   State<GeneralData> createState() => _GeneralDataState();

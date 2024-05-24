@@ -37,6 +37,7 @@ class MNCLD1{
   DateTime? RequiredDate;
   bool? hasCreated;
   bool? hasUpdated;
+  bool insertedIntoDatabase;
   MNCLD1({
     this.ID,
     this.TransId,
@@ -65,6 +66,7 @@ class MNCLD1{
     this.RequiredDate,
     this.hasCreated,
     this.hasUpdated,
+    this.insertedIntoDatabase = true,
   });
   factory MNCLD1.fromJson(Map<String,dynamic> json)=>MNCLD1(
     ID : int.tryParse(json['ID'].toString())??0,
