@@ -43,6 +43,9 @@ class MNJCD4{
   int? LR;
   String? Attachment;
   String? Remarks;
+  bool hasCreated;
+  bool hasUpdated;
+  bool insertedIntoDatabase;
   MNJCD4({
     this.ID,
     this.TransId,
@@ -78,6 +81,9 @@ class MNJCD4{
     this.LR,
     this.Attachment,
     this.Remarks,
+    this.hasCreated = false,
+    this.hasUpdated = false,
+    this.insertedIntoDatabase = true,
   });
   factory MNJCD4.fromJson(Map<String,dynamic> json)=>MNJCD4(
     ID : int.tryParse(json['ID'].toString())??0,
@@ -114,6 +120,8 @@ class MNJCD4{
     LR : int.tryParse(json['LR'].toString())??0,
     Attachment : json['Attachment']?.toString() ?? '',
     Remarks : json['Remarks']?.toString() ?? '',
+    hasCreated: json['has_created'] == 1,
+    hasUpdated: json['has_updated'] == 1,
   );
   Map<String,dynamic> toJson()=>{
     'ID' : ID,
@@ -150,6 +158,8 @@ class MNJCD4{
     'LR' : LR,
     'Attachment' : Attachment,
     'Remarks' : Remarks,
+    "has_created": hasCreated ? 1 : 0,
+    "has_updated": hasUpdated ? 1 : 0,
   };
 }
 List<MNJCD4> mNJCD4FromJson(String str) => List<MNJCD4>.from(

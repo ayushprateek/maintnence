@@ -65,32 +65,33 @@ class _EditServiceState extends State<EditService> {
               height: 20,
             ),
 
-            getDisabledTextField(
-                controller: _serviceCode,
-                labelText: 'Service Code',
-                onChanged: (val) {
-                  EditService.serviceCode = val;
-                }),
+            // getDisabledTextField(
+            //     controller: _serviceCode,
+            //     labelText: 'Service Code',
+            //     onChanged: (val) {
+            //       EditService.serviceCode = val;
+            //     }),
             getDisabledTextField(
                 controller: _serviceName, labelText: 'Service Name'),
 
+            // getDisabledTextField(
+            //     controller: _supplierCode,
+            //     labelText: 'Supplier Code',
+            //     ),
             getDisabledTextField(
-                controller: _supplierCode,
-                labelText: 'Supplier Code',
+                controller: _supplierName, labelText: 'Supplier',
                 enableLookup: true,
                 onLookupPressed: () {
                   Get.to(
-                      () => SupplierLookup(onSelected: (OCRDModel ocrdModel) {
-                            setState(() {
-                              EditService.supplierCode =
-                                  _supplierCode.text = ocrdModel.Code;
-                              EditService.supplierName =
-                                  _supplierName.text = ocrdModel.Name ?? '';
-                            });
-                          }));
+                          () => SupplierLookup(onSelected: (OCRDModel ocrdModel) {
+                        setState(() {
+                          EditService.supplierCode =
+                              _supplierCode.text = ocrdModel.Code;
+                          EditService.supplierName =
+                              _supplierName.text = ocrdModel.Name ?? '';
+                        });
+                      }));
                 }),
-            getDisabledTextField(
-                controller: _supplierName, labelText: 'Supplier Name'),
             getTextField(
               controller: _infoPrice,
               labelText: 'Info Price',
@@ -159,6 +160,7 @@ class _EditServiceState extends State<EditService> {
                                   EditService.supplierCode.toString() ?? '',
                               SupplierName:
                                   EditService.supplierName.toString() ?? '',
+                              insertedIntoDatabase: false
                             );
                             ServiceDetails.items.add(mncld1);
 

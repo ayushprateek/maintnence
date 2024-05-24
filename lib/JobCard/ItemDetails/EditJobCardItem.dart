@@ -93,12 +93,7 @@ class _EditJobCardItemState extends State<EditJobCardItem> {
               height: 20,
             ),
 
-            getDisabledTextField(
-                controller: _itemCode,
-                labelText: 'Item Code',
-                onChanged: (val) {
-                  EditJobCardItem.itemCode = val;
-                }),
+
             getDisabledTextField(controller: _itemName, labelText: 'Item Name'),
             getTextField(
               controller: _quantity,
@@ -109,42 +104,7 @@ class _EditJobCardItemState extends State<EditJobCardItem> {
               keyboardType: getDecimalKeyboardType(),
               inputFormatters: [getDecimalRegEx()],
             ),
-            // if (uomCode.isNotEmpty)
-            //   Padding(
-            //     padding: const EdgeInsets.only(
-            //       left: 10,
-            //       right: 8,
-            //     ),
-            //     child: Row(
-            //       children: [
-            //         Container(
-            //           color: Colors.white,
-            //           child: getHeadingText(text: 'UOM : '),
-            //         ),
-            //         Align(
-            //           alignment: Alignment.centerRight,
-            //           child: Padding(
-            //             padding:
-            //             const EdgeInsets.only(left: 20.0),
-            //             child: DropdownButton<String>(
-            //               items: uomCode.map((String value) {
-            //                 return DropdownMenuItem<String>(
-            //                   value: value,
-            //                   child: Text(value),
-            //                 );
-            //               }).toList(),
-            //               onChanged: (val) {
-            //                 setState(() {
-            //                   EditCheckList.uom = val;
-            //                 });
-            //               },
-            //               value: EditCheckList.uom,
-            //             ),
-            //           ),
-            //         ),
-            //       ],
-            //     ),
-            //   ),
+
             getDisabledTextField(
                 controller: _uomName,
                 labelText: 'UOM',
@@ -159,23 +119,21 @@ class _EditJobCardItemState extends State<EditJobCardItem> {
                         });
                       }));
                 }),
+
             getDisabledTextField(
-                controller: _supplierCode,
-                labelText: 'Supplier Code',
+                controller: _supplierName, labelText: 'Supplier',
                 enableLookup: true,
                 onLookupPressed: () {
                   Get.to(
-                      () => SupplierLookup(onSelected: (OCRDModel ocrdModel) {
-                            setState(() {
-                              EditJobCardItem.supplierCode =
-                                  _supplierCode.text = ocrdModel.Code;
-                              EditJobCardItem.supplierName =
-                                  _supplierName.text = ocrdModel.Name ?? '';
-                            });
-                          }));
+                          () => SupplierLookup(onSelected: (OCRDModel ocrdModel) {
+                        setState(() {
+                          EditJobCardItem.supplierCode =
+                              _supplierCode.text = ocrdModel.Code;
+                          EditJobCardItem.supplierName =
+                              _supplierName.text = ocrdModel.Name ?? '';
+                        });
+                      }));
                 }),
-            getDisabledTextField(
-                controller: _supplierName, labelText: 'Supplier Name'),
 
             getDateTextField(
                 controller: _requiredDate,
@@ -273,6 +231,7 @@ class _EditJobCardItemState extends State<EditJobCardItem> {
                                   EditJobCardItem.supplierName.toString() ?? '',
                               IsConsumption: EditJobCardItem.consumption,
                               IsRequest: EditJobCardItem.request,
+                              insertedIntoDatabase: false
                             );
                             ItemDetails.items.add(mncld1);
 

@@ -16,6 +16,9 @@ class MNJCD3{
   String? Remarks;
   DateTime? CreateDate;
   DateTime? UpdateDate;
+  bool hasCreated;
+  bool hasUpdated;
+  bool insertedIntoDatabase;
   MNJCD3({
     this.ID,
     this.TransId,
@@ -24,6 +27,9 @@ class MNJCD3{
     this.Remarks,
     this.CreateDate,
     this.UpdateDate,
+    this.hasCreated = false,
+    this.hasUpdated = false,
+    this.insertedIntoDatabase = true,
   });
   factory MNJCD3.fromJson(Map<String,dynamic> json)=>MNJCD3(
     ID : int.tryParse(json['ID'].toString())??0,
@@ -33,6 +39,8 @@ class MNJCD3{
     Remarks : json['Remarks']?.toString() ?? '',
     CreateDate : DateTime.tryParse(json['CreateDate'].toString()),
     UpdateDate : DateTime.tryParse(json['UpdateDate'].toString()),
+    hasCreated: json['has_created'] == 1,
+    hasUpdated: json['has_updated'] == 1,
   );
   Map<String,dynamic> toJson()=>{
     'ID' : ID,
@@ -42,6 +50,8 @@ class MNJCD3{
     'Remarks' : Remarks,
     'CreateDate' : CreateDate?.toIso8601String(),
     'UpdateDate' : UpdateDate?.toIso8601String(),
+    "has_created": hasCreated ? 1 : 0,
+    "has_updated": hasUpdated ? 1 : 0,
   };
 }
 List<MNJCD3> mNJCD3FromJson(String str) => List<MNJCD3>.from(

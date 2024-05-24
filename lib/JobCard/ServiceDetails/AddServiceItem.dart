@@ -7,6 +7,7 @@ import 'package:maintenance/Component/GetTextField.dart';
 import 'package:maintenance/Component/SnackbarComponent.dart';
 import 'package:maintenance/JobCard/ServiceDetails/EditService.dart';
 import 'package:maintenance/JobCard/ServiceDetails/ServiceDetails.dart';
+import 'package:maintenance/JobCard/GeneralData.dart';
 import 'package:maintenance/Sync/SyncModels/OITM.dart';
 
 class AddServiceItem extends StatefulWidget {
@@ -227,6 +228,8 @@ class _AddServiceItemState extends State<AddServiceItem> {
                                     ClearJobCardDoc.clearEditService();
                                     EditService.serviceCode =
                                         snapshot.data![index].ItemCode;
+                                    EditService.transId =
+                                        GeneralData.transId;
                                     EditService.serviceName =
                                         snapshot.data![index].ItemName;
                                     Get.to(() => EditService());

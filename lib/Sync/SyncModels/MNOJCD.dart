@@ -45,6 +45,8 @@ class MNOJCD{
   DateTime? UpdateDate;
   bool? IsConsumption;
   bool? IsRequest;
+  bool hasCreated;
+  bool hasUpdated;
   MNOJCD({
     this.ID,
     this.PermanentTransId,
@@ -82,6 +84,8 @@ class MNOJCD{
     this.UpdateDate,
     this.IsConsumption,
     this.IsRequest,
+    this.hasCreated = false,
+    this.hasUpdated = false,
   });
   factory MNOJCD.fromJson(Map<String,dynamic> json)=>MNOJCD(
     ID : int.tryParse(json['ID'].toString())??0,
@@ -120,6 +124,8 @@ class MNOJCD{
     UpdateDate : DateTime.tryParse(json['UpdateDate'].toString()),
     IsConsumption : json['IsConsumption'] is bool ? json['IsConsumption'] : json['IsConsumption']==1,
     IsRequest : json['IsRequest'] is bool ? json['IsRequest'] : json['IsRequest']==1,
+    hasCreated: json['has_created'] == 1,
+    hasUpdated: json['has_updated'] == 1,
   );
   Map<String,dynamic> toJson()=>{
     'ID' : ID,
@@ -158,6 +164,8 @@ class MNOJCD{
     'UpdateDate' : UpdateDate?.toIso8601String(),
     'IsConsumption' : IsConsumption,
     'IsRequest' : IsRequest,
+    "has_created": hasCreated ? 1 : 0,
+    "has_updated": hasUpdated ? 1 : 0,
   };
 }
 List<MNOJCD> mNOJCDFromJson(String str) => List<MNOJCD>.from(

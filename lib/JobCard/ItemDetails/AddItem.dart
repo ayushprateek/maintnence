@@ -7,6 +7,7 @@ import 'package:maintenance/Component/GetTextField.dart';
 import 'package:maintenance/Component/SnackbarComponent.dart';
 import 'package:maintenance/JobCard/ItemDetails/ItemDetails.dart';
 import 'package:maintenance/JobCard/ItemDetails/EditJobCardItem.dart';
+import 'package:maintenance/JobCard/GeneralData.dart';
 import 'package:maintenance/Sync/SyncModels/OITM.dart';
 
 class AddItem extends StatefulWidget {
@@ -223,6 +224,8 @@ class _AddItemState extends State<AddItem> {
                                             " is already added");
                                   } else {
                                     ClearJobCardDoc.clearEditItems();
+                                    EditJobCardItem.transId =
+                                        GeneralData.transId;
                                     EditJobCardItem.itemCode =
                                         snapshot.data![index].ItemCode;
                                     EditJobCardItem.itemName =

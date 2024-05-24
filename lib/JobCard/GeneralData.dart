@@ -1,18 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:maintenance/Component/CustomColor.dart';
 import 'package:maintenance/Component/CustomFont.dart';
+import 'package:maintenance/Component/GetFormattedDate.dart';
 import 'package:maintenance/Component/GetTextField.dart';
+import 'package:maintenance/Component/SnackbarComponent.dart';
 import 'package:maintenance/Lookups/CheckListCodeLookup.dart';
 import 'package:maintenance/Lookups/EmployeeLookup.dart';
 import 'package:maintenance/Lookups/EquipmentCodeLokup.dart';
 import 'package:maintenance/Lookups/WorkCenterLookup.dart';
 import 'package:maintenance/Sync/SyncModels/MNOCLM.dart';
+import 'package:maintenance/Sync/SyncModels/MNOJCD.dart';
 import 'package:maintenance/Sync/SyncModels/MNOWCM.dart';
 import 'package:maintenance/Sync/SyncModels/OEMP.dart';
 import 'package:maintenance/Sync/SyncModels/OVCL.dart';
 
 class GeneralData extends StatefulWidget {
   const GeneralData({super.key});
+  static bool isSelected = false, hasCreated = false, hasUpdated = false;
 
   static String? iD;
   static String? permanentTransId;
@@ -45,9 +50,79 @@ class GeneralData extends StatefulWidget {
   static String? branchId;
   static String? createDate;
   static String? updateDate;
+  static String warranty = 'Yes';
+  static String type = 'Preventive';
 
   static bool isConsumption = false;
   static bool isRequest = false;
+
+  static bool validate() {
+    bool success = true;
+
+
+    if (transId == "" || transId == null) {
+      getErrorSnackBar("Invalid TransId");
+      success = false;
+    }
+    if (equipmentName == "" || equipmentName == null) {
+      getErrorSnackBar("Invalid Equipment");
+      success = false;
+    }
+    if (checkListName == "" || checkListName == null) {
+      getErrorSnackBar("Invalid Check List");
+      success = false;
+    }
+
+    if (workCenterName == "" || workCenterName == null) {
+      getErrorSnackBar("Invalid Work Center");
+      success = false;
+    }
+    if (assignedUserName == "" || assignedUserName == null) {
+      getErrorSnackBar("Invalid Technician");
+      success = false;
+    }
+
+    return success;
+  }
+  static MNOJCD getGeneralData() {
+    return MNOJCD(
+      ID: int.tryParse(iD ?? ''),
+      TransId: transId,
+
+      //todo:
+      // DocNum: docNum ?? '',
+      PermanentTransId: permanentTransId ?? '',
+
+      PostingDate: getDateFromString(postingDate ?? ""),
+      ValidUntill: getDateFromString(validUntill ?? ''),
+
+      hasCreated: hasCreated,
+      hasUpdated: hasUpdated,
+      ObjectCode: '23',
+      Remarks: remarks,
+      AssignedUserCode: assignedUserCode,
+      AssignedUserName: assignedUserName,
+      CheckListCode: checkListCode,
+      CheckListName: checkListName,
+      EquipmentCode: equipmentCode,
+      EquipmentName: equipmentName,
+      IsConsumption: isConsumption,
+      IsRequest: isRequest,
+      WorkCenterCode: workCenterCode,
+      WorkCenterName: workCenterName,
+      OpenDate: getDateFromString(openDate ?? ""),
+      CloseDate: getDateFromString(closeDate ?? ""),
+      WarrentyApplicable: warranty == 'Yes',
+      Type: type,
+      //todo
+      // LastReading: lastReading,
+      LastReadingDate: getDateFromString(lastReadingDate ?? ""),
+
+
+      ApprovalStatus: approvalStatus ?? "Pending",
+      DocStatus: docStatus,
+    );
+  }
 
   @override
   State<GeneralData> createState() => _GeneralDataState();
@@ -100,9 +175,9 @@ class _GeneralDataState extends State<GeneralData> {
       TextEditingController(text: GeneralData.remarks);
 
   List<String> typeList = ['Preventive', 'Breakdown'];
-  String type = 'Preventive';
+
   List<String> warrantyList = ['Yes', 'No'];
-  String warranty = 'Yes';
+
   List<String> checkListStatusOptions = [
     'Open',
     'Close',
@@ -119,70 +194,70 @@ class _GeneralDataState extends State<GeneralData> {
           const SizedBox(
             height: 25,
           ),
-          getDisabledTextField(
-              controller: _permanentTransId, labelText: 'Permanent Trans Id'),
-          getDisabledTextField(controller: _docNum, labelText: 'ERP Docnum'),
+
           getDisabledTextField(controller: _transId, labelText: 'Trans Id'),
-          getDisabledTextField(controller: _docEntry, labelText: 'Doc Entry'),
           getDisabledTextField(
               controller: _postingDate, labelText: 'Posting Date'),
           getDisabledTextField(
               controller: _validUntill, labelText: 'Valid Until'),
+          // getDisabledTextField(
+          //     controller: _equipmentCode,
+          //     labelText: 'Equipment Code',
+          //     ),
           getDisabledTextField(
-              controller: _equipmentCode,
-              labelText: 'Equipment Code',
+              controller: _equipmentName, labelText: 'Equipment',
               enableLookup: true,
               onLookupPressed: () {
                 Get.to(() => EquipmentCodeLookup(
-                      onSelection: (OVCLModel ovcl) {
-                        setState(() {
-                          GeneralData.equipmentCode =
-                              _equipmentCode.text = ovcl.Code;
-                          GeneralData.equipmentName =
-                              _equipmentName.text = ovcl.Code;
-                        });
-                      },
-                    ));
+                  onSelection: (OVCLModel ovcl) {
+                    setState(() {
+                      GeneralData.equipmentCode =
+                          _equipmentCode.text = ovcl.Code;
+                      GeneralData.equipmentName =
+                          _equipmentName.text = ovcl.Code;
+                    });
+                  },
+                ));
               }),
+          // getDisabledTextField(
+          //     controller: _checkListCode,
+          //     labelText: 'Check List Code',
+          //     ),
           getDisabledTextField(
-              controller: _equipmentName, labelText: 'Equipment Name'),
-          getDisabledTextField(
-              controller: _checkListCode,
-              labelText: 'Check List Code',
+              controller: _checkListName, labelText: 'CheckList',
               enableLookup: true,
               onLookupPressed: () {
                 Get.to(() => CheckListCodeLookup(
-                      onSelection: (MNOCLM mnoclm) {
-                        setState(() {
-                          GeneralData.checkListCode =
-                              _checkListCode.text = mnoclm.Code ?? '';
-                          GeneralData.checkListName =
-                              _checkListName.text = mnoclm.Name ?? '';
-                        });
-                      },
-                    ));
+                  onSelection: (MNOCLM mnoclm) {
+                    setState(() {
+                      GeneralData.checkListCode =
+                          _checkListCode.text = mnoclm.Code ?? '';
+                      GeneralData.checkListName =
+                          _checkListName.text = mnoclm.Name ?? '';
+                    });
+                  },
+                ));
               }),
+          // getDisabledTextField(
+          //   controller: _workCenterCode,
+          //   labelText: 'WorkCenter Code',
+          //
+          // ),
           getDisabledTextField(
-              controller: _checkListName, labelText: 'CheckList Name'),
-          getDisabledTextField(
-            controller: _workCenterCode,
-            labelText: 'WorkCenter Code',
+              controller: _workCenterName, labelText: 'WorkCenter',
             enableLookup: true,
             onLookupPressed: () {
               Get.to(() => WorkCenterLookup(
-                    onSelection: (MNOWCM mnowcm) {
-                      setState(() {
-                        GeneralData.workCenterCode =
-                            _workCenterCode.text = mnowcm.Code ?? '';
-                        GeneralData.workCenterName =
-                            _workCenterName.text = mnowcm.Name ?? '';
-                      });
-                    },
-                  ));
-            },
-          ),
-          getDisabledTextField(
-              controller: _workCenterName, labelText: 'WorkCenter Name'),
+                onSelection: (MNOWCM mnowcm) {
+                  setState(() {
+                    GeneralData.workCenterCode =
+                        _workCenterCode.text = mnowcm.Code ?? '';
+                    GeneralData.workCenterName =
+                        _workCenterName.text = mnowcm.Name ?? '';
+                  });
+                },
+              ));
+            },),
           getDisabledTextField(controller: _docStatus, labelText: 'Doc Status'),
           getDisabledTextField(
               controller: _approvalStatus, labelText: 'Approval Status'),
@@ -250,7 +325,7 @@ class _GeneralDataState extends State<GeneralData> {
                       }).toList(),
                       onChanged: (val) {
                         setState(() {
-                          type = val ?? type;
+                          GeneralData.type = val ?? GeneralData.type;
                           // if (Status == 'Yes') {
                           //   CheckListDocument.numOfTabs.value = 4;
                           // } else {
@@ -258,7 +333,7 @@ class _GeneralDataState extends State<GeneralData> {
                           // }
                         });
                       },
-                      value: type,
+                      value: GeneralData.type,
                     ),
                   ),
                   IconButton(
@@ -276,22 +351,23 @@ class _GeneralDataState extends State<GeneralData> {
               controller: _lastReadingDate, labelText: 'Last Reading Date'),
           getDisabledTextField(
               controller: _lastReading, labelText: 'Last Reading'),
+          // getDisabledTextField(
+          //     controller: _assignedUserCode,
+          //     labelText: 'Assign to Code',
+          //     ),
           getDisabledTextField(
-              controller: _assignedUserCode,
-              labelText: 'Assign to Code',
+              controller: _assignedUserName, labelText: 'Assign To',
               enableLookup: true,
               onLookupPressed: () {
                 Get.to(() => EmployeeLookup(onSelection: (OEMPModel oempModel) {
-                      setState(() {
-                        GeneralData.assignedUserCode =
-                            _assignedUserCode.text = oempModel.Code;
-                        GeneralData.assignedUserName =
-                            _assignedUserName.text = oempModel.Name ?? '';
-                      });
-                    }));
+                  setState(() {
+                    GeneralData.assignedUserCode =
+                        _assignedUserCode.text = oempModel.Code;
+                    GeneralData.assignedUserName =
+                        _assignedUserName.text = oempModel.Name ?? '';
+                  });
+                }));
               }),
-          getDisabledTextField(
-              controller: _assignedUserName, labelText: 'Assign To Name'),
           Padding(
             padding: const EdgeInsets.only(
               bottom: 6.0,
@@ -320,7 +396,7 @@ class _GeneralDataState extends State<GeneralData> {
                       }).toList(),
                       onChanged: (val) {
                         setState(() {
-                          warranty = val ?? warranty;
+                          GeneralData.warranty = val ?? GeneralData.warranty;
                           // if (Status == 'Yes') {
                           //   CheckListDocument.numOfTabs.value = 4;
                           // } else {
@@ -328,7 +404,7 @@ class _GeneralDataState extends State<GeneralData> {
                           // }
                         });
                       },
-                      value: warranty,
+                      value: GeneralData.warranty,
                     ),
                   ),
                   IconButton(
@@ -343,6 +419,20 @@ class _GeneralDataState extends State<GeneralData> {
             ),
           ),
           getTextField(controller: _remarks, labelText: 'Remarks'),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: ExpansionTile(
+              collapsedBackgroundColor: barColor,
+              backgroundColor: barColor,
+              title: getHeadingText(text: "Details", color: headColor),
+              children: [
+                getDisabledTextField(
+                    controller: _permanentTransId, labelText: 'Permanent Trans Id'),
+                getDisabledTextField(controller: _docNum, labelText: 'ERP Doc Num'),
+                getDisabledTextField(controller: _docEntry, labelText: 'Doc Entry'),
+              ],
+            ),
+          ),
         ],
       ),
     );

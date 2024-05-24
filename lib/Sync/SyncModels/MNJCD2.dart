@@ -22,6 +22,9 @@ class MNJCD2{
   DateTime? CreateDate;
   DateTime? UpdateDate;
   bool IsSendableItem;
+  bool hasCreated;
+  bool hasUpdated;
+  bool insertedIntoDatabase;
   MNJCD2({
     this.ID,
     this.TransId,
@@ -36,6 +39,9 @@ class MNJCD2{
     this.CreateDate,
     this.UpdateDate,
     this.IsSendableItem=false,
+    this.hasCreated = false,
+    this.hasUpdated = false,
+    this.insertedIntoDatabase = true,
   });
   factory MNJCD2.fromJson(Map<String,dynamic> json)=>MNJCD2(
     ID : int.tryParse(json['ID'].toString())??0,
@@ -51,6 +57,8 @@ class MNJCD2{
     CreateDate : DateTime.tryParse(json['CreateDate'].toString()),
     UpdateDate : DateTime.tryParse(json['UpdateDate'].toString()),
     IsSendableItem : json['IsSendableItem'] is bool ? json['IsSendableItem'] : json['IsSendableItem']==1,
+    hasCreated: json['has_created'] == 1,
+    hasUpdated: json['has_updated'] == 1,
   );
   Map<String,dynamic> toJson()=>{
     'ID' : ID,
@@ -66,6 +74,8 @@ class MNJCD2{
     'CreateDate' : CreateDate?.toIso8601String(),
     'UpdateDate' : UpdateDate?.toIso8601String(),
     'IsSendableItem' : IsSendableItem,
+    "has_created": hasCreated ? 1 : 0,
+    "has_updated": hasUpdated ? 1 : 0,
   };
 }
 List<MNJCD2> mNJCD2FromJson(String str) => List<MNJCD2>.from(

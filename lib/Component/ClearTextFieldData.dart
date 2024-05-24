@@ -91,6 +91,8 @@ class ClearCheckListDoc {
     checkListDoc.GeneralData.isConsumption = false;
     checkListDoc.GeneralData.isRequest = false;
     checkListDoc.GeneralData.isSelected = false;
+    checkListDoc.GeneralData.hasCreated = false;
+    checkListDoc.GeneralData.hasUpdated = false;
   }
 
   static clearCheckListAttachments() {
@@ -140,6 +142,11 @@ class ClearJobCardDoc {
 
     jcdGenData.GeneralData.isConsumption = false;
     jcdGenData.GeneralData.isRequest = false;
+    jcdGenData.GeneralData.isSelected = false;
+    jcdGenData.GeneralData.hasCreated = false;
+    jcdGenData.GeneralData.hasUpdated = false;
+    jcdGenData.GeneralData.warranty = 'Yes';
+    jcdGenData.GeneralData.type = 'Preventive';
   }
 
   static clearEditItems() {
