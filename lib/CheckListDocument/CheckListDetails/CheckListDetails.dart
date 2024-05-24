@@ -159,27 +159,27 @@ class _CheckListDetailsState extends State<CheckListDetails> {
                                                 ),
                                               ),
                                             ),
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                  left: 8.0,
-                                                  right: 8.0,
-                                                  top: 4.0),
-                                              child: Align(
-                                                alignment: Alignment.topLeft,
-                                                child: Text.rich(
-                                                  TextSpan(
-                                                    children: [
-                                                      getPoppinsTextSpanHeading(
-                                                          text: 'Item Code'),
-                                                      getPoppinsTextSpanDetails(
-                                                          text:
-                                                              mncld1.ItemCode ??
-                                                                  ''),
-                                                    ],
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
+                                            // Padding(
+                                            //   padding: const EdgeInsets.only(
+                                            //       left: 8.0,
+                                            //       right: 8.0,
+                                            //       top: 4.0),
+                                            //   child: Align(
+                                            //     alignment: Alignment.topLeft,
+                                            //     child: Text.rich(
+                                            //       TextSpan(
+                                            //         children: [
+                                            //           getPoppinsTextSpanHeading(
+                                            //               text: 'Item Code'),
+                                            //           getPoppinsTextSpanDetails(
+                                            //               text:
+                                            //                   mncld1.ItemCode ??
+                                            //                       ''),
+                                            //         ],
+                                            //       ),
+                                            //     ),
+                                            //   ),
+                                            // ),
                                             Padding(
                                               padding: const EdgeInsets.only(
                                                   left: 8.0,
@@ -337,28 +337,28 @@ class _CheckListDetailsState extends State<CheckListDetails> {
                                                 ),
                                               ),
                                             ),
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                  left: 8.0,
-                                                  right: 8.0,
-                                                  top: 4.0),
-                                              child: Align(
-                                                alignment: Alignment.topLeft,
-                                                child: Text.rich(
-                                                  TextSpan(
-                                                    children: [
-                                                      getPoppinsTextSpanHeading(
-                                                          text:
-                                                              'Supplier Code'),
-                                                      getPoppinsTextSpanDetails(
-                                                          text: mncld1
-                                                                  .SupplierCode ??
-                                                              ''),
-                                                    ],
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
+                                            // Padding(
+                                            //   padding: const EdgeInsets.only(
+                                            //       left: 8.0,
+                                            //       right: 8.0,
+                                            //       top: 4.0),
+                                            //   child: Align(
+                                            //     alignment: Alignment.topLeft,
+                                            //     child: Text.rich(
+                                            //       TextSpan(
+                                            //         children: [
+                                            //           getPoppinsTextSpanHeading(
+                                            //               text:
+                                            //                   'Supplier Code'),
+                                            //           getPoppinsTextSpanDetails(
+                                            //               text: mncld1
+                                            //                       .SupplierCode ??
+                                            //                   ''),
+                                            //         ],
+                                            //       ),
+                                            //     ),
+                                            //   ),
+                                            // ),
                                             Padding(
                                               padding: const EdgeInsets.only(
                                                   left: 8.0,

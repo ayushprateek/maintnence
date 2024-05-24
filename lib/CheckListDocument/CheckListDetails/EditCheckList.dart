@@ -104,12 +104,12 @@ class _EditCheckListState extends State<EditCheckList> {
                 onChanged: (val) {
                   EditCheckList.description = val;
                 }),
-            getDisabledTextField(
-                controller: _itemCode,
-                labelText: 'Item Code',
-                onChanged: (val) {
-                  EditCheckList.itemCode = val;
-                }),
+            // getDisabledTextField(
+            //     controller: _itemCode,
+            //     labelText: 'Item Code',
+            //     onChanged: (val) {
+            //       EditCheckList.itemCode = val;
+            //     }),
             getDisabledTextField(controller: _itemName, labelText: 'Item Name'),
             getTextField(
               controller: _consumptionQty,
@@ -170,23 +170,24 @@ class _EditCheckListState extends State<EditCheckList> {
                         });
                       }));
                 }),
+            // getDisabledTextField(
+            //     controller: _supplierCode,
+            //     labelText: 'Supplier Code',
+            //     ),
             getDisabledTextField(
-                controller: _supplierCode,
-                labelText: 'Supplier Code',
+                controller: _supplierName, labelText: 'Supplier',
                 enableLookup: true,
                 onLookupPressed: () {
                   Get.to(
-                      () => SupplierLookup(onSelected: (OCRDModel ocrdModel) {
-                            setState(() {
-                              EditCheckList.supplierCode =
-                                  _supplierCode.text = ocrdModel.Code;
-                              EditCheckList.supplierName =
-                                  _supplierName.text = ocrdModel.Name ?? '';
-                            });
-                          }));
+                          () => SupplierLookup(onSelected: (OCRDModel ocrdModel) {
+                        setState(() {
+                          EditCheckList.supplierCode =
+                              _supplierCode.text = ocrdModel.Code;
+                          EditCheckList.supplierName =
+                              _supplierName.text = ocrdModel.Name ?? '';
+                        });
+                      }));
                 }),
-            getDisabledTextField(
-                controller: _supplierName, labelText: 'Supplier Name'),
             getTextField(
                 controller: _userRemarks,
                 labelText: 'User Remarks',
