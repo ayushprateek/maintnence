@@ -125,8 +125,8 @@ Future<void> insertMNCLM1(Database db, {List? list}) async {
       for (var element in batchRecords) {
         try {
           batch.update("MNCLM1", element,
-              where: "TransId = ? AND ifnull(has_created,0) <> ? AND ifnull(has_updated,0) <> ?",
-              whereArgs: [element["TransId"], 1, 1]);
+              where: "Code = ? AND RowId = ? AND ifnull(has_created,0) <> ? AND ifnull(has_updated,0) <> ?",
+              whereArgs: [element["Code"],element["RowId"], 1, 1]);
 
         } catch (e) {
           writeToLogFile(
@@ -148,8 +148,8 @@ Future<void> insertMNCLM1(Database db, {List? list}) async {
   var v = await db.rawQuery('''
     SELECT T0.*
 FROM MNCLM1_Temp T0
-LEFT JOIN MNCLM1 T1 ON T0.TransId = T1.TransId 
-WHERE T1.TransId IS NULL;
+LEFT JOIN MNCLM1 T1 ON T0.Code = T1.Code AND T0.RowId = T1.RowId  
+WHERE T1.Code IS NULL AND T1.RowId IS NULL;
 ''');
   for (var i = 0; i < v.length; i += batchSize) {
     var end = (i + batchSize < v.length) ? i + batchSize : v.length;
@@ -229,7 +229,7 @@ Future<String> insertMNCLM1ToServer(BuildContext? context, {String? TransId, int
             final Database db = await initializeDB(context);
             map=jsonDecode(res.body);
             map["has_created"] = 0;
-            var x = await db.update("MNCLM1", map, where: "TransId = ? AND RowId = ?", whereArgs: [map["TransId"], map["RowId"]]);
+            var x = await db.update("MNCLM1", map, where: "Code = ? AND RowId = ?", whereArgs: [map["Code"], map["RowId"]]);
             print(x.toString());}}
         print(res.body);
       } catch (e) {
@@ -257,7 +257,7 @@ Future<void> updateMNCLM1OnServer(BuildContext? context, {String? condition, Lis
         if (res.statusCode == 201) {
           final Database db = await initializeDB(context);
           map["has_updated"] = 0;
-          var x = await db.update("MNCLM1", map, where: "TransId = ? AND RowId = ?", whereArgs: [map["TransId"], map["RowId"]]);
+          var x = await db.update("MNCLM1", map, where: "Code = ? AND RowId = ?", whereArgs: [map["Code"], map["RowId"]]);
           print(x.toString());
         }
       }

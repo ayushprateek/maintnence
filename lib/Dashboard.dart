@@ -2,15 +2,23 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-// import 'package:flutter_map/flutter_map.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
+import 'package:maintenance/CheckListDocument/CheckListDetails/CheckListDetails.dart'
+    as checkListDetails;
+import 'package:maintenance/CheckListDocument/CheckListDocument.dart';
+import 'package:maintenance/CheckListDocument/GeneralData.dart'
+    as checkListGenData;
 import 'package:maintenance/Component/AppConfig.dart';
+import 'package:maintenance/Component/ClearTextFieldData.dart';
 import 'package:maintenance/Component/CompanyDetails.dart';
 import 'package:maintenance/Component/CustomColor.dart';
 import 'package:maintenance/Component/CustomDrawer.dart';
 import 'package:maintenance/Component/CustomFont.dart';
 import 'package:maintenance/Component/GetCurrentLocation.dart';
+import 'package:maintenance/Component/GetFormattedDate.dart';
+import 'package:maintenance/Component/GetLastDocNum.dart';
+import 'package:maintenance/Component/IsAvailableTransId.dart';
 import 'package:maintenance/Component/IsValidAppVersion.dart';
 import 'package:maintenance/Component/NotificationIcon.dart';
 import 'package:maintenance/Component/SnackbarComponent.dart';
@@ -18,6 +26,10 @@ import 'package:maintenance/CustomLocationPermission.dart';
 import 'package:maintenance/DashboardQueryModel.dart';
 import 'package:maintenance/DatabaseInitialization.dart';
 import 'package:maintenance/LoginPage.dart';
+import 'package:maintenance/Sync/SyncModels/MNCLD1.dart';
+import 'package:maintenance/Sync/SyncModels/MNCLM1.dart';
+import 'package:maintenance/Sync/SyncModels/MNOCLT.dart';
+import 'package:maintenance/Sync/SyncModels/MNOWCM.dart';
 import 'package:maintenance/main.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:sqflite/sqflite.dart';
@@ -80,7 +92,6 @@ class _DashboardState extends State<Dashboard> {
         // String data = await methodChannel
         //     .invokeMethod("track_location", {"user_id": "1", "dbPath": path});
       }
-      dashboardQuery();
     }
   }
 
@@ -166,11 +177,10 @@ WHERE
             key.currentState?.openDrawer();
           });
       }
+      await dashboardQuery();
       // LIND28279
 
       // fData
-      //todo: if loading data
-      // fetchData();
     } else {
       if (!CustomDrawer.hasEnabledLocation) {
         var seen = localStorage?.get("seen_location_purpose");
@@ -186,6 +196,7 @@ WHERE
             await getLocation();
           });
       }
+      await dashboardQuery();
       setState(() {});
     }
   }
@@ -194,6 +205,153 @@ WHERE
   void initState() {
     super.initState();
     validateVersion(openDrawer: true);
+  }
+
+  setCheckListData({required MaintenanceItemsQueryModel dashboardItem}) async {
+    await ClearCheckListDoc.clearCheckListDocTextFields();
+    await ClearCheckListDoc.clearEditCheckList();
+    await ClearCheckListDoc.clearCheckListAttachments();
+    checkListDetails.CheckListDetails.items.clear();
+    Database db = await initializeDB(null);
+    await getLastDocNum("MNCL", null).then((snapshot) async {
+      int DocNum = snapshot[0].DocNumber - 1;
+
+      do {
+        DocNum += 1;
+        checkListGenData.GeneralData.transId =
+            DateTime.now().millisecondsSinceEpoch.toString() +
+                "U0" +
+                userModel.ID.toString() +
+                "_" +
+                snapshot[0].DocName +
+                "/" +
+                DocNum.toString();
+      } while (await isMNCLTransIdAvailable(
+          null, checkListGenData.GeneralData.transId ?? ""));
+      print(checkListGenData.GeneralData.transId);
+    });
+
+    try {
+      // make it come from session instead of query param
+      // String from = Request.QueryString["from"];
+
+      // MaintenanceItemsQueryModel MaintenanceItemsQueryModel = (MaintenanceItemsQueryModel)System.Web.HttpContext.Current.Session["MaintenanceItemsQueryModel"];
+      // Session.Remove("MaintenanceItemsQueryModel");
+
+      // MNOCLDViewModel.MaintenanceItemsQueryModel = MaintenanceItemsQueryModel;
+      checkListGenData.GeneralData.checkListCode = dashboardItem.checkListCode;
+      checkListGenData.GeneralData.workCenterCode =
+          dashboardItem.workCenterCode;
+      checkListGenData.GeneralData.assignedUserCode =
+          dashboardItem.technicianCode;
+      checkListGenData.GeneralData.equipmentCode = dashboardItem.equipmentCode;
+
+      // checkListGenData.GeneralData.checkListName = db.MNOCLTs.FirstOrDefault(x => x.Code == dashboardItem.checkListCode)?.Name ?? "";
+      checkListGenData.GeneralData.checkListName = (await db.rawQuery(
+                      "SELECT Name FROM MNOCLT WHERE Code = '${dashboardItem.checkListCode}'"))[
+                  0]['Name']
+              ?.toString() ??
+          '';
+      List<MNOCLT> mnocltList = await retrieveMNOCLTById(
+          null, 'Code = ?', [dashboardItem.checkListCode]);
+      if (mnocltList.isNotEmpty) {
+        checkListGenData.GeneralData.checkListCode = mnocltList[0].Code;
+        checkListGenData.GeneralData.checkListName = mnocltList[0].Name;
+      }
+      List<MNOWCM> mnowcmList = await retrieveMNOWCMById(
+          null, 'Code = ?', [dashboardItem.workCenterCode]);
+      if (mnowcmList.isNotEmpty) {
+        checkListGenData.GeneralData.workCenterCode = mnowcmList[0].Code;
+        checkListGenData.GeneralData.workCenterName = mnowcmList[0].Name;
+      }
+
+      // checkListGenData.GeneralData.assignedUserName = StaticFuntion.GetEmployeeName(db, dashboardItem.TechnicianCode);
+      checkListGenData.GeneralData.assignedUserName =
+          dashboardItem.technicianName;
+      checkListGenData.GeneralData.assignedUserCode =
+          dashboardItem.technicianCode;
+      checkListGenData.GeneralData.equipmentName = dashboardItem.equipmentCode;
+      // checkListGenData.GeneralData.lastReadingDate = db.MNOCLDs.Where( x=> x.EquipmentCode == checkListGenData.GeneralData.EquipmentCode)
+      // checkListGenData.GeneralData.lastReadingDate = db.MNOCLDs
+      //     .Where( x=> x.EquipmentCode == checkListGenData.GeneralData.EquipmentCode)
+      //     .OrderByDescending(x => x.UpdateDate).Select(x => x.UpdateDate)
+      //     .FirstOrDefault() ?? DateTime.Now;
+      List lastReadingDateList = await await db.rawQuery(
+          "SELECT UpdateDate FROM MNOCLD WHERE EquipmentCode = '${dashboardItem.equipmentCode}' ORDER BY UpdateDate DESC");
+      if (lastReadingDateList.isNotEmpty) {
+        checkListGenData.GeneralData.lastReadingDate = getFormattedDate(
+            lastReadingDateList[0]['UpdateDate'] == null ||
+                    lastReadingDateList[0]['UpdateDate'] == ''
+                ? DateTime.now()
+                : DateTime.tryParse(
+                    lastReadingDateList[0]['UpdateDate'].toString()));
+      }
+      List lastReadingList = await await db.rawQuery(
+          "SELECT LastReading FROM MNOVCL WHERE Code = '${dashboardItem.equipmentCode}'");
+      if (lastReadingList.isNotEmpty) {
+        checkListGenData.GeneralData.lastReading =
+            lastReadingList[0]['LastReading']?.toString();
+      }
+      // checkListGenData.GeneralData.lastReading= db.MNOVCLs.FirstOrDefault(x => x.Code == checkListGenData.GeneralData.EquipmentCode).LastReading.ToString() ?? "0";
+
+      print('CHILD DATA');
+      // String EquipmentGroupCode = StaticFuntion.GetEquipmentGroupCodeByEquipmentCode(checkListGenData.GeneralData.EquipmentCode);
+      String? EquipmentGroupCode = (await db.rawQuery(
+                  "SELECT EquipmentGroupCode FROM MNOVCL WHERE Code='${dashboardItem.equipmentCode}'"))[
+              0]['EquipmentGroupCode']
+          ?.toString();
+
+      // String CheckListTemplateCode = db.MNOCLMs.FirstOrDefault(x =>
+      //     x.CheckListCode == checkListGenData.GeneralData.CheckListCode &&
+      //     x.EquipmentGroupCode == EquipmentGroupCode)?.Code ?? "";
+
+      String CheckListTemplateCode = (await db.rawQuery(
+                      "select Code from mnoclm where CheckListCode = '${dashboardItem.checkListCode}' and EquipmentGroupCode = '$EquipmentGroupCode'"))[
+                  0]['Code']
+              ?.toString() ??
+          '';
+
+      // bool checkIfTyreMiantenanceIsAplicable = db.MNEQG2.FirstOrDefault(x => x.CheckListCode == checkListGenData.GeneralData.CheckListCode && x.Code == EquipmentGroupCode).IsTyreMaintenence ?? false;
+      bool checkIfTyreMiantenanceIsAplicable = (await db.rawQuery(
+                  "SELECT IsTyreMaintenence FROM MNEQG2 WHERE CheckListCode='${dashboardItem.checkListCode}' AND Code='$EquipmentGroupCode'"))[
+              0]['IsTyreMaintenence'] ==
+          1;
+      if (checkIfTyreMiantenanceIsAplicable) {
+        CheckListDocument.numOfTabs.value = 4;
+      }
+
+      // ViewBag.TyreMaintenace = checkIfTyreMiantenanceIsAplicable;
+      checkListGenData.GeneralData.tyreMaintenance =
+          checkIfTyreMiantenanceIsAplicable ? 'Yes' : 'No';
+      checkListDetails.CheckListDetails.items.clear();
+      List<MNCLM1> checkListMaster =
+          await retrieveMNCLM1ById(null, 'Code = ?', [CheckListTemplateCode]);
+      for (MNCLM1 mnclm1 in checkListMaster) {
+        checkListDetails.CheckListDetails.items.add(MNCLD1(
+          TransId: checkListGenData.GeneralData.transId,
+          RowId: checkListDetails.CheckListDetails.items.length,
+          ItemCode: mnclm1.ItemCode,
+          ItemName: mnclm1.ItemName,
+          UOM: mnclm1.UOM,
+          Description: mnclm1.CheckListDesc,
+          Remarks: mnclm1.Remarks,
+          ConsumptionQty: mnclm1.Quantity,
+        ));
+      }
+      Get.to(() => CheckListDocument(0));
+
+      // MNOCLDViewModel.MNCLD1 = db.MNCLM1.Where(x => x.Code == CheckListTemplateCode).ToList().Select(y => new MNCLD1
+      //     {
+      //     ItemCode = y.ItemCode,
+      //     ItemName = y.ItemName,
+      //     UOM = y.UOM,
+      //     Description = y.CheckListDesc,
+      //     Remarks = y.Remarks,
+      //     ConsumptionQty = y.Quantity,
+      //     }).ToList();
+    } catch (e) {
+      print(e.toString());
+    }
   }
 
   Future<void> initializeTimer() async {
@@ -384,7 +542,7 @@ WHERE
                             child: Card(
                               child: IconButton(
                                 onPressed: () {
-
+                                  setCheckListData(dashboardItem: data);
                                 },
                                 icon: Icon(
                                   Icons.add,
