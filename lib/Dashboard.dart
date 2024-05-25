@@ -15,6 +15,7 @@ import 'package:maintenance/Component/IsValidAppVersion.dart';
 import 'package:maintenance/Component/NotificationIcon.dart';
 import 'package:maintenance/Component/SnackbarComponent.dart';
 import 'package:maintenance/CustomLocationPermission.dart';
+import 'package:maintenance/DashboardQueryModel.dart';
 import 'package:maintenance/DatabaseInitialization.dart';
 import 'package:maintenance/LoginPage.dart';
 import 'package:maintenance/main.dart';
@@ -39,7 +40,7 @@ class _DashboardState extends State<Dashboard> {
   List<Map>? expenseQueryResult = null;
   TextEditingController routeId = TextEditingController();
   PackageInfo? packageInfo;
-  Map dashboardData = {};
+  List<MaintenanceItemsQueryModel> dashboardData = [];
 
   Future getLocation() async {
     bool isLoading = true;
@@ -89,17 +90,21 @@ class _DashboardState extends State<Dashboard> {
 
     String query = '''
     SELECT 
-    OVCLs.code AS "EquipmentCode", 
-    MNVCL1.CheckListCode, 
+    OVCLs.code AS EquipmentCode, 
+    MNVCL1.CheckListCode,
+    MNVCL1.CheckListName,  
     MNOCLD.PostingDate AS "LastPostingDate",
+    MNVCL1.WorkCenterCode,
+    MNVCL1.WorkCenterName,
+    MNVCL1.TechnicianCode,
+    MNVCL1.TechnicianName,
     (julianday('now') - julianday(IFNULL(MNOCLD.PostingDate, '1990-12-12'))) AS "MaintenenceDueDays",
     CASE 
         WHEN (julianday('now') - julianday(IFNULL(MNOCLD.PostingDate, '1990-12-12'))) >= MNOCLT.UnitValue THEN 'Due'
         WHEN (julianday('now') - julianday(IFNULL(MNOCLD.PostingDate, '1990-12-12'))) > MNOCLT.HighPriorityDays AND (julianday('now') - julianday(IFNULL(MNOCLD.PostingDate, '1990-12-12'))) <  MNOCLT.UnitValue THEN 'HighPriority'
         WHEN (julianday('now') - julianday(IFNULL(MNOCLD.PostingDate, '1990-12-12'))) > MNOCLT.MediumPriorityDays AND (julianday('now') - julianday(IFNULL(MNOCLD.PostingDate, '1990-12-12'))) <= MNOCLT.HighPriorityDays THEN 'MediumPriority'
     END AS 'Priority',
-    MNOCLT.UnitValue AS "MaintenenceFrequencyDays",
-    *
+    MNOCLT.UnitValue AS "MaintenenceFrequencyDays"
 FROM 
     ovcl OVCLs
     LEFT JOIN mnvcl1 MNVCL1 ON OVCLs.Code = MNVCL1.Code
@@ -111,10 +116,13 @@ WHERE
      MNOCLT.CheckType = 'Others'
     ''';
     List dataList = await db.rawQuery(query);
+    print(dataList);
     if (dataList.isNotEmpty) {
-      setState(() {
-        dashboardData = dataList[0];
-      });
+      dashboardData = dataList.map((e) {
+        return MaintenanceItemsQueryModel.fromJson(e);
+      }).toList();
+      print(dashboardData.toString());
+      setState(() {});
     }
   }
 
@@ -229,7 +237,173 @@ WHERE
                   text: 'Please update the app to its latest version'),
             )
           : SingleChildScrollView(
-              child: Column(),
+              child: Column(
+                children: [
+                  const SizedBox(
+                    height: 25,
+                  ),
+                  ListView.separated(
+                    itemCount: dashboardData.length,
+                    shrinkWrap: true,
+                    physics: const ScrollPhysics(),
+                    itemBuilder: (context, index) {
+                      MaintenanceItemsQueryModel data = dashboardData[index];
+                      return Stack(
+                        fit: StackFit.loose,
+                        clipBehavior: Clip.none,
+                        children: [
+                          Container(
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              shape: BoxShape.rectangle,
+                              borderRadius: BorderRadius.circular(16.0),
+                              boxShadow: const [
+                                BoxShadow(
+                                  color: Colors.black26,
+                                  blurRadius: 4.0,
+                                  offset: Offset(2.0, 2.0),
+                                ),
+                              ],
+                            ),
+                            margin: const EdgeInsets.only(
+                                left: 15.0, right: 15.0, bottom: 10),
+                            width: MediaQuery.of(context).size.width,
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Expanded(
+                                    flex: 8,
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.only(
+                                              left: 8.0, right: 8.0, top: 4.0),
+                                          child: Align(
+                                            alignment: Alignment.topLeft,
+                                            child: FittedBox(
+                                              fit: BoxFit.contain,
+                                              child: Text.rich(
+                                                TextSpan(
+                                                  children: [
+                                                    getPoppinsTextSpanHeading(
+                                                        text: 'Equipment'),
+                                                    getPoppinsTextSpanDetails(
+                                                        text:
+                                                            data.equipmentCode ??
+                                                                ''),
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.only(
+                                              left: 8.0, right: 8.0, top: 4.0),
+                                          child: Align(
+                                            alignment: Alignment.topLeft,
+                                            child: FittedBox(
+                                              fit: BoxFit.contain,
+                                              child: Text.rich(
+                                                TextSpan(
+                                                  children: [
+                                                    getPoppinsTextSpanHeading(
+                                                        text: 'Check List'),
+                                                    getPoppinsTextSpanDetails(
+                                                        text:
+                                                            data.checkListName ??
+                                                                ""),
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Expanded(
+                                    flex: 8,
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.only(
+                                              left: 8.0, right: 8.0, top: 4.0),
+                                          child: Align(
+                                            alignment: Alignment.topLeft,
+                                            child: Text.rich(
+                                              TextSpan(
+                                                children: [
+                                                  getPoppinsTextSpanHeading(
+                                                      text: 'Work Center'),
+                                                  getPoppinsTextSpanDetails(
+                                                      text:
+                                                          data.workCenterName),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.only(
+                                              left: 8.0, right: 8.0, top: 4.0),
+                                          child: Align(
+                                            alignment: Alignment.topLeft,
+                                            child: FittedBox(
+                                              fit: BoxFit.contain,
+                                              child: Text.rich(
+                                                TextSpan(
+                                                  children: [
+                                                    getPoppinsTextSpanHeading(
+                                                        text: 'Technician'),
+                                                    getPoppinsTextSpanDetails(
+                                                        text: data
+                                                            .technicianName),
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          Positioned(
+                            top: -27,
+                            right: -4,
+                            child: Card(
+                              child: IconButton(
+                                onPressed: () {
+
+                                },
+                                icon: Icon(
+                                  Icons.add,
+                                  color: barColor,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      );
+                    },
+                    separatorBuilder: (BuildContext context, int index) {
+                      return Divider(
+                        thickness: 1,
+                      );
+                    },
+                  ),
+                ],
+              ),
             )),
       bottomNavigationBar: Container(
         height: MediaQuery.of(context).size.height / 24,
