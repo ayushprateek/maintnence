@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:maintenance/Component/CustomColor.dart';
 import 'package:maintenance/Component/CustomFont.dart';
+import 'package:maintenance/Sync/SyncModels/PRITR1.dart';
 
 
 class ItemDetails extends StatefulWidget {
   const ItemDetails({super.key});
 
-  // static List<MNJCD1> items = [MNJCD1()];
+  static List<PRITR1> items = [];
 
   @override
   State<ItemDetails> createState() => _ItemDetailsState();

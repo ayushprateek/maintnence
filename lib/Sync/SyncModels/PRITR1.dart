@@ -40,6 +40,9 @@ class PRITR1{
   String? DeptCode;
   String? DeptName;
   String? BaseTransId;
+  bool hasCreated;
+  bool hasUpdated;
+  bool insertedIntoDatabase;
   PRITR1({
     this.ID,
     this.TransId,
@@ -72,6 +75,9 @@ class PRITR1{
     this.DeptCode,
     this.DeptName,
     this.BaseTransId,
+    this.hasCreated = false,
+    this.hasUpdated = false,
+    this.insertedIntoDatabase = true,
   });
   factory PRITR1.fromJson(Map<String,dynamic> json)=>PRITR1(
     ID : int.tryParse(json['ID'].toString())??0,
@@ -105,6 +111,8 @@ class PRITR1{
     DeptCode : json['DeptCode']?.toString() ?? '',
     DeptName : json['DeptName']?.toString() ?? '',
     BaseTransId : json['BaseTransId']?.toString() ?? '',
+    hasCreated: json['has_created'] == 1,
+    hasUpdated: json['has_updated'] == 1,
   );
   Map<String,dynamic> toJson()=>{
     'ID' : ID,
@@ -138,6 +146,8 @@ class PRITR1{
     'DeptCode' : DeptCode,
     'DeptName' : DeptName,
     'BaseTransId' : BaseTransId,
+    "has_created": hasCreated ? 1 : 0,
+    "has_updated": hasUpdated ? 1 : 0,
   };
 }
 List<PRITR1> pRITR1FromJson(String str) => List<PRITR1>.from(

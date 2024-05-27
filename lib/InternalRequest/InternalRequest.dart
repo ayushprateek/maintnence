@@ -4,7 +4,7 @@ import 'package:maintenance/Component/CustomColor.dart';
 import 'package:maintenance/Component/CustomFont.dart';
 import 'package:maintenance/Dashboard.dart';
 import 'package:maintenance/InternalRequest/GeneralData.dart';
-import 'package:maintenance/InternalRequest/ItemDetails.dart';
+import 'package:maintenance/InternalRequest/ItemDetails/ItemDetails.dart';
 
 class InternalRequest extends StatefulWidget {
   static bool saveButtonPressed = false;

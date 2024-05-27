@@ -19,11 +19,11 @@ class GeneralData extends StatefulWidget {
   static String? checkListName;
   static String? workCenterCode;
   static String? workCenterName;
-  static DateTime? openDate;
-  static DateTime? closeDate;
-  static DateTime? postingDate;
-  static DateTime? validUntill;
-  static DateTime? lastReadingDate;
+  static String? openDate;
+  static String? closeDate;
+  static String? postingDate;
+  static String? validUntill;
+  static String? lastReadingDate;
   static String? lastReading;
   static String? assignedUserCode;
   static String? assignedUserName;
@@ -32,11 +32,12 @@ class GeneralData extends StatefulWidget {
   static String? createdBy;
   static String? updatedBy;
   static String? branchId;
-  static DateTime? createDate;
-  static DateTime? updateDate;
+  static String? createDate;
+  static String? updateDate;
 
-  static bool? isConsumption;
-  static bool? isRequest;
+  static bool isConsumption=false;
+  static bool isRequest=false;
+  static bool isSelected = false, hasCreated = false, hasUpdated = false;
 
   @override
   State<GeneralData> createState() => _GeneralDataState();
@@ -70,15 +71,15 @@ class _GeneralDataState extends State<GeneralData> {
   final TextEditingController _workCenterName =
   TextEditingController(text: GeneralData.workCenterName);
   final TextEditingController _openDate =
-  TextEditingController(text: getFormattedDate(GeneralData.openDate));
+  TextEditingController(text:GeneralData.openDate);
   final TextEditingController _closeDate =
-  TextEditingController(text: getFormattedDate(GeneralData.closeDate));
+  TextEditingController(text: GeneralData.closeDate);
   final TextEditingController _postingDate =
-  TextEditingController(text: getFormattedDate(GeneralData.postingDate));
+  TextEditingController(text: GeneralData.postingDate);
   final TextEditingController _validUntill =
-  TextEditingController(text: getFormattedDate(GeneralData.validUntill));
+  TextEditingController(text: GeneralData.validUntill);
   final TextEditingController _lastReadingDate = TextEditingController(
-      text: getFormattedDate(GeneralData.lastReadingDate));
+      text:GeneralData.lastReadingDate);
   final TextEditingController _lastReading =
   TextEditingController(text: GeneralData.lastReading);
   final TextEditingController _assignedUserCode =

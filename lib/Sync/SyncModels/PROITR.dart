@@ -43,6 +43,8 @@ class PROITR{
   String? TripTransId;
   String? DeptCode;
   String? DeptName;
+  bool hasCreated;
+  bool hasUpdated;
   PROITR({
     this.ID,
     this.TransId,
@@ -78,6 +80,8 @@ class PROITR{
     this.TripTransId,
     this.DeptCode,
     this.DeptName,
+    this.hasCreated = false,
+    this.hasUpdated = false,
   });
   factory PROITR.fromJson(Map<String,dynamic> json)=>PROITR(
     ID : int.tryParse(json['ID'].toString())??0,
@@ -114,6 +118,8 @@ class PROITR{
     TripTransId : json['TripTransId']?.toString() ?? '',
     DeptCode : json['DeptCode']?.toString() ?? '',
     DeptName : json['DeptName']?.toString() ?? '',
+    hasCreated: json['has_created'] == 1,
+    hasUpdated: json['has_updated'] == 1,
   );
   Map<String,dynamic> toJson()=>{
     'ID' : ID,
@@ -150,6 +156,8 @@ class PROITR{
     'TripTransId' : TripTransId,
     'DeptCode' : DeptCode,
     'DeptName' : DeptName,
+    "has_created": hasCreated ? 1 : 0,
+    "has_updated": hasUpdated ? 1 : 0,
   };
 }
 List<PROITR> pROITRFromJson(String str) => List<PROITR>.from(

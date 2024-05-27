@@ -12,6 +12,7 @@ import 'package:maintenance/Component/GetLastDocNum.dart';
 import 'package:maintenance/Component/IsAvailableTransId.dart';
 import 'package:maintenance/GoodsIssue/GoodsIssue.dart';
 import 'package:maintenance/GoodsReceiptNote/GoodsReceiptNote.dart';
+import 'package:maintenance/InternalRequest/InternalRequest.dart';
 
 //---------------------------------JOB CARD IMPORTS
 import 'package:maintenance/JobCard/GeneralData.dart' as jcdGenData;
@@ -38,8 +39,14 @@ import 'package:maintenance/Purchase/PurchaseRequest/ItemDetails/ItemDetails.dar
 
 //------------------------------ GOODS RECEIPT NOTES------------
 import 'package:maintenance/GoodsReceiptNote/GeneralData.dart' as grnGenData;
-// import 'package:maintenance/Purchase/PurchaseRequest/ItemDetails/EditItems.dart' as grnEditItems;
+import 'package:maintenance/Purchase/PurchaseRequest/ItemDetails/EditItems.dart' as grnEditItems;
 import 'package:maintenance/GoodsReceiptNote/ItemDetails/ItemDetails.dart' as grnItemDetails;
+
+
+//------------------------------ INTERNAL REQUEST------------
+import 'package:maintenance/InternalRequest/GeneralData.dart' as internalGenData;
+import 'package:maintenance/InternalRequest/ItemDetails/EditItems.dart' as internalEditItems;
+import 'package:maintenance/InternalRequest/ItemDetails/ItemDetails.dart' as internalItemDetails;
 
 class ClearCheckListDoc {
   static clearEditCheckList() {
@@ -501,33 +508,33 @@ class ClearGRNDocument {
     grnGenData.GeneralData.hasUpdated = false;
   }
   static clearEditItems() {
-    purchaseEditItems.EditItems.id='';
-    purchaseEditItems.EditItems.tripTransId='';
-    purchaseEditItems.EditItems.supplierCode='';
-    purchaseEditItems.EditItems.supplierName='';
-    purchaseEditItems.EditItems.truckNo='';
-    purchaseEditItems.EditItems.toWhsCode='';
-    purchaseEditItems.EditItems.toWhsName='';
-    purchaseEditItems.EditItems.driverCode='';
-    purchaseEditItems.EditItems.driverName='';
-    purchaseEditItems.EditItems.routeCode='';
-    purchaseEditItems.EditItems.routeName='';
-    purchaseEditItems.EditItems.transId='';
-    purchaseEditItems.EditItems.rowId='';
-    purchaseEditItems.EditItems.itemCode='';
-    purchaseEditItems.EditItems.itemName='';
-    purchaseEditItems.EditItems.consumptionQty='';
-    purchaseEditItems.EditItems.uomCode='';
-    purchaseEditItems.EditItems.uomName='';
-    purchaseEditItems.EditItems.deptCode='';
-    purchaseEditItems.EditItems.deptName='';
-    purchaseEditItems.EditItems.price='';
-    purchaseEditItems.EditItems.mtv='';
-    purchaseEditItems.EditItems.taxCode='';
-    purchaseEditItems.EditItems.taxRate='';
-    purchaseEditItems.EditItems.lineDiscount='';
-    purchaseEditItems.EditItems.lineTotal='';
-    purchaseEditItems.EditItems.isUpdating = false;
+    grnEditItems.EditItems.id='';
+    grnEditItems.EditItems.tripTransId='';
+    grnEditItems.EditItems.supplierCode='';
+    grnEditItems.EditItems.supplierName='';
+    grnEditItems.EditItems.truckNo='';
+    grnEditItems.EditItems.toWhsCode='';
+    grnEditItems.EditItems.toWhsName='';
+    grnEditItems.EditItems.driverCode='';
+    grnEditItems.EditItems.driverName='';
+    grnEditItems.EditItems.routeCode='';
+    grnEditItems.EditItems.routeName='';
+    grnEditItems.EditItems.transId='';
+    grnEditItems.EditItems.rowId='';
+    grnEditItems.EditItems.itemCode='';
+    grnEditItems.EditItems.itemName='';
+    grnEditItems.EditItems.consumptionQty='';
+    grnEditItems.EditItems.uomCode='';
+    grnEditItems.EditItems.uomName='';
+    grnEditItems.EditItems.deptCode='';
+    grnEditItems.EditItems.deptName='';
+    grnEditItems.EditItems.price='';
+    grnEditItems.EditItems.mtv='';
+    grnEditItems.EditItems.taxCode='';
+    grnEditItems.EditItems.taxRate='';
+    grnEditItems.EditItems.lineDiscount='';
+    grnEditItems.EditItems.lineTotal='';
+    grnEditItems.EditItems.isUpdating = false;
   }
 }
 
@@ -553,5 +560,100 @@ goToNewGRNDocument() async {
         null, grnGenData.GeneralData.transId ?? ""));
     print(grnGenData.GeneralData.transId);
     Get.offAll(() => GoodsRecepitNote(0));
+  });
+}
+
+
+class ClearSTRDocument {
+
+  static clearGeneralDataTextFields(){
+    internalGenData.GeneralData.iD='';
+    internalGenData.GeneralData.permanentTransId='';
+    internalGenData.GeneralData.transId='';
+    internalGenData.GeneralData.docEntry='';
+    internalGenData.GeneralData.docNum='';
+    internalGenData.GeneralData.canceled='';
+    internalGenData.GeneralData.docStatus='';
+    internalGenData.GeneralData.approvalStatus='';
+    internalGenData.GeneralData.checkListStatus='';
+    internalGenData.GeneralData.objectCode='';
+    internalGenData.GeneralData.equipmentCode='';
+    internalGenData.GeneralData.equipmentName='';
+    internalGenData.GeneralData.checkListCode='';
+    internalGenData.GeneralData.checkListName='';
+    internalGenData.GeneralData.workCenterCode='';
+    internalGenData.GeneralData.workCenterName='';
+    internalGenData.GeneralData.openDate='';
+    internalGenData.GeneralData.closeDate='';
+    internalGenData.GeneralData.postingDate='';
+    internalGenData.GeneralData.validUntill='';
+    internalGenData.GeneralData.lastReadingDate='';
+    internalGenData.GeneralData.lastReading='';
+    internalGenData.GeneralData.assignedUserCode='';
+    internalGenData.GeneralData.assignedUserName='';
+    internalGenData.GeneralData.mNJCTransId='';
+    internalGenData.GeneralData.remarks='';
+    internalGenData.GeneralData.createdBy='';
+    internalGenData.GeneralData.updatedBy='';
+    internalGenData.GeneralData.branchId='';
+    internalGenData.GeneralData.createDate='';
+    internalGenData.GeneralData.updateDate='';
+
+    internalGenData.GeneralData.isConsumption=false;
+    internalGenData.GeneralData.isRequest=false;
+    internalGenData.GeneralData.isSelected = false;
+    internalGenData.GeneralData.hasCreated = false;
+    internalGenData.GeneralData.hasUpdated = false;
+  }
+  static clearEditItems() {
+    internalEditItems.EditItems.id='';
+    internalEditItems.EditItems.tripTransId='';
+    
+    internalEditItems.EditItems.truckNo='';
+    internalEditItems.EditItems.toWhsCode='';
+    internalEditItems.EditItems.toWhsName='';
+    internalEditItems.EditItems.driverCode='';
+    internalEditItems.EditItems.driverName='';
+    internalEditItems.EditItems.routeCode='';
+    internalEditItems.EditItems.routeName='';
+    internalEditItems.EditItems.transId='';
+    internalEditItems.EditItems.rowId='';
+    internalEditItems.EditItems.itemCode='';
+    internalEditItems.EditItems.itemName='';
+    internalEditItems.EditItems.consumptionQty='';
+    internalEditItems.EditItems.uomCode='';
+    internalEditItems.EditItems.uomName='';
+    internalEditItems.EditItems.deptCode='';
+    internalEditItems.EditItems.deptName='';
+    internalEditItems.EditItems.price='';
+    internalEditItems.EditItems.mtv='';
+    internalEditItems.EditItems.taxCode='';
+    internalEditItems.EditItems.taxRate='';
+    internalEditItems.EditItems.lineDiscount='';
+    internalEditItems.EditItems.lineTotal='';
+    internalEditItems.EditItems.isUpdating = false;
+  }
+}
+
+goToNewSTRDocument() async {
+  await ClearSTRDocument.clearGeneralDataTextFields();
+  await ClearSTRDocument.clearEditItems();
+  internalItemDetails.ItemDetails.items.clear();
+  getLastDocNum("PRST", null).then((snapshot) async {
+    int DocNum = snapshot[0].DocNumber - 1;
+    do {
+      DocNum += 1;
+      internalGenData.GeneralData.transId =
+          DateTime.now().millisecondsSinceEpoch.toString() +
+              "U0" +
+              userModel.ID.toString() +
+              "_" +
+              snapshot[0].DocName+
+              "/" +
+              DocNum.toString();
+    } while (await isPROPRQTransIdAvailable(
+        null, internalGenData.GeneralData.transId ?? ""));
+    print(internalGenData.GeneralData.transId);
+    Get.offAll(() => InternalRequest(0));
   });
 }
