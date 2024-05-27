@@ -42,6 +42,8 @@ class PROPRQ{
   String? RequestedName;
   //todo: add City
   //todo: add State
+  bool hasCreated;
+  bool hasUpdated;
   PROPRQ({
     this.ID,
     this.TransId,
@@ -74,6 +76,8 @@ class PROPRQ{
     this.DeptName,
     this.RequestedCode,
     this.RequestedName,
+    this.hasCreated = false,
+    this.hasUpdated = false,
   });
   factory PROPRQ.fromJson(Map<String,dynamic> json)=>PROPRQ(
     ID : int.tryParse(json['ID'].toString())??0,
@@ -107,6 +111,8 @@ class PROPRQ{
     DeptName : json['DeptName']?.toString() ?? '',
     RequestedCode : json['RequestedCode']?.toString() ?? '',
     RequestedName : json['RequestedName']?.toString() ?? '',
+    hasCreated: json['has_created'] == 1,
+    hasUpdated: json['has_updated'] == 1,
   );
   Map<String,dynamic> toJson()=>{
     'ID' : ID,
@@ -140,6 +146,8 @@ class PROPRQ{
     'DeptName' : DeptName,
     'RequestedCode' : RequestedCode,
     'RequestedName' : RequestedName,
+    "has_created": hasCreated ? 1 : 0,
+    "has_updated": hasUpdated ? 1 : 0,
   };
 }
 List<PROPRQ> pROPRQFromJson(String str) => List<PROPRQ>.from(

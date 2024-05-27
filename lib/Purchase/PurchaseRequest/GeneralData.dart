@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:maintenance/Component/GetFormattedDate.dart';
 import 'package:maintenance/Component/GetTextField.dart';
+import 'package:maintenance/Component/SnackbarComponent.dart';
 import 'package:maintenance/Lookups/DepartmentLookup.dart';
 import 'package:maintenance/Lookups/EmployeeLookup.dart';
 import 'package:maintenance/Lookups/TripLookup.dart';
@@ -8,11 +10,14 @@ import 'package:maintenance/Sync/SyncModels/OEMP.dart';
 import 'package:maintenance/Sync/SyncModels/OPOTRP.dart';
 import 'package:maintenance/Sync/SyncModels/OUDP.dart';
 import 'package:maintenance/Sync/SyncModels/OWHS.dart';
+import 'package:maintenance/Sync/SyncModels/PROPRQ.dart';
 
 import '../../Lookups/WarehouseLookup.dart';
 
 class GeneralData extends StatefulWidget {
   const GeneralData({super.key});
+
+  static bool isSelected = false, hasCreated = false, hasUpdated = false;
 
   static String? iD;
   static String? transId;
@@ -48,6 +53,54 @@ class GeneralData extends StatefulWidget {
   static bool isPosted = false;
   static bool isConsumption = false;
   static bool isRequest = false;
+
+  static bool validate() {
+    bool success = true;
+    if (transId == "" || transId == null) {
+      getErrorSnackBar("Invalid TransId");
+      success = false;
+    }
+    if (deptName == "" || deptName == null) {
+      getErrorSnackBar("Invalid Department");
+      success = false;
+    }
+    if (requestedName == "" || requestedName == null) {
+      getErrorSnackBar("Invalid Request Field");
+      success = false;
+    }
+
+    if (whsCode == "" || whsCode == null) {
+      getErrorSnackBar("Invalid toWhsCode");
+      success = false;
+    }
+
+    return success;
+  }
+
+  static PROPRQ getGeneralData() {
+    return PROPRQ(
+        ID: int.tryParse(iD ?? ''),
+        TransId: transId,
+        PermanentTransId: permanentTransId ?? '',
+        PostingDate: getDateFromString(postingDate ?? ""),
+        ValidUntill: getDateFromString(validUntill ?? ''),
+        hasCreated: hasCreated,
+        hasUpdated: hasUpdated,
+        ObjectCode: '23',
+        Remarks: remarks,
+        TripTransId: tripTransId,
+        RequestedCode: requestedCode,
+        RequestedName: requestedName,
+        PostingAddress: postingAddress,
+        MobileNo: mobileNo,
+        RefNo: refNo,
+        DeptCode: deptCode,
+        DeptName: deptName,
+        IsPosted: isPosted,
+        ApprovalStatus: approvalStatus ?? "Pending",
+        DocStatus: docStatus,
+        WhsCode: whsCode);
+  }
 
   @override
   State<GeneralData> createState() => _GeneralDataState();
@@ -169,11 +222,11 @@ class _GeneralDataState extends State<GeneralData> {
               enableLookup: true,
               onLookupPressed: () {
                 Get.to(() => TripLookup(onSelection: (OPOTRP oemp) {
-                  setState(() {
-                    GeneralData.tripTransId =
-                        _tripTransId.text = oemp.TransId ?? '';
-                  });
-                }));
+                      setState(() {
+                        GeneralData.tripTransId =
+                            _tripTransId.text = oemp.TransId ?? '';
+                      });
+                    }));
               }),
           getTextField(
               controller: _refNo,
@@ -229,13 +282,15 @@ class _GeneralDataState extends State<GeneralData> {
               labelText: 'Posting Date',
               onChanged: (val) {
                 GeneralData.postingDate = _postingDate.text = val;
-              }, localCurrController: TextEditingController()),
+              },
+              localCurrController: TextEditingController()),
           getDateTextField(
               controller: _validUntill,
               labelText: 'Valid Until',
               onChanged: (val) {
                 GeneralData.validUntill = _validUntill.text = val;
-              }, localCurrController: TextEditingController()),
+              },
+              localCurrController: TextEditingController()),
           getDisabledTextField(
               controller: _docStatus,
               labelText: 'Doc Status',

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:maintenance/Component/CustomColor.dart';
 import 'package:maintenance/Component/CustomFont.dart';
+import 'package:maintenance/Purchase/PurchaseRequest/ItemDetails/AddItems.dart';
 import 'package:maintenance/Sync/SyncModels/PRPRQ1.dart';
-
 
 class ItemDetails extends StatefulWidget {
   const ItemDetails({super.key});
@@ -33,6 +34,7 @@ class _ItemDetailsState extends State<ItemDetails> {
                   ),
                 ),
                 onPressed: () {
+                  Get.to(() => AddItems());
                   // if (GeneralData.customerCode?.isEmpty==true) {
                   //   getErrorSnackBar("Please select customer to continue");
                   // } else if (GeneralData.WhsCode?.isEmpty==true) {
@@ -67,16 +69,15 @@ class _ItemDetailsState extends State<ItemDetails> {
                       height: 30,
                     ),
                     ListView.builder(
-                      itemCount: 1,
+                      itemCount: ItemDetails.items.length,
                       shrinkWrap: true,
                       physics: const ScrollPhysics(),
                       itemBuilder: (BuildContext context, int index) {
-                        // MNJCD1 mnjcd1 = ItemDetails.items[index];
+                        PRPRQ1 item = ItemDetails.items[index];
 
                         return Stack(
                           fit: StackFit.loose,
                           clipBehavior: Clip.none,
-
                           children: [
                             InkWell(
                               // onDoubleTap: () {
@@ -155,17 +156,16 @@ class _ItemDetailsState extends State<ItemDetails> {
                                                   top: 4.0),
                                               child: Align(
                                                 alignment: Alignment.topLeft,
-                                                child: FittedBox(
-                                                  fit: BoxFit.contain,
-                                                  child: Text.rich(
-                                                    TextSpan(
-                                                      children: [
-                                                        getPoppinsTextSpanHeading(
-                                                            text: 'TripTransId'),
-                                                        getPoppinsTextSpanDetails(
-                                                            text: "XXX"),
-                                                      ],
-                                                    ),
+                                                child: Text.rich(
+                                                  TextSpan(
+                                                    children: [
+                                                      getPoppinsTextSpanHeading(
+                                                          text: 'TripTransId'),
+                                                      getPoppinsTextSpanDetails(
+                                                          text:
+                                                              item.TripTransId ??
+                                                                  ''),
+                                                    ],
                                                   ),
                                                 ),
                                               ),
@@ -177,17 +177,15 @@ class _ItemDetailsState extends State<ItemDetails> {
                                                   top: 4.0),
                                               child: Align(
                                                 alignment: Alignment.topLeft,
-                                                child: FittedBox(
-                                                  fit: BoxFit.contain,
-                                                  child: Text.rich(
-                                                    TextSpan(
-                                                      children: [
-                                                        getPoppinsTextSpanHeading(
-                                                            text: 'Item Code'),
-                                                        getPoppinsTextSpanDetails(
-                                                            text: "XXX"),
-                                                      ],
-                                                    ),
+                                                child: Text.rich(
+                                                  TextSpan(
+                                                    children: [
+                                                      getPoppinsTextSpanHeading(
+                                                          text: 'Item Code'),
+                                                      getPoppinsTextSpanDetails(
+                                                          text: item.ItemCode ??
+                                                              ''),
+                                                    ],
                                                   ),
                                                 ),
                                               ),
@@ -205,7 +203,8 @@ class _ItemDetailsState extends State<ItemDetails> {
                                                       getPoppinsTextSpanHeading(
                                                           text: 'Item Name'),
                                                       getPoppinsTextSpanDetails(
-                                                          text: "XYZ"),
+                                                          text: item.ItemName ??
+                                                              ''),
                                                     ],
                                                   ),
                                                 ),
@@ -218,17 +217,17 @@ class _ItemDetailsState extends State<ItemDetails> {
                                                   top: 4.0),
                                               child: Align(
                                                 alignment: Alignment.topLeft,
-                                                child: FittedBox(
-                                                  fit: BoxFit.contain,
-                                                  child: Text.rich(
-                                                    TextSpan(
-                                                      children: [
-                                                        getPoppinsTextSpanHeading(
-                                                            text: 'Supplier Name'),
-                                                        getPoppinsTextSpanDetails(
-                                                            text: "XYZ"),
-                                                      ],
-                                                    ),
+                                                child: Text.rich(
+                                                  TextSpan(
+                                                    children: [
+                                                      getPoppinsTextSpanHeading(
+                                                          text:
+                                                              'Supplier Name'),
+                                                      getPoppinsTextSpanDetails(
+                                                          text:
+                                                              item.SupplierName ??
+                                                                  ''),
+                                                    ],
                                                   ),
                                                 ),
                                               ),
@@ -240,17 +239,16 @@ class _ItemDetailsState extends State<ItemDetails> {
                                                   top: 4.0),
                                               child: Align(
                                                 alignment: Alignment.topLeft,
-                                                child: FittedBox(
-                                                  fit: BoxFit.contain,
-                                                  child: Text.rich(
-                                                    TextSpan(
-                                                      children: [
-                                                        getPoppinsTextSpanHeading(
-                                                            text: 'Warehouse Code'),
-                                                        getPoppinsTextSpanDetails(
-                                                            text: "XYZ"),
-                                                      ],
-                                                    ),
+                                                child: Text.rich(
+                                                  TextSpan(
+                                                    children: [
+                                                      getPoppinsTextSpanHeading(
+                                                          text:
+                                                              'Warehouse Code'),
+                                                      getPoppinsTextSpanDetails(
+                                                          text: item.WhsCode ??
+                                                              ''),
+                                                    ],
                                                   ),
                                                 ),
                                               ),
@@ -262,17 +260,17 @@ class _ItemDetailsState extends State<ItemDetails> {
                                                   top: 4.0),
                                               child: Align(
                                                 alignment: Alignment.topLeft,
-                                                child: FittedBox(
-                                                  fit: BoxFit.contain,
-                                                  child: Text.rich(
-                                                    TextSpan(
-                                                      children: [
-                                                        getPoppinsTextSpanHeading(
-                                                            text: 'Quantity'),
-                                                        getPoppinsTextSpanDetails(
-                                                            text: "XYZ"),
-                                                      ],
-                                                    ),
+                                                child: Text.rich(
+                                                  TextSpan(
+                                                    children: [
+                                                      getPoppinsTextSpanHeading(
+                                                          text: 'Quantity'),
+                                                      getPoppinsTextSpanDetails(
+                                                          text: item.Quantity
+                                                                  ?.toStringAsFixed(
+                                                                      2) ??
+                                                              '0.00'),
+                                                    ],
                                                   ),
                                                 ),
                                               ),
@@ -284,17 +282,14 @@ class _ItemDetailsState extends State<ItemDetails> {
                                                   top: 4.0),
                                               child: Align(
                                                 alignment: Alignment.topLeft,
-                                                child: FittedBox(
-                                                  fit: BoxFit.contain,
-                                                  child: Text.rich(
-                                                    TextSpan(
-                                                      children: [
-                                                        getPoppinsTextSpanHeading(
-                                                            text: 'UOM'),
-                                                        getPoppinsTextSpanDetails(
-                                                            text: "XYZ"),
-                                                      ],
-                                                    ),
+                                                child: Text.rich(
+                                                  TextSpan(
+                                                    children: [
+                                                      getPoppinsTextSpanHeading(
+                                                          text: 'UOM'),
+                                                      getPoppinsTextSpanDetails(
+                                                          text: item.UOM ?? ''),
+                                                    ],
                                                   ),
                                                 ),
                                               ),
@@ -306,24 +301,19 @@ class _ItemDetailsState extends State<ItemDetails> {
                                                   top: 4.0),
                                               child: Align(
                                                 alignment: Alignment.topLeft,
-                                                child: FittedBox(
-                                                  fit: BoxFit.contain,
-                                                  child: Text.rich(
-                                                    TextSpan(
-                                                      children: [
-                                                        getPoppinsTextSpanHeading(
-                                                            text:
-                                                            'TruckNo'),
-                                                        getPoppinsTextSpanDetails(
-                                                            text: ''),
-                                                      ],
-                                                    ),
+                                                child: Text.rich(
+                                                  TextSpan(
+                                                    children: [
+                                                      getPoppinsTextSpanHeading(
+                                                          text: 'TruckNo'),
+                                                      getPoppinsTextSpanDetails(
+                                                          text: item.TruckNo ??
+                                                              ''),
+                                                    ],
                                                   ),
                                                 ),
                                               ),
                                             ),
-
-
                                           ],
                                         ),
                                       ),
@@ -333,7 +323,6 @@ class _ItemDetailsState extends State<ItemDetails> {
                                           mainAxisAlignment:
                                               MainAxisAlignment.start,
                                           children: [
-
                                             Padding(
                                               padding: const EdgeInsets.only(
                                                   left: 8.0,
@@ -341,18 +330,16 @@ class _ItemDetailsState extends State<ItemDetails> {
                                                   top: 4.0),
                                               child: Align(
                                                 alignment: Alignment.topLeft,
-                                                child: FittedBox(
-                                                  fit: BoxFit.contain,
-                                                  child: Text.rich(
-                                                    TextSpan(
-                                                      children: [
-                                                        getPoppinsTextSpanHeading(
-                                                            text:
-                                                            'Driver Name'),
-                                                        getPoppinsTextSpanDetails(
-                                                            text: "aa"),
-                                                      ],
-                                                    ),
+                                                child: Text.rich(
+                                                  TextSpan(
+                                                    children: [
+                                                      getPoppinsTextSpanHeading(
+                                                          text: 'Driver Name'),
+                                                      getPoppinsTextSpanDetails(
+                                                          text:
+                                                              item.DriverName ??
+                                                                  ''),
+                                                    ],
                                                   ),
                                                 ),
                                               ),
@@ -364,18 +351,16 @@ class _ItemDetailsState extends State<ItemDetails> {
                                                   top: 4.0),
                                               child: Align(
                                                 alignment: Alignment.topLeft,
-                                                child: FittedBox(
-                                                  fit: BoxFit.contain,
-                                                  child: Text.rich(
-                                                    TextSpan(
-                                                      children: [
-                                                        getPoppinsTextSpanHeading(
-                                                            text:
-                                                                'Route Name'),
-                                                        getPoppinsTextSpanDetails(
-                                                            text: ""),
-                                                      ],
-                                                    ),
+                                                child: Text.rich(
+                                                  TextSpan(
+                                                    children: [
+                                                      getPoppinsTextSpanHeading(
+                                                          text: 'Route Name'),
+                                                      getPoppinsTextSpanDetails(
+                                                          text:
+                                                              item.RouteName ??
+                                                                  ''),
+                                                    ],
                                                   ),
                                                 ),
                                               ),
@@ -387,18 +372,15 @@ class _ItemDetailsState extends State<ItemDetails> {
                                                   top: 4.0),
                                               child: Align(
                                                 alignment: Alignment.topLeft,
-                                                child: FittedBox(
-                                                  fit: BoxFit.contain,
-                                                  child: Text.rich(
-                                                    TextSpan(
-                                                      children: [
-                                                        getPoppinsTextSpanHeading(
-                                                            text:
-                                                                'Dept Name'),
-                                                        getPoppinsTextSpanDetails(
-                                                            text: ""),
-                                                      ],
-                                                    ),
+                                                child: Text.rich(
+                                                  TextSpan(
+                                                    children: [
+                                                      getPoppinsTextSpanHeading(
+                                                          text: 'Dept Name'),
+                                                      getPoppinsTextSpanDetails(
+                                                          text: item.DeptName ??
+                                                              ''),
+                                                    ],
                                                   ),
                                                 ),
                                               ),
@@ -410,18 +392,17 @@ class _ItemDetailsState extends State<ItemDetails> {
                                                   top: 4.0),
                                               child: Align(
                                                 alignment: Alignment.topLeft,
-                                                child: FittedBox(
-                                                  fit: BoxFit.contain,
-                                                  child: Text.rich(
-                                                    TextSpan(
-                                                      children: [
-                                                        getPoppinsTextSpanHeading(
-                                                            text:
-                                                                'Info Price'),
-                                                        getPoppinsTextSpanDetails(
-                                                            text: ""),
-                                                      ],
-                                                    ),
+                                                child: Text.rich(
+                                                  TextSpan(
+                                                    children: [
+                                                      getPoppinsTextSpanHeading(
+                                                          text: 'Info Price'),
+                                                      getPoppinsTextSpanDetails(
+                                                          text: item.Price
+                                                                  ?.toStringAsFixed(
+                                                                      2) ??
+                                                              '0.00'),
+                                                    ],
                                                   ),
                                                 ),
                                               ),
@@ -433,18 +414,15 @@ class _ItemDetailsState extends State<ItemDetails> {
                                                   top: 4.0),
                                               child: Align(
                                                 alignment: Alignment.topLeft,
-                                                child: FittedBox(
-                                                  fit: BoxFit.contain,
-                                                  child: Text.rich(
-                                                    TextSpan(
-                                                      children: [
-                                                        getPoppinsTextSpanHeading(
-                                                            text:
-                                                                'Tax Code'),
-                                                        getPoppinsTextSpanDetails(
-                                                            text: ""),
-                                                      ],
-                                                    ),
+                                                child: Text.rich(
+                                                  TextSpan(
+                                                    children: [
+                                                      getPoppinsTextSpanHeading(
+                                                          text: 'Tax Code'),
+                                                      getPoppinsTextSpanDetails(
+                                                          text: item.TaxCode ??
+                                                              ''),
+                                                    ],
                                                   ),
                                                 ),
                                               ),
@@ -456,18 +434,17 @@ class _ItemDetailsState extends State<ItemDetails> {
                                                   top: 4.0),
                                               child: Align(
                                                 alignment: Alignment.topLeft,
-                                                child: FittedBox(
-                                                  fit: BoxFit.contain,
-                                                  child: Text.rich(
-                                                    TextSpan(
-                                                      children: [
-                                                        getPoppinsTextSpanHeading(
-                                                            text:
-                                                                'Tax Rate'),
-                                                        getPoppinsTextSpanDetails(
-                                                            text: ""),
-                                                      ],
-                                                    ),
+                                                child: Text.rich(
+                                                  TextSpan(
+                                                    children: [
+                                                      getPoppinsTextSpanHeading(
+                                                          text: 'Tax Rate'),
+                                                      getPoppinsTextSpanDetails(
+                                                          text: item.TaxRate
+                                                                  ?.toStringAsFixed(
+                                                                      2) ??
+                                                              '0.00'),
+                                                    ],
                                                   ),
                                                 ),
                                               ),
@@ -479,18 +456,18 @@ class _ItemDetailsState extends State<ItemDetails> {
                                                   top: 4.0),
                                               child: Align(
                                                 alignment: Alignment.topLeft,
-                                                child: FittedBox(
-                                                  fit: BoxFit.contain,
-                                                  child: Text.rich(
-                                                    TextSpan(
-                                                      children: [
-                                                        getPoppinsTextSpanHeading(
-                                                            text:
-                                                                'Line Discount'),
-                                                        getPoppinsTextSpanDetails(
-                                                            text: ""),
-                                                      ],
-                                                    ),
+                                                child: Text.rich(
+                                                  TextSpan(
+                                                    children: [
+                                                      getPoppinsTextSpanHeading(
+                                                          text:
+                                                              'Line Discount'),
+                                                      getPoppinsTextSpanDetails(
+                                                          text: item.Discount
+                                                                  ?.toStringAsFixed(
+                                                                      2) ??
+                                                              '0.00'),
+                                                    ],
                                                   ),
                                                 ),
                                               ),
@@ -502,18 +479,17 @@ class _ItemDetailsState extends State<ItemDetails> {
                                                   top: 4.0),
                                               child: Align(
                                                 alignment: Alignment.topLeft,
-                                                child: FittedBox(
-                                                  fit: BoxFit.contain,
-                                                  child: Text.rich(
-                                                    TextSpan(
-                                                      children: [
-                                                        getPoppinsTextSpanHeading(
-                                                            text:
-                                                                'Line Total'),
-                                                        getPoppinsTextSpanDetails(
-                                                            text: ""),
-                                                      ],
-                                                    ),
+                                                child: Text.rich(
+                                                  TextSpan(
+                                                    children: [
+                                                      getPoppinsTextSpanHeading(
+                                                          text: 'Line Total'),
+                                                      getPoppinsTextSpanDetails(
+                                                          text: item.LineTotal
+                                                                  ?.toStringAsFixed(
+                                                                      2) ??
+                                                              ''),
+                                                    ],
                                                   ),
                                                 ),
                                               ),
@@ -530,54 +506,70 @@ class _ItemDetailsState extends State<ItemDetails> {
                               top: -27,
                               right: -4,
                               child: InkWell(
-                                onTap:() async {
+                                onTap: () async {
                                   await showDialog(
-                                  barrierDismissible: false,
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    return AlertDialog(
-                                      content: Container(
-                                        height: MediaQuery.of(context).size.height / 20,
-                                        width: MediaQuery.of(context).size.width / 1.5,
-                                        child: Text(
-                                          "Are you sure you want to delete this row?",
-                                          style: TextStyle(
-                                              color: Colors.black, fontWeight: FontWeight.bold),
-                                        ),
-                                      ),
-                                      actions: [
-                                        MaterialButton(
-                                          // OPTIONAL BUTTON
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.circular(40),
-                                          ),
-                                          color: barColor,
+                                    barrierDismissible: false,
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        content: Container(
+                                          height: MediaQuery.of(context)
+                                                  .size
+                                                  .height /
+                                              20,
+                                          width: MediaQuery.of(context)
+                                                  .size
+                                                  .width /
+                                              1.5,
                                           child: Text(
-                                            'No',
-                                            style: TextStyle(color: Colors.white),
+                                            "Are you sure you want to delete this row?",
+                                            style: TextStyle(
+                                                color: Colors.black,
+                                                fontWeight: FontWeight.bold),
                                           ),
-                                          onPressed: () {
-                                            Navigator.pop(context);
-                                          },
                                         ),
-                                        MaterialButton(
-                                          // OPTIONAL BUTTON
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.circular(40),
+                                        actions: [
+                                          MaterialButton(
+                                            // OPTIONAL BUTTON
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(40),
+                                            ),
+                                            color: barColor,
+                                            child: Text(
+                                              'No',
+                                              style: TextStyle(
+                                                  color: Colors.white),
+                                            ),
+                                            onPressed: () {
+                                              Navigator.pop(context);
+                                            },
                                           ),
-                                          color: Colors.red,
-                                          child: Text(
-                                            'Yes',
-                                            style: TextStyle(color: Colors.white),
+                                          MaterialButton(
+                                            // OPTIONAL BUTTON
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(40),
+                                            ),
+                                            color: Colors.red,
+                                            child: Text(
+                                              'Yes',
+                                              style: TextStyle(
+                                                  color: Colors.white),
+                                            ),
+                                            onPressed: () async {
+                                              ItemDetails.items.removeAt(index);
+                                              Navigator.pop(context);
+                                            },
                                           ),
-                                          onPressed: () async {
-                                            Navigator.pop(context);
-                                          },
-                                        ),
-                                      ],
-                                    );
-                                  },
-                                  );
+                                        ],
+                                      );
+                                    },
+                                  ).then((value){
+                                    setState(() {
+
+                                    });
+                                  });
                                 },
                                 child: Card(
                                   child: Padding(
@@ -594,9 +586,10 @@ class _ItemDetailsState extends State<ItemDetails> {
                         );
                       },
                     ),
-                    SizedBox(
-                      height: MediaQuery.of(context).size.height / 10,
-                    )
+                    if (ItemDetails.items.isNotEmpty)
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height / 10,
+                      )
                   ],
                 ),
               ),

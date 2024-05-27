@@ -42,6 +42,9 @@ class PRPRQ1{
   String? SupplierName;
   String? Remarks;
   double? NoOfPieces;
+  bool insertedIntoDatabase;
+  bool hasCreated;
+  bool hasUpdated;
   PRPRQ1({
     this.ID,
     this.TransId,
@@ -73,9 +76,12 @@ class PRPRQ1{
     this.DeptCode,
     this.DeptName,
     this.SupplierCode,
+    this.insertedIntoDatabase=true,
     this.SupplierName,
     this.Remarks,
     this.NoOfPieces,
+    this.hasCreated = false,
+    this.hasUpdated = false,
   });
   factory PRPRQ1.fromJson(Map<String,dynamic> json)=>PRPRQ1(
     ID : int.tryParse(json['ID'].toString())??0,
@@ -111,6 +117,8 @@ class PRPRQ1{
     SupplierName : json['SupplierName']?.toString() ?? '',
     Remarks : json['Remarks']?.toString() ?? '',
     NoOfPieces : double.tryParse(json['NoOfPieces'].toString())??0.0,
+    hasCreated: json['has_created'] == 1,
+    hasUpdated: json['has_updated'] == 1,
   );
   Map<String,dynamic> toJson()=>{
     'ID' : ID,
@@ -146,6 +154,8 @@ class PRPRQ1{
     'SupplierName' : SupplierName,
     'Remarks' : Remarks,
     'NoOfPieces' : NoOfPieces,
+    "has_created": hasCreated ? 1 : 0,
+    "has_updated": hasUpdated ? 1 : 0,
   };
 }
 List<PRPRQ1> pRPRQ1FromJson(String str) => List<PRPRQ1>.from(

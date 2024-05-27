@@ -16,8 +16,7 @@ import 'package:maintenance/GoodsIssue/GoodsIssue.dart';
 import 'package:maintenance/JobCard/GeneralData.dart' as jcdGenData;
 import 'package:maintenance/JobCard/ItemDetails/EditJobCardItem.dart'
 as editJCDItems;
-import 'package:maintenance/JobCard/ServiceDetails/EditService.dart'
-as editJCDService;
+import 'package:maintenance/JobCard/ServiceDetails/EditService.dart' as editJCDService;
 import 'package:maintenance/JobCard/ItemDetails/ItemDetails.dart'
 as jcdItemDetails;
 import 'package:maintenance/JobCard/ServiceDetails/ServiceDetails.dart'
@@ -32,8 +31,8 @@ import 'package:maintenance/GoodsIssue/ItemDetails/ItemDetails.dart' as goodsIte
 
 //------------------------------ PURCHASE REQUEST IMPORTS------------
 import 'package:maintenance/Purchase/PurchaseRequest/GeneralData.dart' as purchaseGenData;
-// import 'package:maintenance/Purchase/PurchaseRequest/ItemDetails/EditItems.dart' as goodsEditItems;
-import 'package:maintenance/Purchase/PurchaseRequest/ItemDetails.dart' as purchaseItemDetails;
+import 'package:maintenance/Purchase/PurchaseRequest/ItemDetails/EditItems.dart' as purchaseEditItems;
+import 'package:maintenance/Purchase/PurchaseRequest/ItemDetails/ItemDetails.dart' as purchaseItemDetails;
 
 class ClearCheckListDoc {
   static clearEditCheckList() {
@@ -360,6 +359,9 @@ class ClearPurchaseRequestDocument {
     purchaseGenData.GeneralData.updateDate = '';
     purchaseGenData.GeneralData.approvedBy = '';
     purchaseGenData.GeneralData.error = '';
+    purchaseGenData.GeneralData.isSelected = false;
+    purchaseGenData.GeneralData.hasCreated = false;
+    purchaseGenData.GeneralData.hasUpdated = false;
     purchaseGenData.GeneralData.isPosted = false;
     purchaseGenData.GeneralData.draftKey = '';
     purchaseGenData.GeneralData.latitude = '';
@@ -380,32 +382,35 @@ class ClearPurchaseRequestDocument {
     purchaseGenData.GeneralData.isConsumption = false;
     purchaseGenData.GeneralData.isRequest = false;
   }
-// static clearEditItems(){
-//   goodsEditItems.EditItems.id='';
-//   goodsEditItems.EditItems.truckNo='';
-//   goodsEditItems.EditItems.toWhsCode='';
-//   goodsEditItems.EditItems.toWhsName='';
-//   goodsEditItems.EditItems.driverCode='';
-//   goodsEditItems.EditItems.driverName='';
-//   goodsEditItems.EditItems.routeCode='';
-//   goodsEditItems.EditItems.routeName='';
-//   goodsEditItems.EditItems.transId='';
-//   goodsEditItems.EditItems.rowId='';
-//   goodsEditItems.EditItems.itemCode='';
-//   goodsEditItems.EditItems.itemName='';
-//   goodsEditItems.EditItems.consumptionQty='';
-//   goodsEditItems.EditItems.uomCode='';
-//   goodsEditItems.EditItems.uomName='';
-//   goodsEditItems.EditItems.deptCode='';
-//   goodsEditItems.EditItems.deptName='';
-//   goodsEditItems.EditItems.price='';
-//   goodsEditItems.EditItems.mtv='';
-//   goodsEditItems.EditItems.taxCode='';
-//   goodsEditItems.EditItems.taxRate='';
-//   goodsEditItems.EditItems.lineDiscount='';
-//   goodsEditItems.EditItems.lineTotal='';
-//   goodsEditItems.EditItems.isUpdating = false;
-// }
+  static clearEditItems() {
+    purchaseEditItems.EditItems.id='';
+    purchaseEditItems.EditItems.tripTransId='';
+    purchaseEditItems.EditItems.supplierCode='';
+    purchaseEditItems.EditItems.supplierName='';
+    purchaseEditItems.EditItems.truckNo='';
+    purchaseEditItems.EditItems.toWhsCode='';
+    purchaseEditItems.EditItems.toWhsName='';
+    purchaseEditItems.EditItems.driverCode='';
+    purchaseEditItems.EditItems.driverName='';
+    purchaseEditItems.EditItems.routeCode='';
+    purchaseEditItems.EditItems.routeName='';
+    purchaseEditItems.EditItems.transId='';
+    purchaseEditItems.EditItems.rowId='';
+    purchaseEditItems.EditItems.itemCode='';
+    purchaseEditItems.EditItems.itemName='';
+    purchaseEditItems.EditItems.consumptionQty='';
+    purchaseEditItems.EditItems.uomCode='';
+    purchaseEditItems.EditItems.uomName='';
+    purchaseEditItems.EditItems.deptCode='';
+    purchaseEditItems.EditItems.deptName='';
+    purchaseEditItems.EditItems.price='';
+    purchaseEditItems.EditItems.mtv='';
+    purchaseEditItems.EditItems.taxCode='';
+    purchaseEditItems.EditItems.taxRate='';
+    purchaseEditItems.EditItems.lineDiscount='';
+    purchaseEditItems.EditItems.lineTotal='';
+    purchaseEditItems.EditItems.isUpdating = false;
+  }
 }
 
 goToNewPurchaseRequestDocument() async {
