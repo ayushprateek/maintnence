@@ -26,6 +26,7 @@ import 'package:maintenance/JobCard/JobCard.dart';
 import 'package:maintenance/main.dart';
 //------------------------------ GOODS ISSUE IMPORTS------------
 import 'package:maintenance/GoodsIssue/GeneralData.dart' as goodsGenData;
+import 'package:maintenance/GoodsIssue/ItemDetails/EditItems.dart' as goodsEditItems;
 import 'package:maintenance/GoodsIssue/ItemDetails/ItemDetails.dart' as goodsItemDetails;
 
 
@@ -278,9 +279,36 @@ class ClearGoodsIssueDocument{
     goodsGenData.GeneralData.hasCreated = false;
     goodsGenData.GeneralData.hasUpdated = false;
   }
+  static clearEditItems(){
+    goodsEditItems.EditItems.id='';
+    goodsEditItems.EditItems.truckNo='';
+    goodsEditItems.EditItems.toWhsCode='';
+    goodsEditItems.EditItems.toWhsName='';
+    goodsEditItems.EditItems.driverCode='';
+    goodsEditItems.EditItems.driverName='';
+    goodsEditItems.EditItems.routeCode='';
+    goodsEditItems.EditItems.routeName='';
+    goodsEditItems.EditItems.transId='';
+    goodsEditItems.EditItems.rowId='';
+    goodsEditItems.EditItems.itemCode='';
+    goodsEditItems.EditItems.itemName='';
+    goodsEditItems.EditItems.consumptionQty='';
+    goodsEditItems.EditItems.uomCode='';
+    goodsEditItems.EditItems.uomName='';
+    goodsEditItems.EditItems.deptCode='';
+    goodsEditItems.EditItems.deptName='';
+    goodsEditItems.EditItems.price='';
+    goodsEditItems.EditItems.mtv='';
+    goodsEditItems.EditItems.taxCode='';
+    goodsEditItems.EditItems.taxRate='';
+    goodsEditItems.EditItems.lineDiscount='';
+    goodsEditItems.EditItems.lineTotal='';
+    goodsEditItems.EditItems.isUpdating = false;
+  }
 }
 goToNewGoodsIssueDocument() async {
   await ClearGoodsIssueDocument.clearGeneralDataTextFields();
+  await ClearGoodsIssueDocument.clearEditItems();
   goodsItemDetails.ItemDetails.items.clear();
 
   getLastDocNum("MNGI", null).then((snapshot) async {

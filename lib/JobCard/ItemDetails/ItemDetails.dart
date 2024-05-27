@@ -433,13 +433,16 @@ class _ItemDetailsState extends State<ItemDetails> {
                                                 style: TextStyle(color: Colors.white),
                                               ),
                                               onPressed: () async {
+                                                ItemDetails.items.removeAt(index);
                                                 Navigator.pop(context);
                                               },
                                             ),
                                           ],
                                         );
                                       },
-                                      );
+                                      ).then((value){
+                                        setState((){});
+                                      });
                                     },
                                     icon: Icon(
                                       Icons.delete_forever,

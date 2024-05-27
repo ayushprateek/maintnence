@@ -223,7 +223,7 @@ class _AddItemsState extends State<AddItems> {
                                         snapshot.data![index].ItemName +
                                             " is already added");
                                   } else {
-                                    ClearCheckListDoc.clearEditCheckList();
+                                    ClearGoodsIssueDocument.clearEditItems();
                                     EditItems.transId = GeneralData.transId;
                                     EditItems.itemCode =
                                         snapshot.data![index].ItemCode;

@@ -284,7 +284,7 @@ class _JobCardState extends State<GoodsIssue> {
                 Map<String, Object?> map = generalData.toJson();
                 map.removeWhere((key, value) => value == null || value == '');
                 await database
-                    .update('MNOJCD', map, where: str, whereArgs: [data]);
+                    .update('IMOGDI', map, where: str, whereArgs: [data]);
                 getSuccessSnackBar("Sales Quotation Updated Successfully");
               } else {
                 //CreateDate
@@ -294,7 +294,10 @@ class _JobCardState extends State<GoodsIssue> {
                 generalData.CreatedBy = userModel.UserCode;
                 generalData.BranchId = userModel.BranchId.toString();
                 generalData.hasCreated = true;
-                await database.insert('MNOJCD', generalData.toJson());
+                Position pos=await getCurrentLocation();
+                generalData.Latitude=pos.latitude.toString();
+                generalData.Longitude=pos.longitude.toString();
+                await database.insert('IMOGDI', generalData.toJson());
               }
 
               //ITEM DETAILS
@@ -310,14 +313,14 @@ class _JobCardState extends State<GoodsIssue> {
                     qut1model.CreateDate = DateTime.now();
                     qut1model.UpdateDate = DateTime.now();
 
-                    await database.insert('MNJCD1', qut1model.toJson());
+                    await database.insert('IMGDI1', qut1model.toJson());
                   } else {
                     qut1model.hasUpdated = true;
                     qut1model.UpdateDate = DateTime.now();
                     Map<String, Object?> map = qut1model.toJson();
                     map.removeWhere(
                             (key, value) => value == null || value == '');
-                    await database.update('MNJCD1', map,
+                    await database.update('IMGDI1', map,
                         where: 'TransId = ? AND RowId = ?',
                         whereArgs: [qut1model.TransId, qut1model.RowId]);
                   }
@@ -335,7 +338,7 @@ class _JobCardState extends State<GoodsIssue> {
                     qut1model.CreateDate = DateTime.now();
                     qut1model.UpdateDate = DateTime.now();
 
-                    await database.insert('MNJCD1', qut1model.toJson());
+                    await database.insert('IMGDI1', qut1model.toJson());
                   }
                 }
 

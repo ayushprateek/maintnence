@@ -4,6 +4,7 @@ import 'package:maintenance/Component/CustomColor.dart';
 import 'package:maintenance/Component/GetTextField.dart';
 import 'package:maintenance/Component/IsNumeric.dart';
 import 'package:maintenance/Component/SnackbarComponent.dart';
+import 'package:maintenance/GoodsIssue/GeneralData.dart';
 import 'package:maintenance/GoodsIssue/GoodsIssue.dart';
 import 'package:maintenance/GoodsIssue/ItemDetails/ItemDetails.dart';
 import 'package:maintenance/Lookups/DepartmentLookup.dart';
@@ -24,7 +25,6 @@ import 'package:maintenance/Sync/SyncModels/ROUT.dart';
 
 class EditItems extends StatefulWidget {
   static String? id;
-
   static String? truckNo;
   static String? toWhsCode;
   static String? toWhsName;
@@ -259,6 +259,7 @@ class _EditCheckListState extends State<EditItems> {
 
                             getSuccessSnackBar("Check List Updated");
                           } else {
+
                             IMGDI1 mncld1 = IMGDI1(
                               ID: int.tryParse(EditItems.id ?? ''),
                               TransId: EditItems.transId,
@@ -266,6 +267,25 @@ class _EditCheckListState extends State<EditItems> {
                               ItemCode: EditItems.itemCode.toString() ?? '',
                               ItemName: EditItems.itemName.toString() ?? '',
                               UOM: EditItems.uomCode.toString() ?? '',
+                              DeptCode: EditItems.deptCode,
+                              DeptName: EditItems.deptName,
+                              ToWhsCode: EditItems.toWhsCode,
+                              TripTransId: GeneralData.tripTransId,
+                              Discount: double.tryParse(EditItems.lineDiscount??''),
+                              DriverCode: EditItems.driverCode,
+                              DriverName: EditItems.driverName,
+                              TruckNo: EditItems.truckNo,
+                              TaxCode: EditItems.taxCode,
+                              TaxRate: double.tryParse(EditItems.taxRate??''),
+                              RouteCode: EditItems.routeCode,
+                              RouteName: EditItems.routeName,
+                              Quantity: double.tryParse(EditItems.consumptionQty??''),
+                              Price: double.tryParse(EditItems.price??''),
+                              OpenQty: double.tryParse(EditItems.consumptionQty??''),
+                              MSP: double.tryParse(EditItems.mtv??''),
+                              LineTotal: double.tryParse(EditItems.lineTotal??''),
+                              LineStatus: 'Open',
+                              CreateDate: DateTime.now(),
                               insertedIntoDatabase: false,
                             );
                             ItemDetails.items.add(mncld1);

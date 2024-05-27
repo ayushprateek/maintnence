@@ -230,8 +230,15 @@ class _GeneralDataState extends State<GeneralData> {
                   },
                 ));
               }),
-          getTextField(controller: _tripTransId, labelText: 'TripTransId'),
-          getTextField(controller: _refNo, labelText: 'Reference No'),
+          getTextField(controller: _tripTransId, labelText: 'TripTransId',
+              onChanged: (val){
+                _tripTransId.text = GeneralData.tripTransId = val;
+              }),
+          getTextField(controller: _refNo, labelText: 'Reference No',
+              onChanged: (val){
+                _refNo.text = GeneralData.refNo = val;
+              }
+          ),
           // getDisabledTextField(
           //     controller: _requestedCode,
           //     labelText: 'Request Code',
@@ -257,9 +264,16 @@ class _GeneralDataState extends State<GeneralData> {
                 }));
               }),
           getDisabledTextField(
-              controller: _contactPersonName, labelText: 'Person Name'),
+              controller: _contactPersonName, labelText: 'Person Name',
+              onChanged: (val){
+                // _contactPersonName.text = GeneralData. = val;
+              }
+              ),
           getDisabledTextField(
-              controller: _mobileNo, labelText: 'Mobile Number'),
+              controller: _mobileNo, labelText: 'Mobile Number',
+              onChanged: (val){
+                _mobileNo.text = GeneralData.mobileNo = val;
+              }),
           getDisabledTextField(
               controller: _toWhsCode,
               labelText: 'To Warehouse',
@@ -276,6 +290,10 @@ class _GeneralDataState extends State<GeneralData> {
               }
               ),
           getTextField(controller: _remarks, labelText: 'Remarks',
+            onChanged: (val){
+              _remarks.text = GeneralData.remarks = val;
+            }
+
              ),
           getDateTextField(
               controller: _postingDate,
@@ -292,9 +310,15 @@ class _GeneralDataState extends State<GeneralData> {
                 _validUntill.text = GeneralData.validUntill = val;
               }),
 
-          getDisabledTextField(controller: _docStatus, labelText: 'Doc Status'),
+          getDisabledTextField(controller: _docStatus, labelText: 'Doc Status',
+              onChanged: (val){
+                _docStatus.text = GeneralData.docStatus = val;
+              }),
           getDisabledTextField(
-              controller: _approvalStatus, labelText: 'Approval Status'),
+              controller: _approvalStatus, labelText: 'Approval Status',
+              onChanged: (val){
+                _approvalStatus.text = GeneralData.approvalStatus = val;
+              }),
 
           Padding(
             padding: const EdgeInsets.all(8.0),
@@ -304,13 +328,28 @@ class _GeneralDataState extends State<GeneralData> {
               title: getHeadingText(text: "Details", color: headColor),
               children: [
                 getDisabledTextField(
-                    controller: _permanentTransId, labelText: 'Permanent Trans Id'),
-                getDisabledTextField(controller: _docNum, labelText: 'ERP Doc Num'),
-                getDisabledTextField(controller: _docEntry, labelText: 'Doc Entry'),
-                getDisabledTextField(controller: _currency, labelText: 'Currency'),
+                    controller: _permanentTransId, labelText: 'Permanent Trans Id',
+                    onChanged: (val){
+                      _permanentTransId.text = GeneralData.permanentTransId = val;
+                    }),
+                getDisabledTextField(controller: _docNum, labelText: 'ERP Doc Num',
+                    onChanged: (val){
+                      _docNum.text = GeneralData.docNum = val;
+                    }),
+                getDisabledTextField(controller: _docEntry, labelText: 'Doc Entry',
+                    onChanged: (val){
+                      _docEntry.text = GeneralData.docEntry = val;
+                    }),
+                getDisabledTextField(controller: _currency, labelText: 'Currency',
+                    onChanged: (val){
+                      _currency.text = GeneralData.currency = val;
+                    }),
                 getDisabledTextField(
-                    controller: _currRate, labelText: 'Currency Rate'),
-                getDisabledTextField(controller: _localDate, labelText: 'Local Date'),
+                    controller: _currRate, labelText: 'Currency Rate',
+                    onChanged: (val){
+                      _currRate.text = GeneralData.currRate = val;
+                    }),
+                getDisabledTextField(controller: _localDate, labelText: 'Local Date',),
               ],
             ),
           ),

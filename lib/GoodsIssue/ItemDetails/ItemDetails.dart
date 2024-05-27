@@ -55,7 +55,6 @@ class _ItemDetailsState extends State<ItemDetails> {
           Padding(
             padding: const EdgeInsets.only(left: 8.0, right: 8, bottom: 8),
             child: Container(
-              //todo: uncomment
               // decoration: ItemDetails.items.isNotEmpty
               decoration: true
                   ? BoxDecoration(
@@ -71,16 +70,14 @@ class _ItemDetailsState extends State<ItemDetails> {
                       height: 30,
                     ),
                     ListView.builder(
-                      itemCount: 1,
+                      itemCount: ItemDetails.items.length,
                       shrinkWrap: true,
                       physics: const ScrollPhysics(),
                       itemBuilder: (BuildContext context, int index) {
-                        // MNJCD1 mnjcd1 = ItemDetails.items[index];
-
+                        IMGDI1 item = ItemDetails.items[index];
                         return Stack(
                           fit: StackFit.loose,
                           clipBehavior: Clip.none,
-
                           children: [
                             InkWell(
                               // onDoubleTap: () {
@@ -167,7 +164,7 @@ class _ItemDetailsState extends State<ItemDetails> {
                                                         getPoppinsTextSpanHeading(
                                                             text: 'TripTransId'),
                                                         getPoppinsTextSpanDetails(
-                                                            text: "XXX"),
+                                                            text: item.TripTransId??''),
                                                       ],
                                                     ),
                                                   ),
@@ -189,7 +186,7 @@ class _ItemDetailsState extends State<ItemDetails> {
                                                         getPoppinsTextSpanHeading(
                                                             text: 'Item Code'),
                                                         getPoppinsTextSpanDetails(
-                                                            text: "XXX"),
+                                                            text: item.ItemCode??''),
                                                       ],
                                                     ),
                                                   ),
@@ -209,7 +206,7 @@ class _ItemDetailsState extends State<ItemDetails> {
                                                       getPoppinsTextSpanHeading(
                                                           text: 'Item Name'),
                                                       getPoppinsTextSpanDetails(
-                                                          text: "XYZ"),
+                                                          text: item.ItemName??''),
                                                     ],
                                                   ),
                                                 ),
@@ -230,7 +227,7 @@ class _ItemDetailsState extends State<ItemDetails> {
                                                         getPoppinsTextSpanHeading(
                                                             text: 'To Warehouse'),
                                                         getPoppinsTextSpanDetails(
-                                                            text: "XYZ"),
+                                                            text: item.ToWhsCode),
                                                       ],
                                                     ),
                                                   ),
@@ -252,7 +249,7 @@ class _ItemDetailsState extends State<ItemDetails> {
                                                         getPoppinsTextSpanHeading(
                                                             text: 'Quantity'),
                                                         getPoppinsTextSpanDetails(
-                                                            text: "XYZ"),
+                                                            text: item.Quantity?.toStringAsFixed(2)??'0.0'),
                                                       ],
                                                     ),
                                                   ),
@@ -274,7 +271,7 @@ class _ItemDetailsState extends State<ItemDetails> {
                                                         getPoppinsTextSpanHeading(
                                                             text: 'UOM'),
                                                         getPoppinsTextSpanDetails(
-                                                            text: "XYZ"),
+                                                            text: item.UOM??''),
                                                       ],
                                                     ),
                                                   ),
@@ -297,7 +294,7 @@ class _ItemDetailsState extends State<ItemDetails> {
                                                             text:
                                                             'TruckNo'),
                                                         getPoppinsTextSpanDetails(
-                                                            text: ''),
+                                                            text: item.TruckNo??''),
                                                       ],
                                                     ),
                                                   ),
@@ -320,7 +317,7 @@ class _ItemDetailsState extends State<ItemDetails> {
                                                             text:
                                                             'Driver Name'),
                                                         getPoppinsTextSpanDetails(
-                                                            text: "aa"),
+                                                            text: item.DriverName),
                                                       ],
                                                     ),
                                                   ),
@@ -355,7 +352,7 @@ class _ItemDetailsState extends State<ItemDetails> {
                                                             text:
                                                                 'Route Name'),
                                                         getPoppinsTextSpanDetails(
-                                                            text: ""),
+                                                            text: item.RouteName),
                                                       ],
                                                     ),
                                                   ),
@@ -378,7 +375,7 @@ class _ItemDetailsState extends State<ItemDetails> {
                                                             text:
                                                                 'Dept Name'),
                                                         getPoppinsTextSpanDetails(
-                                                            text: ""),
+                                                            text: item.DeptName),
                                                       ],
                                                     ),
                                                   ),
@@ -401,7 +398,7 @@ class _ItemDetailsState extends State<ItemDetails> {
                                                             text:
                                                                 'Price'),
                                                         getPoppinsTextSpanDetails(
-                                                            text: ""),
+                                                            text: item.Price?.toStringAsFixed(2)??'0.0'),
                                                       ],
                                                     ),
                                                   ),
@@ -424,7 +421,7 @@ class _ItemDetailsState extends State<ItemDetails> {
                                                             text:
                                                                 'Tax Code'),
                                                         getPoppinsTextSpanDetails(
-                                                            text: ""),
+                                                            text: item.TaxCode??''),
                                                       ],
                                                     ),
                                                   ),
@@ -447,7 +444,7 @@ class _ItemDetailsState extends State<ItemDetails> {
                                                             text:
                                                                 'Tax Rate'),
                                                         getPoppinsTextSpanDetails(
-                                                            text: ""),
+                                                            text: item.TaxRate?.toStringAsFixed(2)??'0.0'),
                                                       ],
                                                     ),
                                                   ),
@@ -470,7 +467,7 @@ class _ItemDetailsState extends State<ItemDetails> {
                                                             text:
                                                                 'Line Discount'),
                                                         getPoppinsTextSpanDetails(
-                                                            text: ""),
+                                                            text: item.Discount?.toStringAsFixed(2)??''),
                                                       ],
                                                     ),
                                                   ),
@@ -493,7 +490,7 @@ class _ItemDetailsState extends State<ItemDetails> {
                                                             text:
                                                                 'Line Total'),
                                                         getPoppinsTextSpanDetails(
-                                                            text: ""),
+                                                            text: item.LineTotal?.toStringAsFixed(2)??'0.0'),
                                                       ],
                                                     ),
                                                   ),
@@ -554,13 +551,16 @@ class _ItemDetailsState extends State<ItemDetails> {
                                                 style: TextStyle(color: Colors.white),
                                               ),
                                               onPressed: () async {
+                                                ItemDetails.items.removeAt(index);
                                                 Navigator.pop(context);
                                               },
                                             ),
                                           ],
                                         );
                                       },
-                                      );
+                                      ).then((value){
+                                        setState((){});
+                                      });
                                     },
                                     icon: Icon(
                                       Icons.delete_forever,
@@ -572,6 +572,7 @@ class _ItemDetailsState extends State<ItemDetails> {
                         );
                       },
                     ),
+                    if(ItemDetails.items.isNotEmpty)
                     SizedBox(
                       height: MediaQuery.of(context).size.height / 10,
                     )
