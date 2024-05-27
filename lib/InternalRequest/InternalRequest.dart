@@ -196,7 +196,7 @@ class _JobCardState extends State<InternalRequest> {
 
               ],
               title: getHeadingText(
-                  text: "Goods Issue", color: headColor, fontSize: 20)),
+                  text: "Internal Request", color: headColor, fontSize: 20)),
           body: TabBarView(
             children: [
               GeneralData(),

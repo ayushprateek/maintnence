@@ -1,5 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:maintenance/Component/GetTextField.dart';
+import 'package:maintenance/Lookups/DepartmentLookup.dart';
+import 'package:maintenance/Lookups/EmployeeLookup.dart';
+import 'package:maintenance/Lookups/TripLookup.dart';
+import 'package:maintenance/Lookups/WarehouseLookup.dart';
+import 'package:maintenance/Sync/SyncModels/OEMP.dart';
+import 'package:maintenance/Sync/SyncModels/OPOTRP.dart';
+import 'package:maintenance/Sync/SyncModels/OUDP.dart';
+import 'package:maintenance/Sync/SyncModels/OWHS.dart';
 
 class GeneralData extends StatefulWidget {
   const GeneralData({super.key});
@@ -148,14 +157,28 @@ class _GeneralDataState extends State<GeneralData> {
           getDisabledTextField(
               controller: _deptName,
               labelText: 'Department Name',
-              onChanged: (val) {
-                GeneralData.deptName = val;
+              enableLookup: true,
+              onLookupPressed: () {
+                Get.to(() => DepartmentLookup(onSelection: (OUDP oudp) {
+                      setState(() {
+                        GeneralData.deptCode = oudp.Code ?? '';
+                        GeneralData.deptName = _deptName.text = oudp.Name ?? '';
+                      });
+                    }));
               }),
           getDisabledTextField(
-            controller: _tripTransId,
-            labelText: 'TripTransId',
-          ),
-          getDisabledTextField(
+              controller: _tripTransId,
+              labelText: 'TripTransId',
+              enableLookup: true,
+              onLookupPressed: () {
+                Get.to(() => TripLookup(onSelection: (OPOTRP oemp) {
+                      setState(() {
+                        GeneralData.tripTransId =
+                            _tripTransId.text = oemp.TransId ?? '';
+                      });
+                    }));
+              }),
+          getTextField(
               controller: _refNo,
               labelText: 'Reference No',
               onChanged: (val) {
@@ -166,6 +189,16 @@ class _GeneralDataState extends State<GeneralData> {
               labelText: 'Request Name*',
               onChanged: (val) {
                 GeneralData.requestedName = val;
+              },
+              enableLookup: true,
+              onLookupPressed: () {
+                Get.to(() => EmployeeLookup(onSelection: (OEMPModel oemp) {
+                      setState(() {
+                        GeneralData.requestedName = oemp.Code;
+                        GeneralData.requestedName =
+                            _requestedName.text = oemp.Name ?? '';
+                      });
+                    }));
               }),
           getDisabledTextField(
               controller: _mobileNo,
@@ -178,14 +211,37 @@ class _GeneralDataState extends State<GeneralData> {
               labelText: 'From Warehouse',
               onChanged: (val) {
                 GeneralData.fromWhsCode = val;
+              },
+              enableLookup: true,
+              onLookupPressed: () {
+                Get.to(() => WarehouseLookup(onSelection: (OWHS owhs) {
+                      setState(() {
+                        GeneralData.fromWhsCode =
+                            _fromWhsCode.text = owhs.WhsCode ?? '';
+                      });
+                    }));
               }),
           getDisabledTextField(
               controller: _toWhsCode,
               labelText: 'To Warehouse',
               onChanged: (val) {
                 GeneralData.toWhsCode = val;
+              },
+              enableLookup: true,
+              onLookupPressed: () {
+                Get.to(() => WarehouseLookup(onSelection: (OWHS owhs) {
+                      setState(() {
+                        GeneralData.toWhsCode =
+                            _toWhsCode.text = owhs.WhsCode ?? '';
+                      });
+                    }));
               }),
-          getDisabledTextField(controller: _docEntry, labelText: 'Remarks'),
+          getTextField(
+              controller: _remarks,
+              labelText: 'Remarks',
+              onChanged: (val) {
+                GeneralData.remarks = val;
+              }),
           getDateTextField(
               controller: _postingDate,
               labelText: 'Posting Date',
@@ -213,13 +269,13 @@ class _GeneralDataState extends State<GeneralData> {
                 GeneralData.currRate = val;
               }),
           getDisabledTextField(
-              controller: _docEntry,
+              controller: _docStatus,
               labelText: 'Doc Status',
               onChanged: (val) {
                 GeneralData.docStatus = val;
               }),
           getDisabledTextField(
-              controller: _docEntry,
+              controller: _approvalStatus,
               labelText: 'Approval Status',
               onChanged: (val) {
                 GeneralData.approvalStatus = val;

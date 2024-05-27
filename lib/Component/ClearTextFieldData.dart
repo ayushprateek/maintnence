@@ -572,8 +572,8 @@ class ClearSTRDocument {
     internalGenData.GeneralData.requestedName='';
     internalGenData.GeneralData.refNo='';
     internalGenData.GeneralData.mobileNo='';
-    internalGenData.GeneralData.postingDate='';
-    internalGenData.GeneralData.validUntill='';
+    internalGenData.GeneralData.postingDate=getFormattedDate(DateTime.now());
+    internalGenData.GeneralData.validUntill=getFormattedDate(DateTime.now().add(Duration(days: 7)));
     internalGenData.GeneralData.currency=userModel.Currency;
     internalGenData.GeneralData.currRate=userModel.Rate;
     internalGenData.GeneralData.approvalStatus='Pending';
