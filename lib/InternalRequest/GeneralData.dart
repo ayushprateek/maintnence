@@ -116,10 +116,11 @@ class _GeneralDataState extends State<GeneralData> {
           getDisabledTextField(controller: _docEntry, labelText: 'To Warehouse'),
           getDisabledTextField(controller: _docEntry, labelText: 'Remarks'),
 
-          getDisabledTextField(
-              controller: _postingDate, labelText: 'Posting Date'),
-          getDisabledTextField(
-              controller: _validUntill, labelText: 'Valid Until'),
+          getDateTextField(
+              controller: _postingDate, labelText: 'Posting Date', localCurrController: TextEditingController()),
+          getDateTextField(
+              controller: _validUntill, labelText: 'Valid Until',
+          localCurrController: TextEditingController()),
           getDisabledTextField(controller: _docEntry, labelText: 'Currency'),
           getDisabledTextField(controller: _docEntry, labelText: 'Currency Rate'),
           getDisabledTextField(controller: _docEntry, labelText: 'Doc Status'),

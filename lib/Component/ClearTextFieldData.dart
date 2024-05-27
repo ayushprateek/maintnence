@@ -573,8 +573,8 @@ class ClearSTRDocument {
     internalGenData.GeneralData.docEntry='';
     internalGenData.GeneralData.docNum='';
     internalGenData.GeneralData.canceled='';
-    internalGenData.GeneralData.docStatus='';
-    internalGenData.GeneralData.approvalStatus='';
+    internalGenData.GeneralData.docStatus='Open';
+    internalGenData.GeneralData.approvalStatus='Pending';
     internalGenData.GeneralData.checkListStatus='';
     internalGenData.GeneralData.objectCode='';
     internalGenData.GeneralData.equipmentCode='';
@@ -583,11 +583,11 @@ class ClearSTRDocument {
     internalGenData.GeneralData.checkListName='';
     internalGenData.GeneralData.workCenterCode='';
     internalGenData.GeneralData.workCenterName='';
-    internalGenData.GeneralData.openDate='';
-    internalGenData.GeneralData.closeDate='';
-    internalGenData.GeneralData.postingDate='';
-    internalGenData.GeneralData.validUntill='';
-    internalGenData.GeneralData.lastReadingDate='';
+    internalGenData.GeneralData.openDate=getFormattedDate(DateTime.now());
+    internalGenData.GeneralData.closeDate=getFormattedDate(DateTime.now().add(Duration(days: 7)));
+    internalGenData.GeneralData.postingDate=getFormattedDate(DateTime.now());
+    internalGenData.GeneralData.validUntill=getFormattedDate(DateTime.now().add(Duration(days: 7)));
+    internalGenData.GeneralData.lastReadingDate=getFormattedDate(DateTime.now());
     internalGenData.GeneralData.lastReading='';
     internalGenData.GeneralData.assignedUserCode='';
     internalGenData.GeneralData.assignedUserName='';
@@ -598,7 +598,6 @@ class ClearSTRDocument {
     internalGenData.GeneralData.branchId='';
     internalGenData.GeneralData.createDate='';
     internalGenData.GeneralData.updateDate='';
-
     internalGenData.GeneralData.isConsumption=false;
     internalGenData.GeneralData.isRequest=false;
     internalGenData.GeneralData.isSelected = false;
