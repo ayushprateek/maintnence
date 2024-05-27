@@ -40,6 +40,8 @@ class PROPRQ{
   String? DeptName;
   String? RequestedCode;
   String? RequestedName;
+  //todo: add City
+  //todo: add State
   PROPRQ({
     this.ID,
     this.TransId,

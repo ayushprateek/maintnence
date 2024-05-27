@@ -228,6 +228,18 @@ WHERE T1.TransId IS NULL;
   await db.delete('OPOTRP_Temp');
 }
 
+Future<List<OPOTRP>> retrieveOPOTRPForDisplay(
+    {String dbQuery = '', int limit = 15, bool isCompetitor = false}) async {
+  final Database db = await initializeDB(null);
+  dbQuery = '%$dbQuery%';
+  String searchQuery = '';
+  searchQuery = '''
+  SELECT * FROM OPOTRP WHERE TransId LIKE '$dbQuery' LIMIT $limit
+  ''';
+  final List<Map<String, Object?>> queryResult = await db.rawQuery(searchQuery);
+  return queryResult.map((e) => OPOTRP.fromJson(e)).toList();
+}
+
 Future<List<OPOTRP>> retrieveOPOTRP(BuildContext context) async {
   final Database db = await initializeDB(context);
   final List<Map<String, Object?>> queryResult = await db.query('OPOTRP');

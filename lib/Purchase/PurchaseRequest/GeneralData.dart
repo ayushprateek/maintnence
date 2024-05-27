@@ -1,92 +1,118 @@
 import 'package:flutter/material.dart';
-import 'package:maintenance/Component/GetFormattedDate.dart';
+import 'package:get/get.dart';
 import 'package:maintenance/Component/GetTextField.dart';
+import 'package:maintenance/Lookups/DepartmentLookup.dart';
+import 'package:maintenance/Lookups/EmployeeLookup.dart';
+import 'package:maintenance/Lookups/TripLookup.dart';
+import 'package:maintenance/Sync/SyncModels/OEMP.dart';
+import 'package:maintenance/Sync/SyncModels/OPOTRP.dart';
+import 'package:maintenance/Sync/SyncModels/OUDP.dart';
+import 'package:maintenance/Sync/SyncModels/OWHS.dart';
+
+import '../../Lookups/WarehouseLookup.dart';
+
 class GeneralData extends StatefulWidget {
   const GeneralData({super.key});
+
   static String? iD;
-  static String? permanentTransId;
   static String? transId;
+  static String? refNo;
+  static String? mobileNo;
+  static String? postingDate;
+  static String? validUntill;
+  static String? approvalStatus;
+  static String? docStatus;
+  static String? permanentTransId;
   static String? docEntry;
   static String? docNum;
-  static String? canceled;
-  static String? docStatus;
-  static String? approvalStatus;
-  static String? checkListStatus;
-  static String? objectCode;
-  static String? equipmentCode;
-  static String? equipmentName;
-  static String? checkListCode;
-  static String? checkListName;
-  static String? workCenterCode;
-  static String? workCenterName;
-  static DateTime? openDate;
-  static DateTime? closeDate;
-  static DateTime? postingDate;
-  static DateTime? validUntill;
-  static DateTime? lastReadingDate;
-  static String? lastReading;
-  static String? assignedUserCode;
-  static String? assignedUserName;
-  static String? mNJCTransId;
-  static String? remarks;
   static String? createdBy;
-  static String? updatedBy;
+  static String? createDate;
+  static String? updateDate;
+  static String? approvedBy;
+  static String? error;
+  static String? draftKey;
+  static String? latitude;
+  static String? longitude;
+  static String? objectCode;
+  static String? whsCode;
+  static String? remarks;
   static String? branchId;
-  static DateTime? createDate;
-  static DateTime? updateDate;
+  static String? updatedBy;
+  static String? postingAddress;
+  static String? tripTransId;
+  static String? deptCode;
+  static String? deptName;
+  static String? requestedCode;
+  static String? requestedName;
 
-  static bool? isConsumption;
-  static bool? isRequest;
+  static bool isPosted = false;
+  static bool isConsumption = false;
+  static bool isRequest = false;
 
   @override
   State<GeneralData> createState() => _GeneralDataState();
 }
 
 class _GeneralDataState extends State<GeneralData> {
-  final TextEditingController _permanentTransId =
-  TextEditingController(text: GeneralData.permanentTransId);
+  final TextEditingController _iD = TextEditingController(text: GeneralData.iD);
   final TextEditingController _transId =
-  TextEditingController(text: GeneralData.transId);
-  final TextEditingController _docEntry =
-  TextEditingController(text: GeneralData.docEntry);
-  final TextEditingController _docNum =
-  TextEditingController(text: GeneralData.docNum);
-  final TextEditingController _docStatus =
-  TextEditingController(text: GeneralData.docStatus);
-  final TextEditingController _approvalStatus =
-  TextEditingController(text: GeneralData.approvalStatus);
-  final TextEditingController _checkListStatus =
-  TextEditingController(text: GeneralData.checkListStatus);
-  final TextEditingController _equipmentCode =
-  TextEditingController(text: GeneralData.equipmentCode);
-  final TextEditingController _equipmentName =
-  TextEditingController(text: GeneralData.equipmentName);
-  final TextEditingController _checkListCode =
-  TextEditingController(text: GeneralData.checkListCode);
-  final TextEditingController _checkListName =
-  TextEditingController(text: GeneralData.checkListName);
-  final TextEditingController _workCenterCode =
-  TextEditingController(text: GeneralData.workCenterCode);
-  final TextEditingController _workCenterName =
-  TextEditingController(text: GeneralData.workCenterName);
-  final TextEditingController _openDate =
-  TextEditingController(text: getFormattedDate(GeneralData.openDate));
-  final TextEditingController _closeDate =
-  TextEditingController(text: getFormattedDate(GeneralData.closeDate));
+      TextEditingController(text: GeneralData.transId);
+  final TextEditingController _refNo =
+      TextEditingController(text: GeneralData.refNo);
+  final TextEditingController _mobileNo =
+      TextEditingController(text: GeneralData.mobileNo);
   final TextEditingController _postingDate =
-  TextEditingController(text: getFormattedDate(GeneralData.postingDate));
+      TextEditingController(text: GeneralData.postingDate);
   final TextEditingController _validUntill =
-  TextEditingController(text: getFormattedDate(GeneralData.validUntill));
-  final TextEditingController _lastReadingDate = TextEditingController(
-      text: getFormattedDate(GeneralData.lastReadingDate));
-  final TextEditingController _lastReading =
-  TextEditingController(text: GeneralData.lastReading);
-  final TextEditingController _assignedUserCode =
-  TextEditingController(text: GeneralData.assignedUserCode);
-  final TextEditingController _assignedUserName =
-  TextEditingController(text: GeneralData.assignedUserName);
+      TextEditingController(text: GeneralData.validUntill);
+  final TextEditingController _approvalStatus =
+      TextEditingController(text: GeneralData.approvalStatus);
+  final TextEditingController _docStatus =
+      TextEditingController(text: GeneralData.docStatus);
+  final TextEditingController _permanentTransId =
+      TextEditingController(text: GeneralData.permanentTransId);
+  final TextEditingController _docEntry =
+      TextEditingController(text: GeneralData.docEntry);
+  final TextEditingController _docNum =
+      TextEditingController(text: GeneralData.docNum);
+  final TextEditingController _createdBy =
+      TextEditingController(text: GeneralData.createdBy);
+  final TextEditingController _createDate =
+      TextEditingController(text: GeneralData.createDate);
+  final TextEditingController _updateDate =
+      TextEditingController(text: GeneralData.updateDate);
+  final TextEditingController _approvedBy =
+      TextEditingController(text: GeneralData.approvedBy);
+  final TextEditingController _error =
+      TextEditingController(text: GeneralData.error);
+  final TextEditingController _draftKey =
+      TextEditingController(text: GeneralData.draftKey);
+  final TextEditingController _latitude =
+      TextEditingController(text: GeneralData.latitude);
+  final TextEditingController _longitude =
+      TextEditingController(text: GeneralData.longitude);
+  final TextEditingController _objectCode =
+      TextEditingController(text: GeneralData.objectCode);
+  final TextEditingController _whsCode =
+      TextEditingController(text: GeneralData.whsCode);
   final TextEditingController _remarks =
-  TextEditingController(text: GeneralData.remarks);
+      TextEditingController(text: GeneralData.remarks);
+  final TextEditingController _branchId =
+      TextEditingController(text: GeneralData.branchId);
+  final TextEditingController _updatedBy =
+      TextEditingController(text: GeneralData.updatedBy);
+  final TextEditingController _postingAddress =
+      TextEditingController(text: GeneralData.postingAddress);
+  final TextEditingController _tripTransId =
+      TextEditingController(text: GeneralData.tripTransId);
+  final TextEditingController _deptCode =
+      TextEditingController(text: GeneralData.deptCode);
+  final TextEditingController _deptName =
+      TextEditingController(text: GeneralData.deptName);
+  final TextEditingController _requestedCode =
+      TextEditingController(text: GeneralData.requestedCode);
+  final TextEditingController _requestedName =
+      TextEditingController(text: GeneralData.requestedName);
 
   List<String> typeList = ['Preventive', 'Breakdown'];
   String type = 'Preventive';
@@ -102,29 +128,136 @@ class _GeneralDataState extends State<GeneralData> {
             height: 25,
           ),
           getDisabledTextField(
-              controller: _permanentTransId, labelText: 'Permanent Trans Id'),
-          getDisabledTextField(controller: _docNum, labelText: 'ERP Docnum'),
-          getDisabledTextField(controller: _transId, labelText: 'Trans Id'),
-          getDisabledTextField(controller: _docEntry, labelText: 'Department Name'),
-          getDisabledTextField(controller: _docEntry, labelText: 'TripTransId'),
-          getDisabledTextField(controller: _docEntry, labelText: 'Reference No'),
-          getDisabledTextField(controller: _docEntry, labelText: 'Requester Name*'),
-          getDisabledTextField(controller: _docEntry, labelText: 'WhsCode'),
-          getDisabledTextField(controller: _docEntry, labelText: 'City'),
-          getDisabledTextField(controller: _docEntry, labelText: 'State'),
-
-
+              controller: _permanentTransId,
+              labelText: 'Permanent Trans Id',
+              onChanged: (val) {
+                GeneralData.permanentTransId = _permanentTransId.text = val;
+              }),
           getDisabledTextField(
-              controller: _postingDate, labelText: 'Posting Date'),
+              controller: _docNum,
+              labelText: 'ERP Docnum',
+              onChanged: (val) {
+                GeneralData.docNum = _docNum.text = val;
+              }),
           getDisabledTextField(
-              controller: _validUntill, labelText: 'Valid Until'),
-
-          getDisabledTextField(controller: _docEntry, labelText: 'Doc Status'),
-          getDisabledTextField(controller: _docEntry, labelText: 'Approval Status'),
-          getDisabledTextField(controller: _docEntry, labelText: 'Local Date'),
-          getDisabledTextField(controller: _docEntry, labelText: 'Remarks'),
-
-
+              controller: _transId,
+              labelText: 'Trans Id',
+              onChanged: (val) {
+                GeneralData.transId = _transId.text = val;
+              }),
+          getDisabledTextField(
+              controller: _deptName,
+              labelText: 'Department Name',
+              onChanged: (val) {
+                GeneralData.deptName = _deptName.text = val;
+              },
+              enableLookup: true,
+              onLookupPressed: () {
+                Get.to(() => DepartmentLookup(onSelection: (OUDP oudp) {
+                      setState(() {
+                        GeneralData.deptCode = oudp.Code ?? '';
+                        GeneralData.deptName = _deptName.text = oudp.Name ?? '';
+                      });
+                    }));
+              }),
+          getDisabledTextField(
+              controller: _tripTransId,
+              labelText: 'TripTransId',
+              onChanged: (val) {
+                GeneralData.tripTransId = _tripTransId.text = val;
+              },
+              enableLookup: true,
+              onLookupPressed: () {
+                Get.to(() => TripLookup(onSelection: (OPOTRP oemp) {
+                  setState(() {
+                    GeneralData.tripTransId =
+                        _tripTransId.text = oemp.TransId ?? '';
+                  });
+                }));
+              }),
+          getTextField(
+              controller: _refNo,
+              labelText: 'Reference No',
+              onChanged: (val) {
+                GeneralData.refNo = _refNo.text = val;
+              }),
+          getDisabledTextField(
+              controller: _requestedName,
+              labelText: 'Requester Name*',
+              onChanged: (val) {
+                GeneralData.requestedName = _requestedName.text = val;
+              },
+              enableLookup: true,
+              onLookupPressed: () {
+                Get.to(() => EmployeeLookup(onSelection: (OEMPModel oemp) {
+                      setState(() {
+                        GeneralData.requestedCode = oemp.Code;
+                        GeneralData.requestedName =
+                            _requestedName.text = oemp.Name ?? '';
+                      });
+                    }));
+              }),
+          getDisabledTextField(
+              controller: _whsCode,
+              labelText: 'WhsCode',
+              onChanged: (val) {
+                GeneralData.permanentTransId = _permanentTransId.text = val;
+              },
+              enableLookup: true,
+              onLookupPressed: () {
+                Get.to(() => WarehouseLookup(onSelection: (OWHS owhs) {
+                      setState(() {
+                        GeneralData.whsCode =
+                            _whsCode.text = owhs.WhsCode ?? '';
+                      });
+                    }));
+              }),
+          getDisabledTextField(
+              controller: TextEditingController(),
+              labelText: 'City',
+              onChanged: (val) {
+                // GeneralData.permanentTransId = _permanentTransId.text = val;
+              }),
+          getDisabledTextField(
+              controller: TextEditingController(),
+              labelText: 'State',
+              onChanged: (val) {
+                // GeneralData.permanentTransId = _permanentTransId.text = val;
+              }),
+          getDateTextField(
+              controller: _postingDate,
+              labelText: 'Posting Date',
+              onChanged: (val) {
+                GeneralData.postingDate = _postingDate.text = val;
+              }, localCurrController: TextEditingController()),
+          getDateTextField(
+              controller: _validUntill,
+              labelText: 'Valid Until',
+              onChanged: (val) {
+                GeneralData.validUntill = _validUntill.text = val;
+              }, localCurrController: TextEditingController()),
+          getDisabledTextField(
+              controller: _docStatus,
+              labelText: 'Doc Status',
+              onChanged: (val) {
+                GeneralData.docStatus = _docStatus.text = val;
+              }),
+          getDisabledTextField(
+              controller: _approvalStatus,
+              labelText: 'Approval Status',
+              onChanged: (val) {
+                GeneralData.approvalStatus = _approvalStatus.text = val;
+              }),
+          getDisabledTextField(
+            controller: TextEditingController(),
+            labelText: 'Local Date',
+          ),
+          getTextField(
+              controller: _remarks,
+              labelText: 'Remarks',
+              onChanged: (val) {
+                GeneralData.remarks = _remarks.text = val;
+              }),
         ],
       ),
     );

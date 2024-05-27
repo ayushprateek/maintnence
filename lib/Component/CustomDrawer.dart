@@ -144,7 +144,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                       children: [
                         ListTile(
                           onTap: (){
-                            Get.to(()=>PurchaseRequest(0));
+                            goToNewPurchaseRequestDocument();
                           },
                           title: Text(
                             'Purchase Request',
