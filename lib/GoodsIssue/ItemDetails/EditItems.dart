@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:maintenance/Component/CompanyDetails.dart';
 import 'package:maintenance/Component/CustomColor.dart';
 import 'package:maintenance/Component/GetTextField.dart';
 import 'package:maintenance/Component/IsNumeric.dart';
+import 'package:maintenance/Component/ItemModel.dart';
+import 'package:maintenance/Component/LogFileFunctions.dart';
 import 'package:maintenance/Component/SnackbarComponent.dart';
 import 'package:maintenance/GoodsIssue/GeneralData.dart';
 import 'package:maintenance/GoodsIssue/GoodsIssue.dart';
@@ -88,6 +91,7 @@ class _EditCheckListState extends State<EditItems> {
       TextEditingController(text: EditItems.lineDiscount);
   final TextEditingController _lineTotal =
       TextEditingController(text: EditItems.lineTotal);
+  bool isSet = false;
 
   @override
   void initState() {
@@ -106,207 +110,263 @@ class _EditCheckListState extends State<EditItems> {
             const SizedBox(
               height: 20,
             ),
-            getDisabledTextField(controller: _itemName, labelText: 'Item '),
-            getDisabledTextField(
-                controller: _toWhs,
-                labelText: 'To Warehouse',
-                enableLookup: true,
-                onLookupPressed: () {
-                  Get.to(() => WarehouseLookup(onSelection: (OWHS owhs) {
-                        setState(() {
-                          EditItems.toWhsName =
-                              _toWhs.text = owhs.WhsName ?? '';
-                          EditItems.toWhsCode = owhs.WhsCode ?? '';
-                        });
-                      }));
-                }),
-            getTextField(
-              controller: _consumptionQty,
-              labelText: 'Consumption Qty',
-              onChanged: (val) {
-                EditItems.consumptionQty = val;
-              },
-              keyboardType: getDecimalKeyboardType(),
-              inputFormatters: [getDecimalRegEx()],
-            ),
-            getDisabledTextField(
-                controller: _uomName,
-                labelText: 'UOM',
-                enableLookup: true,
-                onLookupPressed: () {
-                  Get.to(() => UOMLookup(onSelected: (OUOMModel ouomModel) {
-                        setState(() {
-                          EditItems.uomCode = _uomCode.text = ouomModel.UomCode;
-                          EditItems.uomName = _uomName.text = ouomModel.UomName;
-                        });
-                      }));
-                }),
-            getDisabledTextField(
-                controller: _truckNo,
-                labelText: 'Truck No',
-                enableLookup: true,
-                onLookupPressed: () {
-                  Get.to(() => VehicleCodeLookup(onSelected: (OVCLModel ovcl) {
-                        setState(() {
-                          EditItems.truckNo = _truckNo.text = ovcl.Code;
-                        });
-                      }));
-                }),
-            getDisabledTextField(
-                controller: _driverName,
-                labelText: 'Driver',
-                enableLookup: true,
-                onLookupPressed: () {
-                  Get.to(() => EmployeeLookup(onSelection: (OEMPModel oemp) {
-                        setState(() {
-                          EditItems.driverCode = oemp.Code;
-                          EditItems.driverName =
-                              _driverName.text = oemp.Name ?? '';
-                        });
-                      }));
-                }),
-            getDisabledTextField(
-                controller: _routeName,
-                labelText: 'Route',
-                enableLookup: true,
-                onLookupPressed: () {
-                  Get.to(() => RouteLookup(onSelected: (ROUTModel rout) {
-                        setState(() {
-                          EditItems.routeCode = rout.RouteCode;
-                          EditItems.routeName =
-                              _routeName.text = rout.RouteName ?? '';
-                        });
-                      }));
-                }),
-            getDisabledTextField(
-                controller: _deptName,
-                labelText: 'Department',
-                enableLookup: true,
-                onLookupPressed: () {
-                  Get.to(() => DepartmentLookup(onSelection: (OUDP oudp) {
-                        setState(() {
-                          EditItems.deptCode = oudp.Code ?? '';
-                          EditItems.deptName = _deptName.text = oudp.Name ?? '';
-                        });
-                      }));
-                }),
-            getTextField(
-              controller: _price,
-              labelText: 'Price',
-            ),
-            getDisabledTextField(
-              controller: _mtv,
-              labelText: 'MTV',
-            ),
-            getDisabledTextField(
-                controller: _taxCode,
-                labelText: 'Tax',
-                enableLookup: true,
-                onLookupPressed: () {
-                  Get.to(() => TaxLookup(onSelected: (OTAXModel oudp) {
-                        setState(() {
-                          EditItems.taxCode = _taxCode.text = oudp.TaxCode;
-                          EditItems.taxRate =
-                              _taxRate.text = oudp.Rate.toStringAsFixed(2);
-                        });
-                      }));
-                }),
-            getDisabledTextField(
-              controller: _taxRate,
-              labelText: 'Tax Rate',
-            ),
-            getTextField(
-              controller: _lineDiscount,
-              labelText: 'Line Discount',
-            ),
-            getDisabledTextField(
-              controller: _lineTotal,
-              labelText: 'Line Total',
-            ),
-            Align(
-              alignment: Alignment.centerRight,
-              child: Container(
-                width: MediaQuery.of(context).size.width / 2,
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Material(
-                    borderRadius: BorderRadius.circular(10.0),
-                    color: barColor,
-                    elevation: 0.0,
-                    child: MaterialButton(
-                      minWidth: MediaQuery.of(context).size.width,
-                      onPressed: () async {
-                        if (_toWhs.text.isEmpty) {
-                          getErrorSnackBar("To Warehouse can not be empty");
-                        } else if (!isNumeric(_consumptionQty.text)) {
-                          getErrorSnackBar(
-                              "Consumption Quantity must be numeric");
-                        } else if (double.parse(_consumptionQty.text) <= 0.0) {
-                          getErrorSnackBar(
-                              "Consumption Quantity can not be less that or equal to 0");
-                        } else if (_uomCode.text.isEmpty) {
-                          getErrorSnackBar("UOM can not be empty");
-                        } else {
-                          if (EditItems.isUpdating) {
-                            for (int i = 0; i < ItemDetails.items.length; i++)
-                              if (EditItems.itemCode ==
-                                  ItemDetails.items[i].ItemCode) {
-                                ItemDetails.items[i].UOM = EditItems.uomCode;
-                                //todo: updating
-                              }
-
-                            Get.offAll(() => GoodsIssue(1));
-
-                            getSuccessSnackBar("Check List Updated");
-                          } else {
-
-                            IMGDI1 mncld1 = IMGDI1(
-                              ID: int.tryParse(EditItems.id ?? ''),
-                              TransId: EditItems.transId,
-                              RowId: ItemDetails.items.length,
-                              ItemCode: EditItems.itemCode.toString() ?? '',
-                              ItemName: EditItems.itemName.toString() ?? '',
-                              UOM: EditItems.uomCode.toString() ?? '',
-                              DeptCode: EditItems.deptCode,
-                              DeptName: EditItems.deptName,
-                              ToWhsCode: EditItems.toWhsCode,
-                              TripTransId: GeneralData.tripTransId,
-                              Discount: double.tryParse(EditItems.lineDiscount??''),
-                              DriverCode: EditItems.driverCode,
-                              DriverName: EditItems.driverName,
-                              TruckNo: EditItems.truckNo,
-                              TaxCode: EditItems.taxCode,
-                              TaxRate: double.tryParse(EditItems.taxRate??''),
-                              RouteCode: EditItems.routeCode,
-                              RouteName: EditItems.routeName,
-                              Quantity: double.tryParse(EditItems.consumptionQty??''),
-                              Price: double.tryParse(EditItems.price??''),
-                              OpenQty: double.tryParse(EditItems.consumptionQty??''),
-                              MSP: double.tryParse(EditItems.mtv??''),
-                              LineTotal: double.tryParse(EditItems.lineTotal??''),
-                              LineStatus: 'Open',
-                              CreateDate: DateTime.now(),
-                              insertedIntoDatabase: false,
-                            );
-                            ItemDetails.items.add(mncld1);
-
-                            Get.offAll(() => GoodsIssue(1));
-                          }
+            FutureBuilder(
+                future: retrieveAssignedItems(
+                    priceListCode: GeneralData.priceListCode ?? '',
+                    itemCode: EditItems.itemCode,
+                    WhsCode: GeneralData.toWhsCode ?? ''),
+                builder: (BuildContext context,
+                    AsyncSnapshot<List<AssignedItemsModel>> snapshot) {
+                  if (snapshot.hasData && snapshot.data?.isNotEmpty==true) {
+                    // MSP.text=snapshot.data![0].MSP.toString();
+                    // EditItems.MSP=snapshot.data![0].MSP;
+                    try {
+                      if (!isSet) {
+                        isSet = true;
+                        if (CompanyDetails.ocinModel?.IsMtv == true) {
+                          _mtv.text = snapshot.data![0].MSP.toString();
+                          EditItems.mtv = snapshot.data![0].MSP.toStringAsFixed(2);
                         }
-                      },
-                      child: Text(
-                        "Save",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20.0),
+
+                        if (!EditItems.isUpdating) {
+                          _price.text = snapshot.data![0].Price.toString();
+                          EditItems.price = snapshot.data![0].Price.toStringAsFixed(2);
+                          _taxCode.text =
+                              snapshot.data![0].TaxCode.toString();
+                          EditItems.taxCode = snapshot.data![0].TaxCode;
+                          _taxRate.text =
+                              snapshot.data![0].TaxRate.toString();
+                          EditItems.taxRate = snapshot.data![0].TaxRate.toStringAsFixed(2);
+                        }
+
+                        // EditItems.WhsCode = snapshot.data![0].WhsCode.toString();
+                        // EditItems.WhsCode = snapshot.data![0].WhsCode;
+                      }
+                    } catch (e) {
+                      writeToLogFile(
+                          text: e.toString(),
+                          fileName: StackTrace.current.toString(),
+                          lineNo: 141);
+                      print(e.toString());
+                      _mtv.text = "0.0";
+                      EditItems.mtv = '0.0';
+                      return AlertDialog(
+                        content: Text(
+                            "ItemCode : ${_itemName.text} and CustomerCode : ${GeneralData.requestedName} does not exist.Please update the price"),
+                        title: Text("Error"),
+                      );
+                    }
+                  }
+                  return Column(
+                    children: [
+                      getDisabledTextField(controller: _itemName, labelText: 'Item '),
+                      getDisabledTextField(
+                          controller: _toWhs,
+                          labelText: 'To Warehouse',
+                          enableLookup: true,
+                          onLookupPressed: () {
+                            Get.to(() => WarehouseLookup(onSelection: (OWHS owhs) {
+                              setState(() {
+                                EditItems.toWhsName =
+                                    _toWhs.text = owhs.WhsName ?? '';
+                                EditItems.toWhsCode = owhs.WhsCode ?? '';
+                              });
+                            }));
+                          }),
+                      getTextField(
+                        controller: _consumptionQty,
+                        labelText: 'Consumption Qty',
+                        onChanged: (val) {
+                          EditItems.consumptionQty = val;
+                        },
+                        keyboardType: getDecimalKeyboardType(),
+                        inputFormatters: [getDecimalRegEx()],
                       ),
-                    ),
-                  ),
-                ),
-              ),
-            ),
+                      getDisabledTextField(
+                          controller: _uomName,
+                          labelText: 'UOM',
+                          enableLookup: true,
+                          onLookupPressed: () {
+                            Get.to(() => UOMLookup(onSelected: (OUOMModel ouomModel) {
+                              setState(() {
+                                EditItems.uomCode = _uomCode.text = ouomModel.UomCode;
+                                EditItems.uomName = _uomName.text = ouomModel.UomName;
+                              });
+                            }));
+                          }),
+                      getDisabledTextField(
+                          controller: _truckNo,
+                          labelText: 'Truck No',
+                          enableLookup: true,
+                          onLookupPressed: () {
+                            Get.to(() => VehicleCodeLookup(onSelected: (OVCLModel ovcl) {
+                              setState(() {
+                                EditItems.truckNo = _truckNo.text = ovcl.Code;
+                              });
+                            }));
+                          }),
+                      getDisabledTextField(
+                          controller: _driverName,
+                          labelText: 'Driver',
+                          enableLookup: true,
+                          onLookupPressed: () {
+                            Get.to(() => EmployeeLookup(onSelection: (OEMPModel oemp) {
+                              setState(() {
+                                EditItems.driverCode = oemp.Code;
+                                EditItems.driverName =
+                                    _driverName.text = oemp.Name ?? '';
+                              });
+                            }));
+                          }),
+                      getDisabledTextField(
+                          controller: _routeName,
+                          labelText: 'Route',
+                          enableLookup: true,
+                          onLookupPressed: () {
+                            Get.to(() => RouteLookup(onSelected: (ROUTModel rout) {
+                              setState(() {
+                                EditItems.routeCode = rout.RouteCode;
+                                EditItems.routeName =
+                                    _routeName.text = rout.RouteName ?? '';
+                              });
+                            }));
+                          }),
+                      getDisabledTextField(
+                          controller: _deptName,
+                          labelText: 'Department',
+                          enableLookup: true,
+                          onLookupPressed: () {
+                            Get.to(() => DepartmentLookup(onSelection: (OUDP oudp) {
+                              setState(() {
+                                EditItems.deptCode = oudp.Code ?? '';
+                                EditItems.deptName = _deptName.text = oudp.Name ?? '';
+                              });
+                            }));
+                          }),
+                      getTextField(
+                        controller: _price,
+                        labelText: 'Price',
+                      ),
+                      getDisabledTextField(
+                        controller: _mtv,
+                        labelText: 'MTV',
+                      ),
+                      getDisabledTextField(
+                          controller: _taxCode,
+                          labelText: 'Tax',
+                          enableLookup: true,
+                          onLookupPressed: () {
+                            Get.to(() => TaxLookup(onSelected: (OTAXModel oudp) {
+                              setState(() {
+                                EditItems.taxCode = _taxCode.text = oudp.TaxCode;
+                                EditItems.taxRate =
+                                    _taxRate.text = oudp.Rate.toStringAsFixed(2);
+                              });
+                            }));
+                          }),
+                      getDisabledTextField(
+                        controller: _taxRate,
+                        labelText: 'Tax Rate',
+                      ),
+                      getTextField(
+                        controller: _lineDiscount,
+                        labelText: 'Line Discount',
+                      ),
+                      getDisabledTextField(
+                        controller: _lineTotal,
+                        labelText: 'Line Total',
+                      ),
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: Container(
+                          width: MediaQuery.of(context).size.width / 2,
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Material(
+                              borderRadius: BorderRadius.circular(10.0),
+                              color: barColor,
+                              elevation: 0.0,
+                              child: MaterialButton(
+                                minWidth: MediaQuery.of(context).size.width,
+                                onPressed: () async {
+                                  if (_toWhs.text.isEmpty) {
+                                    getErrorSnackBar("To Warehouse can not be empty");
+                                  } else if (!isNumeric(_consumptionQty.text)) {
+                                    getErrorSnackBar(
+                                        "Consumption Quantity must be numeric");
+                                  } else if (double.parse(_consumptionQty.text) <= 0.0) {
+                                    getErrorSnackBar(
+                                        "Consumption Quantity can not be less that or equal to 0");
+                                  } else if (_uomCode.text.isEmpty) {
+                                    getErrorSnackBar("UOM can not be empty");
+                                  } else {
+                                    if (EditItems.isUpdating) {
+                                      for (int i = 0; i < ItemDetails.items.length; i++)
+                                        if (EditItems.itemCode ==
+                                            ItemDetails.items[i].ItemCode) {
+                                          ItemDetails.items[i].UOM = EditItems.uomCode;
+                                          //todo: updating
+                                        }
+
+                                      Get.offAll(() => GoodsIssue(1));
+
+                                      getSuccessSnackBar("Check List Updated");
+                                    } else {
+                                      IMGDI1 mncld1 = IMGDI1(
+                                        ID: int.tryParse(EditItems.id ?? ''),
+                                        TransId: EditItems.transId,
+                                        RowId: ItemDetails.items.length,
+                                        ItemCode: EditItems.itemCode.toString() ?? '',
+                                        ItemName: EditItems.itemName.toString() ?? '',
+                                        UOM: EditItems.uomCode.toString() ?? '',
+                                        DeptCode: EditItems.deptCode,
+                                        DeptName: EditItems.deptName,
+                                        ToWhsCode: EditItems.toWhsCode,
+                                        TripTransId: GeneralData.tripTransId,
+                                        Discount:
+                                        double.tryParse(EditItems.lineDiscount ?? ''),
+                                        DriverCode: EditItems.driverCode,
+                                        DriverName: EditItems.driverName,
+                                        TruckNo: EditItems.truckNo,
+                                        TaxCode: EditItems.taxCode,
+                                        TaxRate: double.tryParse(EditItems.taxRate ?? ''),
+                                        RouteCode: EditItems.routeCode,
+                                        RouteName: EditItems.routeName,
+                                        Quantity: double.tryParse(
+                                            EditItems.consumptionQty ?? ''),
+                                        Price: double.tryParse(EditItems.price ?? ''),
+                                        OpenQty: double.tryParse(
+                                            EditItems.consumptionQty ?? ''),
+                                        MSP: double.tryParse(EditItems.mtv ?? ''),
+                                        LineTotal:
+                                        double.tryParse(EditItems.lineTotal ?? ''),
+                                        LineStatus: 'Open',
+                                        CreateDate: DateTime.now(),
+                                        insertedIntoDatabase: false,
+                                      );
+                                      ItemDetails.items.add(mncld1);
+
+                                      Get.offAll(() => GoodsIssue(1));
+                                    }
+                                  }
+                                },
+                                child: Text(
+                                  "Save",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 20.0),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  );
+                }),
+
           ],
         ),
       ),

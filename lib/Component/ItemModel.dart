@@ -92,11 +92,11 @@ Future<List<AssignedItemsModel>> retrieveAssignedItems(
     //REQUEST IS COMING FROM ADDITIONAL ITEM
     str = '''
        select distinct oi.ItemName,oms.*
-,(select UOM from IUOM where ItemCode=oms.ItemCode and Active=1 limit 1 ) as"UOM"
+,(select UOM from IUOM where ItemCode=oms.ItemCode limit 1 ) as"UOM"
 from  OMSP  oms 
 inner join IWHS iwhs on oi.ItemCode=iwhs.ItemCode
 	inner join OITM  oi on oms.ItemCode = oi.ItemCode 
-	where oi.Active=1 and iwhs.Active=1 and  iwhs.WhsCode='$WhsCode' and  DATETIME('now')>=DATETIME(oms.StartDate) 
+	where oi.Active=1 and  iwhs.WhsCode='$WhsCode' and  DATETIME('now')>=DATETIME(oms.StartDate) 
 	and DATETIME('now') <=DATETIME(oms.EndDate) and oms.ItemCode='$itemCode'
 	LIMIT 1
       ''';
@@ -105,22 +105,22 @@ inner join IWHS iwhs on oi.ItemCode=iwhs.ItemCode
     if (limit == null) {
       str = '''
       select distinct oi.ItemName,oms.*
-,(select UOM from IUOM where ItemCode=oms.ItemCode and Active=1 limit 1 ) as"UOM"
+,(select UOM from IUOM where ItemCode=oms.ItemCode limit 1 ) as"UOM"
 from  OMSP  oms 
 	inner join OITM  oi on oms.ItemCode = oi.ItemCode 
 	inner join IWHS iwhs on oi.ItemCode=iwhs.ItemCode
-	where oi.Active=1 and iwhs.Active=1 and iwhs.WhsCode='$WhsCode' and oms.PriceListCode='$priceListCode' and DATETIME('now')>=DATETIME(oms.StartDate) 
+	where oi.Active=1 and iwhs.WhsCode='$WhsCode' and oms.PriceListCode='$priceListCode' and DATETIME('now')>=DATETIME(oms.StartDate) 
 	and DATETIME('now') <=DATETIME(oms.EndDate)
 	 and( oi.ItemCode LIKE '$query' OR oi.ItemName LIKE '$query')  
       ''';
     } else {
       str = '''
       select distinct oi.ItemName,oms.*
-,(select UOM from IUOM where ItemCode=oms.ItemCode and Active=1 limit 1 ) as"UOM"
+,(select UOM from IUOM where ItemCode=oms.ItemCode limit 1 ) as"UOM"
 from  OMSP  oms 
 	inner join OITM  oi on oms.ItemCode = oi.ItemCode 
 	inner join IWHS iwhs on oi.ItemCode=iwhs.ItemCode
-	where oi.Active=1 and iwhs.Active=1 and iwhs.WhsCode='$WhsCode' and oms.PriceListCode='$priceListCode' and DATETIME('now')>=DATETIME(oms.StartDate) 
+	where oi.Active=1 and iwhs.WhsCode='$WhsCode' and oms.PriceListCode='$priceListCode' and DATETIME('now')>=DATETIME(oms.StartDate) 
 	and DATETIME('now') <=DATETIME(oms.EndDate)
 	 and( oi.ItemCode LIKE '$query' OR oi.ItemName LIKE '$query')
 	limit $limit
@@ -130,11 +130,11 @@ from  OMSP  oms
   else {
     str = '''
       select distinct oi.ItemName,oms.*
-,(select UOM from IUOM where ItemCode=oms.ItemCode and Active=1 limit 1 ) as"UOM"
+,(select UOM from IUOM where ItemCode=oms.ItemCode limit 1 ) as"UOM"
 from  OMSP  oms 
 	inner join OITM  oi on oms.ItemCode = oi.ItemCode 
 	inner join IWHS iwhs on oi.ItemCode=iwhs.ItemCode
-	where oi.Active=1 and iwhs.Active=1 and iwhs.WhsCode='$WhsCode' and oms.PriceListCode='$priceListCode' and DATETIME('now')>=DATETIME(oms.StartDate) 
+	where oi.Active=1 and iwhs.WhsCode='$WhsCode' and oms.PriceListCode='$priceListCode' and DATETIME('now')>=DATETIME(oms.StartDate) 
 	and DATETIME('now') <=DATETIME(oms.EndDate)
 	 and( oi.ItemCode LIKE '$query' OR oi.ItemName LIKE '$query')   AND oms.ItemCode='$itemCode'
       ''';

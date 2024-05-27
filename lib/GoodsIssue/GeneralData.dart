@@ -21,6 +21,7 @@ class GeneralData extends StatefulWidget {
 
   static String? iD;
   static String? transId;
+  static String? priceListCode;
   static String? requestedCode;
   static String? requestedName;
   static String? refNo;
@@ -239,10 +240,6 @@ class _GeneralDataState extends State<GeneralData> {
                 _refNo.text = GeneralData.refNo = val;
               }
           ),
-          // getDisabledTextField(
-          //     controller: _requestedCode,
-          //     labelText: 'Request Code',
-          //     ),
           getDisabledTextField(
               controller: _requestedName, labelText: 'Request*',
               enableLookup: true,
@@ -252,6 +249,7 @@ class _GeneralDataState extends State<GeneralData> {
                   setState(() {
                     GeneralData.requestedCode =
                         _requestedCode.text = ocrdModel.Code;
+                    GeneralData.priceListCode = ocrdModel.PriceListCode;
                     GeneralData.requestedName =
                         _requestedName.text = ocrdModel.Name ?? '';
                     GeneralData.mobileNo =

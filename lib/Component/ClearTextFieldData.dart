@@ -257,6 +257,7 @@ class ClearGoodsIssueDocument {
   static clearGeneralDataTextFields() {
     goodsGenData.GeneralData.iD = '';
     goodsGenData.GeneralData.transId = '';
+    goodsGenData.GeneralData.priceListCode = '';
     goodsGenData.GeneralData.requestedCode = '';
     goodsGenData.GeneralData.requestedName = '';
     goodsGenData.GeneralData.refNo = '';
