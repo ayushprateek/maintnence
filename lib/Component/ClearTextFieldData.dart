@@ -608,7 +608,8 @@ class ClearSTRDocument {
   static clearEditItems() {
     internalEditItems.EditItems.id='';
     internalEditItems.EditItems.tripTransId='';
-    
+    internalEditItems.EditItems.fromWhsCode='';
+
     internalEditItems.EditItems.truckNo='';
     internalEditItems.EditItems.toWhsCode='';
     internalEditItems.EditItems.toWhsName='';
