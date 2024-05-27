@@ -28,6 +28,8 @@ class PRPDN2{
   DateTime? UpdateDate;
   int? DocEntry;
   String? DocNum;
+  bool hasCreated;
+  bool hasUpdated;
   PRPDN2({
     this.ID,
     this.TransId,
@@ -48,6 +50,8 @@ class PRPDN2{
     this.UpdateDate,
     this.DocEntry,
     this.DocNum,
+    this.hasCreated = false,
+    this.hasUpdated = false,
   });
   factory PRPDN2.fromJson(Map<String,dynamic> json)=>PRPDN2(
     ID : int.tryParse(json['ID'].toString())??0,
@@ -69,6 +73,8 @@ class PRPDN2{
     UpdateDate : DateTime.tryParse(json['UpdateDate'].toString()),
     DocEntry : int.tryParse(json['DocEntry'].toString())??0,
     DocNum : json['DocNum']?.toString() ?? '',
+    hasCreated: json['has_created'] == 1,
+    hasUpdated: json['has_updated'] == 1,
   );
   Map<String,dynamic> toJson()=>{
     'ID' : ID,
@@ -90,6 +96,8 @@ class PRPDN2{
     'UpdateDate' : UpdateDate?.toIso8601String(),
     'DocEntry' : DocEntry,
     'DocNum' : DocNum,
+    "has_created": hasCreated ? 1 : 0,
+    "has_updated": hasUpdated ? 1 : 0,
   };
 }
 List<PRPDN2> pRPDN2FromJson(String str) => List<PRPDN2>.from(

@@ -55,6 +55,8 @@ class PROPDN{
   String? TripTransId;
   String? DeptCode;
   String? DeptName;
+  bool hasCreated;
+  bool hasUpdated;
   PROPDN({
     this.ID,
     this.TransId,
@@ -102,6 +104,8 @@ class PROPDN{
     this.TripTransId,
     this.DeptCode,
     this.DeptName,
+    this.hasCreated = false,
+    this.hasUpdated = false,
   });
   factory PROPDN.fromJson(Map<String,dynamic> json)=>PROPDN(
     ID : int.tryParse(json['ID'].toString())??0,
@@ -150,6 +154,8 @@ class PROPDN{
     TripTransId : json['TripTransId']?.toString() ?? '',
     DeptCode : json['DeptCode']?.toString() ?? '',
     DeptName : json['DeptName']?.toString() ?? '',
+    hasCreated: json['has_created'] == 1,
+    hasUpdated: json['has_updated'] == 1,
   );
   Map<String,dynamic> toJson()=>{
     'ID' : ID,
@@ -198,6 +204,8 @@ class PROPDN{
     'TripTransId' : TripTransId,
     'DeptCode' : DeptCode,
     'DeptName' : DeptName,
+    "has_created": hasCreated ? 1 : 0,
+    "has_updated": hasUpdated ? 1 : 0,
   };
 }
 List<PROPDN> pROPDNFromJson(String str) => List<PROPDN>.from(

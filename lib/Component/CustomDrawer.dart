@@ -157,7 +157,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                         ),
                         ListTile(
                           onTap: (){
-                            Get.to(()=>GoodsRecepitNote(0));
+                            goToNewGRNDocument();
                           },
                           title: Text(
                             'Goods Receipt Note',

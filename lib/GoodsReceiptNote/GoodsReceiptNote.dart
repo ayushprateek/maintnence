@@ -5,8 +5,8 @@ import 'package:maintenance/Component/CustomFont.dart';
 import 'package:maintenance/Dashboard.dart';
 import 'package:maintenance/GoodsReceiptNote/Address/BillingAddress.dart';
 import 'package:maintenance/GoodsReceiptNote/Address/ShippingAddress.dart';
-import 'package:maintenance/GoodsReceiptNote/GeneneralData.dart';
-import 'package:maintenance/GoodsReceiptNote/ItemDetails.dart';
+import 'package:maintenance/GoodsReceiptNote/GeneralData.dart';
+import 'package:maintenance/GoodsReceiptNote/ItemDetails/ItemDetails.dart';
 
 class GoodsRecepitNote extends StatefulWidget {
   static bool saveButtonPressed = false;

@@ -45,6 +45,9 @@ class PRPDN1{
   String? RouteName;
   String? DeptCode;
   String? DeptName;
+  bool hasCreated;
+  bool hasUpdated;
+  bool insertedIntoDatabase;
   PRPDN1({
     this.ID,
     this.TransId,
@@ -82,6 +85,9 @@ class PRPDN1{
     this.RouteName,
     this.DeptCode,
     this.DeptName,
+    this.hasCreated = false,
+    this.hasUpdated = false,
+    this.insertedIntoDatabase = true,
   });
   factory PRPDN1.fromJson(Map<String,dynamic> json)=>PRPDN1(
     ID : int.tryParse(json['ID'].toString())??0,
@@ -120,6 +126,8 @@ class PRPDN1{
     RouteName : json['RouteName']?.toString() ?? '',
     DeptCode : json['DeptCode']?.toString() ?? '',
     DeptName : json['DeptName']?.toString() ?? '',
+    hasCreated: json['has_created'] == 1,
+    hasUpdated: json['has_updated'] == 1,
   );
   Map<String,dynamic> toJson()=>{
     'ID' : ID,
@@ -158,6 +166,8 @@ class PRPDN1{
     'RouteName' : RouteName,
     'DeptCode' : DeptCode,
     'DeptName' : DeptName,
+    "has_created": hasCreated ? 1 : 0,
+    "has_updated": hasUpdated ? 1 : 0,
   };
 }
 List<PRPDN1> pRPDN1FromJson(String str) => List<PRPDN1>.from(
