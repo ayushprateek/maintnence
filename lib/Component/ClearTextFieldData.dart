@@ -565,45 +565,46 @@ goToNewGRNDocument() async {
 
 
 class ClearSTRDocument {
-
   static clearGeneralDataTextFields(){
     internalGenData.GeneralData.iD='';
-    internalGenData.GeneralData.permanentTransId='';
     internalGenData.GeneralData.transId='';
+    internalGenData.GeneralData.requestedCode='';
+    internalGenData.GeneralData.requestedName='';
+    internalGenData.GeneralData.refNo='';
+    internalGenData.GeneralData.mobileNo='';
+    internalGenData.GeneralData.postingDate='';
+    internalGenData.GeneralData.validUntill='';
+    internalGenData.GeneralData.currency=userModel.Currency;
+    internalGenData.GeneralData.currRate=userModel.Rate;
+    internalGenData.GeneralData.approvalStatus='Pending';
+    internalGenData.GeneralData.docStatus='Open';
+    internalGenData.GeneralData.permanentTransId='';
     internalGenData.GeneralData.docEntry='';
     internalGenData.GeneralData.docNum='';
-    internalGenData.GeneralData.canceled='';
-    internalGenData.GeneralData.docStatus='Open';
-    internalGenData.GeneralData.approvalStatus='Pending';
-    internalGenData.GeneralData.checkListStatus='';
-    internalGenData.GeneralData.objectCode='';
-    internalGenData.GeneralData.equipmentCode='';
-    internalGenData.GeneralData.equipmentName='';
-    internalGenData.GeneralData.checkListCode='';
-    internalGenData.GeneralData.checkListName='';
-    internalGenData.GeneralData.workCenterCode='';
-    internalGenData.GeneralData.workCenterName='';
-    internalGenData.GeneralData.openDate=getFormattedDate(DateTime.now());
-    internalGenData.GeneralData.closeDate=getFormattedDate(DateTime.now().add(Duration(days: 7)));
-    internalGenData.GeneralData.postingDate=getFormattedDate(DateTime.now());
-    internalGenData.GeneralData.validUntill=getFormattedDate(DateTime.now().add(Duration(days: 7)));
-    internalGenData.GeneralData.lastReadingDate=getFormattedDate(DateTime.now());
-    internalGenData.GeneralData.lastReading='';
-    internalGenData.GeneralData.assignedUserCode='';
-    internalGenData.GeneralData.assignedUserName='';
-    internalGenData.GeneralData.mNJCTransId='';
-    internalGenData.GeneralData.remarks='';
     internalGenData.GeneralData.createdBy='';
-    internalGenData.GeneralData.updatedBy='';
+
+    internalGenData.GeneralData.approvedBy='';
+    internalGenData.GeneralData.error='';
+    internalGenData.GeneralData.isPosted=false;
+    internalGenData.GeneralData.draftKey='';
+    internalGenData.GeneralData.latitude='';
+    internalGenData.GeneralData.longitude='';
+    internalGenData.GeneralData.objectCode='';
+    internalGenData.GeneralData.fromWhsCode='';
+    internalGenData.GeneralData.toWhsCode='';
+    internalGenData.GeneralData.remarks='';
     internalGenData.GeneralData.branchId='';
-    internalGenData.GeneralData.createDate='';
-    internalGenData.GeneralData.updateDate='';
-    internalGenData.GeneralData.isConsumption=false;
-    internalGenData.GeneralData.isRequest=false;
+    internalGenData.GeneralData.updatedBy='';
+    internalGenData.GeneralData.postingAddress='';
+    internalGenData.GeneralData.tripTransId='';
+    internalGenData.GeneralData.deptCode='';
+    internalGenData.GeneralData.deptName='';
     internalGenData.GeneralData.isSelected = false;
     internalGenData.GeneralData.hasCreated = false;
     internalGenData.GeneralData.hasUpdated = false;
   }
+
+
   static clearEditItems() {
     internalEditItems.EditItems.id='';
     internalEditItems.EditItems.tripTransId='';
