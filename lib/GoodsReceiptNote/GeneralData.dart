@@ -1,13 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:maintenance/Component/GetFormattedDate.dart';
 import 'package:maintenance/Component/GetTextField.dart';
+import 'package:maintenance/Component/SnackbarComponent.dart';
+import 'package:maintenance/GoodsReceiptNote/Address/BillingAddress.dart';
+import 'package:maintenance/GoodsReceiptNote/Address/ShippingAddress.dart';
 import 'package:maintenance/Lookups/DepartmentLookup.dart';
 import 'package:maintenance/Lookups/SupplierLookup.dart';
+import 'package:maintenance/Sync/SyncModels/CRD1.dart';
+import 'package:maintenance/Sync/SyncModels/CRD2.dart';
+import 'package:maintenance/Sync/SyncModels/CRD3.dart';
 import 'package:maintenance/Sync/SyncModels/OCRD.dart';
 import 'package:maintenance/Sync/SyncModels/OUDP.dart';
+import 'package:maintenance/Sync/SyncModels/PROPDN.dart';
 
 class GeneralData extends StatefulWidget {
   const GeneralData({super.key});
+
+  static bool isSelected = false, hasCreated = false, hasUpdated = false;
 
   static String? iD;
   static String? transId;
@@ -55,6 +65,66 @@ class GeneralData extends StatefulWidget {
   static String? tripTransId;
   static String? deptCode;
   static String? deptName;
+
+  static bool validate() {
+    bool success = true;
+    if (transId == "" || transId == null) {
+      getErrorSnackBar("Invalid TransId");
+      success = false;
+    }
+    if (deptName == "" || deptName == null) {
+      getErrorSnackBar("Invalid Department");
+      success = false;
+    }
+    if (cardName == "" || cardName == null) {
+      getErrorSnackBar("Invalid Supplier");
+      success = false;
+    }
+
+    if (contactPersonName == "" || contactPersonName == null) {
+      getErrorSnackBar("Invalid Person Name");
+      success = false;
+    }
+
+    return success;
+  }
+
+  static PROPDN getGeneralData() {
+    return PROPDN(
+      ID: int.tryParse(iD ?? ''),
+      TransId: transId,
+      PermanentTransId: permanentTransId ?? '',
+      PostingDate: getDateFromString(postingDate ?? ""),
+      ValidUntill: getDateFromString(validUntill ?? ''),
+      hasCreated: hasCreated,
+      hasUpdated: hasUpdated,
+      ObjectCode: '23',
+      Remarks: remarks,
+      TripTransId: tripTransId,
+      TotBDisc: double.tryParse(totBDisc?.toString() ?? ''),
+      TaxVal: double.tryParse(taxVal?.toString() ?? ''),
+      CardCode: cardCode,
+      CardName: cardName,
+      WhsCode: whsCode,
+      ContactPersonId: int.tryParse(contactPersonId.toString() ?? ''),
+      PaymentTermCode: paymentTermCode,
+      PaymentTermDays: int.tryParse(paymentTermDays.toString() ?? ''),
+      PaymentTermName: paymentTermName,
+      ContactPersonName: contactPersonName,
+      PostingAddress: postingAddress,
+      MobileNo: mobileNo,
+      Currency: currency,
+      CurrRate: double.tryParse(currRate?.toString() ?? ''),
+      DocTotal: double.tryParse(docTotal?.toString() ?? ''),
+      RefNo: refNo,
+      DeptCode: deptCode,
+      DeptName: deptName,
+      DiscPer: double.tryParse(discPer?.toString() ?? ''),
+      DiscVal: double.tryParse(discVal?.toString() ?? ''),
+      ApprovalStatus: approvalStatus ?? "Pending",
+      DocStatus: docStatus,
+    );
+  }
 
   @override
   State<GeneralData> createState() => _GeneralDataState();
@@ -163,6 +233,62 @@ class _GeneralDataState extends State<GeneralData> {
   List<String> warrantyList = ['Yes', 'No'];
   String warranty = 'Yes';
 
+  Future<void> setAddress() async {
+    List<CRD2Model> shipping =
+        await retrieveCRD2ById(context, "Code = ?", [GeneralData.cardCode]);
+    if (shipping.isNotEmpty) {
+      ShippingAddress.RouteName = shipping[0].RouteName;
+      ShippingAddress.RouteCode = shipping[0].RouteCode;
+      ShippingAddress.CityName = shipping[0].CityName;
+      ShippingAddress.CityCode = shipping[0].CityCode;
+      ShippingAddress.Addres = shipping[0].Address;
+      ShippingAddress.CountryName = shipping[0].CountryName;
+      ShippingAddress.CountryCode = shipping[0].CountryCode;
+      ShippingAddress.StateName = shipping[0].StateName;
+      ShippingAddress.StateCode = shipping[0].StateCode;
+      ShippingAddress.Latitude = double.tryParse(shipping[0].Latitude) ?? 0.0;
+      ShippingAddress.Longitude =
+          double.tryParse(shipping[0].Longitude.toString()) ?? 0.0;
+      ShippingAddress.RowId = shipping[0].RowId;
+      ShippingAddress.AddCode = shipping[0].AddressCode;
+    }
+
+    //SET FIRST BILLING ADDRESS --> CRD3 WHERE Code = ? CUSTOMER CODE
+
+    List<CRD3Model> billing =
+        await retrieveCRD3ById(context, "Code = ?", [GeneralData.cardCode]);
+    if (billing.isNotEmpty) {
+      BillingAddress.CityName = billing[0].CityName;
+      BillingAddress.CityCode = billing[0].CityCode;
+      BillingAddress.Addres = billing[0].Address;
+      BillingAddress.CountryName = billing[0].CountryName;
+      BillingAddress.CountryCode = billing[0].CountryCode;
+      BillingAddress.StateName = billing[0].StateName;
+      BillingAddress.StateCode = billing[0].StateCode;
+      BillingAddress.Latitude = double.tryParse(billing[0].Latitude) ?? 0.0;
+      BillingAddress.Longitude =
+          double.tryParse(billing[0].Longitude.toString()) ?? 0.0;
+      BillingAddress.RowId = billing[0].RowId;
+      BillingAddress.AddCode = billing[0].AddressCode;
+    }
+
+    //SET FIRST CONTACT PERSON --> OCRD WHERE Code = ? CUSTOMER CODE
+
+    List<CRD1Model> contactPerson = await retrieveCRD1ById(
+        context, "Code = ? AND Active = ?", [GeneralData.cardCode, 1]);
+    if (contactPerson.isNotEmpty) {
+      GeneralData.contactPersonId = contactPerson[0].ID.toString();
+      _mobileNo.text =
+          GeneralData.mobileNo = contactPerson[0].MobileNo.toString();
+      _contactPersonName.text = GeneralData.contactPersonName =
+          contactPerson[0].FirstName.toString() +
+              " " +
+              contactPerson[0].MiddleName.toString() +
+              " " +
+              contactPerson[0].LastName.toString();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -210,13 +336,18 @@ class _GeneralDataState extends State<GeneralData> {
               onChanged: (val) {
                 GeneralData.cardName = val;
               },
+              enableLookup: true,
               onLookupPressed: () {
-                Get.to(() => SupplierLookup(onSelected: (OCRDModel ocrdModel) {
-                      setState(() {
-                        GeneralData.cardCode = _cardCode.text = ocrdModel.Code;
-                        GeneralData.cardName =
-                            _cardName.text = ocrdModel.Name ?? '';
-                      });
+                Get.to(() =>
+                    SupplierLookup(onSelected: (OCRDModel ocrdModel) async {
+                      GeneralData.cardCode = _cardCode.text = ocrdModel.Code;
+                      GeneralData.paymentTermDays = _paymentTermDays.text = ocrdModel.PaymentTermDays.toString()??'';
+                      GeneralData.paymentTermName  = ocrdModel.PaymentTermName;
+                      GeneralData.paymentTermCode  = ocrdModel.PaymentTermCode;
+                      GeneralData.cardName =
+                          _cardName.text = ocrdModel.Name ?? '';
+                      await setAddress();
+                      setState(() {});
                     }));
               }),
           getDisabledTextField(

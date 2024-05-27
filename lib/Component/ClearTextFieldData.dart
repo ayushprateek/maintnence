@@ -496,6 +496,9 @@ class ClearGRNDocument {
     grnGenData.GeneralData.tripTransId='';
     grnGenData.GeneralData.deptCode='';
     grnGenData.GeneralData.deptName='';
+    grnGenData.GeneralData.isSelected = false;
+    grnGenData.GeneralData.hasCreated = false;
+    grnGenData.GeneralData.hasUpdated = false;
   }
   static clearEditItems() {
     purchaseEditItems.EditItems.id='';
