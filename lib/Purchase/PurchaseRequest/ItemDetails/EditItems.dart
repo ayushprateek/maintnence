@@ -232,6 +232,8 @@ class _EditCheckListState extends State<EditItems> {
               onChanged: (val) {
                 EditItems.price = val;
               },
+              keyboardType: getDecimalKeyboardType(),
+              inputFormatters: [getDecimalRegEx()],
             ),
             getDisabledTextField(
               controller: _mtv,
@@ -263,6 +265,8 @@ class _EditCheckListState extends State<EditItems> {
             getTextField(
               controller: _lineDiscount,
               labelText: 'Line Discount',
+              keyboardType: getDecimalKeyboardType(),
+              inputFormatters: [getDecimalRegEx()],
               onChanged: (val) {
                 EditItems.lineDiscount = val;
               },

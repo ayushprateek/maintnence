@@ -154,31 +154,6 @@ class _ServiceDetailsState extends State<ServiceDetails> {
                                                   top: 4.0),
                                               child: Align(
                                                 alignment: Alignment.topLeft,
-                                                child: FittedBox(
-                                                  fit: BoxFit.contain,
-                                                  child: Text.rich(
-                                                    TextSpan(
-                                                      children: [
-                                                        getPoppinsTextSpanHeading(
-                                                            text:
-                                                                'Service Code'),
-                                                        getPoppinsTextSpanDetails(
-                                                            text: mnjcd2
-                                                                    .ServiceCode ??
-                                                                ''),
-                                                      ],
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                  left: 8.0,
-                                                  right: 8.0,
-                                                  top: 4.0),
-                                              child: Align(
-                                                alignment: Alignment.topLeft,
                                                 child: Text.rich(
                                                   TextSpan(
                                                     children: [
@@ -189,31 +164,6 @@ class _ServiceDetailsState extends State<ServiceDetails> {
                                                                   .ServiceName ??
                                                               ''),
                                                     ],
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                  left: 8.0,
-                                                  right: 8.0,
-                                                  top: 4.0),
-                                              child: Align(
-                                                alignment: Alignment.topLeft,
-                                                child: FittedBox(
-                                                  fit: BoxFit.contain,
-                                                  child: Text.rich(
-                                                    TextSpan(
-                                                      children: [
-                                                        getPoppinsTextSpanHeading(
-                                                            text:
-                                                                'Supplier Code'),
-                                                        getPoppinsTextSpanDetails(
-                                                            text: mnjcd2
-                                                                    .SupplierCode ??
-                                                                ''),
-                                                      ],
-                                                    ),
                                                   ),
                                                 ),
                                               ),

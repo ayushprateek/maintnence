@@ -149,6 +149,7 @@ class _ItemDetailsState extends State<ItemDetails> {
                                           mainAxisAlignment:
                                               MainAxisAlignment.start,
                                           children: [
+
                                             Padding(
                                               padding: const EdgeInsets.only(
                                                   left: 8.0,
@@ -160,26 +161,7 @@ class _ItemDetailsState extends State<ItemDetails> {
                                                   TextSpan(
                                                     children: [
                                                       getPoppinsTextSpanHeading(
-                                                          text: 'Item Code'),
-                                                      getPoppinsTextSpanDetails(
-                                                          text: mnjcd1.ItemCode),
-                                                    ],
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                  left: 8.0,
-                                                  right: 8.0,
-                                                  top: 4.0),
-                                              child: Align(
-                                                alignment: Alignment.topLeft,
-                                                child: Text.rich(
-                                                  TextSpan(
-                                                    children: [
-                                                      getPoppinsTextSpanHeading(
-                                                          text: 'Item Name'),
+                                                          text: 'Item'),
                                                       getPoppinsTextSpanDetails(
                                                           text: mnjcd1.ItemCode??''),
                                                     ],
@@ -319,6 +301,7 @@ class _ItemDetailsState extends State<ItemDetails> {
                                                 ),
                                               ),
                                             ),
+
                                             Padding(
                                               padding: const EdgeInsets.only(
                                                   left: 8.0,
@@ -331,27 +314,7 @@ class _ItemDetailsState extends State<ItemDetails> {
                                                     children: [
                                                       getPoppinsTextSpanHeading(
                                                           text:
-                                                              'Supplier Code'),
-                                                      getPoppinsTextSpanDetails(
-                                                          text: mnjcd1.SupplierCode??''),
-                                                    ],
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                  left: 8.0,
-                                                  right: 8.0,
-                                                  top: 4.0),
-                                              child: Align(
-                                                alignment: Alignment.topLeft,
-                                                child: Text.rich(
-                                                  TextSpan(
-                                                    children: [
-                                                      getPoppinsTextSpanHeading(
-                                                          text:
-                                                              'Supplier Name'),
+                                                              'Supplier'),
                                                       getPoppinsTextSpanDetails(
                                                           text: mnjcd1.SupplierName??''),
                                                     ],

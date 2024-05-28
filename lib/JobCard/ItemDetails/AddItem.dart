@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:maintenance/Component/ClearTextFieldData.dart';
 import 'package:maintenance/Component/CustomColor.dart';
 import 'package:maintenance/Component/CustomFont.dart';
+import 'package:maintenance/Component/GetFormattedDate.dart';
 import 'package:maintenance/Component/GetTextField.dart';
 import 'package:maintenance/Component/SnackbarComponent.dart';
 import 'package:maintenance/JobCard/ItemDetails/ItemDetails.dart';
@@ -230,6 +231,8 @@ class _AddItemState extends State<AddItem> {
                                         snapshot.data![index].ItemCode;
                                     EditJobCardItem.itemName =
                                         snapshot.data![index].ItemName;
+                                    EditJobCardItem.requiredDate =
+                                        getFormattedDate(DateTime.now());
                                     Get.to(() => EditJobCardItem());
                                   }
                                 },

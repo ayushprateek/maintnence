@@ -246,6 +246,8 @@ class _EditCheckListState extends State<EditItems> {
                       getTextField(
                         controller: _price,
                         labelText: 'Price',
+                        keyboardType: getDecimalKeyboardType(),
+                        inputFormatters: [getDecimalRegEx()],
                       ),
                       getDisabledTextField(
                         controller: _mtv,
@@ -271,6 +273,8 @@ class _EditCheckListState extends State<EditItems> {
                       getTextField(
                         controller: _lineDiscount,
                         labelText: 'Line Discount',
+                        keyboardType: getDecimalKeyboardType(),
+                        inputFormatters: [getDecimalRegEx()],
                       ),
                       getDisabledTextField(
                         controller: _lineTotal,
