@@ -5,16 +5,13 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:get/get.dart';
 import 'package:maintenance/Component/CompanyDetails.dart';
 import 'package:maintenance/Component/CustomColor.dart';
 import 'package:maintenance/Component/CustomFont.dart';
-import 'package:maintenance/Component/CustomPickFile.dart';
 import 'package:maintenance/Component/GetCredentials.dart';
 import 'package:maintenance/Component/GetCurrentLocation.dart';
 import 'package:maintenance/Component/IsValidAppVersion.dart';
 import 'package:maintenance/Component/LogFileFunctions.dart';
-import 'package:maintenance/Component/SendEmail.dart';
 import 'package:maintenance/Component/SendLocalNotification.dart';
 import 'package:maintenance/Component/SnackbarComponent.dart';
 import 'package:maintenance/Component/UploadImageToServer.dart';
@@ -22,58 +19,27 @@ import 'package:maintenance/Dashboard.dart';
 import 'package:maintenance/DatabaseInitialization.dart';
 import 'package:maintenance/LoginPage.dart';
 import 'package:maintenance/Sync/CustomURL.dart';
-import 'package:maintenance/Sync/SyncModels/ACT1.dart';
-import 'package:maintenance/Sync/SyncModels/ACT2.dart';
-import 'package:maintenance/Sync/SyncModels/ACT3.dart';
-import 'package:maintenance/Sync/SyncModels/CRT1.dart';
-import 'package:maintenance/Sync/SyncModels/CVCVP1.dart';
-import 'package:maintenance/Sync/SyncModels/CVOCVP.dart';
-import 'package:maintenance/Sync/SyncModels/DLN1.dart';
-import 'package:maintenance/Sync/SyncModels/DLN2.dart';
-import 'package:maintenance/Sync/SyncModels/DLN3.dart';
-import 'package:maintenance/Sync/SyncModels/DPT1.dart';
-import 'package:maintenance/Sync/SyncModels/DSC1.dart';
-import 'package:maintenance/Sync/SyncModels/DSC2.dart';
-import 'package:maintenance/Sync/SyncModels/ECP1.dart';
-import 'package:maintenance/Sync/SyncModels/INV1.dart';
-import 'package:maintenance/Sync/SyncModels/INV2.dart';
-import 'package:maintenance/Sync/SyncModels/INV3.dart';
-import 'package:maintenance/Sync/SyncModels/LITPL_OOAL.dart';
-import 'package:maintenance/Sync/SyncModels/OACT.dart';
-import 'package:maintenance/Sync/SyncModels/OCRD.dart';
-import 'package:maintenance/Sync/SyncModels/OCRT.dart';
-import 'package:maintenance/Sync/SyncModels/ODLN.dart';
-import 'package:maintenance/Sync/SyncModels/ODPT.dart';
-import 'package:maintenance/Sync/SyncModels/ODSC.dart';
+import 'package:maintenance/Sync/SyncModels/IMGDI1.dart';
+import 'package:maintenance/Sync/SyncModels/IMOGDI.dart';
+import 'package:maintenance/Sync/SyncModels/MNCLD1.dart';
+import 'package:maintenance/Sync/SyncModels/MNCLD2.dart';
+import 'package:maintenance/Sync/SyncModels/MNCLD3.dart';
+import 'package:maintenance/Sync/SyncModels/MNJCD1.dart';
+import 'package:maintenance/Sync/SyncModels/MNJCD2.dart';
+import 'package:maintenance/Sync/SyncModels/MNJCD3.dart';
+import 'package:maintenance/Sync/SyncModels/MNJCD4.dart';
+import 'package:maintenance/Sync/SyncModels/MNOCLD.dart';
+import 'package:maintenance/Sync/SyncModels/MNOJCD.dart';
 import 'package:maintenance/Sync/SyncModels/OECLO.dart';
-import 'package:maintenance/Sync/SyncModels/OECP.dart';
-import 'package:maintenance/Sync/SyncModels/OINV.dart';
-import 'package:maintenance/Sync/SyncModels/OQUT.dart';
-import 'package:maintenance/Sync/SyncModels/ORCT.dart';
-import 'package:maintenance/Sync/SyncModels/ORDR.dart';
-import 'package:maintenance/Sync/SyncModels/ORTN.dart';
-import 'package:maintenance/Sync/SyncModels/ORTP.dart';
-import 'package:maintenance/Sync/SyncModels/OSTK.dart';
 import 'package:maintenance/Sync/SyncModels/OUSR.dart';
-import 'package:maintenance/Sync/SyncModels/OVLD.dart';
-import 'package:maintenance/Sync/SyncModels/QUT1.dart';
-import 'package:maintenance/Sync/SyncModels/QUT2.dart';
-import 'package:maintenance/Sync/SyncModels/QUT3.dart';
-import 'package:maintenance/Sync/SyncModels/RCT1.dart';
-import 'package:maintenance/Sync/SyncModels/RDR1.dart';
-import 'package:maintenance/Sync/SyncModels/RDR2.dart';
-import 'package:maintenance/Sync/SyncModels/RDR3.dart';
-import 'package:maintenance/Sync/SyncModels/RTN1.dart';
-import 'package:maintenance/Sync/SyncModels/RTN2.dart';
-import 'package:maintenance/Sync/SyncModels/RTN3.dart';
-import 'package:maintenance/Sync/SyncModels/RTP1.dart';
-import 'package:maintenance/Sync/SyncModels/RTP2.dart';
-import 'package:maintenance/Sync/SyncModels/STK1.dart';
-import 'package:maintenance/Sync/SyncModels/SUISU1.dart';
-import 'package:maintenance/Sync/SyncModels/SUITA1.dart';
-import 'package:maintenance/Sync/SyncModels/SUITA2.dart';
-import 'package:maintenance/Sync/SyncModels/SUOISU.dart';
-import 'package:maintenance/Sync/SyncModels/SUOITA.dart';
+import 'package:maintenance/Sync/SyncModels/PRITR1.dart';
+import 'package:maintenance/Sync/SyncModels/PROITR.dart';
+import 'package:maintenance/Sync/SyncModels/PROPDN.dart';
+import 'package:maintenance/Sync/SyncModels/PROPRQ.dart';
+import 'package:maintenance/Sync/SyncModels/PRPDN1.dart';
+import 'package:maintenance/Sync/SyncModels/PRPDN2.dart';
+import 'package:maintenance/Sync/SyncModels/PRPDN3.dart';
+import 'package:maintenance/Sync/SyncModels/PRPRQ1.dart';
 import 'package:maintenance/Sync/SyncModels/SingleAPIs/Customer/Customer1.dart';
 import 'package:maintenance/Sync/SyncModels/SingleAPIs/Customer/Customer2.dart';
 import 'package:maintenance/Sync/SyncModels/SingleAPIs/Customer/CustomerTransaction1.dart';
@@ -81,16 +47,10 @@ import 'package:maintenance/Sync/SyncModels/SingleAPIs/Employee/GetAllMaster1.da
 import 'package:maintenance/Sync/SyncModels/SingleAPIs/Employee/GetAllMaster2.dart';
 import 'package:maintenance/Sync/SyncModels/SingleAPIs/Employee/Transaction1.dart';
 import 'package:maintenance/Sync/SyncModels/SingleAPIs/Employee/Transaction2.dart';
-import 'package:maintenance/Sync/SyncModels/VLD1.dart';
-
 import 'package:maintenance/main.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:sqflite/sqlite_api.dart';
 import 'package:step_progress_indicator/step_progress_indicator.dart';
-
-import 'SyncModels/EXR1.dart';
-import 'SyncModels/OCSH.dart';
-import 'SyncModels/OEXR.dart';
 
 class DataSync extends StatefulWidget {
   bool isComingFromLogin, isFirstTimeSync;
@@ -126,7 +86,7 @@ class DataSync extends StatefulWidget {
   }
 
   static List getUpdateOnServerList() {
-    return [1,1];
+    return [1, 1];
   }
 
   @override
@@ -146,141 +106,103 @@ class _DataSyncState extends State<DataSync> {
     DataSync.setSyncing(true);
     DataSync.setSyncing(true);
 
-    await insertACT1ToServer(context);
-    await insertOSTKToServer(context);
-    await insertSTK1ToServer(context);
-    await insertACT2ToServer(context);
-    await insertACT3ToServer(context);
-    await insertLITPL_OOALToServer(context);
-    await insertDSC1ToServer(context);
-    await insertDSC2ToServer(context);
-    await insertEXR1ToServer(context);
-    await insertINV1ToServer(context);
+    ///CheckList
+    await insertMNOCLDToServer(null);
+    await insertMNCLD1ToServer(null);
+    await insertMNCLD2ToServer(null);
+    await insertMNCLD3ToServer(null);
     setState(() {
       _currentStep = 1;
     });
-    await insertINV2ToServer(context);
-    await insertINV3ToServer(context);
-    await insertOACTToServer(context);
-    await insertDPT1ToServer(context);
-    await insertOCRTToServer(context);
-    await insertCRT1ToServer(context);
-    await insertOCSHToServer(context);
 
-    await insertODLNToServer(context);
-    await insertDLN1ToServer(context);
-    await insertDLN2ToServer(context);
-    await insertDLN3ToServer(context);
-    await insertODPTToServer(context);
-    await insertODSCToServer(context);
+    ///JobCard
+
+    await insertMNOJCDToServer(null);
+    await insertMNJCD1ToServer(null);
+    await insertMNJCD2ToServer(null);
+    await insertMNJCD3ToServer(null);
+    await insertMNJCD4ToServer(null);
+
+    ///Goods Issue
+
+    await insertIMOGDIToServer(null);
+    await insertIMGDI1ToServer(null);
+
+    ///Purchase request
+
+    await insertPROPRQToServer(null);
+    await insertPRPRQ1ToServer(null);
+
     setState(() {
       _currentStep = 2;
     });
-    await insertOECPToServer(context);
-    await insertECP1ToServer(context);
-    await insertOEXRToServer(context);
-    await insertOINVToServer(context);
-    await insertOQUTToServer(context);
-    await insertORDRToServer(context);
-    await insertQUT1ToServer(context);
-    await insertQUT2ToServer(context);
-    await insertQUT3ToServer(context);
-    await insertRDR1ToServer(context);
+
+    ///GRN
+    await insertPROPDNToServer(null);
+    await insertPRPDN1ToServer(null);
+    await insertPRPDN2ToServer(null);
+    await insertPRPDN3ToServer(null);
     setState(() {
       _currentStep = 3;
     });
-    await insertRDR2ToServer(context);
-    await insertRDR3ToServer(context);
-    await insertCVOCVPToServer(context);
-    await insertCVCVP1ToServer(context);
-    await insertSUISU1ToServer(context);
-    await insertSUOISUToServer(context);
-    await insertORCTToServer(context);
-    await insertRCT1ToServer(context);
-    await insertSUOITAToServer(context);
-    await insertSUITA1ToServer(context);
-    await insertSUITA2ToServer(context);
 
-    // ----------------------UPDATE
+    ///Internal request
 
-    await updateOSTKOnServer(context);
-    await updateSTK1OnServer(context);
-    await updateACT1OnServer(context);
-    await updateACT2OnServer(context);
+    await insertPROITRToServer(null);
+    await insertPRITR1ToServer(null);
+
     setState(() {
       _currentStep = 4;
     });
-    await updateACT3OnServer(context);
-    await updateLITPL_OOALOnServer(context);
-    await updateDLN1OnServer(context);
-    await updateDLN2OnServer(context);
-    await updateDLN3OnServer(context);
+    // ----------------------UPDATE
 
-    await updateDSC1OnServer(context);
-    await updateDSC2OnServer(context);
-
-    await updateEXR1OnServer(context);
-    await updateINV1OnServer(context);
-    await updateINV2OnServer(context);
+    ///CheckList
+    await updateMNOCLDOnServer(null);
+    await updateMNCLD1OnServer(null);
+    await updateMNCLD2OnServer(null);
+    await updateMNCLD3OnServer(null);
     setState(() {
       _currentStep = 5;
     });
-    await updateINV3OnServer(context);
-    await updateOACTOnServer(context);
-    await updateDPT1OnServer(context);
-    await updateOCRDOnServer(context);
-    await updateOCRTOnServer(context);
-    await updateCRT1OnServer(context);
 
-    await updateOCSHOnServer(context);
+    ///JobCard
 
-    await updateODLNOnServer(context);
-
-    await updateODPTOnServer(context);
-    await updateODSCOnServer(context);
+    await updateMNOJCDOnServer(null);
+    await updateMNJCD1OnServer(null);
+    await updateMNJCD2OnServer(null);
+    await updateMNJCD3OnServer(null);
+    await updateMNJCD4OnServer(null);
     setState(() {
       _currentStep = 6;
     });
-    await updateOECPOnServer(context);
-    await updateECP1OnServer(context);
-    await updateOEXROnServer(context);
 
-    await updateOQUTOnServer(context);
-    await updateORDROnServer(context);
+    ///Goods Issue
 
-    await updateORTNOnServer(context);
-    await updateORTPOnServer(context);
+    await updateIMOGDIOnServer(null);
+    await updateIMGDI1OnServer(null);
 
-    await updateOVLDOnServer(context);
+    ///Purchase request
 
-    await updateQUT1OnServer(context);
-    await updateQUT2OnServer(context);
+    await updatePROPRQOnServer(null);
+    await updatePRPRQ1OnServer(null);
+
     setState(() {
       _currentStep = 7;
     });
-    await updateQUT3OnServer(context);
-    await updateRDR1OnServer(context);
-    await updateRDR2OnServer(context);
-    await updateRDR3OnServer(context);
 
-    await updateRTN1OnServer(context);
-    await updateRTN2OnServer(context);
-    await updateRTN3OnServer(context);
-    await updateRTP1OnServer(context);
-    await updateRTP2OnServer(context);
+    ///GRN
+    await updatePROPDNOnServer(null);
+    await updatePRPDN1OnServer(null);
+    await updatePRPDN2OnServer(null);
+    await updatePRPDN3OnServer(null);
 
-    await updateVLD1OnServer(context);
+    ///Internal request
+
+    await updatePROITROnServer(null);
+    await updatePRITR1OnServer(null);
     setState(() {
       _currentStep = 8;
     });
-    await updateCVOCVPOnServer(context);
-    await updateCVCVP1OnServer(context);
-    await updateSUISU1OnServer(context);
-    await updateSUOISUOnServer(context);
-    await updateSUOITAOnServer(context);
-    await updateSUITA1OnServer(context);
-    await updateSUITA2OnServer(context);
-
     // getSuccessSnackBar("Syncing your Data");
   }
 
@@ -354,7 +276,6 @@ class _DataSyncState extends State<DataSync> {
         duration = stopwatch.elapsed;
         print(
             'Function Execution Time Transaction2 : ${duration.inMilliseconds}');
-
 
         // await getAll.getGetAllMaster1FromWeb(widget.isFirstTimeSync);
         stopwatch.reset();
@@ -569,390 +490,391 @@ class _DataSyncState extends State<DataSync> {
   }
 }
 
-dataSyncBackground(BuildContext? context) async {
-  print("Syncing in background");
-  setHeader();
-  DataSync.setSyncing(true);
-
-  // retrieveACT1(context).then((value) {
-  //   value.forEach((element) {
-  //     print(element);
-  //   });
-  // });
-
-  //----------------------INSERT
-
-  await insertACT1ToServer(context);
-  await insertACT2ToServer(context);
-  await insertACT3ToServer(context);
-  //todo:
-  //insertCRD1ToServer(context);
-  //todo:
-  //insertCRD2ToServer(context);
-  //todo:
-  //insertCRD3ToServer(context);
-  //todo:
-  //insertCRDDToServer(context);
-  // await insertDLN1ToServer(context);
-  // await insertDLN2ToServer(context);
-  // await insertDLN3ToServer(context);
-  //todo:
-  //insertDOC1ToServer(context);
-  //todo:
-  //insertDOCNToServer(context);
-  await insertDSC1ToServer(context);
-  await insertDSC2ToServer(context);
-  //todo:
-  //insertEMPDToServer(context);
-  await insertEXR1ToServer(context);
-  await insertINV1ToServer(context);
-  await insertINV2ToServer(context);
-  await insertINV3ToServer(context);
-  await insertOACTToServer(context);
-  await insertDPT1ToServer(context);
-  //todo:
-  //insertOAMRToServer(context);
-  //todo:
-  //insertOBDTToServer(context);
-  //todo:
-  //insertOBRNToServer(context);
-  //todo:
-  //insertOCCTToServer(context);
-  //todo:
-  //insertOECLOToServer(context);
-  //todo:
-  // insertOCINToServer(context);
-  //todo:
-  //insertOCRDToServer(context);
-  //todo:
-  //insertOCRNToServer(context);
-  await insertOCRTToServer(context);
-  await insertCRT1ToServer(context);
-  //todo:
-  //insertOCRYToServer(context);
-  await insertOCSHToServer(context);
-  //todo:
-  //insertOCSTToServer(context);
-  await insertODLNToServer(context);
-  await insertDLN1ToServer(context);
-  await insertDLN2ToServer(context);
-  await insertDLN3ToServer(context);
-  //todo:
-  //insertODOCToServer(context);
-  await insertODPTToServer(context);
-  await insertODSCToServer(context);
-  await insertOECPToServer(context);
-  await insertECP1ToServer(context);
-  //todo:
-  //insertOEMGToServer(context);
-  //todo:
-  //insertOEMPToServer(context);
-  //todo:
-  //insertOEMRToServer(context);
-  //todo:
-  //insertOEMSToServer(context);
-  await insertOEXRToServer(context);
-  //todo:
-  //insertOFTYToServer(context);
-  //todo:
-  //insertOGRAToServer(context);
-  //todo:
-  //insertOHPSToServer(context);
-  await insertOINVToServer(context);
-  //todo:
-  //insertOITMToServer(context);
-  //todo:
-  //insertOLEVToServer(context);
-  //todo:
-  //insertOMNUToServer(context);
-  //todo:
-  //insertOMSPToServer(context);
-  //todo:
-  //insertOPTRToServer(context);
-  //todo:
-  //insertOQEMToServer(context);
-  await insertOQUTToServer(context);
-  await insertORDRToServer(context);
-  //todo:
-  //insertOROLToServer(context);
-  // await insertORTNToServer(context);
-  // await insertORTPToServer(context);
-  //todo:
-  //insertORTTToServer(context);
-  //todo:
-  //insertORTUToServer(context);
-  //todo:
-  //insertOTAXToServer(context);
-  //todo:
-  //insertOUDPToServer(context);
-  //todo:
-  //insertOUSRToServer(context);
-  //todo:
-  //insertOVCLToServer(context);
-  // await insertOVLDToServer(context);
-  //todo:
-  //insertOXPMToServer(context);
-  //todo:
-  //insertOXPTToServer(context);
-  await insertQUT1ToServer(context);
-  await insertQUT2ToServer(context);
-  await insertQUT3ToServer(context);
-  await insertRDR1ToServer(context);
-  await insertRDR2ToServer(context);
-  await insertRDR3ToServer(context);
-  //todo:
-  //insertROUTToServer(context);
-  // await insertRTN1ToServer(context);
-  // await insertRTN2ToServer(context);
-  // await insertRTN3ToServer(context);
-  // await insertRTP1ToServer(context);
-  // await insertRTP2ToServer(context);
-  //todo:
-  //insertVCL1ToServer(context);
-  //todo:
-  //insertVCL2ToServer(context);
-  //todo:
-  //insertVCLDToServer(context);
-  // await insertVLD1ToServer(context);
-  // todo:
-  // insertXPM1ToServer(context);
-
-  // ----------------------UPDATE
-
-  await updateACT1OnServer(context);
-  await updateACT2OnServer(context);
-  await updateACT3OnServer(context);
-  //todo:
-  //updateCRD1OnServer(context);
-  //todo:
-  //updateCRD2OnServer(context);
-  //todo:
-  //updateCRD3OnServer(context);
-  //todo:
-  //updateCRDDOnServer(context);
-  await updateDLN1OnServer(context);
-  await updateDLN2OnServer(context);
-  await updateDLN3OnServer(context);
-  //todo:
-  //updateDOC1OnServer(context);
-  //todo:
-  //updateDOCNOnServer(context);
-  await updateDSC1OnServer(context);
-  await updateDSC2OnServer(context);
-  //todo:
-  //updateEMPDOnServer(context);
-  await updateEXR1OnServer(context);
-  await updateINV1OnServer(context);
-  await updateINV2OnServer(context);
-  await updateINV3OnServer(context);
-  await updateOACTOnServer(context);
-  await updateDPT1OnServer(context);
-  //todo:
-  //updateOAMROnServer(context);
-  //todo:
-  //updateOBDTOnServer(context);
-  //todo:
-  //updateOBRNOnServer(context);
-  //todo:
-  //updateOCCTOnServer(context);
-  //todo:
-  //updateOECLOOnServer(context);
-  //todo:
-  //updateOCINOnServer(context);
-  //todo:
-  //updateOCRDOnServer(context);
-  //todo:
-  //updateOCRNOnServer(context);
-  await updateOCRTOnServer(context);
-  await updateCRT1OnServer(context);
-  //todo:
-  //updateOCRYOnServer(context);
-  await updateOCSHOnServer(context);
-  //todo:
-  //updateOCSTOnServer(context);
-  await updateODLNOnServer(context);
-  //todo:
-  //updateODOCOnServer(context);
-  await updateODPTOnServer(context);
-  await updateODSCOnServer(context);
-  //todo:
-  await updateOECPOnServer(context);
-  await updateECP1OnServer(context);
-  //todo:
-  //updateOEMGOnServer(context);
-  //todo:
-  //updateOEMPOnServer(context);
-  //todo:
-  //updateOEMROnServer(context);
-  //todo:
-  //updateOEMSOnServer(context);
-  await updateOEXROnServer(context);
-  //todo:
-  //updateOFTYOnServer(context);
-  //todo:
-  //updateOGRAOnServer(context);
-  //todo:
-  //updateOHPSOnServer(context);
-  //todo:
-  //updateOINVOnServer(context);
-  //TODO:
-  //updateOITMOnServer(context);
-  //todo:
-  //updateOLEVOnServer(context);
-  //todo:
-  //updateOMNUOnServer(context);
-  //todo:
-  //updateOMSPOnServer(context);
-  //todo:
-  //updateOPTROnServer(context);
-  //todo:
-  //updateOQEMOnServer(context);
-  await updateOQUTOnServer(context);
-  await updateORDROnServer(context);
-  //todo:
-  //updateOROLOnServer(context);
-  await updateORTNOnServer(context);
-  await updateORTPOnServer(context);
-  //todo:
-  //updateORTTOnServer(context);
-  //todo:
-  //updateORTUOnServer(context);
-  //todo:
-  //updateOTAXOnServer(context);
-  //todo:
-  //updateOUDPOnServer(context);
-  //todo:
-  //updateOUSROnServer(context);
-  //todo:
-  //updateOVCLOnServer(context);
-  await updateOVLDOnServer(context);
-  //todo:
-  //updateOXPMOnServer(context);
-  //todo:
-  //updateOXPTOnServer(context);
-  await updateQUT1OnServer(context);
-  await updateQUT2OnServer(context);
-  await updateQUT3OnServer(context);
-  await updateRDR1OnServer(context);
-  await updateRDR2OnServer(context);
-  await updateRDR3OnServer(context);
-  //todo:
-  //updateROUTOnServer(context);
-  await updateRTN1OnServer(context);
-  await updateRTN2OnServer(context);
-  await updateRTN3OnServer(context);
-  await updateRTP1OnServer(context);
-  await updateRTP2OnServer(context);
-  //todo:
-  //OnServer(context);
-  //todo:
-  //updateVCL2OnServer(context);
-  //todo:
-  //updateVCLDOnServer(context);
-  await updateVLD1OnServer(context);
-  //todo:
-  //updateXPM1OnServer(context);
-
-  // getSuccessSnackBar("Syncing your Data");
-
-  //-------------------------------------
-  // await insertACT1(db);
-  // await insertACT2(db);
-  // await insertCRD1(db);
-  // await insertCRD2(db);
-  // await insertCRD3(db);
-  // await insertCRDD(db);
-  // await insertDLN1(db);
-  // await insertDLN2(db);
-  // await insertDLN3(db);
-  // await insertDOC1(db);
-  // await insertDOCN(db);
-  // await insertDSC1(db);
-  // await insertDSC2(db);
-  // await insertEMPD(db);
-  // await insertEXR1(db);
-  // await insertINV1(db);
-  // await insertINV2(db);
-  // await insertINV3(db);
-  // // await insertMAPS(db);
-  //
-  // await insertOACT(db);
-  // await insertOAMR(db);
-  // await insertOAPRV(db);
-  // await insertOBDT(db);
-  // await insertOBRN(db);
-  // await insertOCCT(db);
-  // // await insertOECLO(db);
-  // await insertOCIN(db);
-  // await insertDPT1(db);
-  // await insertOCRD(db);
-  // await insertOCRN(db);
-  // await insertOCRT(db);
-  // await insertOCRY(db);
-  // await insertOCSH(db);
-  // await insertOCST(db);
-  // await insertODLN(db);
-  // await insertODOC(db);
-  // await insertODPT(db);
-  // await insertODSC(db);
-  // await insertOECP(db);
-  // await insertOEMG(db);
-  // await insertOEMP(db);
-  // await insertOEMR(db);
-  // await insertOEMS(db);
-  // await insertOEXR(db);
-  // await insertOFTY(db);
-  // await insertOGRA(db);
-  // await insertOHPS(db);
-  // await insertOINV(db);
-  // await insertOITM(db);
-  // await insertOLEV(db);
-  // await insertOMNU(db);
-  // await insertOMSP(db);
-  // await insertOPTR(db);
-  // await insertOQEM(db);
-  // await insertOQUT(db);
-  // await insertORDR(db);
-  // await insertOROL(db);
-  // await insertORTN(db);
-  // await insertORTP(db);
-  // await insertORTU(db);
-  // await insertOTAX(db);
-  // await insertOUDP(db);
-  // await insertOUSR(db);
-  // await insertOVCL(db);
-  // await insertOVLD(db);
-  // await insertOXPM(db);
-  // await insertOXPT(db);
-  // await insertQUT1(db);
-  // await insertQUT2(db);
-  // await insertQUT3(db);
-  // await insertRDR1(db);
-  // await insertRDR2(db);
-  // await insertRDR3(db);
-  // await insertROUT(db);
-  // await insertRTN1(db);
-  // await insertRTN2(db);
-  // await insertRTN3(db);
-  // await insertRTP1(db);
-  // await insertRTP2(db);
-  // await insertVCL1(db);
-  // await insertVCL2(db);
-  // await insertVCLD(db);
-  // await insertVLD1(db);
-  // await insertXPM1(db);
-  // await insertORTT(db);
-  // await insertDGLMAPPING(db);
-
-  Timer(Duration(milliseconds: 500), () {
-    // localStorage.setInt("TIME", 0);
-    // autoSyncTimer();
-    // localStorage.setInt("syncDay", DateTime.now().day);
-    setSyncDate(dateTime: DateTime.now());
-    // localStorage?.setString("syncDate", DateTime.now().toIso8601String());
-    getApprovalListForNotification();
-  });
-}
+dataSyncBackground(BuildContext? context) async {}
+// dataSyncBackground(BuildContext? context) async {
+//   print("Syncing in background");
+//   setHeader();
+//   DataSync.setSyncing(true);
+//
+//   // retrieveACT1(context).then((value) {
+//   //   value.forEach((element) {
+//   //     print(element);
+//   //   });
+//   // });
+//
+//   //----------------------INSERT
+//
+//   await insertACT1ToServer(context);
+//   await insertACT2ToServer(context);
+//   await insertACT3ToServer(context);
+//   //todo:
+//   //insertCRD1ToServer(context);
+//   //todo:
+//   //insertCRD2ToServer(context);
+//   //todo:
+//   //insertCRD3ToServer(context);
+//   //todo:
+//   //insertCRDDToServer(context);
+//   // await insertDLN1ToServer(context);
+//   // await insertDLN2ToServer(context);
+//   // await insertDLN3ToServer(context);
+//   //todo:
+//   //insertDOC1ToServer(context);
+//   //todo:
+//   //insertDOCNToServer(context);
+//   await insertDSC1ToServer(context);
+//   await insertDSC2ToServer(context);
+//   //todo:
+//   //insertEMPDToServer(context);
+//   await insertEXR1ToServer(context);
+//   await insertINV1ToServer(context);
+//   await insertINV2ToServer(context);
+//   await insertINV3ToServer(context);
+//   await insertOACTToServer(context);
+//   await insertDPT1ToServer(context);
+//   //todo:
+//   //insertOAMRToServer(context);
+//   //todo:
+//   //insertOBDTToServer(context);
+//   //todo:
+//   //insertOBRNToServer(context);
+//   //todo:
+//   //insertOCCTToServer(context);
+//   //todo:
+//   //insertOECLOToServer(context);
+//   //todo:
+//   // insertOCINToServer(context);
+//   //todo:
+//   //insertOCRDToServer(context);
+//   //todo:
+//   //insertOCRNToServer(context);
+//   await insertOCRTToServer(context);
+//   await insertCRT1ToServer(context);
+//   //todo:
+//   //insertOCRYToServer(context);
+//   await insertOCSHToServer(context);
+//   //todo:
+//   //insertOCSTToServer(context);
+//   await insertODLNToServer(context);
+//   await insertDLN1ToServer(context);
+//   await insertDLN2ToServer(context);
+//   await insertDLN3ToServer(context);
+//   //todo:
+//   //insertODOCToServer(context);
+//   await insertODPTToServer(context);
+//   await insertODSCToServer(context);
+//   await insertOECPToServer(context);
+//   await insertECP1ToServer(context);
+//   //todo:
+//   //insertOEMGToServer(context);
+//   //todo:
+//   //insertOEMPToServer(context);
+//   //todo:
+//   //insertOEMRToServer(context);
+//   //todo:
+//   //insertOEMSToServer(context);
+//   await insertOEXRToServer(context);
+//   //todo:
+//   //insertOFTYToServer(context);
+//   //todo:
+//   //insertOGRAToServer(context);
+//   //todo:
+//   //insertOHPSToServer(context);
+//   await insertOINVToServer(context);
+//   //todo:
+//   //insertOITMToServer(context);
+//   //todo:
+//   //insertOLEVToServer(context);
+//   //todo:
+//   //insertOMNUToServer(context);
+//   //todo:
+//   //insertOMSPToServer(context);
+//   //todo:
+//   //insertOPTRToServer(context);
+//   //todo:
+//   //insertOQEMToServer(context);
+//   await insertOQUTToServer(context);
+//   await insertORDRToServer(context);
+//   //todo:
+//   //insertOROLToServer(context);
+//   // await insertORTNToServer(context);
+//   // await insertORTPToServer(context);
+//   //todo:
+//   //insertORTTToServer(context);
+//   //todo:
+//   //insertORTUToServer(context);
+//   //todo:
+//   //insertOTAXToServer(context);
+//   //todo:
+//   //insertOUDPToServer(context);
+//   //todo:
+//   //insertOUSRToServer(context);
+//   //todo:
+//   //insertOVCLToServer(context);
+//   // await insertOVLDToServer(context);
+//   //todo:
+//   //insertOXPMToServer(context);
+//   //todo:
+//   //insertOXPTToServer(context);
+//   await insertQUT1ToServer(context);
+//   await insertQUT2ToServer(context);
+//   await insertQUT3ToServer(context);
+//   await insertRDR1ToServer(context);
+//   await insertRDR2ToServer(context);
+//   await insertRDR3ToServer(context);
+//   //todo:
+//   //insertROUTToServer(context);
+//   // await insertRTN1ToServer(context);
+//   // await insertRTN2ToServer(context);
+//   // await insertRTN3ToServer(context);
+//   // await insertRTP1ToServer(context);
+//   // await insertRTP2ToServer(context);
+//   //todo:
+//   //insertVCL1ToServer(context);
+//   //todo:
+//   //insertVCL2ToServer(context);
+//   //todo:
+//   //insertVCLDToServer(context);
+//   // await insertVLD1ToServer(context);
+//   // todo:
+//   // insertXPM1ToServer(context);
+//
+//   // ----------------------UPDATE
+//
+//   await updateACT1OnServer(context);
+//   await updateACT2OnServer(context);
+//   await updateACT3OnServer(context);
+//   //todo:
+//   //updateCRD1OnServer(context);
+//   //todo:
+//   //updateCRD2OnServer(context);
+//   //todo:
+//   //updateCRD3OnServer(context);
+//   //todo:
+//   //updateCRDDOnServer(context);
+//   await updateDLN1OnServer(context);
+//   await updateDLN2OnServer(context);
+//   await updateDLN3OnServer(context);
+//   //todo:
+//   //updateDOC1OnServer(context);
+//   //todo:
+//   //updateDOCNOnServer(context);
+//   await updateDSC1OnServer(context);
+//   await updateDSC2OnServer(context);
+//   //todo:
+//   //updateEMPDOnServer(context);
+//   await updateEXR1OnServer(context);
+//   await updateINV1OnServer(context);
+//   await updateINV2OnServer(context);
+//   await updateINV3OnServer(context);
+//   await updateOACTOnServer(context);
+//   await updateDPT1OnServer(context);
+//   //todo:
+//   //updateOAMROnServer(context);
+//   //todo:
+//   //updateOBDTOnServer(context);
+//   //todo:
+//   //updateOBRNOnServer(context);
+//   //todo:
+//   //updateOCCTOnServer(context);
+//   //todo:
+//   //updateOECLOOnServer(context);
+//   //todo:
+//   //updateOCINOnServer(context);
+//   //todo:
+//   //updateOCRDOnServer(context);
+//   //todo:
+//   //updateOCRNOnServer(context);
+//   await updateOCRTOnServer(context);
+//   await updateCRT1OnServer(context);
+//   //todo:
+//   //updateOCRYOnServer(context);
+//   await updateOCSHOnServer(context);
+//   //todo:
+//   //updateOCSTOnServer(context);
+//   await updateODLNOnServer(context);
+//   //todo:
+//   //updateODOCOnServer(context);
+//   await updateODPTOnServer(context);
+//   await updateODSCOnServer(context);
+//   //todo:
+//   await updateOECPOnServer(context);
+//   await updateECP1OnServer(context);
+//   //todo:
+//   //updateOEMGOnServer(context);
+//   //todo:
+//   //updateOEMPOnServer(context);
+//   //todo:
+//   //updateOEMROnServer(context);
+//   //todo:
+//   //updateOEMSOnServer(context);
+//   await updateOEXROnServer(context);
+//   //todo:
+//   //updateOFTYOnServer(context);
+//   //todo:
+//   //updateOGRAOnServer(context);
+//   //todo:
+//   //updateOHPSOnServer(context);
+//   //todo:
+//   //updateOINVOnServer(context);
+//   //TODO:
+//   //updateOITMOnServer(context);
+//   //todo:
+//   //updateOLEVOnServer(context);
+//   //todo:
+//   //updateOMNUOnServer(context);
+//   //todo:
+//   //updateOMSPOnServer(context);
+//   //todo:
+//   //updateOPTROnServer(context);
+//   //todo:
+//   //updateOQEMOnServer(context);
+//   await updateOQUTOnServer(context);
+//   await updateORDROnServer(context);
+//   //todo:
+//   //updateOROLOnServer(context);
+//   await updateORTNOnServer(context);
+//   await updateORTPOnServer(context);
+//   //todo:
+//   //updateORTTOnServer(context);
+//   //todo:
+//   //updateORTUOnServer(context);
+//   //todo:
+//   //updateOTAXOnServer(context);
+//   //todo:
+//   //updateOUDPOnServer(context);
+//   //todo:
+//   //updateOUSROnServer(context);
+//   //todo:
+//   //updateOVCLOnServer(context);
+//   await updateOVLDOnServer(context);
+//   //todo:
+//   //updateOXPMOnServer(context);
+//   //todo:
+//   //updateOXPTOnServer(context);
+//   await updateQUT1OnServer(context);
+//   await updateQUT2OnServer(context);
+//   await updateQUT3OnServer(context);
+//   await updateRDR1OnServer(context);
+//   await updateRDR2OnServer(context);
+//   await updateRDR3OnServer(context);
+//   //todo:
+//   //updateROUTOnServer(context);
+//   await updateRTN1OnServer(context);
+//   await updateRTN2OnServer(context);
+//   await updateRTN3OnServer(context);
+//   await updateRTP1OnServer(context);
+//   await updateRTP2OnServer(context);
+//   //todo:
+//   //OnServer(context);
+//   //todo:
+//   //updateVCL2OnServer(context);
+//   //todo:
+//   //updateVCLDOnServer(context);
+//   await updateVLD1OnServer(context);
+//   //todo:
+//   //updateXPM1OnServer(context);
+//
+//   // getSuccessSnackBar("Syncing your Data");
+//
+//   //-------------------------------------
+//   // await insertACT1(db);
+//   // await insertACT2(db);
+//   // await insertCRD1(db);
+//   // await insertCRD2(db);
+//   // await insertCRD3(db);
+//   // await insertCRDD(db);
+//   // await insertDLN1(db);
+//   // await insertDLN2(db);
+//   // await insertDLN3(db);
+//   // await insertDOC1(db);
+//   // await insertDOCN(db);
+//   // await insertDSC1(db);
+//   // await insertDSC2(db);
+//   // await insertEMPD(db);
+//   // await insertEXR1(db);
+//   // await insertINV1(db);
+//   // await insertINV2(db);
+//   // await insertINV3(db);
+//   // // await insertMAPS(db);
+//   //
+//   // await insertOACT(db);
+//   // await insertOAMR(db);
+//   // await insertOAPRV(db);
+//   // await insertOBDT(db);
+//   // await insertOBRN(db);
+//   // await insertOCCT(db);
+//   // // await insertOECLO(db);
+//   // await insertOCIN(db);
+//   // await insertDPT1(db);
+//   // await insertOCRD(db);
+//   // await insertOCRN(db);
+//   // await insertOCRT(db);
+//   // await insertOCRY(db);
+//   // await insertOCSH(db);
+//   // await insertOCST(db);
+//   // await insertODLN(db);
+//   // await insertODOC(db);
+//   // await insertODPT(db);
+//   // await insertODSC(db);
+//   // await insertOECP(db);
+//   // await insertOEMG(db);
+//   // await insertOEMP(db);
+//   // await insertOEMR(db);
+//   // await insertOEMS(db);
+//   // await insertOEXR(db);
+//   // await insertOFTY(db);
+//   // await insertOGRA(db);
+//   // await insertOHPS(db);
+//   // await insertOINV(db);
+//   // await insertOITM(db);
+//   // await insertOLEV(db);
+//   // await insertOMNU(db);
+//   // await insertOMSP(db);
+//   // await insertOPTR(db);
+//   // await insertOQEM(db);
+//   // await insertOQUT(db);
+//   // await insertORDR(db);
+//   // await insertOROL(db);
+//   // await insertORTN(db);
+//   // await insertORTP(db);
+//   // await insertORTU(db);
+//   // await insertOTAX(db);
+//   // await insertOUDP(db);
+//   // await insertOUSR(db);
+//   // await insertOVCL(db);
+//   // await insertOVLD(db);
+//   // await insertOXPM(db);
+//   // await insertOXPT(db);
+//   // await insertQUT1(db);
+//   // await insertQUT2(db);
+//   // await insertQUT3(db);
+//   // await insertRDR1(db);
+//   // await insertRDR2(db);
+//   // await insertRDR3(db);
+//   // await insertROUT(db);
+//   // await insertRTN1(db);
+//   // await insertRTN2(db);
+//   // await insertRTN3(db);
+//   // await insertRTP1(db);
+//   // await insertRTP2(db);
+//   // await insertVCL1(db);
+//   // await insertVCL2(db);
+//   // await insertVCLD(db);
+//   // await insertVLD1(db);
+//   // await insertXPM1(db);
+//   // await insertORTT(db);
+//   // await insertDGLMAPPING(db);
+//
+//   Timer(Duration(milliseconds: 500), () {
+//     // localStorage.setInt("TIME", 0);
+//     // autoSyncTimer();
+//     // localStorage.setInt("syncDay", DateTime.now().day);
+//     setSyncDate(dateTime: DateTime.now());
+//     // localStorage?.setString("syncDate", DateTime.now().toIso8601String());
+//     getApprovalListForNotification();
+//   });
+// }
 
 firstTimeSyncBackground() async {
   print("Syncing in backgroung");
