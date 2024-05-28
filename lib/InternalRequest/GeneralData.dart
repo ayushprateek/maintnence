@@ -268,6 +268,12 @@ class _GeneralDataState extends State<GeneralData> {
                   onChanged: (val) {
                     GeneralData.mobileNo = val;
                   }),
+              getTextField(
+                  controller: _remarks,
+                  labelText: 'Remarks',
+                  onChanged: (val) {
+                    GeneralData.remarks = val;
+                  }),
               getDisabledTextField(
                   controller: _fromWhsCode,
                   labelText: 'From Warehouse',
@@ -298,12 +304,7 @@ class _GeneralDataState extends State<GeneralData> {
                           });
                         }));
                   }),
-              getTextField(
-                  controller: _remarks,
-                  labelText: 'Remarks',
-                  onChanged: (val) {
-                    GeneralData.remarks = val;
-                  }),
+
               getDateTextField(
                   controller: _postingDate,
                   labelText: 'Posting Date',
