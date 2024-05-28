@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:maintenance/Component/BackPressedWarning.dart';
 import 'package:maintenance/Component/ClearTextFieldData.dart';
 import 'package:maintenance/Component/CustomColor.dart';
 import 'package:maintenance/Component/CustomFont.dart';
@@ -47,18 +48,16 @@ class _JobCardState extends State<PurchaseRequest> {
   final key = GlobalKey<ScaffoldState>();
 
   _onBackButtonPressed() {
-    Navigator.pushAndRemoveUntil(context,
-        MaterialPageRoute(builder: (context) => Dashboard()), (route) => false);
-    // if (GeneralData.customerCode != '' || ItemDetails.items.isNotEmpty) {
-    //   showBackPressedWarning(onBackPressed: widget.onBackPressed);
-    // } else if (widget.onBackPressed != null) {
-    //   widget.onBackPressed!();
-    // } else {
-    //   Navigator.pushAndRemoveUntil(
-    //       context,
-    //       MaterialPageRoute(builder: (context) => Dashboard()),
-    //           (route) => false);
-    // }
+    if (GeneralData.deptName != '' || ItemDetails.items.isNotEmpty) {
+      showBackPressedWarning(onBackPressed: widget.onBackPressed);
+    } else if (widget.onBackPressed != null) {
+      widget.onBackPressed!();
+    } else {
+      Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (context) => Dashboard()),
+              (route) => false);
+    }
   }
 
   @override
@@ -139,73 +138,20 @@ class _JobCardState extends State<PurchaseRequest> {
                     Icons.add,
                     color: Colors.black,
                   ),
-                  onPressed: () {},
-                  // onPressed: () async {
-                  //   if (GeneralData.customerCode != '' ||
-                  //       ItemDetails.items.isNotEmpty) {
-                  //     showBackPressedWarning(
-                  //         text:
-                  //         'Your data is not saved. Are you sure you want to create new form?',
-                  //         onBackPressed: () async {
-                  //           await clearJobCardData();
-                  //           getLastDocNum("SQ", context).then((snapshot) async {
-                  //             int DocNum = snapshot[0].DocNumber - 1;
-                  //
-                  //             do {
-                  //               DocNum += 1;
-                  //               GeneralData.TransId = DateTime.now()
-                  //                   .millisecondsSinceEpoch
-                  //                   .toString() +
-                  //                   "U0" +
-                  //                   userModel.ID.toString() +
-                  //                   "_" +
-                  //                   snapshot[0].DocName +
-                  //                   "/" +
-                  //                   DocNum.toString();
-                  //             } while (await isSQTransIdAvailable(
-                  //                 context, GeneralData.TransId ?? ""));
-                  //             // Map<String, dynamic> val = {"DocNumber": DocNum};
-                  //             // updateDocNum(snapshot[0].ID, val, context);
-                  //             // GeneralData.MTransID="M"+snapshot[0].DocName+"/"+DocNum.toString();
-                  //             // GeneralData.TransId = DateTime.now().millisecondsSinceEpoch.toString()+"U0" + userModel.ID.toString() + "_" + snapshot[0].DocName + "/" + DocNum.toString();
-                  //             GeneralData.isSelected = false;
-                  //             Navigator.pop(context);
-                  //             Navigator.push(
-                  //                 context,
-                  //                 MaterialPageRoute(
-                  //                     builder: (context) => PurchaseRequest(0)));
-                  //           });
-                  //         });
-                  //   } else {
-                  //     await clearJobCardData();
-                  //     getLastDocNum("SQ", context).then((snapshot) async {
-                  //       int DocNum = snapshot[0].DocNumber - 1;
-                  //
-                  //       do {
-                  //         DocNum += 1;
-                  //         GeneralData.TransId =
-                  //             DateTime.now().millisecondsSinceEpoch.toString() +
-                  //                 "U0" +
-                  //                 userModel.ID.toString() +
-                  //                 "_" +
-                  //                 snapshot[0].DocName +
-                  //                 "/" +
-                  //                 DocNum.toString();
-                  //       } while (await isSQTransIdAvailable(
-                  //           context, GeneralData.TransId ?? ""));
-                  //       // Map<String, dynamic> val = {"DocNumber": DocNum};
-                  //       // updateDocNum(snapshot[0].ID, val, context);
-                  //       // GeneralData.MTransID="M"+snapshot[0].DocName+"/"+DocNum.toString();
-                  //       // GeneralData.TransId = DateTime.now().millisecondsSinceEpoch.toString()+"U0" + userModel.ID.toString() + "_" + snapshot[0].DocName + "/" + DocNum.toString();
-                  //       GeneralData.isSelected = false;
-                  //       Navigator.pop(context);
-                  //       Navigator.push(
-                  //           context,
-                  //           MaterialPageRoute(
-                  //               builder: (context) => PurchaseRequest(0)));
-                  //     });
-                  //   }
-                  // },
+
+                  onPressed: () async {
+                    if (GeneralData.deptName != '' ||
+                        ItemDetails.items.isNotEmpty) {
+                      showBackPressedWarning(
+                          text:
+                          'Your data is not saved. Are you sure you want to create new form?',
+                          onBackPressed: () async {
+                            goToNewPurchaseRequestDocument();
+                          });
+                    } else {
+                      goToNewPurchaseRequestDocument();
+                    }
+                  },
                 ),
               ],
               title: getHeadingText(

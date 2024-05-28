@@ -53,18 +53,17 @@ class _JobCardState extends State<JobCard> {
   final key = GlobalKey<ScaffoldState>();
 
   _onBackButtonPressed() {
-    Navigator.pushAndRemoveUntil(context,
-        MaterialPageRoute(builder: (context) => Dashboard()), (route) => false);
-    // if (GeneralData.customerCode != '' || ItemDetails.items.isNotEmpty) {
-    //   showBackPressedWarning(onBackPressed: widget.onBackPressed);
-    // } else if (widget.onBackPressed != null) {
-    //   widget.onBackPressed!();
-    // } else {
-    //   Navigator.pushAndRemoveUntil(
-    //       context,
-    //       MaterialPageRoute(builder: (context) => Dashboard()),
-    //           (route) => false);
-    // }
+
+    if (GeneralData.equipmentCode != '' || ItemDetails.items.isNotEmpty) {
+      showBackPressedWarning(onBackPressed: widget.onBackPressed);
+    } else if (widget.onBackPressed != null) {
+      widget.onBackPressed!();
+    } else {
+      Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (context) => Dashboard()),
+              (route) => false);
+    }
   }
 
   @override

@@ -170,7 +170,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                         ),
                         ListTile(
                           onTap: (){
-                            goToNewSTRDocument();
+                            goToNewInternalRequestDocument();
                           },
                           title: Text(
                             'Internal Request',

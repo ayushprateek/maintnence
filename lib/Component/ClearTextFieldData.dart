@@ -569,10 +569,10 @@ class ClearSTRDocument {
   static clearGeneralDataTextFields(){
     internalGenData.GeneralData.iD='';
     internalGenData.GeneralData.transId='';
-    internalGenData.GeneralData.requestedCode='';
-    internalGenData.GeneralData.requestedName='';
+    internalGenData.GeneralData.requestedCode=userModel.EmpCode;
+    internalGenData.GeneralData.requestedName=userModel.EmpName;
     internalGenData.GeneralData.refNo='';
-    internalGenData.GeneralData.mobileNo='';
+    internalGenData.GeneralData.mobileNo=userModel.MobileNo;
     internalGenData.GeneralData.postingDate=getFormattedDate(DateTime.now());
     internalGenData.GeneralData.validUntill=getFormattedDate(DateTime.now().add(Duration(days: 7)));
     internalGenData.GeneralData.currency=userModel.Currency;
@@ -637,7 +637,7 @@ class ClearSTRDocument {
   }
 }
 
-goToNewSTRDocument() async {
+goToNewInternalRequestDocument() async {
   await ClearSTRDocument.clearGeneralDataTextFields();
   await ClearSTRDocument.clearEditItems();
   internalItemDetails.ItemDetails.items.clear();

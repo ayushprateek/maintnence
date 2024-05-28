@@ -58,18 +58,17 @@ class _CheckListDocumentState extends State<CheckListDocument> {
   final key = GlobalKey<ScaffoldState>();
 
   _onBackButtonPressed() {
-    Navigator.pushAndRemoveUntil(context,
-        MaterialPageRoute(builder: (context) => Dashboard()), (route) => false);
-    // if (GeneralData.customerCode != '' || CheckListDetails.items.isNotEmpty) {
-    //   showBackPressedWarning(onBackPressed: widget.onBackPressed);
-    // } else if (widget.onBackPressed != null) {
-    //   widget.onBackPressed!();
-    // } else {
-    //   Navigator.pushAndRemoveUntil(
-    //       context,
-    //       MaterialPageRoute(builder: (context) => Dashboard()),
-    //           (route) => false);
-    // }
+
+    if (GeneralData.equipmentCode != '' || CheckListDetails.items.isNotEmpty) {
+      showBackPressedWarning(onBackPressed: widget.onBackPressed);
+    } else if (widget.onBackPressed != null) {
+      widget.onBackPressed!();
+    } else {
+      Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (context) => Dashboard()),
+              (route) => false);
+    }
   }
 
   @override

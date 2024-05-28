@@ -48,18 +48,16 @@ class _JobCardState extends State<GoodsIssue> {
   final key = GlobalKey<ScaffoldState>();
 
   _onBackButtonPressed() {
-    Navigator.pushAndRemoveUntil(context,
-        MaterialPageRoute(builder: (context) => Dashboard()), (route) => false);
-    // if (GeneralData.customerCode != '' || ItemDetails.items.isNotEmpty) {
-    //   showBackPressedWarning(onBackPressed: widget.onBackPressed);
-    // } else if (widget.onBackPressed != null) {
-    //   widget.onBackPressed!();
-    // } else {
-    //   Navigator.pushAndRemoveUntil(
-    //       context,
-    //       MaterialPageRoute(builder: (context) => Dashboard()),
-    //           (route) => false);
-    // }
+    if (GeneralData.deptName != '' || ItemDetails.items.isNotEmpty) {
+      showBackPressedWarning(onBackPressed: widget.onBackPressed);
+    } else if (widget.onBackPressed != null) {
+      widget.onBackPressed!();
+    } else {
+      Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (context) => Dashboard()),
+          (route) => false);
+    }
   }
 
   @override
@@ -109,11 +107,11 @@ class _JobCardState extends State<GoodsIssue> {
                         ),
                         Tab(
                             child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(
-                                                        "Item Details",
-                                                      ),
-                            )),
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            "Item Details",
+                          ),
+                        )),
                       ],
                     ),
                   ],
@@ -145,7 +143,7 @@ class _JobCardState extends State<GoodsIssue> {
                         ItemDetails.items.isNotEmpty) {
                       showBackPressedWarning(
                           text:
-                          'Your data is not saved. Are you sure you want to create new form?',
+                              'Your data is not saved. Are you sure you want to create new form?',
                           onBackPressed: () {
                             goToNewGoodsIssueDocument();
                           });
@@ -154,7 +152,6 @@ class _JobCardState extends State<GoodsIssue> {
                     }
                   },
                 ),
-
               ],
               title: getHeadingText(
                   text: "Goods Issue", color: headColor, fontSize: 20)),
@@ -178,7 +175,6 @@ class _JobCardState extends State<GoodsIssue> {
     );
   }
 
-
   bool isSelectedAndCancelled() {
     bool flag = GeneralData.isSelected && GeneralData.docStatus == "Cancelled";
     flag = flag || GeneralData.docStatus == "Close";
@@ -189,7 +185,7 @@ class _JobCardState extends State<GoodsIssue> {
     return GeneralData.docStatus == null
         ? false
         : (GeneralData.docStatus!.toUpperCase().contains('CLOSE') ||
-        GeneralData.approvalStatus != 'Pending');
+            GeneralData.approvalStatus != 'Pending');
   }
 
   bool isSelectedButNotCancelled() {
@@ -294,9 +290,9 @@ class _JobCardState extends State<GoodsIssue> {
                 generalData.CreatedBy = userModel.UserCode;
                 generalData.BranchId = userModel.BranchId.toString();
                 generalData.hasCreated = true;
-                Position pos=await getCurrentLocation();
-                generalData.Latitude=pos.latitude.toString();
-                generalData.Longitude=pos.longitude.toString();
+                Position pos = await getCurrentLocation();
+                generalData.Latitude = pos.latitude.toString();
+                generalData.Longitude = pos.longitude.toString();
                 await database.insert('IMOGDI', generalData.toJson());
               }
 
@@ -319,13 +315,12 @@ class _JobCardState extends State<GoodsIssue> {
                     qut1model.UpdateDate = DateTime.now();
                     Map<String, Object?> map = qut1model.toJson();
                     map.removeWhere(
-                            (key, value) => value == null || value == '');
+                        (key, value) => value == null || value == '');
                     await database.update('IMGDI1', map,
                         where: 'TransId = ? AND RowId = ?',
                         whereArgs: [qut1model.TransId, qut1model.RowId]);
                   }
                 }
-
               } else {
                 for (int i = 0; i < ItemDetails.items.length; i++) {
                   IMGDI1 qut1model = ItemDetails.items[i];
@@ -341,7 +336,6 @@ class _JobCardState extends State<GoodsIssue> {
                     await database.insert('IMGDI1', qut1model.toJson());
                   }
                 }
-
               }
             });
             goToNewGoodsIssueDocument();
