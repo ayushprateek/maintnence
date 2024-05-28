@@ -111,7 +111,10 @@ class _EditCheckListState extends State<EditCheckList> {
             //     onChanged: (val) {
             //       EditCheckList.itemCode = val;
             //     }),
-            getDisabledTextField(controller: _itemName, labelText: 'Item Name'),
+            getDisabledTextField(controller: _itemName, labelText: 'Item Name',
+              onChanged: (val) {
+                EditCheckList.itemName  = val;
+              },),
             getTextField(
               controller: _consumptionQty,
               labelText: 'Consumption Qty',

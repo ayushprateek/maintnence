@@ -189,7 +189,6 @@ class _GeneralDataState extends State<GeneralData> {
               const SizedBox(
                 height: 25,
               ),
-
               getDisabledTextField(
                   controller: _transId,
                   labelText: 'Trans Id',
@@ -207,7 +206,8 @@ class _GeneralDataState extends State<GeneralData> {
                     Get.to(() => DepartmentLookup(onSelection: (OUDP oudp) {
                           setState(() {
                             GeneralData.deptCode = oudp.Code ?? '';
-                            GeneralData.deptName = _deptName.text = oudp.Name ?? '';
+                            GeneralData.deptName =
+                                _deptName.text = oudp.Name ?? '';
                           });
                         }));
                   }),
@@ -267,12 +267,14 @@ class _GeneralDataState extends State<GeneralData> {
                   controller: TextEditingController(),
                   labelText: 'City',
                   onChanged: (val) {
+                    //todo:
                     // GeneralData.permanentTransId = _permanentTransId.text = val;
                   }),
               getDisabledTextField(
                   controller: TextEditingController(),
                   labelText: 'State',
                   onChanged: (val) {
+                    //todo:
                     // GeneralData.permanentTransId = _permanentTransId.text = val;
                   }),
               getDateTextField(
@@ -301,7 +303,6 @@ class _GeneralDataState extends State<GeneralData> {
                   onChanged: (val) {
                     GeneralData.approvalStatus = _approvalStatus.text = val;
                   }),
-
               getTextField(
                   controller: _remarks,
                   labelText: 'Remarks',
@@ -316,9 +317,26 @@ class _GeneralDataState extends State<GeneralData> {
                   title: getHeadingText(text: "Details", color: headColor),
                   children: [
                     getDisabledTextField(
-                        controller: _permanentTransId, labelText: 'Permanent Trans Id'),
-                    getDisabledTextField(controller: _docNum, labelText: 'ERP Docnum'),
-                    getDisabledTextField(controller: _docEntry, labelText: 'Doc Entry'),
+                      controller: _permanentTransId,
+                      labelText: 'Permanent Trans Id',
+                      onChanged: (val) {
+                        GeneralData.permanentTransId = val;
+                      },
+                    ),
+                    getDisabledTextField(
+                      controller: _docNum,
+                      labelText: 'ERP Docnum',
+                      onChanged: (val) {
+                        GeneralData.docNum = val;
+                      },
+                    ),
+                    getDisabledTextField(
+                      controller: _docEntry,
+                      labelText: 'Doc Entry',
+                      onChanged: (val) {
+                        GeneralData.docEntry = val;
+                      },
+                    ),
                     getDisabledTextField(
                       controller: TextEditingController(),
                       labelText: 'Local Date',
@@ -326,7 +344,9 @@ class _GeneralDataState extends State<GeneralData> {
                   ],
                 ),
               ),
-              const SizedBox(height: 70,),
+              const SizedBox(
+                height: 70,
+              ),
             ],
           ),
         ),

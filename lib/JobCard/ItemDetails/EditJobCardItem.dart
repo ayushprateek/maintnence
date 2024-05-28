@@ -94,7 +94,10 @@ class _EditJobCardItemState extends State<EditJobCardItem> {
             ),
 
 
-            getDisabledTextField(controller: _itemName, labelText: 'Item Name'),
+            getDisabledTextField(controller: _itemName, labelText: 'Item Name',
+              onChanged: (val) {
+                EditJobCardItem.itemName  = val;
+              },),
             getTextField(
               controller: _quantity,
               labelText: 'Quantity',

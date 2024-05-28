@@ -72,25 +72,31 @@ class _EditServiceState extends State<EditService> {
             //       EditService.serviceCode = val;
             //     }),
             getDisabledTextField(
-                controller: _serviceName, labelText: 'Service Name'),
+              controller: _serviceName,
+              labelText: 'Service Name',
+              onChanged: (val) {
+                EditService.serviceName = val;
+              },
+            ),
 
             // getDisabledTextField(
             //     controller: _supplierCode,
             //     labelText: 'Supplier Code',
             //     ),
             getDisabledTextField(
-                controller: _supplierName, labelText: 'Supplier',
+                controller: _supplierName,
+                labelText: 'Supplier',
                 enableLookup: true,
                 onLookupPressed: () {
                   Get.to(
-                          () => SupplierLookup(onSelected: (OCRDModel ocrdModel) {
-                        setState(() {
-                          EditService.supplierCode =
-                              _supplierCode.text = ocrdModel.Code;
-                          EditService.supplierName =
-                              _supplierName.text = ocrdModel.Name ?? '';
-                        });
-                      }));
+                      () => SupplierLookup(onSelected: (OCRDModel ocrdModel) {
+                            setState(() {
+                              EditService.supplierCode =
+                                  _supplierCode.text = ocrdModel.Code;
+                              EditService.supplierName =
+                                  _supplierName.text = ocrdModel.Name ?? '';
+                            });
+                          }));
                 }),
             getTextField(
               controller: _infoPrice,
@@ -146,22 +152,21 @@ class _EditServiceState extends State<EditService> {
                             getSuccessSnackBar("Check List Updated");
                           } else {
                             MNJCD2 mncld1 = MNJCD2(
-                              ID: int.tryParse(EditService.id ?? ''),
-                              TransId: EditService.transId,
-                              RowId: ItemDetails.items.length,
-                              ServiceCode:
-                                  EditService.serviceCode.toString() ?? '',
-                              ServiceName:
-                                  EditService.serviceName.toString() ?? '',
-                              InfoPrice: double.tryParse(
-                                      EditService.infoPrice.toString()) ??
-                                  0.0,
-                              SupplierCode:
-                                  EditService.supplierCode.toString() ?? '',
-                              SupplierName:
-                                  EditService.supplierName.toString() ?? '',
-                              insertedIntoDatabase: false
-                            );
+                                ID: int.tryParse(EditService.id ?? ''),
+                                TransId: EditService.transId,
+                                RowId: ItemDetails.items.length,
+                                ServiceCode:
+                                    EditService.serviceCode.toString() ?? '',
+                                ServiceName:
+                                    EditService.serviceName.toString() ?? '',
+                                InfoPrice: double.tryParse(
+                                        EditService.infoPrice.toString()) ??
+                                    0.0,
+                                SupplierCode:
+                                    EditService.supplierCode.toString() ?? '',
+                                SupplierName:
+                                    EditService.supplierName.toString() ?? '',
+                                insertedIntoDatabase: false);
                             ServiceDetails.items.add(mncld1);
 
                             Get.offAll(() => JobCard(2));

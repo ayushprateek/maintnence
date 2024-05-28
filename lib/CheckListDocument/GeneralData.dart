@@ -198,7 +198,10 @@ class _GeneralDataState extends State<GeneralData> {
                 height: 25,
               ),
 
-              getDisabledTextField(controller: _transId, labelText: 'Trans Id'),
+              getDisabledTextField(controller: _transId, labelText: 'Trans Id',
+                  onChanged: (val) {
+                    GeneralData.transId  = val;
+                  }),
 
 
               getDateTextField(
@@ -273,9 +276,15 @@ class _GeneralDataState extends State<GeneralData> {
                     },
                   ));
                 },),
-              getDisabledTextField(controller: _docStatus, labelText: 'Doc Status'),
+              getDisabledTextField(controller: _docStatus, labelText: 'Doc Status',
+                  onChanged: (val) {
+                    GeneralData.docStatus  = val;
+                  }),
               getDisabledTextField(
-                  controller: _approvalStatus, labelText: 'Approval Status'),
+                  controller: _approvalStatus, labelText: 'Approval Status',
+                  onChanged: (val) {
+                    GeneralData.approvalStatus  = val;
+                  }),
               Padding(
                 padding: const EdgeInsets.only(
                   left: 10,
@@ -327,6 +336,9 @@ class _GeneralDataState extends State<GeneralData> {
               getTextField(
                   controller: _currentReading,
                   labelText: 'Current Reading',
+                  onChanged: (val) {
+                    GeneralData.currentReading  = val;
+                  },
                   keyboardType: TextInputType.number,
                   inputFormatters: [
                     getIntegerRegEx(),
@@ -339,7 +351,10 @@ class _GeneralDataState extends State<GeneralData> {
                     _lastReadingDate.text = GeneralData.lastReadingDate = val;
                   }),
               getDisabledTextField(
-                  controller: _lastReading, labelText: 'Last Reading'),
+                  controller: _lastReading, labelText: 'Last Reading',
+                onChanged: (val) {
+                  GeneralData.lastReading  = val;
+                },),
               // getDisabledTextField(
               //   controller: _assignedUserCode,
               //   labelText: 'Technician Code',
@@ -407,7 +422,10 @@ class _GeneralDataState extends State<GeneralData> {
                   ),
                 ),
               ),
-              getTextField(controller: _remarks, labelText: 'Remarks'),
+              getTextField(controller: _remarks, labelText: 'Remarks',
+                onChanged: (val) {
+                  GeneralData.remarks  = val;
+                },),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: ExpansionTile(
@@ -416,9 +434,18 @@ class _GeneralDataState extends State<GeneralData> {
                   title: getHeadingText(text: "Details", color: headColor),
                   children: [
                     getDisabledTextField(
-                        controller: _permanentTransId, labelText: 'Permanent Trans Id'),
-                    getDisabledTextField(controller: _docNum, labelText: 'ERP Docnum'),
-                    getDisabledTextField(controller: _docEntry, labelText: 'Doc Entry'),
+                        controller: _permanentTransId, labelText: 'Permanent Trans Id',
+                      onChanged: (val) {
+                        GeneralData.permanentTransId  = val;
+                      },),
+                    getDisabledTextField(controller: _docNum, labelText: 'ERP Docnum',
+                      onChanged: (val) {
+                        GeneralData.docNum  = val;
+                      },),
+                    getDisabledTextField(controller: _docEntry, labelText: 'Doc Entry',
+                      onChanged: (val) {
+                        GeneralData.docEntry  = val;
+                      },),
                   ],
                 ),
               ),

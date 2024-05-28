@@ -394,8 +394,7 @@ class _GeneralDataState extends State<GeneralData> {
                   onChanged: (val) {
                     GeneralData.refNo = val;
                   }),
-              getDisabledTextField(
-                  controller: TextEditingController(), labelText: 'Local Date'),
+
               getTextField(
                   controller: _remarks,
                   labelText: 'Remarks',
@@ -410,8 +409,14 @@ class _GeneralDataState extends State<GeneralData> {
                   title: getHeadingText(text: "Details", color: headColor),
                   children: [
                     getDisabledTextField(
-                        controller: _permanentTransId, labelText: 'Permanent Trans Id'),
-                    getDisabledTextField(controller: _docNum, labelText: 'ERP Docnum'),
+                        controller: _permanentTransId, labelText: 'Permanent Trans Id',
+                      onChanged: (val) {
+                        GeneralData.permanentTransId  = val;
+                      },),
+                    getDisabledTextField(controller: _docNum, labelText: 'ERP Docnum',
+                      onChanged: (val) {
+                        GeneralData.docNum  = val;
+                      },),
                     getDisabledTextField(
                         controller: _currency,
                         labelText: 'Currency',
@@ -424,6 +429,8 @@ class _GeneralDataState extends State<GeneralData> {
                         onChanged: (val) {
                           GeneralData.currRate = val;
                         }),
+                    getDisabledTextField(
+                        controller: TextEditingController(), labelText: 'Local Date'),
                   ],
                 ),
               ),

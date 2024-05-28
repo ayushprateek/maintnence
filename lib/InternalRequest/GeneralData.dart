@@ -195,12 +195,11 @@ class _GeneralDataState extends State<GeneralData> {
               border: Border.all(),
               borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(16), topRight: Radius.circular(16))),
-          child:  Column(
+          child: Column(
             children: [
               const SizedBox(
                 height: 25,
               ),
-
               getDisabledTextField(
                   controller: _transId,
                   labelText: 'Trans Id',
@@ -215,7 +214,8 @@ class _GeneralDataState extends State<GeneralData> {
                     Get.to(() => DepartmentLookup(onSelection: (OUDP oudp) {
                           setState(() {
                             GeneralData.deptCode = oudp.Code ?? '';
-                            GeneralData.deptName = _deptName.text = oudp.Name ?? '';
+                            GeneralData.deptName =
+                                _deptName.text = oudp.Name ?? '';
                           });
                         }));
                   }),
@@ -295,7 +295,6 @@ class _GeneralDataState extends State<GeneralData> {
                           });
                         }));
                   }),
-
               getDateTextField(
                   controller: _postingDate,
                   labelText: 'Posting Date',
@@ -310,7 +309,6 @@ class _GeneralDataState extends State<GeneralData> {
                   onChanged: (val) {
                     GeneralData.validUntill = val;
                   }),
-
               getDisabledTextField(
                   controller: _docStatus,
                   labelText: 'Doc Status',
@@ -323,7 +321,6 @@ class _GeneralDataState extends State<GeneralData> {
                   onChanged: (val) {
                     GeneralData.approvalStatus = val;
                   }),
-
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: ExpansionTile(
@@ -332,8 +329,17 @@ class _GeneralDataState extends State<GeneralData> {
                   title: getHeadingText(text: "Details", color: headColor),
                   children: [
                     getDisabledTextField(
-                        controller: _permanentTransId, labelText: 'Permanent Trans Id'),
-                    getDisabledTextField(controller: _docNum, labelText: 'ERP Docnum'),
+                        controller: _permanentTransId,
+                        labelText: 'Permanent Trans Id',
+                        onChanged: (val) {
+                          GeneralData.permanentTransId = val;
+                        }),
+                    getDisabledTextField(
+                        controller: _docNum,
+                        labelText: 'ERP Docnum',
+                        onChanged: (val) {
+                          GeneralData.docNum = val;
+                        }),
                     getDisabledTextField(
                         controller: _currency,
                         labelText: 'Currency',
@@ -347,11 +353,14 @@ class _GeneralDataState extends State<GeneralData> {
                           GeneralData.currRate = val;
                         }),
                     getDisabledTextField(
-                        controller: TextEditingController(), labelText: 'Local Date'),
+                        controller: TextEditingController(),
+                        labelText: 'Local Date'),
                   ],
                 ),
               ),
-              const SizedBox(height: 70,),
+              const SizedBox(
+                height: 70,
+              ),
             ],
           ),
         ),

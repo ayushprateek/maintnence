@@ -218,7 +218,10 @@ class _GeneralDataState extends State<GeneralData> {
                 height: 25,
               ),
 
-              getDisabledTextField(controller: _transId, labelText: 'Trans Id'),
+              getDisabledTextField(controller: _transId, labelText: 'Trans Id',
+                onChanged: (val) {
+                  GeneralData.transId  = val;
+                },),
               // getDisabledTextField(
               //     controller: _deptCode,
               //     labelText: 'Department Code',
@@ -271,6 +274,7 @@ class _GeneralDataState extends State<GeneralData> {
               getDisabledTextField(
                   controller: _contactPersonName, labelText: 'Person Name',
                   onChanged: (val){
+                    //todo:
                     // _contactPersonName.text = GeneralData. = val;
                   }
                   ),

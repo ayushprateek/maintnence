@@ -17,6 +17,7 @@ import 'package:maintenance/Sync/SyncModels/OVCL.dart';
 
 class GeneralData extends StatefulWidget {
   const GeneralData({super.key});
+
   static bool isSelected = false, hasCreated = false, hasUpdated = false;
 
   static String? iD;
@@ -59,7 +60,6 @@ class GeneralData extends StatefulWidget {
   static bool validate() {
     bool success = true;
 
-
     if (transId == "" || transId == null) {
       getErrorSnackBar("Invalid TransId");
       success = false;
@@ -84,6 +84,7 @@ class GeneralData extends StatefulWidget {
 
     return success;
   }
+
   static MNOJCD getGeneralData() {
     return MNOJCD(
       ID: int.tryParse(iD ?? ''),
@@ -117,7 +118,6 @@ class GeneralData extends StatefulWidget {
       //todo
       // LastReading: lastReading,
       LastReadingDate: getDateFromString(lastReadingDate ?? ""),
-
 
       ApprovalStatus: approvalStatus ?? "Pending",
       DocStatus: docStatus,
@@ -189,7 +189,7 @@ class _GeneralDataState extends State<GeneralData> {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      child:Padding(
+      child: Padding(
         padding: const EdgeInsets.only(left: 8.0, right: 8, bottom: 8, top: 20),
         child: Container(
           decoration: BoxDecoration(
@@ -202,48 +202,66 @@ class _GeneralDataState extends State<GeneralData> {
                 height: 25,
               ),
 
-              getDisabledTextField(controller: _transId, labelText: 'Trans Id'),
               getDisabledTextField(
-                  controller: _postingDate, labelText: 'Posting Date'),
+                controller: _transId,
+                labelText: 'Trans Id',
+                onChanged: (val) {
+                  GeneralData.transId = val;
+                },
+              ),
               getDisabledTextField(
-                  controller: _validUntill, labelText: 'Valid Until'),
+                controller: _postingDate,
+                labelText: 'Posting Date',
+                onChanged: (val) {
+                  GeneralData.postingDate = _postingDate.text = val;
+                },
+              ),
+              getDisabledTextField(
+                controller: _validUntill,
+                labelText: 'Valid Until',
+                onChanged: (val) {
+                  GeneralData.validUntill = _validUntill.text = val;
+                },
+              ),
               // getDisabledTextField(
               //     controller: _equipmentCode,
               //     labelText: 'Equipment Code',
               //     ),
               getDisabledTextField(
-                  controller: _equipmentName, labelText: 'Equipment',
+                  controller: _equipmentName,
+                  labelText: 'Equipment',
                   enableLookup: true,
                   onLookupPressed: () {
                     Get.to(() => EquipmentCodeLookup(
-                      onSelection: (OVCLModel ovcl) {
-                        setState(() {
-                          GeneralData.equipmentCode =
-                              _equipmentCode.text = ovcl.Code;
-                          GeneralData.equipmentName =
-                              _equipmentName.text = ovcl.Code;
-                        });
-                      },
-                    ));
+                          onSelection: (OVCLModel ovcl) {
+                            setState(() {
+                              GeneralData.equipmentCode =
+                                  _equipmentCode.text = ovcl.Code;
+                              GeneralData.equipmentName =
+                                  _equipmentName.text = ovcl.Code;
+                            });
+                          },
+                        ));
                   }),
               // getDisabledTextField(
               //     controller: _checkListCode,
               //     labelText: 'Check List Code',
               //     ),
               getDisabledTextField(
-                  controller: _checkListName, labelText: 'CheckList',
+                  controller: _checkListName,
+                  labelText: 'CheckList',
                   enableLookup: true,
                   onLookupPressed: () {
                     Get.to(() => CheckListCodeLookup(
-                      onSelection: (MNOCLM mnoclm) {
-                        setState(() {
-                          GeneralData.checkListCode =
-                              _checkListCode.text = mnoclm.Code ?? '';
-                          GeneralData.checkListName =
-                              _checkListName.text = mnoclm.Name ?? '';
-                        });
-                      },
-                    ));
+                          onSelection: (MNOCLM mnoclm) {
+                            setState(() {
+                              GeneralData.checkListCode =
+                                  _checkListCode.text = mnoclm.Code ?? '';
+                              GeneralData.checkListName =
+                                  _checkListName.text = mnoclm.Name ?? '';
+                            });
+                          },
+                        ));
                   }),
               // getDisabledTextField(
               //   controller: _workCenterCode,
@@ -251,23 +269,36 @@ class _GeneralDataState extends State<GeneralData> {
               //
               // ),
               getDisabledTextField(
-                  controller: _workCenterName, labelText: 'WorkCenter',
+                controller: _workCenterName,
+                labelText: 'WorkCenter',
                 enableLookup: true,
                 onLookupPressed: () {
                   Get.to(() => WorkCenterLookup(
-                    onSelection: (MNOWCM mnowcm) {
-                      setState(() {
-                        GeneralData.workCenterCode =
-                            _workCenterCode.text = mnowcm.Code ?? '';
-                        GeneralData.workCenterName =
-                            _workCenterName.text = mnowcm.Name ?? '';
-                      });
-                    },
-                  ));
-                },),
-              getDisabledTextField(controller: _docStatus, labelText: 'Doc Status'),
+                        onSelection: (MNOWCM mnowcm) {
+                          setState(() {
+                            GeneralData.workCenterCode =
+                                _workCenterCode.text = mnowcm.Code ?? '';
+                            GeneralData.workCenterName =
+                                _workCenterName.text = mnowcm.Name ?? '';
+                          });
+                        },
+                      ));
+                },
+              ),
               getDisabledTextField(
-                  controller: _approvalStatus, labelText: 'Approval Status'),
+                controller: _docStatus,
+                labelText: 'Doc Status',
+                onChanged: (val) {
+                  GeneralData.docStatus = val;
+                },
+              ),
+              getDisabledTextField(
+                controller: _approvalStatus,
+                labelText: 'Approval Status',
+                onChanged: (val) {
+                  GeneralData.approvalStatus = val;
+                },
+              ),
               Padding(
                 padding: const EdgeInsets.only(
                   left: 10,
@@ -302,8 +333,22 @@ class _GeneralDataState extends State<GeneralData> {
                   ],
                 ),
               ),
-              getDisabledTextField(controller: _openDate, labelText: 'Open Date'),
-              getDisabledTextField(controller: _closeDate, labelText: 'Close Date'),
+              getDateTextField(
+                controller: _openDate,
+                labelText: 'Open Date',
+                localCurrController: TextEditingController(),
+                onChanged: (val) {
+                  GeneralData.openDate = _openDate.text = val;
+                },
+              ),
+              getDateTextField(
+                controller: _closeDate,
+                labelText: 'Close Date',
+                onChanged: (val) {
+                  GeneralData.closeDate = _closeDate.text = val;
+                },
+                localCurrController: TextEditingController(),
+              ),
               Padding(
                 padding: const EdgeInsets.only(
                   bottom: 6.0,
@@ -354,26 +399,35 @@ class _GeneralDataState extends State<GeneralData> {
                   ),
                 ),
               ),
+              getDateTextField(
+                controller: _lastReadingDate,
+                labelText: 'Last Reading Date',
+                localCurrController: TextEditingController(),
+                onChanged: (val) {
+                  GeneralData.lastReadingDate = _lastReadingDate.text = val;
+                },
+              ),
               getDisabledTextField(
-                  controller: _lastReadingDate, labelText: 'Last Reading Date'),
+                controller: _lastReading,
+                labelText: 'Last Reading',
+                onChanged: (val) {
+                  GeneralData.lastReading = val;
+                },
+              ),
               getDisabledTextField(
-                  controller: _lastReading, labelText: 'Last Reading'),
-              // getDisabledTextField(
-              //     controller: _assignedUserCode,
-              //     labelText: 'Assign to Code',
-              //     ),
-              getDisabledTextField(
-                  controller: _assignedUserName, labelText: 'Assign To',
+                  controller: _assignedUserName,
+                  labelText: 'Assign To',
                   enableLookup: true,
                   onLookupPressed: () {
-                    Get.to(() => EmployeeLookup(onSelection: (OEMPModel oempModel) {
-                      setState(() {
-                        GeneralData.assignedUserCode =
-                            _assignedUserCode.text = oempModel.Code;
-                        GeneralData.assignedUserName =
-                            _assignedUserName.text = oempModel.Name ?? '';
-                      });
-                    }));
+                    Get.to(() =>
+                        EmployeeLookup(onSelection: (OEMPModel oempModel) {
+                          setState(() {
+                            GeneralData.assignedUserCode =
+                                _assignedUserCode.text = oempModel.Code;
+                            GeneralData.assignedUserName =
+                                _assignedUserName.text = oempModel.Name ?? '';
+                          });
+                        }));
                   }),
               Padding(
                 padding: const EdgeInsets.only(
@@ -403,7 +457,8 @@ class _GeneralDataState extends State<GeneralData> {
                           }).toList(),
                           onChanged: (val) {
                             setState(() {
-                              GeneralData.warranty = val ?? GeneralData.warranty;
+                              GeneralData.warranty =
+                                  val ?? GeneralData.warranty;
                               // if (Status == 'Yes') {
                               //   CheckListDocument.numOfTabs.value = 4;
                               // } else {
@@ -425,7 +480,13 @@ class _GeneralDataState extends State<GeneralData> {
                   ),
                 ),
               ),
-              getTextField(controller: _remarks, labelText: 'Remarks'),
+              getTextField(
+                controller: _remarks,
+                labelText: 'Remarks',
+                onChanged: (val) {
+                  GeneralData.remarks = val;
+                },
+              ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: ExpansionTile(
@@ -434,9 +495,26 @@ class _GeneralDataState extends State<GeneralData> {
                   title: getHeadingText(text: "Details", color: headColor),
                   children: [
                     getDisabledTextField(
-                        controller: _permanentTransId, labelText: 'Permanent Trans Id'),
-                    getDisabledTextField(controller: _docNum, labelText: 'ERP Doc Num'),
-                    getDisabledTextField(controller: _docEntry, labelText: 'Doc Entry'),
+                      controller: _permanentTransId,
+                      labelText: 'Permanent Trans Id',
+                      onChanged: (val) {
+                        GeneralData.permanentTransId = val;
+                      },
+                    ),
+                    getDisabledTextField(
+                      controller: _docNum,
+                      labelText: 'ERP Doc Num',
+                      onChanged: (val) {
+                        GeneralData.docNum = val;
+                      },
+                    ),
+                    getDisabledTextField(
+                      controller: _docEntry,
+                      labelText: 'Doc Entry',
+                      onChanged: (val) {
+                        GeneralData.docEntry = val;
+                      },
+                    ),
                   ],
                 ),
               ),

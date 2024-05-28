@@ -159,7 +159,10 @@ class _EditCheckListState extends State<EditItems> {
                   }
                   return Column(
                     children: [
-                      getDisabledTextField(controller: _itemName, labelText: 'Item '),
+                      getDisabledTextField(controller: _itemName, labelText: 'Item ',
+                        onChanged: (val) {
+                          EditItems.itemName  = val;
+                        },),
                       getDisabledTextField(
                           controller: _toWhs,
                           labelText: 'To Warehouse',
@@ -246,12 +249,18 @@ class _EditCheckListState extends State<EditItems> {
                       getTextField(
                         controller: _price,
                         labelText: 'Price',
+                        onChanged: (val) {
+                          EditItems.price  = val;
+                        },
                         keyboardType: getDecimalKeyboardType(),
                         inputFormatters: [getDecimalRegEx()],
                       ),
                       getDisabledTextField(
                         controller: _mtv,
                         labelText: 'MTV',
+                        onChanged: (val) {
+                          EditItems.mtv  = val;
+                        },
                       ),
                       getDisabledTextField(
                           controller: _taxCode,
@@ -269,16 +278,25 @@ class _EditCheckListState extends State<EditItems> {
                       getDisabledTextField(
                         controller: _taxRate,
                         labelText: 'Tax Rate',
+                        onChanged: (val) {
+                          EditItems.taxRate  = val;
+                        },
                       ),
                       getTextField(
                         controller: _lineDiscount,
                         labelText: 'Line Discount',
+                        onChanged: (val) {
+                          EditItems.lineDiscount  = val;
+                        },
                         keyboardType: getDecimalKeyboardType(),
                         inputFormatters: [getDecimalRegEx()],
                       ),
                       getDisabledTextField(
                         controller: _lineTotal,
                         labelText: 'Line Total',
+                        onChanged: (val) {
+                          EditItems.lineTotal  = val;
+                        },
                       ),
                       Align(
                         alignment: Alignment.centerRight,
