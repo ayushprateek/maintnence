@@ -3,15 +3,15 @@ import 'package:maintenance/Component/CustomColor.dart';
 import 'package:maintenance/Component/CustomFont.dart';
 import 'package:maintenance/Component/GetFormattedDate.dart';
 import 'package:maintenance/Component/GetTextField.dart';
-import 'package:maintenance/Sync/SyncModels/MNOCLD.dart';
-class SearchCheckListDoc extends StatefulWidget {
-  const SearchCheckListDoc({super.key});
+import 'package:maintenance/Sync/SyncModels/MNOJCD.dart';
+class SearchJobCardDoc extends StatefulWidget {
+  const SearchJobCardDoc({super.key});
 
   @override
-  State<SearchCheckListDoc> createState() => _SearchCheckListDocState();
+  State<SearchJobCardDoc> createState() => _SearchJobCardDocState();
 }
 
-class _SearchCheckListDocState extends State<SearchCheckListDoc> {
+class _SearchJobCardDocState extends State<SearchJobCardDoc> {
   ScrollController _scrollController = ScrollController();
   TextEditingController TransId = TextEditingController();
   int _currentMax = 15;
@@ -243,9 +243,9 @@ class _SearchCheckListDocState extends State<SearchCheckListDoc> {
               ),
             ),
             FutureBuilder(
-                future: retrieveMNOCLDFORSEARCH(
+                future: retrieveMNOJCDForSearch(
                     query: TransId.text, limit: _currentMax),
-                builder: (context, AsyncSnapshot<List<MNOCLD>> snapshot) {
+                builder: (context, AsyncSnapshot<List<MNOJCD>> snapshot) {
                   if (!snapshot.hasData) return Container();
 
                   return ListView.separated(

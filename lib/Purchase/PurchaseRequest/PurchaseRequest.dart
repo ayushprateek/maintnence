@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:maintenance/Component/BackPressedWarning.dart';
 import 'package:maintenance/Component/ClearTextFieldData.dart';
@@ -15,6 +16,7 @@ import 'package:maintenance/Dashboard.dart';
 import 'package:maintenance/DatabaseInitialization.dart';
 import 'package:maintenance/Purchase/PurchaseRequest/GeneralData.dart';
 import 'package:maintenance/Purchase/PurchaseRequest/ItemDetails/ItemDetails.dart';
+import 'package:maintenance/Purchase/PurchaseRequest/SearchPurchaseRequest.dart';
 import 'package:maintenance/Sync/DataSync.dart';
 import 'package:maintenance/Sync/SyncModels/PROPRQ.dart';
 import 'package:maintenance/Sync/SyncModels/PRPRQ1.dart';
@@ -125,6 +127,7 @@ class _JobCardState extends State<PurchaseRequest> {
                     color: Colors.white,
                   ),
                   onPressed: () {
+                    Get.to(()=>SearchPurchaseRequest());
                     //showSearch(context: context, delegate: SearchJobCard());
                     // Navigator.push(
                     //     context,

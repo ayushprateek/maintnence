@@ -1,14 +1,15 @@
-import 'package:maintenance/Component/LogFileFunctions.dart';
 import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:maintenance/Component/LogFileFunctions.dart';
 import 'package:maintenance/Component/SnackbarComponent.dart';
 import 'package:maintenance/DatabaseInitialization.dart';
 import 'package:maintenance/Sync/CustomURL.dart';
 import 'package:maintenance/Sync/DataSync.dart';
-import 'dart:convert';
 import 'package:sqflite/sqlite_api.dart';
-class PROITR{
+
+class PROITR {
   int? ID;
   String? TransId;
   String? RequestedCode;
@@ -45,6 +46,7 @@ class PROITR{
   String? DeptName;
   bool hasCreated;
   bool hasUpdated;
+
   PROITR({
     this.ID,
     this.TransId,
@@ -83,91 +85,100 @@ class PROITR{
     this.hasCreated = false,
     this.hasUpdated = false,
   });
-  factory PROITR.fromJson(Map<String,dynamic> json)=>PROITR(
-    ID : int.tryParse(json['ID'].toString())??0,
-    TransId : json['TransId']?.toString() ?? '',
-    RequestedCode : json['RequestedCode']?.toString() ?? '',
-    RequestedName : json['RequestedName']?.toString() ?? '',
-    RefNo : json['RefNo']?.toString() ?? '',
-    MobileNo : json['MobileNo']?.toString() ?? '',
-    PostingDate : DateTime.tryParse(json['PostingDate'].toString()),
-    ValidUntill : DateTime.tryParse(json['ValidUntill'].toString()),
-    Currency : json['Currency']?.toString() ?? '',
-    CurrRate : double.tryParse(json['CurrRate'].toString())??0.0,
-    ApprovalStatus : json['ApprovalStatus']?.toString() ?? '',
-    DocStatus : json['DocStatus']?.toString() ?? '',
-    PermanentTransId : json['PermanentTransId']?.toString() ?? '',
-    DocEntry : int.tryParse(json['DocEntry'].toString())??0,
-    DocNum : json['DocNum']?.toString() ?? '',
-    CreatedBy : json['CreatedBy']?.toString() ?? '',
-    CreateDate : DateTime.tryParse(json['CreateDate'].toString()),
-    UpdateDate : DateTime.tryParse(json['UpdateDate'].toString()),
-    ApprovedBy : json['ApprovedBy']?.toString() ?? '',
-    Error : json['Error']?.toString() ?? '',
-    IsPosted : json['IsPosted'] is bool ? json['IsPosted'] : json['IsPosted']==1,
-    DraftKey : json['DraftKey']?.toString() ?? '',
-    Latitude : json['Latitude']?.toString() ?? '',
-    Longitude : json['Longitude']?.toString() ?? '',
-    ObjectCode : json['ObjectCode']?.toString() ?? '',
-    FromWhsCode : json['FromWhsCode']?.toString() ?? '',
-    ToWhsCode : json['ToWhsCode']?.toString() ?? '',
-    Remarks : json['Remarks']?.toString() ?? '',
-    BranchId : json['BranchId']?.toString() ?? '',
-    UpdatedBy : json['UpdatedBy']?.toString() ?? '',
-    PostingAddress : json['PostingAddress']?.toString() ?? '',
-    TripTransId : json['TripTransId']?.toString() ?? '',
-    DeptCode : json['DeptCode']?.toString() ?? '',
-    DeptName : json['DeptName']?.toString() ?? '',
-    hasCreated: json['has_created'] == 1,
-    hasUpdated: json['has_updated'] == 1,
-  );
-  Map<String,dynamic> toJson()=>{
-    'ID' : ID,
-    'TransId' : TransId,
-    'RequestedCode' : RequestedCode,
-    'RequestedName' : RequestedName,
-    'RefNo' : RefNo,
-    'MobileNo' : MobileNo,
-    'PostingDate' : PostingDate?.toIso8601String(),
-    'ValidUntill' : ValidUntill?.toIso8601String(),
-    'Currency' : Currency,
-    'CurrRate' : CurrRate,
-    'ApprovalStatus' : ApprovalStatus,
-    'DocStatus' : DocStatus,
-    'PermanentTransId' : PermanentTransId,
-    'DocEntry' : DocEntry,
-    'DocNum' : DocNum,
-    'CreatedBy' : CreatedBy,
-    'CreateDate' : CreateDate?.toIso8601String(),
-    'UpdateDate' : UpdateDate?.toIso8601String(),
-    'ApprovedBy' : ApprovedBy,
-    'Error' : Error,
-    'IsPosted' : IsPosted,
-    'DraftKey' : DraftKey,
-    'Latitude' : Latitude,
-    'Longitude' : Longitude,
-    'ObjectCode' : ObjectCode,
-    'FromWhsCode' : FromWhsCode,
-    'ToWhsCode' : ToWhsCode,
-    'Remarks' : Remarks,
-    'BranchId' : BranchId,
-    'UpdatedBy' : UpdatedBy,
-    'PostingAddress' : PostingAddress,
-    'TripTransId' : TripTransId,
-    'DeptCode' : DeptCode,
-    'DeptName' : DeptName,
-    "has_created": hasCreated ? 1 : 0,
-    "has_updated": hasUpdated ? 1 : 0,
-  };
+
+  factory PROITR.fromJson(Map<String, dynamic> json) => PROITR(
+        ID: int.tryParse(json['ID'].toString()) ?? 0,
+        TransId: json['TransId']?.toString() ?? '',
+        RequestedCode: json['RequestedCode']?.toString() ?? '',
+        RequestedName: json['RequestedName']?.toString() ?? '',
+        RefNo: json['RefNo']?.toString() ?? '',
+        MobileNo: json['MobileNo']?.toString() ?? '',
+        PostingDate: DateTime.tryParse(json['PostingDate'].toString()),
+        ValidUntill: DateTime.tryParse(json['ValidUntill'].toString()),
+        Currency: json['Currency']?.toString() ?? '',
+        CurrRate: double.tryParse(json['CurrRate'].toString()) ?? 0.0,
+        ApprovalStatus: json['ApprovalStatus']?.toString() ?? '',
+        DocStatus: json['DocStatus']?.toString() ?? '',
+        PermanentTransId: json['PermanentTransId']?.toString() ?? '',
+        DocEntry: int.tryParse(json['DocEntry'].toString()) ?? 0,
+        DocNum: json['DocNum']?.toString() ?? '',
+        CreatedBy: json['CreatedBy']?.toString() ?? '',
+        CreateDate: DateTime.tryParse(json['CreateDate'].toString()),
+        UpdateDate: DateTime.tryParse(json['UpdateDate'].toString()),
+        ApprovedBy: json['ApprovedBy']?.toString() ?? '',
+        Error: json['Error']?.toString() ?? '',
+        IsPosted:
+            json['IsPosted'] is bool ? json['IsPosted'] : json['IsPosted'] == 1,
+        DraftKey: json['DraftKey']?.toString() ?? '',
+        Latitude: json['Latitude']?.toString() ?? '',
+        Longitude: json['Longitude']?.toString() ?? '',
+        ObjectCode: json['ObjectCode']?.toString() ?? '',
+        FromWhsCode: json['FromWhsCode']?.toString() ?? '',
+        ToWhsCode: json['ToWhsCode']?.toString() ?? '',
+        Remarks: json['Remarks']?.toString() ?? '',
+        BranchId: json['BranchId']?.toString() ?? '',
+        UpdatedBy: json['UpdatedBy']?.toString() ?? '',
+        PostingAddress: json['PostingAddress']?.toString() ?? '',
+        TripTransId: json['TripTransId']?.toString() ?? '',
+        DeptCode: json['DeptCode']?.toString() ?? '',
+        DeptName: json['DeptName']?.toString() ?? '',
+        hasCreated: json['has_created'] == 1,
+        hasUpdated: json['has_updated'] == 1,
+      );
+
+  Map<String, dynamic> toJson() => {
+        'ID': ID,
+        'TransId': TransId,
+        'RequestedCode': RequestedCode,
+        'RequestedName': RequestedName,
+        'RefNo': RefNo,
+        'MobileNo': MobileNo,
+        'PostingDate': PostingDate?.toIso8601String(),
+        'ValidUntill': ValidUntill?.toIso8601String(),
+        'Currency': Currency,
+        'CurrRate': CurrRate,
+        'ApprovalStatus': ApprovalStatus,
+        'DocStatus': DocStatus,
+        'PermanentTransId': PermanentTransId,
+        'DocEntry': DocEntry,
+        'DocNum': DocNum,
+        'CreatedBy': CreatedBy,
+        'CreateDate': CreateDate?.toIso8601String(),
+        'UpdateDate': UpdateDate?.toIso8601String(),
+        'ApprovedBy': ApprovedBy,
+        'Error': Error,
+        'IsPosted': IsPosted,
+        'DraftKey': DraftKey,
+        'Latitude': Latitude,
+        'Longitude': Longitude,
+        'ObjectCode': ObjectCode,
+        'FromWhsCode': FromWhsCode,
+        'ToWhsCode': ToWhsCode,
+        'Remarks': Remarks,
+        'BranchId': BranchId,
+        'UpdatedBy': UpdatedBy,
+        'PostingAddress': PostingAddress,
+        'TripTransId': TripTransId,
+        'DeptCode': DeptCode,
+        'DeptName': DeptName,
+        "has_created": hasCreated ? 1 : 0,
+        "has_updated": hasUpdated ? 1 : 0,
+      };
 }
-List<PROITR> pROITRFromJson(String str) => List<PROITR>.from(
-    json.decode(str).map((x) => PROITR.fromJson(x)));
+
+List<PROITR> pROITRFromJson(String str) =>
+    List<PROITR>.from(json.decode(str).map((x) => PROITR.fromJson(x)));
+
 String pROITRToJson(List<PROITR> data) =>
     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+
 Future<List<PROITR>> dataSyncPROITR() async {
-  var res = await http.get(headers: header, Uri.parse(prefix + "PROITR" + postfix));
+  var res =
+      await http.get(headers: header, Uri.parse(prefix + "PROITR" + postfix));
   print(res.body);
-  return pROITRFromJson(res.body);}
+  return pROITRFromJson(res.body);
+}
+
 Future<void> insertPROITR(Database db, {List? list}) async {
   if (postfix.toLowerCase().contains('all')) {
     await deletePROITR(db);
@@ -182,7 +193,8 @@ Future<void> insertPROITR(Database db, {List? list}) async {
   Stopwatch stopwatch = Stopwatch();
   stopwatch.start();
   for (var i = 0; i < customers.length; i += batchSize) {
-    var end = (i + batchSize < customers.length) ? i + batchSize : customers.length;
+    var end =
+        (i + batchSize < customers.length) ? i + batchSize : customers.length;
     var batchRecords = customers.sublist(i, end);
     await db.transaction((txn) async {
       var batch = txn.batch();
@@ -225,9 +237,9 @@ Future<void> insertPROITR(Database db, {List? list}) async {
       for (var element in batchRecords) {
         try {
           batch.update("PROITR", element,
-              where: "TransId = ? AND ifnull(has_created,0) <> ? AND ifnull(has_updated,0) <> ?",
+              where:
+                  "TransId = ? AND ifnull(has_created,0) <> ? AND ifnull(has_updated,0) <> ?",
               whereArgs: [element["TransId"], 1, 1]);
-
         } catch (e) {
           writeToLogFile(
               text: e.toString(),
@@ -280,33 +292,60 @@ WHERE T1.TransId IS NULL;
   await db.delete('PROITR_Temp');
 }
 
+Future<List<PROITR>> retrievePROITRForSearch({
+  int? limit,
+  String? query,
+}) async {
+  query = "%$query%";
+  final Database db = await initializeDB(null);
+  final List<Map<String, Object?>> queryResult =
+      await db.rawQuery("SELECT * FROM PROITR WHERE TransId LIKE '$query'");
+  return queryResult.map((e) => PROITR.fromJson(e)).toList();
+}
+
 Future<List<PROITR>> retrievePROITR(BuildContext context) async {
   final Database db = await initializeDB(context);
   final List<Map<String, Object?>> queryResult = await db.query('PROITR');
   return queryResult.map((e) => PROITR.fromJson(e)).toList();
 }
-Future<void> updatePROITR(int id, Map<String, dynamic> values, BuildContext context) async {
+
+Future<void> updatePROITR(
+    int id, Map<String, dynamic> values, BuildContext context) async {
   final db = await initializeDB(context);
   try {
     db.transaction((db) async {
       await db.update('PROITR', values, where: 'ID = ?', whereArgs: [id]);
     });
   } catch (e) {
-    getErrorSnackBar('Sync Error ' + e.toString());}}
+    getErrorSnackBar('Sync Error ' + e.toString());
+  }
+}
+
 Future<void> deletePROITR(Database db) async {
   await db.delete('PROITR');
 }
-Future<List<PROITR>> retrievePROITRById(BuildContext? context, String str, List l) async {
+
+Future<List<PROITR>> retrievePROITRById(
+    BuildContext? context, String str, List l) async {
   final Database db = await initializeDB(context);
-  final List<Map<String, Object?>> queryResult = await db.query('PROITR', where: str, whereArgs: l);
+  final List<Map<String, Object?>> queryResult =
+      await db.query('PROITR', where: str, whereArgs: l);
   return queryResult.map((e) => PROITR.fromJson(e)).toList();
 }
-Future<String> insertPROITRToServer(BuildContext? context, {String? TransId, int? id}) async {
+
+Future<String> insertPROITRToServer(BuildContext? context,
+    {String? TransId, int? id}) async {
   String response = "";
-  List<PROITR> list = await retrievePROITRById(context, TransId == null ? DataSync.getInsertToServerStr() : "TransId = ? AND ID = ?", TransId == null ? DataSync.getInsertToServerList() : [TransId, id]);
+  List<PROITR> list = await retrievePROITRById(
+      context,
+      TransId == null
+          ? DataSync.getInsertToServerStr()
+          : "TransId = ? AND ID = ?",
+      TransId == null ? DataSync.getInsertToServerList() : [TransId, id]);
   if (TransId != null) {
     list[0].ID = 0;
-    var res = await http.post(Uri.parse(prefix + "PROITR/Add"), headers: header, body: jsonEncode(list[0].toJson()));
+    var res = await http.post(Uri.parse(prefix + "PROITR/Add"),
+        headers: header, body: jsonEncode(list[0].toJson()));
     response = res.body;
   } else if (list.isNotEmpty) {
     int i = 0;
@@ -316,9 +355,12 @@ Future<String> insertPROITRToServer(BuildContext? context, {String? TransId, int
       try {
         Map<String, dynamic> map = list[i].toJson();
         map.remove('ID');
-        var res = await http.post(Uri.parse(prefix + "PROITR/Add"), headers: header,
-            body: jsonEncode(map)).timeout(Duration(seconds: 30), onTimeout: () {
-          return http.Response('Error', 500);});
+        var res = await http
+            .post(Uri.parse(prefix + "PROITR/Add"),
+                headers: header, body: jsonEncode(map))
+            .timeout(Duration(seconds: 30), onTimeout: () {
+          return http.Response('Error', 500);
+        });
         response = await res.body;
         print("eeaaae status");
         print(await res.statusCode);
@@ -329,18 +371,29 @@ Future<String> insertPROITRToServer(BuildContext? context, {String? TransId, int
             final Database db = await initializeDB(context);
             // map=jsonDecode(res.body);
             map["has_created"] = 0;
-            var x = await db.update("PROITR", map, where: "TransId = ?", whereArgs: [map["TransId"]]);
-            print(x.toString());}}
+            var x = await db.update("PROITR", map,
+                where: "TransId = ?", whereArgs: [map["TransId"]]);
+            print(x.toString());
+          }
+        }
         print(res.body);
       } catch (e) {
         print("Timeout " + e.toString());
-        sentSuccessInServer = true;}
+        sentSuccessInServer = true;
+      }
       i++;
       print("INDEX = " + i.toString());
-    } while (i < list.length && sentSuccessInServer == true);}
-  return response;}
-Future<void> updatePROITROnServer(BuildContext? context, {String? condition, List? l}) async {
-  List<PROITR> list = await retrievePROITRById(context, l == null ? DataSync.getUpdateOnServerStr() : condition ?? "", l == null ? DataSync.getUpdateOnServerList() : l);
+    } while (i < list.length && sentSuccessInServer == true);
+  }
+  return response;
+}
+
+Future<void> updatePROITROnServer(BuildContext? context,
+    {String? condition, List? l}) async {
+  List<PROITR> list = await retrievePROITRById(
+      context,
+      l == null ? DataSync.getUpdateOnServerStr() : condition ?? "",
+      l == null ? DataSync.getUpdateOnServerList() : l);
   print(list);
   int i = 0;
   bool sentSuccessInServer = false;
@@ -348,7 +401,10 @@ Future<void> updatePROITROnServer(BuildContext? context, {String? condition, Lis
     sentSuccessInServer = false;
     try {
       Map<String, dynamic> map = list[i].toJson();
-      var res = await http.put(Uri.parse(prefix + 'PROITR/Update'), headers: header, body: jsonEncode(map)).timeout(Duration(seconds: 30), onTimeout: () {
+      var res = await http
+          .put(Uri.parse(prefix + 'PROITR/Update'),
+              headers: header, body: jsonEncode(map))
+          .timeout(Duration(seconds: 30), onTimeout: () {
         return http.Response('Error', 500);
       });
       print(await res.statusCode);
@@ -357,7 +413,8 @@ Future<void> updatePROITROnServer(BuildContext? context, {String? condition, Lis
         if (res.statusCode == 201) {
           final Database db = await initializeDB(context);
           map["has_updated"] = 0;
-          var x = await db.update("PROITR", map, where: "TransId = ?", whereArgs: [map["TransId"]]);
+          var x = await db.update("PROITR", map,
+              where: "TransId = ?", whereArgs: [map["TransId"]]);
           print(x.toString());
         }
       }
@@ -371,4 +428,3 @@ Future<void> updatePROITROnServer(BuildContext? context, {String? condition, Lis
     print("INDEX = " + i.toString());
   } while (i < list.length && sentSuccessInServer == true);
 }
-

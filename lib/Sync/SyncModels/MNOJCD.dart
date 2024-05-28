@@ -176,6 +176,17 @@ Future<List<MNOJCD>> dataSyncMNOJCD() async {
   var res = await http.get(headers: header, Uri.parse(prefix + "MNOJCD" + postfix));
   print(res.body);
   return mNOJCDFromJson(res.body);}
+
+Future<List<MNOJCD>> retrieveMNOJCDForSearch({
+  int? limit,
+  String? query,
+}) async {
+  query="%$query%";
+  final Database db = await initializeDB(null);
+  final List<Map<String, Object?>> queryResult = await db.rawQuery("SELECT * FROM MNOJCD WHERE TransId LIKE '$query'");
+  return queryResult.map((e) => MNOJCD.fromJson(e)).toList();
+}
+
 Future<void> insertMNOJCD(Database db, {List? list}) async {
   if (postfix.toLowerCase().contains('all')) {
     await deleteMNOJCD(db);

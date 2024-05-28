@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:maintenance/Component/BackPressedWarning.dart';
 import 'package:maintenance/Component/ClearTextFieldData.dart';
@@ -17,6 +18,7 @@ import 'package:maintenance/GoodsReceiptNote/Address/BillingAddress.dart';
 import 'package:maintenance/GoodsReceiptNote/Address/ShippingAddress.dart';
 import 'package:maintenance/GoodsReceiptNote/GeneralData.dart';
 import 'package:maintenance/GoodsReceiptNote/ItemDetails/ItemDetails.dart';
+import 'package:maintenance/GoodsReceiptNote/SearchGoodsReceiptNote.dart';
 import 'package:maintenance/Sync/DataSync.dart';
 import 'package:maintenance/Sync/SyncModels/PROPDN.dart';
 import 'package:maintenance/Sync/SyncModels/PRPDN1.dart';
@@ -144,6 +146,7 @@ class _JobCardState extends State<GoodsRecepitNote> {
                     color: Colors.white,
                   ),
                   onPressed: () {
+                    Get.to(()=>SearchGoodsReceiptNote());
                     //showSearch(context: context, delegate: SearchJobCard());
                     // Navigator.push(
                     //     context,

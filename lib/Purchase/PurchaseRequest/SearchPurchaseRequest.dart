@@ -3,15 +3,15 @@ import 'package:maintenance/Component/CustomColor.dart';
 import 'package:maintenance/Component/CustomFont.dart';
 import 'package:maintenance/Component/GetFormattedDate.dart';
 import 'package:maintenance/Component/GetTextField.dart';
-import 'package:maintenance/Sync/SyncModels/MNOCLD.dart';
-class SearchCheckListDoc extends StatefulWidget {
-  const SearchCheckListDoc({super.key});
+import 'package:maintenance/Sync/SyncModels/PROPRQ.dart';
+class SearchPurchaseRequest extends StatefulWidget {
+  const SearchPurchaseRequest({super.key});
 
   @override
-  State<SearchCheckListDoc> createState() => _SearchCheckListDocState();
+  State<SearchPurchaseRequest> createState() => _SearchPurchaseRequestState();
 }
 
-class _SearchCheckListDocState extends State<SearchCheckListDoc> {
+class _SearchPurchaseRequestState extends State<SearchPurchaseRequest> {
   ScrollController _scrollController = ScrollController();
   TextEditingController TransId = TextEditingController();
   int _currentMax = 15;
@@ -243,9 +243,9 @@ class _SearchCheckListDocState extends State<SearchCheckListDoc> {
               ),
             ),
             FutureBuilder(
-                future: retrieveMNOCLDFORSEARCH(
+                future: retrievePROPRQForSearch(
                     query: TransId.text, limit: _currentMax),
-                builder: (context, AsyncSnapshot<List<MNOCLD>> snapshot) {
+                builder: (context, AsyncSnapshot<List<PROPRQ>> snapshot) {
                   if (!snapshot.hasData) return Container();
 
                   return ListView.separated(
@@ -409,10 +409,10 @@ class _SearchCheckListDocState extends State<SearchCheckListDoc> {
                                               TextSpan(
                                                 children: [
                                                   getPoppinsTextSpanHeading(
-                                                      text: 'CheckListName'),
+                                                      text: 'DeptName'),
                                                   getPoppinsTextSpanDetails(
                                                       text: snapshot
-                                                          .data![index].CheckListName),
+                                                          .data![index].DeptName),
                                                 ],
                                               ),
                                             ),

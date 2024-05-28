@@ -158,6 +158,16 @@ Future<List<PROPRQ>> dataSyncPROPRQ() async {
   var res = await http.get(headers: header, Uri.parse(prefix + "PROPRQ" + postfix));
   print(res.body);
   return pROPRQFromJson(res.body);}
+
+Future<List<PROPRQ>> retrievePROPRQForSearch({
+  int? limit,
+  String? query,
+}) async {
+  query="%$query%";
+  final Database db = await initializeDB(null);
+  final List<Map<String, Object?>> queryResult = await db.rawQuery("SELECT * FROM PROPRQ WHERE TransId LIKE '$query'");
+  return queryResult.map((e) => PROPRQ.fromJson(e)).toList();
+}
 Future<void> insertPROPRQ(Database db, {List? list}) async {
   if (postfix.toLowerCase().contains('all')) {
     await deletePROPRQ(db);

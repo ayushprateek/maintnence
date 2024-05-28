@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:maintenance/Component/BackPressedWarning.dart';
 import 'package:maintenance/Component/ClearTextFieldData.dart';
@@ -16,6 +17,7 @@ import 'package:maintenance/DatabaseInitialization.dart';
 import 'package:maintenance/JobCard/Attachment.dart';
 import 'package:maintenance/JobCard/GeneralData.dart';
 import 'package:maintenance/JobCard/ItemDetails/ItemDetails.dart';
+import 'package:maintenance/JobCard/SearchJobCardDoc.dart';
 import 'package:maintenance/JobCard/ServiceDetails/ServiceDetails.dart';
 import 'package:maintenance/JobCard/TyreMaintenance.dart';
 import 'package:maintenance/Sync/DataSync.dart';
@@ -138,6 +140,7 @@ class _JobCardState extends State<JobCard> {
                     color: Colors.white,
                   ),
                   onPressed: () {
+                    Get.to(()=>SearchJobCardDoc());
                     //showSearch(context: context, delegate: SearchJobCard());
                     // Navigator.push(
                     //     context,

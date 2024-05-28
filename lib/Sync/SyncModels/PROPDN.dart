@@ -328,6 +328,16 @@ WHERE T1.TransId IS NULL;
   await db.delete('PROPDN_Temp');
 }
 
+Future<List<PROPDN>> retrievePROPDNForSearch({
+  int? limit,
+  String? query,
+}) async {
+  query="%$query%";
+  final Database db = await initializeDB(null);
+  final List<Map<String, Object?>> queryResult = await db.rawQuery("SELECT * FROM PROPDN WHERE TransId LIKE '$query'");
+  return queryResult.map((e) => PROPDN.fromJson(e)).toList();
+}
+
 Future<List<PROPDN>> retrievePROPDN(BuildContext context) async {
   final Database db = await initializeDB(context);
   final List<Map<String, Object?>> queryResult = await db.query('PROPDN');

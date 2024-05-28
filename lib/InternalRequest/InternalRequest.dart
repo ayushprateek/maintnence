@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:maintenance/Component/BackPressedWarning.dart';
 import 'package:maintenance/Component/ClearTextFieldData.dart';
@@ -15,6 +16,7 @@ import 'package:maintenance/Dashboard.dart';
 import 'package:maintenance/DatabaseInitialization.dart';
 import 'package:maintenance/InternalRequest/GeneralData.dart';
 import 'package:maintenance/InternalRequest/ItemDetails/ItemDetails.dart';
+import 'package:maintenance/InternalRequest/SearchInternalRequest.dart';
 import 'package:maintenance/Sync/DataSync.dart';
 import 'package:maintenance/Sync/SyncModels/PRITR1.dart';
 import 'package:maintenance/Sync/SyncModels/PROITR.dart';
@@ -125,6 +127,7 @@ class InternalRequestState extends State<InternalRequest> {
                     color: Colors.white,
                   ),
                   onPressed: () {
+                    Get.to(()=>SearchInternalRequest());
                     //showSearch(context: context, delegate: SearchJobCard());
                     // Navigator.push(
                     //     context,

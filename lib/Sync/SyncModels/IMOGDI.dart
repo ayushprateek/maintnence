@@ -393,7 +393,15 @@ Future<String> insertIMOGDIToServer(BuildContext? context,
   }
   return response;
 }
-
+Future<List<IMOGDI>> retrieveIMOGDIForSearch({
+  int? limit,
+  String? query,
+}) async {
+  query="%$query%";
+  final Database db = await initializeDB(null);
+  final List<Map<String, Object?>> queryResult = await db.rawQuery("SELECT * FROM IMOGDI WHERE TransId LIKE '$query'");
+  return queryResult.map((e) => IMOGDI.fromJson(e)).toList();
+}
 Future<void> updateIMOGDIOnServer(BuildContext? context,
     {String? condition, List? l}) async {
   List<IMOGDI> list = await retrieveIMOGDIById(
