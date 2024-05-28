@@ -10,6 +10,7 @@ import 'package:maintenance/CheckListDocument/CheckListDocument.dart';
 import 'package:maintenance/CheckListDocument/GeneralData.dart'
     as checkListGenData;
 import 'package:maintenance/Component/AppConfig.dart';
+import 'package:maintenance/Component/CheckInternet.dart';
 import 'package:maintenance/Component/ClearTextFieldData.dart';
 import 'package:maintenance/Component/CompanyDetails.dart';
 import 'package:maintenance/Component/CustomColor.dart';
@@ -18,14 +19,17 @@ import 'package:maintenance/Component/CustomFont.dart';
 import 'package:maintenance/Component/GetCurrentLocation.dart';
 import 'package:maintenance/Component/GetFormattedDate.dart';
 import 'package:maintenance/Component/GetLastDocNum.dart';
+import 'package:maintenance/Component/IsAPIWorking.dart';
 import 'package:maintenance/Component/IsAvailableTransId.dart';
 import 'package:maintenance/Component/IsValidAppVersion.dart';
+import 'package:maintenance/Component/NotSyncDocument.dart';
 import 'package:maintenance/Component/NotificationIcon.dart';
 import 'package:maintenance/Component/SnackbarComponent.dart';
 import 'package:maintenance/CustomLocationPermission.dart';
 import 'package:maintenance/DashboardQueryModel.dart';
 import 'package:maintenance/DatabaseInitialization.dart';
 import 'package:maintenance/LoginPage.dart';
+import 'package:maintenance/Sync/DataSync.dart';
 import 'package:maintenance/Sync/SyncModels/MNCLD1.dart';
 import 'package:maintenance/Sync/SyncModels/MNCLM1.dart';
 import 'package:maintenance/Sync/SyncModels/MNOCLT.dart';
@@ -380,6 +384,26 @@ WHERE
           style: TextStyle(color: headColor, fontFamily: custom_font),
         ),
         actions: [
+          InkWell(
+              onTap: () async {
+                if (!(await isInternetAvailable())) {
+                  getErrorSnackBar('No internet');
+                } else if (await isAPIWorking()) {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: ((context) => DataSync(
+                            "/GetData",
+                            isComingFromLogin: false,
+
+                          )))).then((value) {
+                    validateVersion(openDrawer: true);
+                  });
+                } else {
+                  getErrorSnackBar('API is not working');
+                }
+              },
+              child: getNotSyncedDocumentIcon()),
           Obx(() {
             if (isAppVersionValid == RxBool(true))
               return getNotificationIcon();
