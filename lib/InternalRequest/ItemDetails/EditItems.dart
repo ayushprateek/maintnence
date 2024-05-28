@@ -10,10 +10,12 @@ import 'package:maintenance/Lookups/DepartmentLookup.dart';
 import 'package:maintenance/Lookups/EmployeeLookup.dart';
 import 'package:maintenance/Lookups/RoutLookup.dart';
 import 'package:maintenance/Lookups/TaxLookup.dart';
+import 'package:maintenance/Lookups/TripLookup.dart';
 import 'package:maintenance/Lookups/UOMLookup.dart';
 import 'package:maintenance/Lookups/VehicleCodeLookup.dart';
 import 'package:maintenance/Lookups/WarehouseLookup.dart';
 import 'package:maintenance/Sync/SyncModels/OEMP.dart';
+import 'package:maintenance/Sync/SyncModels/OPOTRP.dart';
 import 'package:maintenance/Sync/SyncModels/OTAX.dart';
 import 'package:maintenance/Sync/SyncModels/OUDP.dart';
 import 'package:maintenance/Sync/SyncModels/OUOM.dart';
@@ -114,8 +116,14 @@ class _EditCheckListState extends State<EditItems> {
             getDisabledTextField(
                 controller: _tripTransId,
                 labelText: 'Trip TransId',
-                onChanged: (val) {
-                  EditItems.tripTransId = val;
+                enableLookup: true,
+                onLookupPressed: () {
+                  Get.to(() => TripLookup(onSelection: (OPOTRP oemp) {
+                    setState(() {
+                      EditItems.tripTransId =
+                          _tripTransId.text = oemp.TransId ?? '';
+                    });
+                  }));
                 }),
             getDisabledTextField(
                 controller: _itemName,

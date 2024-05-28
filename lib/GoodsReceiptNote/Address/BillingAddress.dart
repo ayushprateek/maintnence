@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:maintenance/Component/CustomColor.dart';
 import 'package:maintenance/Component/GetTextField.dart';
 import 'package:maintenance/Component/SnackbarComponent.dart';
+import 'package:maintenance/GoodsReceiptNote/Address/AddressLookup.dart';
 import 'package:maintenance/Sync/SyncModels/PRPDN3.dart';
 import 'package:maintenance/GoodsReceiptNote/GeneralData.dart';
 import 'package:maintenance/GoodsReceiptNote/GoodsReceiptNote.dart';
@@ -127,11 +128,10 @@ class _BillingAddressState extends State<BillingAddress> {
                     getErrorSnackBar(
                         "This Document is already cancelled / closed");
                   } else {
-                    //todo:
-                    // Navigator.push(
-                    //     context,
-                    //     MaterialPageRoute(
-                    //         builder: ((context) => AddressLookup(false))));
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: ((context) => AddressLookup(false))));
                   }
                 }),
             Padding(
@@ -233,34 +233,5 @@ class _BillingAddressState extends State<BillingAddress> {
         ),
       ),
     );
-  }
-
-  void clearTextFields() {
-    BillingAddress.TransId = 0;
-    TransId.clear();
-    BillingAddress.RowId = 0;
-    RowId.clear();
-    BillingAddress.AddCode = "";
-    AddCode.clear();
-    BillingAddress.CityName = "";
-    CityName.clear();
-    BillingAddress.CityCode = "";
-    CityCode.clear();
-    BillingAddress.CountryName = "";
-    CountryName.clear();
-    BillingAddress.CountryCode = "";
-    CountryCode.clear();
-    BillingAddress.StateName = "";
-    StateName.clear();
-    BillingAddress.StateCode = "";
-    StateCode.clear();
-    BillingAddress.Addres = "";
-    Addres.clear();
-    BillingAddress.ID = 0;
-    ID.clear();
-    BillingAddress.Latitude = 0.0;
-    Latitude.clear();
-    BillingAddress.Longitude = 0.0;
-    Longitude.clear();
   }
 }

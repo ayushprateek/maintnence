@@ -7,9 +7,11 @@ import 'package:maintenance/Component/GetTextField.dart';
 import 'package:maintenance/Component/SnackbarComponent.dart';
 import 'package:maintenance/Lookups/DepartmentLookup.dart';
 import 'package:maintenance/Lookups/OCRDLookup.dart';
+import 'package:maintenance/Lookups/TripLookup.dart';
 import 'package:maintenance/Sync/SyncModels/CRD1.dart';
 import 'package:maintenance/Sync/SyncModels/IMOGDI.dart';
 import 'package:maintenance/Sync/SyncModels/OCRD.dart';
+import 'package:maintenance/Sync/SyncModels/OPOTRP.dart';
 import 'package:maintenance/Sync/SyncModels/OUDP.dart';
 import 'package:maintenance/Sync/SyncModels/OWHS.dart';
 
@@ -241,9 +243,15 @@ class _GeneralDataState extends State<GeneralData> {
                       },
                     ));
                   }),
-              getTextField(controller: _tripTransId, labelText: 'TripTransId',
-                  onChanged: (val){
-                    _tripTransId.text = GeneralData.tripTransId = val;
+              getDisabledTextField(controller: _tripTransId, labelText: 'TripTransId',
+                  enableLookup: true,
+                  onLookupPressed: () {
+                    Get.to(() => TripLookup(onSelection: (OPOTRP oemp) {
+                      setState(() {
+                        GeneralData.tripTransId =
+                            _tripTransId.text = oemp.TransId ?? '';
+                      });
+                    }));
                   }),
               getTextField(controller: _refNo, labelText: 'Reference No',
                   onChanged: (val){
