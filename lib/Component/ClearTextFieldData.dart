@@ -31,6 +31,8 @@ import 'package:maintenance/Sync/SyncModels/MNJCD1.dart';
 import 'package:maintenance/Sync/SyncModels/MNJCD2.dart';
 import 'package:maintenance/Sync/SyncModels/MNOCLD.dart';
 import 'package:maintenance/Sync/SyncModels/MNOJCD.dart';
+import 'package:maintenance/Sync/SyncModels/PRITR1.dart';
+import 'package:maintenance/Sync/SyncModels/PROITR.dart';
 import 'package:maintenance/Sync/SyncModels/PROPDN.dart';
 import 'package:maintenance/Sync/SyncModels/PROPRQ.dart';
 import 'package:maintenance/Sync/SyncModels/PRPDN1.dart';
@@ -944,6 +946,47 @@ class ClearInternalRequestDocument {
     internalGenData.GeneralData.hasCreated = false;
     internalGenData.GeneralData.hasUpdated = false;
   }
+  static setGeneralDataTextFields({
+    required PROITR data
+}) {
+    internalGenData.GeneralData.iD = data.ID?.toString()??'';
+    internalGenData.GeneralData.transId = data.TransId??'';
+    internalGenData.GeneralData.requestedCode = data.RequestedCode;
+    internalGenData.GeneralData.requestedName = data.RequestedName;
+    internalGenData.GeneralData.refNo = data.RefNo??'';
+    internalGenData.GeneralData.mobileNo = data.MobileNo??'';
+    internalGenData.GeneralData.postingDate = getFormattedDate(data.PostingDate);
+    internalGenData.GeneralData.validUntill =
+        getFormattedDate(data.ValidUntill);
+    internalGenData.GeneralData.currency = data.Currency;
+    internalGenData.GeneralData.currRate = data.CurrRate?.toString()??'1';
+    internalGenData.GeneralData.approvalStatus = data.ApprovalStatus??'Pending';
+    internalGenData.GeneralData.docStatus =data.DocStatus?? 'Open';
+    internalGenData.GeneralData.permanentTransId = data.PermanentTransId??'';
+    internalGenData.GeneralData.docEntry = data.DocEntry?.toString()??'';
+    internalGenData.GeneralData.docNum = data.DocNum??'';
+    internalGenData.GeneralData.createdBy = data.CreatedBy??'';
+
+    internalGenData.GeneralData.approvedBy = data.ApprovedBy??'';
+    internalGenData.GeneralData.error = data.Error??'';
+    internalGenData.GeneralData.isPosted = data.IsPosted??false;
+    internalGenData.GeneralData.draftKey = data.DraftKey??'';
+    internalGenData.GeneralData.latitude = data.Latitude??'';
+    internalGenData.GeneralData.longitude = data.Longitude??'';
+    internalGenData.GeneralData.objectCode = data.ObjectCode??'';
+    internalGenData.GeneralData.fromWhsCode = data.FromWhsCode??'';
+    internalGenData.GeneralData.toWhsCode = data.ToWhsCode??'';
+    internalGenData.GeneralData.remarks = data.Remarks??'';
+    internalGenData.GeneralData.branchId = data.BranchId??'';
+    internalGenData.GeneralData.updatedBy = data.UpdatedBy??'';
+    internalGenData.GeneralData.postingAddress = data.PostingAddress??'';
+    internalGenData.GeneralData.tripTransId = data.TripTransId??'';
+    internalGenData.GeneralData.deptCode = data.DeptCode??'';
+    internalGenData.GeneralData.deptName = data.DeptName??'';
+    internalGenData.GeneralData.isSelected = true;
+    internalGenData.GeneralData.hasCreated = data.hasCreated;
+    internalGenData.GeneralData.hasUpdated = data.hasUpdated;
+  }
 
   static clearEditItems() {
     internalEditItems.EditItems.id = '';
@@ -1000,20 +1043,14 @@ goToNewInternalRequestDocument() async {
 }
 
 navigateToInternalRequestDocument({required String TransId}) async {
-  List<PROPDN> list = await retrievePROPDNById(null, 'TransId = ?', [TransId]);
+  await ClearInternalRequestDocument.clearGeneralDataTextFields();
+  await ClearInternalRequestDocument.clearEditItems();
+  List<PROITR> list = await retrievePROITRById(null, 'TransId = ?', [TransId]);
   if (list.isNotEmpty) {
-    ClearGRNDocument.setGeneralDataTextFields(data: list[0]);
+    ClearInternalRequestDocument.setGeneralDataTextFields(data: list[0]);
   }
-  List<PRPDN2> PRPDN2List = await retrievePRPDN2ById(null, 'TransId = ?', [TransId]);
-  if (PRPDN2List.isNotEmpty) {
-    ClearGRNDocument.setShippingAddressTextFields(prpdn2: PRPDN2List[0]);
-  }
-  List<PRPDN3> PRPDN3List = await retrievePRPDN3ById(null, 'TransId = ?', [TransId]);
-  if (PRPDN3List.isNotEmpty) {
-    ClearGRNDocument.setBillingAddressTextFields(prpdn3: PRPDN3List[0]);
-  }
-  grnItemDetails.ItemDetails.items=await retrievePRPDN1ById(null, 'TransId = ?', [TransId]);
+  internalItemDetails.ItemDetails.items=await retrievePRITR1ById(null, 'TransId = ?', [TransId]);
 
 
-  Get.offAll(()=>GoodsRecepitNote(0));
+  Get.offAll(()=>InternalRequest(0));
 }
