@@ -5,6 +5,7 @@ import 'package:maintenance/Component/GetTextField.dart';
 import 'package:maintenance/Component/IsNumeric.dart';
 import 'package:maintenance/Component/SnackbarComponent.dart';
 import 'package:maintenance/InternalRequest/InternalRequest.dart';
+import 'package:maintenance/InternalRequest/ItemDetails/ItemDetails.dart';
 import 'package:maintenance/Lookups/DepartmentLookup.dart';
 import 'package:maintenance/Lookups/EmployeeLookup.dart';
 import 'package:maintenance/Lookups/RoutLookup.dart';
@@ -20,8 +21,6 @@ import 'package:maintenance/Sync/SyncModels/OVCL.dart';
 import 'package:maintenance/Sync/SyncModels/OWHS.dart';
 import 'package:maintenance/Sync/SyncModels/PRITR1.dart';
 import 'package:maintenance/Sync/SyncModels/ROUT.dart';
-import 'package:maintenance/InternalRequest/GeneralData.dart';
-import 'package:maintenance/InternalRequest/ItemDetails/ItemDetails.dart';
 
 class EditItems extends StatefulWidget {
   static String? id;
@@ -113,8 +112,17 @@ class _EditCheckListState extends State<EditItems> {
               height: 20,
             ),
             getDisabledTextField(
-                controller: _tripTransId, labelText: 'Trip TransId'),
-            getDisabledTextField(controller: _itemName, labelText: 'Item'),
+                controller: _tripTransId,
+                labelText: 'Trip TransId',
+                onChanged: (val) {
+                  EditItems.tripTransId = val;
+                }),
+            getDisabledTextField(
+                controller: _itemName,
+                labelText: 'Item',
+                onChanged: (val) {
+                  EditItems.itemName = val;
+                }),
             getDisabledTextField(
                 controller: _fromWhsCode,
                 labelText: 'From Warehouse',
@@ -211,13 +219,17 @@ class _EditCheckListState extends State<EditItems> {
                       }));
                 }),
             getTextField(
-              controller: _price,
-              labelText: 'Price',
-            ),
+                controller: _price,
+                labelText: 'Price',
+                onChanged: (val) {
+                  EditItems.price = val;
+                }),
             getDisabledTextField(
-              controller: _mtv,
-              labelText: 'MTV',
-            ),
+                controller: _mtv,
+                labelText: 'MTV',
+                onChanged: (val) {
+                  EditItems.mtv = val;
+                }),
             getDisabledTextField(
                 controller: _taxCode,
                 labelText: 'Tax',
@@ -232,17 +244,23 @@ class _EditCheckListState extends State<EditItems> {
                       }));
                 }),
             getDisabledTextField(
-              controller: _taxRate,
-              labelText: 'Tax Rate',
-            ),
+                controller: _taxRate,
+                labelText: 'Tax Rate',
+                onChanged: (val) {
+                  EditItems.taxRate = val;
+                }),
             getTextField(
-              controller: _lineDiscount,
-              labelText: 'Line Discount',
-            ),
+                controller: _lineDiscount,
+                labelText: 'Line Discount',
+                onChanged: (val) {
+                  EditItems.lineDiscount = val;
+                }),
             getDisabledTextField(
-              controller: _lineTotal,
-              labelText: 'Line Total',
-            ),
+                controller: _lineTotal,
+                labelText: 'Line Total',
+                onChanged: (val) {
+                  EditItems.lineTotal = val;
+                }),
             Align(
               alignment: Alignment.centerRight,
               child: Container(

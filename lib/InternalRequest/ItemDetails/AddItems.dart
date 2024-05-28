@@ -228,6 +228,8 @@ class _AddItemsState extends State<AddItems> {
                                     EditItems.fromWhsCode = GeneralData.fromWhsCode;
                                     EditItems.toWhsCode = GeneralData.toWhsCode;
                                     EditItems.tripTransId = GeneralData.tripTransId;
+                                    EditItems.deptCode = GeneralData.deptCode;
+                                    EditItems.deptName = GeneralData.deptName;
                                     EditItems.itemCode =
                                         snapshot.data![index].ItemCode;
                                     EditItems.itemName =

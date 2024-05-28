@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:maintenance/Component/GetFormattedDate.dart';
 import 'package:maintenance/Component/GetTextField.dart';
+import 'package:maintenance/Component/SnackbarComponent.dart';
 import 'package:maintenance/Lookups/DepartmentLookup.dart';
 import 'package:maintenance/Lookups/EmployeeLookup.dart';
 import 'package:maintenance/Lookups/TripLookup.dart';
@@ -9,6 +11,7 @@ import 'package:maintenance/Sync/SyncModels/OEMP.dart';
 import 'package:maintenance/Sync/SyncModels/OPOTRP.dart';
 import 'package:maintenance/Sync/SyncModels/OUDP.dart';
 import 'package:maintenance/Sync/SyncModels/OWHS.dart';
+import 'package:maintenance/Sync/SyncModels/PROITR.dart';
 
 class GeneralData extends StatefulWidget {
   const GeneralData({super.key});
@@ -51,6 +54,58 @@ class GeneralData extends StatefulWidget {
   static bool isConsumption = false;
   static bool isRequest = false;
   static bool isSelected = false, hasCreated = false, hasUpdated = false;
+
+  static bool validate() {
+    bool success = true;
+    if (transId == "" || transId == null) {
+      getErrorSnackBar("Invalid TransId");
+      success = false;
+    }
+    if (deptName == "" || deptName == null) {
+      getErrorSnackBar("Invalid Department");
+      success = false;
+    }
+    if (requestedName == "" || requestedName == null) {
+      getErrorSnackBar("Invalid Request Field");
+      success = false;
+    }
+
+    if (toWhsCode == "" || toWhsCode == null) {
+      getErrorSnackBar("Invalid toWhsCode");
+      success = false;
+    }
+
+    return success;
+  }
+
+  static PROITR getGeneralData() {
+    return PROITR(
+      ID: int.tryParse(iD ?? ''),
+      TransId: transId,
+      PermanentTransId: permanentTransId ?? '',
+      PostingDate: getDateFromString(postingDate ?? ""),
+      ValidUntill: getDateFromString(validUntill ?? ''),
+      hasCreated: hasCreated,
+      hasUpdated: hasUpdated,
+      ObjectCode: '23',
+      Remarks: remarks,
+      TripTransId: tripTransId,
+      ToWhsCode: toWhsCode,
+      RequestedCode: requestedCode,
+      RequestedName: requestedName,
+      PostingAddress: postingAddress,
+      MobileNo: mobileNo,
+      Currency: currency,
+      CurrRate: double.tryParse(currRate?.toString() ?? ''),
+      RefNo: refNo,
+      DeptCode: deptCode,
+      DeptName: deptName,
+      IsPosted: isPosted,
+      FromWhsCode: fromWhsCode,
+      ApprovalStatus: approvalStatus ?? "Pending",
+      DocStatus: docStatus,
+    );
+  }
 
   @override
   State<GeneralData> createState() => _GeneralDataState();
