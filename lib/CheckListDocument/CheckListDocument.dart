@@ -6,6 +6,7 @@ import 'package:maintenance/ApprovalStatus/ApprovalListUIComponent.dart';
 import 'package:maintenance/CheckListDocument/Attachments.dart';
 import 'package:maintenance/CheckListDocument/CheckListDetails/CheckListDetails.dart';
 import 'package:maintenance/CheckListDocument/GeneralData.dart';
+import 'package:maintenance/CheckListDocument/SearchCheckListDoc.dart';
 import 'package:maintenance/Component/BackPressedWarning.dart';
 import 'package:maintenance/Component/ClearTextFieldData.dart';
 import 'package:maintenance/Component/CustomColor.dart';
@@ -140,6 +141,7 @@ class _CheckListDocumentState extends State<CheckListDocument> {
                         color: Colors.white,
                       ),
                       onPressed: () {
+                        Get.to(()=>SearchCheckListDoc());
                         //showSearch(context: context, delegate: SearchCheckListDocument());
                         // Navigator.push(
                         //     context,

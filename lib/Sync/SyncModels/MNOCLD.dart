@@ -285,6 +285,15 @@ Future<List<MNOCLD>> retrieveMNOCLD(BuildContext context) async {
   final List<Map<String, Object?>> queryResult = await db.query('MNOCLD');
   return queryResult.map((e) => MNOCLD.fromJson(e)).toList();
 }
+Future<List<MNOCLD>> retrieveMNOCLDFORSEARCH({
+  int? limit,
+  String? query,
+}) async {
+  query="%$query%";
+  final Database db = await initializeDB(null);
+  final List<Map<String, Object?>> queryResult = await db.rawQuery("SELECT * FROM MNOCLD WHERE TransId LIKE '$query'");
+  return queryResult.map((e) => MNOCLD.fromJson(e)).toList();
+}
 Future<void> updateMNOCLD(int id, Map<String, dynamic> values, BuildContext context) async {
   final db = await initializeDB(context);
   try {
