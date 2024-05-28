@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:maintenance/Component/CustomColor.dart';
+import 'package:maintenance/Component/CustomFont.dart';
 import 'package:maintenance/Component/GetFormattedDate.dart';
 import 'package:maintenance/Component/GetTextField.dart';
 import 'package:maintenance/Component/SnackbarComponent.dart';
@@ -187,18 +189,7 @@ class _GeneralDataState extends State<GeneralData> {
               const SizedBox(
                 height: 25,
               ),
-              getDisabledTextField(
-                  controller: _permanentTransId,
-                  labelText: 'Permanent Trans Id',
-                  onChanged: (val) {
-                    GeneralData.permanentTransId = _permanentTransId.text = val;
-                  }),
-              getDisabledTextField(
-                  controller: _docNum,
-                  labelText: 'ERP Docnum',
-                  onChanged: (val) {
-                    GeneralData.docNum = _docNum.text = val;
-                  }),
+
               getDisabledTextField(
                   controller: _transId,
                   labelText: 'Trans Id',
@@ -261,7 +252,7 @@ class _GeneralDataState extends State<GeneralData> {
                   controller: _whsCode,
                   labelText: 'WhsCode',
                   onChanged: (val) {
-                    GeneralData.permanentTransId = _permanentTransId.text = val;
+                    GeneralData.whsCode = _whsCode.text = val;
                   },
                   enableLookup: true,
                   onLookupPressed: () {
@@ -310,16 +301,32 @@ class _GeneralDataState extends State<GeneralData> {
                   onChanged: (val) {
                     GeneralData.approvalStatus = _approvalStatus.text = val;
                   }),
-              getDisabledTextField(
-                controller: TextEditingController(),
-                labelText: 'Local Date',
-              ),
+
               getTextField(
                   controller: _remarks,
                   labelText: 'Remarks',
                   onChanged: (val) {
                     GeneralData.remarks = _remarks.text = val;
                   }),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: ExpansionTile(
+                  collapsedBackgroundColor: barColor,
+                  backgroundColor: barColor,
+                  title: getHeadingText(text: "Details", color: headColor),
+                  children: [
+                    getDisabledTextField(
+                        controller: _permanentTransId, labelText: 'Permanent Trans Id'),
+                    getDisabledTextField(controller: _docNum, labelText: 'ERP Docnum'),
+                    getDisabledTextField(controller: _docEntry, labelText: 'Doc Entry'),
+                    getDisabledTextField(
+                      controller: TextEditingController(),
+                      labelText: 'Local Date',
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 70,),
             ],
           ),
         ),

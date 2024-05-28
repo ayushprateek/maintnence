@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:maintenance/Component/CustomColor.dart';
+import 'package:maintenance/Component/CustomFont.dart';
 import 'package:maintenance/Component/GetFormattedDate.dart';
 import 'package:maintenance/Component/GetTextField.dart';
 import 'package:maintenance/Component/SnackbarComponent.dart';
@@ -304,18 +306,7 @@ class _GeneralDataState extends State<GeneralData> {
               const SizedBox(
                 height: 25,
               ),
-              getDisabledTextField(
-                  controller: _permanentTransId,
-                  labelText: 'Permanent Trans Id',
-                  onChanged: (val) {
-                    GeneralData.permanentTransId = val;
-                  }),
-              getDisabledTextField(
-                  controller: _docNum,
-                  labelText: 'ERP Docnum',
-                  onChanged: (val) {
-                    GeneralData.docNum = val;
-                  }),
+
               getDisabledTextField(
                   controller: _transId,
                   labelText: 'Trans Id',
@@ -378,18 +369,7 @@ class _GeneralDataState extends State<GeneralData> {
                   onChanged: (val) {
                     _validUntill.text = GeneralData.validUntill = val;
                   }),
-              getDisabledTextField(
-                  controller: _currency,
-                  labelText: 'Currency',
-                  onChanged: (val) {
-                    GeneralData.currency = val;
-                  }),
-              getDisabledTextField(
-                  controller: _currRate,
-                  labelText: 'Currency Rate',
-                  onChanged: (val) {
-                    GeneralData.currRate = val;
-                  }),
+
               getDisabledTextField(
                   controller: _approvalStatus,
                   labelText: 'Approval Status',
@@ -422,7 +402,32 @@ class _GeneralDataState extends State<GeneralData> {
                   onChanged: (val) {
                     GeneralData.remarks = val;
                   }),
-              const SizedBox(height: 70),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: ExpansionTile(
+                  collapsedBackgroundColor: barColor,
+                  backgroundColor: barColor,
+                  title: getHeadingText(text: "Details", color: headColor),
+                  children: [
+                    getDisabledTextField(
+                        controller: _permanentTransId, labelText: 'Permanent Trans Id'),
+                    getDisabledTextField(controller: _docNum, labelText: 'ERP Docnum'),
+                    getDisabledTextField(
+                        controller: _currency,
+                        labelText: 'Currency',
+                        onChanged: (val) {
+                          GeneralData.currency = val;
+                        }),
+                    getDisabledTextField(
+                        controller: _currRate,
+                        labelText: 'Currency Rate',
+                        onChanged: (val) {
+                          GeneralData.currRate = val;
+                        }),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 70,),
             ],
           ),
         ),
