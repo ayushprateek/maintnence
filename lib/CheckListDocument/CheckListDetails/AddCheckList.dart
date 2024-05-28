@@ -6,6 +6,7 @@ import 'package:maintenance/CheckListDocument/GeneralData.dart';
 import 'package:maintenance/Component/ClearTextFieldData.dart';
 import 'package:maintenance/Component/CustomColor.dart';
 import 'package:maintenance/Component/CustomFont.dart';
+import 'package:maintenance/Component/GetFormattedDate.dart';
 import 'package:maintenance/Component/GetTextField.dart';
 import 'package:maintenance/Component/SnackbarComponent.dart';
 import 'package:maintenance/Sync/SyncModels/OITM.dart';
@@ -232,6 +233,7 @@ class _AddCheckListState extends State<AddCheckList> {
                                     EditCheckList.transId=GeneralData.transId;
                                     EditCheckList.itemCode=snapshot.data![index].ItemCode;
                                     EditCheckList.itemName=snapshot.data![index].ItemName;
+                                    EditCheckList.requiredDate=getFormattedDate(DateTime.now());
                                     Get.to(()=>EditCheckList());
 
                                   }

@@ -209,19 +209,19 @@ class _GeneralDataState extends State<GeneralData> {
                   GeneralData.transId = val;
                 },
               ),
-              getDisabledTextField(
+              getDateTextField(
                 controller: _postingDate,
                 labelText: 'Posting Date',
                 onChanged: (val) {
                   GeneralData.postingDate = _postingDate.text = val;
-                },
+                }, localCurrController: TextEditingController(),
               ),
-              getDisabledTextField(
+              getDateTextField(
                 controller: _validUntill,
                 labelText: 'Valid Until',
                 onChanged: (val) {
                   GeneralData.validUntill = _validUntill.text = val;
-                },
+                }, localCurrController: TextEditingController(),
               ),
               // getDisabledTextField(
               //     controller: _equipmentCode,
