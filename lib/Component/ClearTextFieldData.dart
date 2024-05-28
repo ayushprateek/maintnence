@@ -31,6 +31,8 @@ import 'package:maintenance/Sync/SyncModels/MNJCD1.dart';
 import 'package:maintenance/Sync/SyncModels/MNJCD2.dart';
 import 'package:maintenance/Sync/SyncModels/MNOCLD.dart';
 import 'package:maintenance/Sync/SyncModels/MNOJCD.dart';
+import 'package:maintenance/Sync/SyncModels/PROPRQ.dart';
+import 'package:maintenance/Sync/SyncModels/PRPRQ1.dart';
 import 'package:maintenance/main.dart';
 
 //------------------------------ GOODS ISSUE IMPORTS------------
@@ -527,6 +529,48 @@ class ClearPurchaseRequestDocument {
     purchaseGenData.GeneralData.isConsumption = false;
     purchaseGenData.GeneralData.isRequest = false;
   }
+  static setGeneralDataTextFields({
+    required PROPRQ data
+}) {
+    purchaseGenData.GeneralData.iD = data.ID?.toString()??'';
+    purchaseGenData.GeneralData.transId = data.TransId??'';
+    purchaseGenData.GeneralData.refNo = data.RefNo??'';
+    purchaseGenData.GeneralData.mobileNo = data.MobileNo??'';
+    purchaseGenData.GeneralData.postingDate = getFormattedDate(data.PostingDate);
+    purchaseGenData.GeneralData.validUntill =
+        getFormattedDate(data.ValidUntill);
+    purchaseGenData.GeneralData.approvalStatus = data.ApprovalStatus??'Pending';
+    purchaseGenData.GeneralData.docStatus = data.DocStatus??'Open';
+    purchaseGenData.GeneralData.permanentTransId = data.PermanentTransId??'';
+    purchaseGenData.GeneralData.docEntry = data.DocEntry?.toString()??'';
+    purchaseGenData.GeneralData.docNum = data.DocNum??'';
+    purchaseGenData.GeneralData.createdBy = data.CreatedBy??'';
+    // purchaseGenData.GeneralData.createDate = getFormattedDate(data.CreateDate);
+    // purchaseGenData.GeneralData.updateDate = data.TransId??'';
+    purchaseGenData.GeneralData.approvedBy = data.ApprovedBy??'';
+    purchaseGenData.GeneralData.error = data.Error??'';
+    purchaseGenData.GeneralData.isSelected = true;
+    purchaseGenData.GeneralData.hasCreated = data.hasCreated;
+    purchaseGenData.GeneralData.hasUpdated = data.hasUpdated;
+    purchaseGenData.GeneralData.isPosted = data.IsPosted??false;
+    purchaseGenData.GeneralData.draftKey = data.DraftKey??'';
+    purchaseGenData.GeneralData.latitude = data.Latitude??'';
+    purchaseGenData.GeneralData.longitude = data.Longitude??'';
+    purchaseGenData.GeneralData.objectCode = data.ObjectCode??'';
+    purchaseGenData.GeneralData.whsCode = data.WhsCode??'';
+    purchaseGenData.GeneralData.remarks = data.Remarks??'';
+    purchaseGenData.GeneralData.branchId = data.BranchId??'';
+    purchaseGenData.GeneralData.updatedBy = data.UpdatedBy??'';
+    purchaseGenData.GeneralData.postingAddress = data.PostingAddress??'';
+    purchaseGenData.GeneralData.tripTransId = data.TripTransId??'';
+    purchaseGenData.GeneralData.deptCode = data.DeptCode??'';
+    purchaseGenData.GeneralData.deptName = data.DeptName??'';
+    purchaseGenData.GeneralData.requestedCode = data.RequestedCode??'';
+    purchaseGenData.GeneralData.requestedName = data.RequestedName??'';
+
+    purchaseGenData.GeneralData.isPosted = data.IsPosted??false;
+
+  }
 
   static clearEditItems() {
     purchaseEditItems.EditItems.id = '';
@@ -584,6 +628,16 @@ goToNewPurchaseRequestDocument() async {
 
     Get.offAll(() => PurchaseRequest(0));
   });
+}
+
+navigateToPurchaseRequestDocument({required String TransId}) async {
+  List<PROPRQ> list = await retrievePROPRQById(null, 'TransId = ?', [TransId]);
+  if (list.isNotEmpty) {
+    ClearPurchaseRequestDocument.setGeneralDataTextFields(data: list[0]);
+  }
+  purchaseItemDetails.ItemDetails.items=await retrievePRPRQ1ById(null, 'TransId = ?', [TransId]);
+
+  Get.offAll(()=>PurchaseRequest(0));
 }
 
 class ClearGRNDocument {
