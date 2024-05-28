@@ -431,7 +431,7 @@ Future<void> insertLITPL_OOALToServer(BuildContext? context,
           if (res.statusCode == 201) {
             map['ALID'] = jsonDecode(res.body)['ALID'];
             final Database db = await initializeDB(context);
-            map = jsonDecode(res.body);
+            // map = jsonDecode(res.body);
             map["has_created"] = 0;
 
             Map element = list[i].toJson();

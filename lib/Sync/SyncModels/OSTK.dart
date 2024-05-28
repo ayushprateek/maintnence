@@ -430,7 +430,7 @@ Future<void> insertOSTKToServer(BuildContext? context,
             map['ID'] = jsonDecode(res.body)['ID'];
             map['PermanentTransId'] = jsonDecode(res.body)['PermanentTransId'];
             final Database db = await initializeDB(context);
-            map = jsonDecode(res.body);
+            // map = jsonDecode(res.body);
             map["has_created"] = 0;
             var x = await db.update("OSTK", map,
                 where: "TransId = ?", whereArgs: [map["TransId"]]);

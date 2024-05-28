@@ -350,7 +350,7 @@ Future<void> insertSUOATEToServer(BuildContext? context,
           if (res.statusCode == 201) {
             map['ID'] = jsonDecode(res.body)['ID'];
             final Database db = await initializeDB(context);
-            map = jsonDecode(res.body);
+            // map = jsonDecode(res.body);
             map["has_created"] = 0;
             var x = await db.update("SUOATE", map,
                 where: "TicketCode = ?", whereArgs: [map["TicketCode"]]);
@@ -363,7 +363,7 @@ Future<void> insertSUOATEToServer(BuildContext? context,
             text: '${e.toString()}\nMap : $map', fileName: StackTrace.current.toString(), lineNo: 141);
   sentSuccessInServer = true;
   }
-  print('i++;');
+  i++;
   print("INDEX = " + i.toString());
   } while (i < list.length && sentSuccessInServer ==
   true

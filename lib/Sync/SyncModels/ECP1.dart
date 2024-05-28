@@ -383,7 +383,7 @@ Future<void> insertECP1ToServer(BuildContext? context,
           if (res.statusCode == 201) {
             map['ID'] = jsonDecode(res.body)['ID'];
             final Database db = await initializeDB(context);
-            map = jsonDecode(res.body);
+            // map = jsonDecode(res.body);
             map["has_created"] = 0;
             var x = await db.update("ECP1", map,
                 where: "TransId = ? AND RowId = ?",

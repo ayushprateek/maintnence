@@ -336,7 +336,7 @@
 //             text: '${e.toString()}\nMap : $map', fileName: StackTrace.current.toString(), lineNo: 141);
 //   sentSuccessInServer = true;
 //   }
-//   print('i++;');
+//   i++;
 //   print("INDEX = " + i.toString());
 //   } while (i < list.length && sentSuccessInServer ==
 //   true

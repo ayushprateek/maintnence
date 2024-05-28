@@ -261,7 +261,7 @@ Future<String> insertCVOMTPToServer(BuildContext? context,
           if (res.statusCode == 201) {
             map['ID'] = jsonDecode(res.body)['ID'];
             final Database db = await initializeDB(context);
-            map = jsonDecode(res.body);
+            // map = jsonDecode(res.body);
             map["has_created"] = 0;
             var x = await db
                 .update("CVOMTP", map, where: "ID = ?", whereArgs: [map["ID"]]);
@@ -273,7 +273,7 @@ Future<String> insertCVOMTPToServer(BuildContext? context,
         print("Timeout " + e.toString());
         sentSuccessInServer = true;
       }
-      print('i++;');
+      i++;
       print("INDEX = " + i.toString());
     } while (i < list.length && sentSuccessInServer == true);
   }

@@ -317,7 +317,7 @@ Future<String> insertPRITR1ToServer(BuildContext? context, {String? TransId, int
           if (res.statusCode == 201) {
             map['ID'] = jsonDecode(res.body)['ID'];
             final Database db = await initializeDB(context);
-            map=jsonDecode(res.body);
+            // map=jsonDecode(res.body);
             map["has_created"] = 0;
             var x = await db.update("PRITR1", map, where: "TransId = ? AND RowId = ?", whereArgs: [map["TransId"], map["RowId"]]);
             print(x.toString());}}
@@ -325,7 +325,7 @@ Future<String> insertPRITR1ToServer(BuildContext? context, {String? TransId, int
       } catch (e) {
         print("Timeout " + e.toString());
         sentSuccessInServer = true;}
-      print('i++;');
+      i++;
       print("INDEX = " + i.toString());
     } while (i < list.length && sentSuccessInServer == true);}
   return response;}

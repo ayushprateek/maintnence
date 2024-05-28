@@ -247,7 +247,7 @@ Future<String> insertMNVCL2ToServer(BuildContext? context, {String? TransId, int
           if (res.statusCode == 201) {
             map['ID'] = jsonDecode(res.body)['ID'];
             final Database db = await initializeDB(context);
-            map=jsonDecode(res.body);
+            // map=jsonDecode(res.body);
             map["has_created"] = 0;
             var x = await db.update("MNVCL2", map, where: "Code = ? AND RowId = ?", whereArgs: [map["Code"], map["RowId"]]);
             print(x.toString());}}
@@ -255,7 +255,7 @@ Future<String> insertMNVCL2ToServer(BuildContext? context, {String? TransId, int
       } catch (e) {
         print("Timeout " + e.toString());
         sentSuccessInServer = true;}
-      print('i++;');
+      i++;
       print("INDEX = " + i.toString());
     } while (i < list.length && sentSuccessInServer == true);}
   return response;}

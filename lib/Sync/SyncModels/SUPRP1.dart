@@ -298,7 +298,7 @@ Future<void> insertSUPRP1ToServer(BuildContext? context,
           if (res.statusCode == 201) {
             map['ID'] = jsonDecode(res.body)['ID'];
             final Database db = await initializeDB(context);
-            map = jsonDecode(res.body);
+            // map = jsonDecode(res.body);
             map["has_created"] = 0;
             var x = await db.update("SUPRP1", map,
                 where: "Code = ?", whereArgs: [map["Code"]]);
@@ -316,7 +316,7 @@ Future<void> insertSUPRP1ToServer(BuildContext? context,
             text: '${e.toString()}\nMap : $map', fileName: StackTrace.current.toString(), lineNo: 141);
   sentSuccessInServer = true;
   }
-  print('i++;');
+  i++;
   print("INDEX = " + i.toString());
   } while (i < list.length && sentSuccessInServer ==
   true

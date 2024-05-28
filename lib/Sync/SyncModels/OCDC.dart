@@ -255,7 +255,7 @@ Future<List<OCDC>> retrieveOCDCById(
 //         print("Timeout " + e.toString());
 //         sentSuccessInServer = true;
 //       }
-//       print('i++;');
+//       i++;
 //       print("INDEX = " + i.toString());
 //     } while (i < list.length && sentSuccessInServer == true);
 //   }
