@@ -292,131 +292,140 @@ class _GeneralDataState extends State<GeneralData> {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      child: Column(
-        children: [
-          const SizedBox(
-            height: 25,
+      child: Padding(
+        padding: const EdgeInsets.only(left: 8.0, right: 8, bottom: 8, top: 20),
+        child: Container(
+          decoration: BoxDecoration(
+              border: Border.all(),
+              borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(16), topRight: Radius.circular(16))),
+          child: Column(
+            children: [
+              const SizedBox(
+                height: 25,
+              ),
+              getDisabledTextField(
+                  controller: _permanentTransId,
+                  labelText: 'Permanent Trans Id',
+                  onChanged: (val) {
+                    GeneralData.permanentTransId = val;
+                  }),
+              getDisabledTextField(
+                  controller: _docNum,
+                  labelText: 'ERP Docnum',
+                  onChanged: (val) {
+                    GeneralData.docNum = val;
+                  }),
+              getDisabledTextField(
+                  controller: _transId,
+                  labelText: 'Trans Id',
+                  onChanged: (val) {
+                    GeneralData.transId = val;
+                  }),
+              getDisabledTextField(
+                  controller: _deptName,
+                  labelText: 'Department Name',
+                  enableLookup: true,
+                  onLookupPressed: () {
+                    Get.to(() => DepartmentLookup(
+                          onSelection: (OUDP oudp) {
+                            setState(() {
+                              GeneralData.deptCode = oudp.Code ?? '';
+                              GeneralData.deptName =
+                                  _deptName.text = oudp.Name ?? '';
+                            });
+                          },
+                        ));
+                  }),
+              getDisabledTextField(
+                  controller: _cardName,
+                  labelText: 'Supplier',
+                  onChanged: (val) {
+                    GeneralData.cardName = val;
+                  },
+                  enableLookup: true,
+                  onLookupPressed: () {
+                    Get.to(() =>
+                        SupplierLookup(onSelected: (OCRDModel ocrdModel) async {
+                          GeneralData.cardCode = _cardCode.text = ocrdModel.Code;
+                          GeneralData.paymentTermDays = _paymentTermDays.text = ocrdModel.PaymentTermDays.toString()??'';
+                          GeneralData.paymentTermName  = ocrdModel.PaymentTermName;
+                          GeneralData.paymentTermCode  = ocrdModel.PaymentTermCode;
+                          GeneralData.cardName =
+                              _cardName.text = ocrdModel.Name ?? '';
+                          await setAddress();
+                          setState(() {});
+                        }));
+                  }),
+              getDisabledTextField(
+                controller: _contactPersonName,
+                labelText: 'Person Name',
+                onChanged: (val) {
+                  GeneralData.contactPersonName = val;
+                },
+              ),
+              getDateTextField(
+                  controller: _postingDate,
+                  labelText: 'Posting Date',
+                  localCurrController: TextEditingController(),
+                  onChanged: (val) {
+                    _postingDate.text = GeneralData.postingDate = val;
+                  }),
+              getDateTextField(
+                  controller: _validUntill,
+                  labelText: 'Valid Until',
+                  localCurrController: TextEditingController(),
+                  onChanged: (val) {
+                    _validUntill.text = GeneralData.validUntill = val;
+                  }),
+              getDisabledTextField(
+                  controller: _currency,
+                  labelText: 'Currency',
+                  onChanged: (val) {
+                    GeneralData.currency = val;
+                  }),
+              getDisabledTextField(
+                  controller: _currRate,
+                  labelText: 'Currency Rate',
+                  onChanged: (val) {
+                    GeneralData.currRate = val;
+                  }),
+              getDisabledTextField(
+                  controller: _approvalStatus,
+                  labelText: 'Approval Status',
+                  onChanged: (val) {
+                    GeneralData.approvalStatus = val;
+                  }),
+              getDisabledTextField(
+                  controller: _docStatus,
+                  labelText: 'Doc Status',
+                  onChanged: (val) {
+                    GeneralData.docStatus = val;
+                  }),
+              getDisabledTextField(
+                  controller: _paymentTermDays,
+                  labelText: 'Payment Days',
+                  onChanged: (val) {
+                    GeneralData.paymentTermDays = val;
+                  }),
+              getTextField(
+                  controller: _refNo,
+                  labelText: 'Ref. No',
+                  onChanged: (val) {
+                    GeneralData.refNo = val;
+                  }),
+              getDisabledTextField(
+                  controller: TextEditingController(), labelText: 'Local Date'),
+              getTextField(
+                  controller: _remarks,
+                  labelText: 'Remarks',
+                  onChanged: (val) {
+                    GeneralData.remarks = val;
+                  }),
+              const SizedBox(height: 70),
+            ],
           ),
-          getDisabledTextField(
-              controller: _permanentTransId,
-              labelText: 'Permanent Trans Id',
-              onChanged: (val) {
-                GeneralData.permanentTransId = val;
-              }),
-          getDisabledTextField(
-              controller: _docNum,
-              labelText: 'ERP Docnum',
-              onChanged: (val) {
-                GeneralData.docNum = val;
-              }),
-          getDisabledTextField(
-              controller: _transId,
-              labelText: 'Trans Id',
-              onChanged: (val) {
-                GeneralData.transId = val;
-              }),
-          getDisabledTextField(
-              controller: _deptName,
-              labelText: 'Department Name',
-              enableLookup: true,
-              onLookupPressed: () {
-                Get.to(() => DepartmentLookup(
-                      onSelection: (OUDP oudp) {
-                        setState(() {
-                          GeneralData.deptCode = oudp.Code ?? '';
-                          GeneralData.deptName =
-                              _deptName.text = oudp.Name ?? '';
-                        });
-                      },
-                    ));
-              }),
-          getDisabledTextField(
-              controller: _cardName,
-              labelText: 'Supplier',
-              onChanged: (val) {
-                GeneralData.cardName = val;
-              },
-              enableLookup: true,
-              onLookupPressed: () {
-                Get.to(() =>
-                    SupplierLookup(onSelected: (OCRDModel ocrdModel) async {
-                      GeneralData.cardCode = _cardCode.text = ocrdModel.Code;
-                      GeneralData.paymentTermDays = _paymentTermDays.text = ocrdModel.PaymentTermDays.toString()??'';
-                      GeneralData.paymentTermName  = ocrdModel.PaymentTermName;
-                      GeneralData.paymentTermCode  = ocrdModel.PaymentTermCode;
-                      GeneralData.cardName =
-                          _cardName.text = ocrdModel.Name ?? '';
-                      await setAddress();
-                      setState(() {});
-                    }));
-              }),
-          getDisabledTextField(
-            controller: _contactPersonName,
-            labelText: 'Person Name',
-            onChanged: (val) {
-              GeneralData.contactPersonName = val;
-            },
-          ),
-          getDateTextField(
-              controller: _postingDate,
-              labelText: 'Posting Date',
-              localCurrController: TextEditingController(),
-              onChanged: (val) {
-                _postingDate.text = GeneralData.postingDate = val;
-              }),
-          getDateTextField(
-              controller: _validUntill,
-              labelText: 'Valid Until',
-              localCurrController: TextEditingController(),
-              onChanged: (val) {
-                _validUntill.text = GeneralData.validUntill = val;
-              }),
-          getDisabledTextField(
-              controller: _currency,
-              labelText: 'Currency',
-              onChanged: (val) {
-                GeneralData.currency = val;
-              }),
-          getDisabledTextField(
-              controller: _currRate,
-              labelText: 'Currency Rate',
-              onChanged: (val) {
-                GeneralData.currRate = val;
-              }),
-          getDisabledTextField(
-              controller: _approvalStatus,
-              labelText: 'Approval Status',
-              onChanged: (val) {
-                GeneralData.approvalStatus = val;
-              }),
-          getDisabledTextField(
-              controller: _docStatus,
-              labelText: 'Doc Status',
-              onChanged: (val) {
-                GeneralData.docStatus = val;
-              }),
-          getDisabledTextField(
-              controller: _paymentTermDays,
-              labelText: 'Payment Days',
-              onChanged: (val) {
-                GeneralData.paymentTermDays = val;
-              }),
-          getTextField(
-              controller: _refNo,
-              labelText: 'Ref. No',
-              onChanged: (val) {
-                GeneralData.refNo = val;
-              }),
-          getDisabledTextField(
-              controller: TextEditingController(), labelText: 'Local Date'),
-          getTextField(
-              controller: _remarks,
-              labelText: 'Remarks',
-              onChanged: (val) {
-                GeneralData.remarks = val;
-              }),
-          const SizedBox(height: 70),
-        ],
+        ),
       ),
     );
   }

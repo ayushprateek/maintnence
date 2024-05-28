@@ -175,145 +175,154 @@ class _GeneralDataState extends State<GeneralData> {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      child: Column(
-        children: [
-          const SizedBox(
-            height: 25,
+      child: Padding(
+        padding: const EdgeInsets.only(left: 8.0, right: 8, bottom: 8, top: 20),
+        child: Container(
+          decoration: BoxDecoration(
+              border: Border.all(),
+              borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(16), topRight: Radius.circular(16))),
+          child: Column(
+            children: [
+              const SizedBox(
+                height: 25,
+              ),
+              getDisabledTextField(
+                  controller: _permanentTransId,
+                  labelText: 'Permanent Trans Id',
+                  onChanged: (val) {
+                    GeneralData.permanentTransId = _permanentTransId.text = val;
+                  }),
+              getDisabledTextField(
+                  controller: _docNum,
+                  labelText: 'ERP Docnum',
+                  onChanged: (val) {
+                    GeneralData.docNum = _docNum.text = val;
+                  }),
+              getDisabledTextField(
+                  controller: _transId,
+                  labelText: 'Trans Id',
+                  onChanged: (val) {
+                    GeneralData.transId = _transId.text = val;
+                  }),
+              getDisabledTextField(
+                  controller: _deptName,
+                  labelText: 'Department Name',
+                  onChanged: (val) {
+                    GeneralData.deptName = _deptName.text = val;
+                  },
+                  enableLookup: true,
+                  onLookupPressed: () {
+                    Get.to(() => DepartmentLookup(onSelection: (OUDP oudp) {
+                          setState(() {
+                            GeneralData.deptCode = oudp.Code ?? '';
+                            GeneralData.deptName = _deptName.text = oudp.Name ?? '';
+                          });
+                        }));
+                  }),
+              getDisabledTextField(
+                  controller: _tripTransId,
+                  labelText: 'TripTransId',
+                  onChanged: (val) {
+                    GeneralData.tripTransId = _tripTransId.text = val;
+                  },
+                  enableLookup: true,
+                  onLookupPressed: () {
+                    Get.to(() => TripLookup(onSelection: (OPOTRP oemp) {
+                          setState(() {
+                            GeneralData.tripTransId =
+                                _tripTransId.text = oemp.TransId ?? '';
+                          });
+                        }));
+                  }),
+              getTextField(
+                  controller: _refNo,
+                  labelText: 'Reference No',
+                  onChanged: (val) {
+                    GeneralData.refNo = _refNo.text = val;
+                  }),
+              getDisabledTextField(
+                  controller: _requestedName,
+                  labelText: 'Requester Name*',
+                  onChanged: (val) {
+                    GeneralData.requestedName = _requestedName.text = val;
+                  },
+                  enableLookup: true,
+                  onLookupPressed: () {
+                    Get.to(() => EmployeeLookup(onSelection: (OEMPModel oemp) {
+                          setState(() {
+                            GeneralData.requestedCode = oemp.Code;
+                            GeneralData.requestedName =
+                                _requestedName.text = oemp.Name ?? '';
+                          });
+                        }));
+                  }),
+              getDisabledTextField(
+                  controller: _whsCode,
+                  labelText: 'WhsCode',
+                  onChanged: (val) {
+                    GeneralData.permanentTransId = _permanentTransId.text = val;
+                  },
+                  enableLookup: true,
+                  onLookupPressed: () {
+                    Get.to(() => WarehouseLookup(onSelection: (OWHS owhs) {
+                          setState(() {
+                            GeneralData.whsCode =
+                                _whsCode.text = owhs.WhsCode ?? '';
+                          });
+                        }));
+                  }),
+              getDisabledTextField(
+                  controller: TextEditingController(),
+                  labelText: 'City',
+                  onChanged: (val) {
+                    // GeneralData.permanentTransId = _permanentTransId.text = val;
+                  }),
+              getDisabledTextField(
+                  controller: TextEditingController(),
+                  labelText: 'State',
+                  onChanged: (val) {
+                    // GeneralData.permanentTransId = _permanentTransId.text = val;
+                  }),
+              getDateTextField(
+                  controller: _postingDate,
+                  labelText: 'Posting Date',
+                  onChanged: (val) {
+                    GeneralData.postingDate = _postingDate.text = val;
+                  },
+                  localCurrController: TextEditingController()),
+              getDateTextField(
+                  controller: _validUntill,
+                  labelText: 'Valid Until',
+                  onChanged: (val) {
+                    GeneralData.validUntill = _validUntill.text = val;
+                  },
+                  localCurrController: TextEditingController()),
+              getDisabledTextField(
+                  controller: _docStatus,
+                  labelText: 'Doc Status',
+                  onChanged: (val) {
+                    GeneralData.docStatus = _docStatus.text = val;
+                  }),
+              getDisabledTextField(
+                  controller: _approvalStatus,
+                  labelText: 'Approval Status',
+                  onChanged: (val) {
+                    GeneralData.approvalStatus = _approvalStatus.text = val;
+                  }),
+              getDisabledTextField(
+                controller: TextEditingController(),
+                labelText: 'Local Date',
+              ),
+              getTextField(
+                  controller: _remarks,
+                  labelText: 'Remarks',
+                  onChanged: (val) {
+                    GeneralData.remarks = _remarks.text = val;
+                  }),
+            ],
           ),
-          getDisabledTextField(
-              controller: _permanentTransId,
-              labelText: 'Permanent Trans Id',
-              onChanged: (val) {
-                GeneralData.permanentTransId = _permanentTransId.text = val;
-              }),
-          getDisabledTextField(
-              controller: _docNum,
-              labelText: 'ERP Docnum',
-              onChanged: (val) {
-                GeneralData.docNum = _docNum.text = val;
-              }),
-          getDisabledTextField(
-              controller: _transId,
-              labelText: 'Trans Id',
-              onChanged: (val) {
-                GeneralData.transId = _transId.text = val;
-              }),
-          getDisabledTextField(
-              controller: _deptName,
-              labelText: 'Department Name',
-              onChanged: (val) {
-                GeneralData.deptName = _deptName.text = val;
-              },
-              enableLookup: true,
-              onLookupPressed: () {
-                Get.to(() => DepartmentLookup(onSelection: (OUDP oudp) {
-                      setState(() {
-                        GeneralData.deptCode = oudp.Code ?? '';
-                        GeneralData.deptName = _deptName.text = oudp.Name ?? '';
-                      });
-                    }));
-              }),
-          getDisabledTextField(
-              controller: _tripTransId,
-              labelText: 'TripTransId',
-              onChanged: (val) {
-                GeneralData.tripTransId = _tripTransId.text = val;
-              },
-              enableLookup: true,
-              onLookupPressed: () {
-                Get.to(() => TripLookup(onSelection: (OPOTRP oemp) {
-                      setState(() {
-                        GeneralData.tripTransId =
-                            _tripTransId.text = oemp.TransId ?? '';
-                      });
-                    }));
-              }),
-          getTextField(
-              controller: _refNo,
-              labelText: 'Reference No',
-              onChanged: (val) {
-                GeneralData.refNo = _refNo.text = val;
-              }),
-          getDisabledTextField(
-              controller: _requestedName,
-              labelText: 'Requester Name*',
-              onChanged: (val) {
-                GeneralData.requestedName = _requestedName.text = val;
-              },
-              enableLookup: true,
-              onLookupPressed: () {
-                Get.to(() => EmployeeLookup(onSelection: (OEMPModel oemp) {
-                      setState(() {
-                        GeneralData.requestedCode = oemp.Code;
-                        GeneralData.requestedName =
-                            _requestedName.text = oemp.Name ?? '';
-                      });
-                    }));
-              }),
-          getDisabledTextField(
-              controller: _whsCode,
-              labelText: 'WhsCode',
-              onChanged: (val) {
-                GeneralData.permanentTransId = _permanentTransId.text = val;
-              },
-              enableLookup: true,
-              onLookupPressed: () {
-                Get.to(() => WarehouseLookup(onSelection: (OWHS owhs) {
-                      setState(() {
-                        GeneralData.whsCode =
-                            _whsCode.text = owhs.WhsCode ?? '';
-                      });
-                    }));
-              }),
-          getDisabledTextField(
-              controller: TextEditingController(),
-              labelText: 'City',
-              onChanged: (val) {
-                // GeneralData.permanentTransId = _permanentTransId.text = val;
-              }),
-          getDisabledTextField(
-              controller: TextEditingController(),
-              labelText: 'State',
-              onChanged: (val) {
-                // GeneralData.permanentTransId = _permanentTransId.text = val;
-              }),
-          getDateTextField(
-              controller: _postingDate,
-              labelText: 'Posting Date',
-              onChanged: (val) {
-                GeneralData.postingDate = _postingDate.text = val;
-              },
-              localCurrController: TextEditingController()),
-          getDateTextField(
-              controller: _validUntill,
-              labelText: 'Valid Until',
-              onChanged: (val) {
-                GeneralData.validUntill = _validUntill.text = val;
-              },
-              localCurrController: TextEditingController()),
-          getDisabledTextField(
-              controller: _docStatus,
-              labelText: 'Doc Status',
-              onChanged: (val) {
-                GeneralData.docStatus = _docStatus.text = val;
-              }),
-          getDisabledTextField(
-              controller: _approvalStatus,
-              labelText: 'Approval Status',
-              onChanged: (val) {
-                GeneralData.approvalStatus = _approvalStatus.text = val;
-              }),
-          getDisabledTextField(
-            controller: TextEditingController(),
-            labelText: 'Local Date',
-          ),
-          getTextField(
-              controller: _remarks,
-              labelText: 'Remarks',
-              onChanged: (val) {
-                GeneralData.remarks = _remarks.text = val;
-              }),
-        ],
+        ),
       ),
     );
   }
