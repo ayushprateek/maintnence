@@ -170,6 +170,7 @@ class _ItemDetailsState extends State<ItemDetails> {
                                                 ),
                                               ),
                                             ),
+
                                             Padding(
                                               padding: const EdgeInsets.only(
                                                   left: 8.0,
@@ -181,27 +182,7 @@ class _ItemDetailsState extends State<ItemDetails> {
                                                   TextSpan(
                                                     children: [
                                                       getPoppinsTextSpanHeading(
-                                                          text: 'Item Code'),
-                                                      getPoppinsTextSpanDetails(
-                                                          text: item.ItemCode ??
-                                                              ''),
-                                                    ],
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                  left: 8.0,
-                                                  right: 8.0,
-                                                  top: 4.0),
-                                              child: Align(
-                                                alignment: Alignment.topLeft,
-                                                child: Text.rich(
-                                                  TextSpan(
-                                                    children: [
-                                                      getPoppinsTextSpanHeading(
-                                                          text: 'Item Name'),
+                                                          text: 'Item'),
                                                       getPoppinsTextSpanDetails(
                                                           text: item.ItemName ??
                                                               ''),
@@ -222,7 +203,7 @@ class _ItemDetailsState extends State<ItemDetails> {
                                                     children: [
                                                       getPoppinsTextSpanHeading(
                                                           text:
-                                                              'Supplier Name'),
+                                                              'Supplier'),
                                                       getPoppinsTextSpanDetails(
                                                           text:
                                                               item.SupplierName ??
@@ -244,7 +225,7 @@ class _ItemDetailsState extends State<ItemDetails> {
                                                     children: [
                                                       getPoppinsTextSpanHeading(
                                                           text:
-                                                              'Warehouse Code'),
+                                                              'Warehouse'),
                                                       getPoppinsTextSpanDetails(
                                                           text: item.WhsCode ??
                                                               ''),
@@ -334,7 +315,7 @@ class _ItemDetailsState extends State<ItemDetails> {
                                                   TextSpan(
                                                     children: [
                                                       getPoppinsTextSpanHeading(
-                                                          text: 'Driver Name'),
+                                                          text: 'Driver'),
                                                       getPoppinsTextSpanDetails(
                                                           text:
                                                               item.DriverName ??
@@ -355,7 +336,7 @@ class _ItemDetailsState extends State<ItemDetails> {
                                                   TextSpan(
                                                     children: [
                                                       getPoppinsTextSpanHeading(
-                                                          text: 'Route Name'),
+                                                          text: 'Route'),
                                                       getPoppinsTextSpanDetails(
                                                           text:
                                                               item.RouteName ??
@@ -376,7 +357,7 @@ class _ItemDetailsState extends State<ItemDetails> {
                                                   TextSpan(
                                                     children: [
                                                       getPoppinsTextSpanHeading(
-                                                          text: 'Dept Name'),
+                                                          text: 'Dept'),
                                                       getPoppinsTextSpanDetails(
                                                           text: item.DeptName ??
                                                               ''),

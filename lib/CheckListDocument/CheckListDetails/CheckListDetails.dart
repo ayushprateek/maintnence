@@ -371,7 +371,7 @@ class _CheckListDetailsState extends State<CheckListDetails> {
                                                     children: [
                                                       getPoppinsTextSpanHeading(
                                                           text:
-                                                              'Supplier Name'),
+                                                              'Supplier'),
                                                       getPoppinsTextSpanDetails(
                                                           text: mncld1
                                                                   .SupplierName ??

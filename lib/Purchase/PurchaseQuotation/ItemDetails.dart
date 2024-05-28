@@ -223,7 +223,7 @@ class _ItemDetailsState extends State<ItemDetails> {
                                                     TextSpan(
                                                       children: [
                                                         getPoppinsTextSpanHeading(
-                                                            text: 'Supplier Name'),
+                                                            text: 'Supplier'),
                                                         getPoppinsTextSpanDetails(
                                                             text: "XYZ"),
                                                       ],
@@ -347,7 +347,7 @@ class _ItemDetailsState extends State<ItemDetails> {
                                                       children: [
                                                         getPoppinsTextSpanHeading(
                                                             text:
-                                                            'Driver Name'),
+                                                            'Driver'),
                                                         getPoppinsTextSpanDetails(
                                                             text: "aa"),
                                                       ],
@@ -370,7 +370,7 @@ class _ItemDetailsState extends State<ItemDetails> {
                                                       children: [
                                                         getPoppinsTextSpanHeading(
                                                             text:
-                                                                'Route Name'),
+                                                                'Route'),
                                                         getPoppinsTextSpanDetails(
                                                             text: ""),
                                                       ],
@@ -393,7 +393,7 @@ class _ItemDetailsState extends State<ItemDetails> {
                                                       children: [
                                                         getPoppinsTextSpanHeading(
                                                             text:
-                                                                'Dept Name'),
+                                                                'Dept'),
                                                         getPoppinsTextSpanDetails(
                                                             text: ""),
                                                       ],

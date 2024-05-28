@@ -163,7 +163,7 @@ class _VehicleCodeLookupState extends State<RouteLookup> {
                                           child: FittedBox(
                                               fit: BoxFit.contain,
                                               child: getHeadingText(
-                                                text: "Route Name  ",
+                                                text: "Route  ",
                                               )),
                                         ),
                                       ],

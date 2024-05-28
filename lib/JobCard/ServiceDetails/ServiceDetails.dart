@@ -180,7 +180,7 @@ class _ServiceDetailsState extends State<ServiceDetails> {
                                                     children: [
                                                       getPoppinsTextSpanHeading(
                                                           text:
-                                                              'Supplier Name'),
+                                                              'Supplier'),
                                                       getPoppinsTextSpanDetails(
                                                           text: mnjcd2
                                                                   .SupplierName ??
