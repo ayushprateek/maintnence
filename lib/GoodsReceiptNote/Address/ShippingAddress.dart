@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:maintenance/Component/CustomColor.dart';
 import 'package:maintenance/Component/GetTextField.dart';
 import 'package:maintenance/Component/SnackbarComponent.dart';
+import 'package:maintenance/GoodsReceiptNote/Address/AddressLookup.dart';
 import 'package:maintenance/GoodsReceiptNote/GeneralData.dart';
 import 'package:maintenance/GoodsReceiptNote/GoodsReceiptNote.dart';
 import 'package:maintenance/Sync/SyncModels/PRPDN2.dart';
@@ -138,10 +139,10 @@ class _ShippingAddressState extends State<ShippingAddress> {
                       getErrorSnackBar(
                           "This Document is already cancelled / closed");
                     } else {
-                      // Navigator.push(
-                      //     context,
-                      //     MaterialPageRoute(
-                      //         builder: ((context) => AddressLookup(true))));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: ((context) => AddressLookup(true))));
                     }
                   }),
               Padding(
@@ -263,31 +264,4 @@ class _ShippingAddressState extends State<ShippingAddress> {
     );
   }
 
-  void clearTextFields() {
-    ShippingAddress.RowId = 0;
-    RowId.clear();
-    ShippingAddress.RouteName = "";
-    RouteName.clear();
-    ShippingAddress.AddCode = "";
-    AddCode.clear();
-    ShippingAddress.CityName = "";
-    CityName.clear();
-    ShippingAddress.CityCode = "";
-    CityCode.clear();
-    ShippingAddress.CountryName = "";
-    CountryName.clear();
-    ShippingAddress.CountryCode = "";
-    CountryCode.clear();
-    ShippingAddress.StateName = "";
-    StateName.clear();
-    ShippingAddress.StateCode = "";
-    StateCode.clear();
-    ShippingAddress.Addres = "";
-    Addres.clear();
-
-    ShippingAddress.Latitude = 0.0;
-    Latitude.clear();
-    ShippingAddress.Longitude = 0.0;
-    Longitude.clear();
-  }
 }
