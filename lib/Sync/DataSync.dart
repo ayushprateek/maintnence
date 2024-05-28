@@ -1,10 +1,14 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:get/get.dart';
+import 'package:maintenance/Component/CheckInternet.dart';
 import 'package:maintenance/Component/CompanyDetails.dart';
 import 'package:maintenance/Component/CustomColor.dart';
 import 'package:maintenance/Component/CustomFont.dart';
@@ -12,7 +16,9 @@ import 'package:maintenance/Component/GetCredentials.dart';
 import 'package:maintenance/Component/GetCurrentLocation.dart';
 import 'package:maintenance/Component/IsValidAppVersion.dart';
 import 'package:maintenance/Component/LogFileFunctions.dart';
+import 'package:maintenance/Component/NotSyncDocument.dart';
 import 'package:maintenance/Component/SendLocalNotification.dart';
+import 'package:maintenance/Component/ShareDatabase.dart';
 import 'package:maintenance/Component/SnackbarComponent.dart';
 import 'package:maintenance/Component/UploadImageToServer.dart';
 import 'package:maintenance/Dashboard.dart';
@@ -53,7 +59,7 @@ import 'package:sqflite/sqlite_api.dart';
 import 'package:step_progress_indicator/step_progress_indicator.dart';
 
 class DataSync extends StatefulWidget {
-  bool isComingFromLogin, isFirstTimeSync;
+  bool isComingFromLogin;
   static bool isSyncSuccessful = true;
   static String syncingErrorMsg = "Please wait while your data is being synced";
 
@@ -67,8 +73,10 @@ class DataSync extends StatefulWidget {
     // return isSyncing;
   }
 
-  DataSync(String localPrefix,
-      {required this.isComingFromLogin, required this.isFirstTimeSync}) {
+  DataSync(
+    String localPrefix, {
+    required this.isComingFromLogin,
+  }) {
     postfix = localPrefix;
   }
 
@@ -95,7 +103,7 @@ class DataSync extends StatefulWidget {
 
 class _DataSyncState extends State<DataSync> {
   String text = "Please wait while we are syncing your data";
-  bool calledSyncFunc = false;
+  bool calledSyncFunc = false, isFirstTimeSync = false;
   final Connectivity _connectivity = Connectivity();
 
   // late StreamSubscription<ConnectivityResult> _connectivitySubscription;
@@ -223,7 +231,7 @@ class _DataSyncState extends State<DataSync> {
         final stopwatch = Stopwatch()..start();
 
         GetAllMaster1 getAll = GetAllMaster1();
-        await getAll.getGetAllMaster1FromWeb(widget.isFirstTimeSync);
+        await getAll.getGetAllMaster1FromWeb(isFirstTimeSync);
         setState(() {
           _currentStep = 9;
         });
@@ -233,14 +241,9 @@ class _DataSyncState extends State<DataSync> {
 
         print(
             'Function Execution Time GetAllMaster1 : ${duration.inMilliseconds}');
-        // print('Function Execution Time : ${duration.inMicroseconds}');
-        // print('Function Execution Time : ${duration.inMilliseconds}');
-        // print((452164+747449+830978+119184+881657+791322+825910+734222+818513+787065)/10);//1885765.3
-        // print((715891+725176+739308+770115+761580+719772+725998+811949+638849+652859)/10);//726149.7
-        // await Future.delayed(Duration(seconds: 5));
         stopwatch.start();
         GetAllMaster2 getAll2 = GetAllMaster2();
-        await getAll2.getGetAllMaster2FromWeb(widget.isFirstTimeSync);
+        await getAll2.getGetAllMaster2FromWeb(isFirstTimeSync);
         stopwatch.stop();
         duration = stopwatch.elapsed;
         print(
@@ -254,7 +257,7 @@ class _DataSyncState extends State<DataSync> {
         // await Future.delayed(Duration(seconds: 5));
         stopwatch.start();
         Transaction1 transaction1 = Transaction1();
-        await transaction1.getTransaction1FromWeb(widget.isFirstTimeSync);
+        await transaction1.getTransaction1FromWeb(isFirstTimeSync);
         stopwatch.stop();
         duration = stopwatch.elapsed;
         print(
@@ -268,7 +271,7 @@ class _DataSyncState extends State<DataSync> {
         // await Future.delayed(Duration(seconds: 5));
         stopwatch.start();
         Transaction2 transaction2 = Transaction2();
-        await transaction2.getTransaction2FromWeb(widget.isFirstTimeSync);
+        await transaction2.getTransaction2FromWeb(isFirstTimeSync);
         setState(() {
           _currentStep = 12;
         });
@@ -287,7 +290,9 @@ class _DataSyncState extends State<DataSync> {
         Timer(Duration(milliseconds: 500), () {
           CompanyDetails.loadCompanyDetails();
           setSyncDate(dateTime: DateTime.now());
-          // localStorage?.setString("syncDate", DateTime.now().toIso8601String());
+          if (isFirstTimeSync) {
+            setFirstTimeSyncDate(dateTime: DateTime.now());
+          }
           DataSync.setSyncing(false);
           getApprovalListForNotification();
         });
@@ -300,10 +305,10 @@ class _DataSyncState extends State<DataSync> {
         getErrorSnackBar('Data not sync');
       }
     } else if (userModel.Type == 'Customer') {
-      if (widget.isFirstTimeSync) {
-        Customer1.isFirstTimeSync = widget.isFirstTimeSync;
-        Customer2.isFirstTimeSync = widget.isFirstTimeSync;
-        CustomerTransaction1.isFirstTimeSync = widget.isFirstTimeSync;
+      if (isFirstTimeSync) {
+        Customer1.isFirstTimeSync = isFirstTimeSync;
+        Customer2.isFirstTimeSync = isFirstTimeSync;
+        CustomerTransaction1.isFirstTimeSync = isFirstTimeSync;
       }
       try {
         Customer1 getAll = Customer1();
@@ -374,7 +379,7 @@ class _DataSyncState extends State<DataSync> {
 
         if (!calledSyncFunc) {
           calledSyncFunc = true;
-          if (!widget.isFirstTimeSync) {
+          if (!isFirstTimeSync) {
             await dataSync(context);
             await firstTimeSync(context);
           } else {
@@ -389,36 +394,221 @@ class _DataSyncState extends State<DataSync> {
           // }
         }
         await setRequiredData();
-        getSuccessSnackBar("Data Sync Completed");
-        if (DataSync.isSyncSuccessful) {
-          if (widget.isComingFromLogin) {
-            LoginPage.hasSynced = true;
-            Navigator.pushAndRemoveUntil(
-                context,
-                MaterialPageRoute(builder: (context) => Dashboard()),
-                (route) => false);
-          } else {
-            await isValidAppVersion();
-            // if(isAppVersionValid!=RxBool(true)){
-            //   Get.offAll(() => LoginPage());
-            //   // showUpdateAppAlertDialog();
-            //   return;
-            // }
-            Navigator.pop(context);
-          }
-        } else {
-          getErrorSnackBar("Data Sync could not Complete");
+        await setRequiredData();
 
+        int num = await retrieveNotSyncedDocument();
+        if (num == 0 &&(await isInternetAvailable())) {
+          List<Widget> titleRowWidgets = [
+            getHeadingText(
+                text: 'Data sync completed', color: barColor, fontSize: 16),
+            const SizedBox(width: 4,),
+            Icon(Icons.check_circle,color: Colors.green,)];
+          List<Widget> actions = [
+            Container(
+                width: MediaQuery.of(context).size.width,
+                alignment: Alignment.center,
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    // if (!isShowNegative)
+                    const Spacer(),
+
+                    TextButton(
+                      onPressed: () async {
+                        Navigator.pop(context);
+                        if (widget.isComingFromLogin) {
+                          LoginPage.hasSynced = true;
+                          Navigator.pushAndRemoveUntil(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => Dashboard()),
+                                  (route) => false);
+                        } else {
+                          Navigator.pop(context);
+                          await isValidAppVersion();
+                        }
+                      },
+                      child: getHeadingText(
+                        text: isFirstTimeSync?'Go to Dashboard':'Go Back',
+                        color: barColor,
+                      ),
+                    ),
+                  ],
+                )),
+          ];
+          showDialog(
+            context: context,
+            barrierDismissible: false,
+            builder: (BuildContext context) {
+              if (Platform.isIOS) {
+                return CupertinoAlertDialog(
+                  title: Row(
+                    children: titleRowWidgets,
+                  ),
+                  content: Text("Your syncing has been completed"),
+                  actions: actions,
+                );
+              } else {
+                return AlertDialog(
+                  title: Row(
+                    children: titleRowWidgets,
+                  ),
+                  content: Text("Your syncing has been completed"),
+                  actions: actions,
+                );
+              }
+            },
+          );
+        }
+        else {
           setState(() {
             _currentStep = 0;
           });
+          List<Widget> titleRowWidgets = [
+            getHeadingText(
+                text: 'Sync Not completed', color: Colors.red, fontSize: 16),
+            const SizedBox(width: 4,),
+            Icon(Icons.error,color: Colors.red,)
+          ];
+          List<Widget> actions = [
+            Container(
+                width: MediaQuery.of(context).size.width,
+                alignment: Alignment.center,
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Expanded(
+                      child: TextButton(
+                        onPressed: () async {
+
+                          Navigator.pop(context);
+                          if (widget.isComingFromLogin) {
+                            LoginPage.hasSynced = true;
+                            Navigator.pushAndRemoveUntil(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => Dashboard()),
+                                    (route) => false);
+                          } else {
+                            Navigator.pop(context);
+                            await isValidAppVersion();
+                          }
+                        },
+                        child: getHeadingText(
+                          text: isFirstTimeSync?'Go to Dashboard':'Go Back',
+                          color: barColor,
+                        ),
+                      ),
+                    ),
+
+                    Expanded(
+                      child: TextButton(
+                        onPressed: () {
+                          Get.to(() => ShareDatabase());
+                        },
+                        child: getHeadingText(
+                          text: 'Share Info',
+                          color: barColor,
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      child: TextButton(
+                        onPressed: () {
+                          calledSyncFunc = false;
+                          Navigator.pop(context);
+                          initConnectivity();
+                        },
+                        child: getHeadingText(
+                          text: 'Re sync',
+                          color: Colors.red,
+                        ),
+                      ),
+                    ),
+
+                  ],
+                )),
+          ];
+          showDialog(
+            context: context,
+            barrierDismissible: false,
+            builder: (BuildContext context) {
+              if (Platform.isIOS) {
+                return CupertinoAlertDialog(
+                  title: Row(
+                    children: titleRowWidgets,
+                  ),
+                  content: Text("$num record(s) not synced with server"),
+                  actions: actions,
+                );
+              } else {
+                return AlertDialog(
+                  title: Row(
+                    children: titleRowWidgets,
+                  ),
+                  content: Row(
+                    children: [
+                      Text("$num ",
+                          style:TextStyle(
+                              color:Colors.red,
+                              fontSize: 22,
+                              decoration: TextDecoration.underline,
+                              decorationColor: Colors.red,
+                              fontWeight: FontWeight.bold
+                          )),
+                      Text("record(s) not synced with server"),
+                    ],
+                  ),
+                  actions: actions,
+                );
+              }
+            },
+          );
         }
+        getSuccessSnackBar("Data Sync Completed");
+        // if (DataSync.isSyncSuccessful) {
+        //   if (widget.isComingFromLogin) {
+        //     LoginPage.hasSynced = true;
+        //     Navigator.pushAndRemoveUntil(
+        //         context,
+        //         MaterialPageRoute(builder: (context) => Dashboard()),
+        //         (route) => false);
+        //   } else {
+        //     await isValidAppVersion();
+        //     // if(isAppVersionValid!=RxBool(true)){
+        //     //   Get.offAll(() => LoginPage());
+        //     //   // showUpdateAppAlertDialog();
+        //     //   return;
+        //     // }
+        //     Navigator.pop(context);
+        //   }
+        // }
+        // else {
+        //   getErrorSnackBar("Data Sync could not Complete");
+        //
+        //   setState(() {
+        //     _currentStep = 0;
+        //   });
+        // }
     }
   }
 
   @override
   void initState() {
     super.initState();
+    Timer(Duration(milliseconds: 500), () {
+      checkSync();
+    });
+  }
+
+  checkSync() async {
+    DateTime? dateTime = getFirstTimeDataSyncDate();
+    isFirstTimeSync = dateTime == null;
+    print(isFirstTimeSync);
+    if (isFirstTimeSync) {
+      await deleteDatabase();
+      setFirstTimeSyncDate(dateTime: null);
+    }
     Timer(Duration(milliseconds: 500), () {
       // _connectivitySubscription =
       //     _connectivity.onConnectivityChanged.listen(_updateConnectionStatus);

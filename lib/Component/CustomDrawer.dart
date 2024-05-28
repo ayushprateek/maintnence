@@ -416,7 +416,6 @@ class _CustomDrawerState extends State<CustomDrawer> {
                                 builder: ((context) => DataSync(
                                       "/GetData",
                                       isComingFromLogin: false,
-                                      isFirstTimeSync: false,
                                     )))).then((value) {
                           setState(() {});
                         });

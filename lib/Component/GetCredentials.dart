@@ -30,3 +30,11 @@ DateTime? getDataSyncDate() {
   String str = localStorage?.getString('syncDate')?.toString() ?? '';
   return DateTime.tryParse(str);
 }
+DateTime? getFirstTimeDataSyncDate() {
+  String str = localStorage?.getString('firstTimeSyncDate')?.toString() ?? '';
+  return DateTime.tryParse(str);
+}
+setFirstTimeSyncDate({required DateTime? dateTime}) {
+  localStorage?.setString(
+      'firstTimeSyncDate', dateTime?.toIso8601String() ?? '');
+}

@@ -72,7 +72,7 @@ class _LoginPageState extends State<LoginPage> {
       DateTime now = DateTime.now();
       if (syncDate != null && syncDate?.day != now.day) {
         Get.to(() => DataSync('/GetData',
-            isComingFromLogin: false, isFirstTimeSync: false));
+            isComingFromLogin: false,));
       } else {
         setState(() {});
       }
@@ -311,7 +311,7 @@ class _LoginPageState extends State<LoginPage> {
                         builder: (context) => new DataSync(
                               "/GetAll",
                               isComingFromLogin: true,
-                              isFirstTimeSync: true,
+
                             ))));
           } else {
             getErrorSnackBar('Invalid username/password');
