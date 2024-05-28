@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:maintenance/Component/ClearTextFieldData.dart';
 import 'package:maintenance/Component/CustomColor.dart';
 import 'package:maintenance/Component/CustomFont.dart';
 import 'package:maintenance/Component/GetFormattedDate.dart';
@@ -267,7 +268,9 @@ class _SearchGoodsReceiptNoteState extends State<SearchGoodsReceiptNote> {
                         );
                       }
                       return InkWell(
-                        onDoubleTap: (){},
+                        onDoubleTap: (){
+                          navigateToGoodsReceiptNoteDocument(TransId: snapshot.data![index].TransId??'');
+                        },
                         child: Container(
                           decoration: BoxDecoration(
                             color: Colors.white,

@@ -31,7 +31,11 @@ import 'package:maintenance/Sync/SyncModels/MNJCD1.dart';
 import 'package:maintenance/Sync/SyncModels/MNJCD2.dart';
 import 'package:maintenance/Sync/SyncModels/MNOCLD.dart';
 import 'package:maintenance/Sync/SyncModels/MNOJCD.dart';
+import 'package:maintenance/Sync/SyncModels/PROPDN.dart';
 import 'package:maintenance/Sync/SyncModels/PROPRQ.dart';
+import 'package:maintenance/Sync/SyncModels/PRPDN1.dart';
+import 'package:maintenance/Sync/SyncModels/PRPDN2.dart';
+import 'package:maintenance/Sync/SyncModels/PRPDN3.dart';
 import 'package:maintenance/Sync/SyncModels/PRPRQ1.dart';
 import 'package:maintenance/main.dart';
 
@@ -52,8 +56,9 @@ import 'package:maintenance/Purchase/PurchaseRequest/ItemDetails/ItemDetails.dar
 
 //------------------------------ GOODS RECEIPT NOTES------------
 import 'package:maintenance/GoodsReceiptNote/GeneralData.dart' as grnGenData;
-import 'package:maintenance/Purchase/PurchaseRequest/ItemDetails/EditItems.dart'
-    as grnEditItems;
+import 'package:maintenance/GoodsReceiptNote/Address/ShippingAddress.dart' as grnShipAddress;
+import 'package:maintenance/GoodsReceiptNote/Address/BillingAddress.dart' as grnBillAddress;
+import 'package:maintenance/Purchase/PurchaseRequest/ItemDetails/EditItems.dart' as grnEditItems;
 import 'package:maintenance/GoodsReceiptNote/ItemDetails/ItemDetails.dart'
     as grnItemDetails;
 
@@ -693,6 +698,134 @@ class ClearGRNDocument {
     grnGenData.GeneralData.hasCreated = false;
     grnGenData.GeneralData.hasUpdated = false;
   }
+  static setGeneralDataTextFields({
+    required PROPDN data
+}) {
+    grnGenData.GeneralData.iD = data.ID?.toString()??'';
+    grnGenData.GeneralData.transId = data.TransId??'';
+    grnGenData.GeneralData.cardCode = data.CardCode??'';
+    grnGenData.GeneralData.cardName = data.CardName??'';
+    grnGenData.GeneralData.refNo = data.RefNo??'';
+    grnGenData.GeneralData.contactPersonId = data.ContactPersonId?.toString()??'';
+    grnGenData.GeneralData.contactPersonName = data.ContactPersonName??'';
+    grnGenData.GeneralData.mobileNo = data.MobileNo??'';
+    grnGenData.GeneralData.postingDate = getFormattedDate(data.PostingDate);
+    grnGenData.GeneralData.validUntill =
+        getFormattedDate(data.ValidUntill);
+    grnGenData.GeneralData.currency = data.Currency??'';
+    grnGenData.GeneralData.currRate = data.CurrRate?.toStringAsFixed(2)??'1';
+    grnGenData.GeneralData.paymentTermCode = data.PaymentTermCode??'';
+    grnGenData.GeneralData.paymentTermName = data.PaymentTermName??'';
+    grnGenData.GeneralData.paymentTermDays = data.PaymentTermDays?.toString()??'';
+    grnGenData.GeneralData.approvalStatus = data.ApprovalStatus??'Pending';
+    grnGenData.GeneralData.docStatus = data.DocStatus??'Open';
+    grnGenData.GeneralData.rPTransId = data.RPTransId??'';
+    grnGenData.GeneralData.dSTranId = data.DSTranId??'';
+    grnGenData.GeneralData.cRTransId = data.CRTransId??'';
+    grnGenData.GeneralData.baseTab = data.BaseTab??'';
+    grnGenData.GeneralData.totBDisc = data.TotBDisc?.toStringAsFixed(2)??'';
+    grnGenData.GeneralData.discPer = data.DiscPer?.toStringAsFixed(2)??'';
+    grnGenData.GeneralData.discVal = data.DiscVal?.toStringAsFixed(2)??'';
+    grnGenData.GeneralData.taxVal = data.TaxVal?.toStringAsFixed(2)??'';
+    grnGenData.GeneralData.docTotal = data.DocTotal?.toStringAsFixed(2)??'';
+    grnGenData.GeneralData.permanentTransId = data.PermanentTransId??'';
+    grnGenData.GeneralData.docEntry = data.DocEntry?.toString()??'';
+    grnGenData.GeneralData.docNum = data.DocNum??'';
+    grnGenData.GeneralData.createdBy = data.CreatedBy??'';
+    grnGenData.GeneralData.createDate = getFormattedDate(data.CreateDate);
+    grnGenData.GeneralData.updateDate = data.UpdatedBy??'';
+    grnGenData.GeneralData.approvedBy = data.ApprovedBy??'';
+    grnGenData.GeneralData.latitude = data.TransId??'';
+    grnGenData.GeneralData.longitude = data.Latitude??'';
+    grnGenData.GeneralData.updatedBy = data.Longitude??'';
+    grnGenData.GeneralData.branchId = data.BranchId??'';
+    grnGenData.GeneralData.remarks = data.Remarks??'';
+    grnGenData.GeneralData.localDate = data.LocalDate??'';
+    grnGenData.GeneralData.whsCode = data.WhsCode??'';
+    grnGenData.GeneralData.objectCode = data.ObjectCode??'';
+    grnGenData.GeneralData.error = data.Error??'';
+    grnGenData.GeneralData.postingAddress = data.PostingAddress??'';
+    grnGenData.GeneralData.tripTransId = data.TripTransId??'';
+    grnGenData.GeneralData.deptCode = data.DeptCode??'';
+    grnGenData.GeneralData.deptName = data.DeptName??'';
+    grnGenData.GeneralData.isSelected = true;
+    grnGenData.GeneralData.hasCreated = data.hasCreated;
+    grnGenData.GeneralData.hasUpdated = data.hasUpdated;
+  }
+  static clearShippingAddressTextFields(){
+//todo:
+  }
+  static clearBillingAddressTextFields(){
+//todo:
+  }
+  
+  static setShippingAddressTextFields({
+    required PRPDN2 prpdn2
+}) {
+
+
+    grnShipAddress.ShippingAddress.CityName =
+    prpdn2.CityName.toString();
+    grnShipAddress.ShippingAddress.hasCreated = prpdn2.hasCreated;
+    grnShipAddress.ShippingAddress.hasUpdated = prpdn2.hasUpdated;
+    grnShipAddress.ShippingAddress.CityCode =
+    prpdn2.CityCode.toString();
+    grnShipAddress.ShippingAddress.Addres = prpdn2.Address.toString();
+    grnShipAddress.ShippingAddress.CountryName =
+    prpdn2.CountryName.toString();
+    grnShipAddress.ShippingAddress.CountryCode =
+    prpdn2.CountryCode.toString();
+    grnShipAddress.ShippingAddress.StateName =
+    prpdn2.StateName.toString();
+    grnShipAddress.ShippingAddress.RouteCode =
+    prpdn2.RouteCode.toString();
+    grnShipAddress.ShippingAddress.StateCode =
+    prpdn2.StateCode.toString();
+    grnShipAddress.ShippingAddress.Latitude =
+    double.tryParse(prpdn2.Latitude.toString()) ??
+    0.0;
+    grnShipAddress.ShippingAddress.Longitude =
+    double.tryParse(prpdn2.Longitude.toString()) ??
+    0.0;
+    grnShipAddress.ShippingAddress.RowId =
+    int.parse(prpdn2.RowId.toString());
+    grnShipAddress.ShippingAddress.AddCode =
+    prpdn2.AddressCode.toString();
+    
+  }
+  
+  static setBillingAddressTextFields({
+    required PRPDN3 prpdn3
+}) {
+    
+
+    grnBillAddress.BillingAddress.CityName =
+    prpdn3.CityName.toString();
+    grnBillAddress.BillingAddress.hasCreated = prpdn3.hasCreated;
+    grnBillAddress.BillingAddress.hasUpdated = prpdn3.hasUpdated;
+    grnBillAddress.BillingAddress.CityCode =
+    prpdn3.CityCode.toString();
+    grnBillAddress.BillingAddress.Addres = prpdn3.Address.toString();
+    grnBillAddress.BillingAddress.CountryName =
+    prpdn3.CountryName.toString();
+    grnBillAddress.BillingAddress.CountryCode =
+    prpdn3.CountryCode.toString();
+    grnBillAddress.BillingAddress.StateName =
+    prpdn3.StateName.toString();
+    grnBillAddress.BillingAddress.StateCode =
+    prpdn3.StateCode.toString();
+    grnBillAddress.BillingAddress.Latitude =
+    double.tryParse(prpdn3.Latitude.toString()) ??
+    0.0;
+    grnBillAddress.BillingAddress.Longitude =
+    double.tryParse(prpdn3.Longitude.toString()) ??
+    0.0;
+    grnBillAddress.BillingAddress.RowId =
+    int.parse(prpdn3.RowId.toString());
+    grnBillAddress.BillingAddress.AddCode =
+    prpdn3.AddressCode.toString();
+    
+  }
 
   static clearEditItems() {
     grnEditItems.EditItems.id = '';
@@ -751,7 +884,27 @@ goToNewGRNDocument() async {
   });
 }
 
-class ClearSTRDocument {
+navigateToGoodsReceiptNoteDocument({required String TransId}) async {
+  List<PROPDN> list = await retrievePROPDNById(null, 'TransId = ?', [TransId]);
+  if (list.isNotEmpty) {
+    ClearGRNDocument.setGeneralDataTextFields(data: list[0]);
+  }
+  List<PRPDN2> PRPDN2List = await retrievePRPDN2ById(null, 'TransId = ?', [TransId]);
+  if (PRPDN2List.isNotEmpty) {
+    ClearGRNDocument.setShippingAddressTextFields(prpdn2: PRPDN2List[0]);
+  }
+  List<PRPDN3> PRPDN3List = await retrievePRPDN3ById(null, 'TransId = ?', [TransId]);
+  if (PRPDN3List.isNotEmpty) {
+    ClearGRNDocument.setBillingAddressTextFields(prpdn3: PRPDN3List[0]);
+  }
+  grnItemDetails.ItemDetails.items=await retrievePRPDN1ById(null, 'TransId = ?', [TransId]);
+
+
+  Get.offAll(()=>GoodsRecepitNote(0));
+}
+
+
+class ClearInternalRequestDocument {
   static clearGeneralDataTextFields() {
     internalGenData.GeneralData.iD = '';
     internalGenData.GeneralData.transId = '';
@@ -824,8 +977,8 @@ class ClearSTRDocument {
 }
 
 goToNewInternalRequestDocument() async {
-  await ClearSTRDocument.clearGeneralDataTextFields();
-  await ClearSTRDocument.clearEditItems();
+  await ClearInternalRequestDocument.clearGeneralDataTextFields();
+  await ClearInternalRequestDocument.clearEditItems();
   internalItemDetails.ItemDetails.items.clear();
   getLastDocNum("PRST", null).then((snapshot) async {
     int DocNum = snapshot[0].DocNumber - 1;
@@ -844,4 +997,23 @@ goToNewInternalRequestDocument() async {
     print(internalGenData.GeneralData.transId);
     Get.offAll(() => InternalRequest(0));
   });
+}
+
+navigateToInternalRequestDocument({required String TransId}) async {
+  List<PROPDN> list = await retrievePROPDNById(null, 'TransId = ?', [TransId]);
+  if (list.isNotEmpty) {
+    ClearGRNDocument.setGeneralDataTextFields(data: list[0]);
+  }
+  List<PRPDN2> PRPDN2List = await retrievePRPDN2ById(null, 'TransId = ?', [TransId]);
+  if (PRPDN2List.isNotEmpty) {
+    ClearGRNDocument.setShippingAddressTextFields(prpdn2: PRPDN2List[0]);
+  }
+  List<PRPDN3> PRPDN3List = await retrievePRPDN3ById(null, 'TransId = ?', [TransId]);
+  if (PRPDN3List.isNotEmpty) {
+    ClearGRNDocument.setBillingAddressTextFields(prpdn3: PRPDN3List[0]);
+  }
+  grnItemDetails.ItemDetails.items=await retrievePRPDN1ById(null, 'TransId = ?', [TransId]);
+
+
+  Get.offAll(()=>GoodsRecepitNote(0));
 }

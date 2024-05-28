@@ -223,7 +223,7 @@ class _AddItemsState extends State<AddItems> {
                                         snapshot.data![index].ItemName +
                                             " is already added");
                                   } else {
-                                    ClearSTRDocument.clearEditItems();
+                                    ClearInternalRequestDocument.clearEditItems();
                                     EditItems.transId = GeneralData.transId;
                                     EditItems.fromWhsCode = GeneralData.fromWhsCode;
                                     EditItems.toWhsCode = GeneralData.toWhsCode;
