@@ -377,8 +377,8 @@ Future<String> insertIMOGDIToServer(BuildContext? context,
             // map = jsonDecode(res.body);
             map["has_created"] = 0;
             var x = await db.update("IMOGDI", map,
-                where: "TransId = ? AND RowId = ?",
-                whereArgs: [map["TransId"], map["RowId"]]);
+                where: "TransId = ?",
+                whereArgs: [map["TransId"]]);
             print(x.toString());
           }
         }
@@ -428,8 +428,8 @@ Future<void> updateIMOGDIOnServer(BuildContext? context,
           final Database db = await initializeDB(context);
           map["has_updated"] = 0;
           var x = await db.update("IMOGDI", map,
-              where: "TransId = ? AND RowId = ?",
-              whereArgs: [map["TransId"], map["RowId"]]);
+              where: "TransId = ?",
+              whereArgs: [map["TransId"]]);
           print(x.toString());
         }
       }
