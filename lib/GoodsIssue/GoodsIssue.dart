@@ -15,6 +15,7 @@ import 'package:maintenance/Component/SnackbarComponent.dart';
 import 'package:maintenance/Dashboard.dart';
 import 'package:maintenance/DatabaseInitialization.dart';
 import 'package:maintenance/GoodsIssue/GeneralData.dart';
+import 'package:maintenance/GoodsIssue/ItemDetails/CalculateGoodIssue.dart';
 import 'package:maintenance/GoodsIssue/ItemDetails/ItemDetails.dart';
 import 'package:maintenance/GoodsIssue/SearchGoodsIssue.dart';
 import 'package:maintenance/Sync/DataSync.dart';
@@ -269,6 +270,7 @@ class _JobCardState extends State<GoodsIssue> {
               //   }
               // }
 
+              calculateGoodsIssue();
               print(generalData.toJson());
               generalData
                   .toJson()

@@ -9,6 +9,7 @@ import 'package:maintenance/Component/LogFileFunctions.dart';
 import 'package:maintenance/Component/SnackbarComponent.dart';
 import 'package:maintenance/GoodsIssue/GeneralData.dart';
 import 'package:maintenance/GoodsIssue/GoodsIssue.dart';
+import 'package:maintenance/GoodsIssue/ItemDetails/CalculateGoodIssue.dart';
 import 'package:maintenance/GoodsIssue/ItemDetails/ItemDetails.dart';
 import 'package:maintenance/Lookups/DepartmentLookup.dart';
 import 'package:maintenance/Lookups/EmployeeLookup.dart';
@@ -330,6 +331,7 @@ class _EditCheckListState extends State<EditItems> {
                                           //todo: updating
                                         }
 
+                                      calculateGoodsIssue();
                                       Get.offAll(() => GoodsIssue(1));
 
                                       getSuccessSnackBar("Check List Updated");
@@ -366,6 +368,7 @@ class _EditCheckListState extends State<EditItems> {
                                         CreateDate: DateTime.now(),
                                         insertedIntoDatabase: false,
                                       );
+                                      calculateGoodsIssue();
                                       ItemDetails.items.add(mncld1);
 
                                       Get.offAll(() => GoodsIssue(1));

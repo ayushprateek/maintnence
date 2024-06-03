@@ -5,6 +5,7 @@ import 'package:maintenance/Component/CustomFont.dart';
 import 'package:maintenance/Component/GetFormattedDate.dart';
 import 'package:maintenance/Component/GetTextField.dart';
 import 'package:maintenance/Component/SnackbarComponent.dart';
+import 'package:maintenance/GoodsIssue/ItemDetails/CalculateGoodIssue.dart';
 import 'package:maintenance/Lookups/DepartmentLookup.dart';
 import 'package:maintenance/Lookups/OCRDLookup.dart';
 import 'package:maintenance/Lookups/TripLookup.dart';
@@ -61,6 +62,7 @@ class GeneralData extends StatefulWidget {
   static String? deptCode;
   static String? deptName;
   static bool validate() {
+    calculateGoodsIssue();
     bool success = true;
     if (transId == "" || transId == null) {
       getErrorSnackBar("Invalid TransId");
