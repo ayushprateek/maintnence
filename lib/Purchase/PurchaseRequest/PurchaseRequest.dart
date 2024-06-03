@@ -179,22 +179,7 @@ class _JobCardState extends State<PurchaseRequest> {
     );
   }
 
-  bool isSelectedAndCancelled() {
-    bool flag = GeneralData.isSelected && GeneralData.docStatus == "Cancelled";
-    flag = flag || GeneralData.docStatus == "Close";
-    return flag;
-  }
 
-  bool isSalesQuotationDocClosed() {
-    return GeneralData.docStatus == null
-        ? false
-        : (GeneralData.docStatus!.toUpperCase().contains('CLOSE') ||
-            GeneralData.approvalStatus != 'Pending');
-  }
-
-  bool isSelectedButNotCancelled() {
-    return GeneralData.isSelected && GeneralData.docStatus != "Cancelled";
-  }
 
   save() async {
     //GeneralData.isSelected
@@ -354,4 +339,20 @@ class _JobCardState extends State<PurchaseRequest> {
       }
     }
   }
+}
+bool isSelectedAndCancelled() {
+  bool flag = GeneralData.isSelected && GeneralData.docStatus == "Cancelled";
+  flag = flag || GeneralData.docStatus == "Close";
+  return flag;
+}
+
+bool isSalesQuotationDocClosed() {
+  return GeneralData.docStatus == null
+      ? false
+      : (GeneralData.docStatus!.toUpperCase().contains('CLOSE') ||
+      GeneralData.approvalStatus != 'Pending');
+}
+
+bool isSelectedButNotCancelled() {
+  return GeneralData.isSelected && GeneralData.docStatus != "Cancelled";
 }

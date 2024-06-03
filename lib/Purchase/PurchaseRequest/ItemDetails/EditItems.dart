@@ -58,6 +58,7 @@ class EditItems extends StatefulWidget {
   static String? supplierCode;
 
   static bool isUpdating = false;
+  static bool isInserted = false;
 
   EditItems({
     super.key,

@@ -607,6 +607,7 @@ class ClearPurchaseRequestDocument {
     purchaseEditItems.EditItems.lineDiscount = '';
     purchaseEditItems.EditItems.lineTotal = '';
     purchaseEditItems.EditItems.isUpdating = false;
+    purchaseEditItems.EditItems.isInserted = false;
   }
 }
 
