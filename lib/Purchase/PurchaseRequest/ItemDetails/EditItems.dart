@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:maintenance/Component/CompanyDetails.dart';
 import 'package:maintenance/Component/CustomColor.dart';
 import 'package:maintenance/Component/GetTextField.dart';
 import 'package:maintenance/Component/IsNumeric.dart';
+import 'package:maintenance/Component/LogFileFunctions.dart';
 import 'package:maintenance/Component/SnackbarComponent.dart';
 import 'package:maintenance/Lookups/DepartmentLookup.dart';
 import 'package:maintenance/Lookups/EmployeeLookup.dart';
@@ -104,7 +106,35 @@ class _EditCheckListState extends State<EditItems> {
   void initState() {
     super.initState();
   }
-
+  void calculate() {
+    try {
+      double qty = roundToTwoDecimal(double.tryParse(_consumptionQty.text));
+      double price = roundToTwoDecimal(double.tryParse(_price.text.toString()));
+      double taxRate = roundToTwoDecimal(double.tryParse(_taxRate.text));
+      double discount = roundToTwoDecimal(double.tryParse(_lineDiscount.text));
+      // double msp = roundToTwoDecimal(double.tryParse(EditItems.MSP.toString()));
+      double msp = 0.0;
+      double total_tax;
+      if (CompanyDetails.ocinModel?.IsMtv == true) {
+        if (price > msp) {
+          total_tax = ((price * qty) - discount) * taxRate / 100;
+        } else {
+          total_tax = ((msp * qty) - discount) * taxRate / 100;
+        }
+      } else {
+        total_tax = ((price * qty) - discount) * taxRate / 100;
+      }
+      double lineTotal = roundToTwoDecimal(total_tax);
+      lineTotal += roundToTwoDecimal(price * qty - discount);
+      EditItems.lineTotal=_lineTotal.text = lineTotal.toStringAsFixed(2);
+      setState(() {});
+    } catch (e) {
+      writeToLogFile(
+          text: e.toString(),
+          fileName: StackTrace.current.toString(),
+          lineNo: 141);
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -168,6 +198,7 @@ class _EditCheckListState extends State<EditItems> {
               controller: _consumptionQty,
               labelText: 'Consumption Qty',
               onChanged: (val) {
+                calculate();
                 EditItems.consumptionQty = val;
               },
               keyboardType: getDecimalKeyboardType(),
@@ -239,6 +270,7 @@ class _EditCheckListState extends State<EditItems> {
               labelText: 'Price',
               onChanged: (val) {
                 EditItems.price = val;
+                calculate();
               },
               keyboardType: getDecimalKeyboardType(),
               inputFormatters: [getDecimalRegEx()],
@@ -260,6 +292,7 @@ class _EditCheckListState extends State<EditItems> {
                           EditItems.taxCode = _taxCode.text = oudp.TaxCode;
                           EditItems.taxRate =
                               _taxRate.text = oudp.Rate.toStringAsFixed(2);
+                          calculate();
                         });
                       }));
                 }),
@@ -277,6 +310,7 @@ class _EditCheckListState extends State<EditItems> {
               inputFormatters: [getDecimalRegEx()],
               onChanged: (val) {
                 EditItems.lineDiscount = val;
+                calculate();
               },
             ),
             getDisabledTextField(
