@@ -4,6 +4,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:maintenance/3DView.dart';
 import 'package:maintenance/CheckListDocument/CheckListDocument.dart';
 import 'package:maintenance/Component/AppConfig.dart';
 import 'package:maintenance/Component/CheckInternet.dart';
@@ -17,6 +18,7 @@ import 'package:maintenance/Component/IsValidAppVersion.dart';
 import 'package:maintenance/Component/LogFileFunctions.dart';
 import 'package:maintenance/Component/MenuDescription.dart';
 import 'package:maintenance/Component/SnackbarComponent.dart';
+import 'package:maintenance/DrangAndDropItem.dart';
 import 'package:maintenance/GoodsIssue/GoodsIssue.dart';
 import 'package:maintenance/GoodsReceiptNote/GoodsReceiptNote.dart';
 import 'package:maintenance/InternalRequest/InternalRequest.dart';
@@ -427,6 +429,34 @@ class _CustomDrawerState extends State<CustomDrawer> {
                     child: ListTile(
                       title: Text(
                         'Sync Data',
+                        style: TextStyle(color: headColor),
+                      ),
+                      leading: Icon(Icons.sync, color: Colors.white),
+                      trailing:
+                          Icon(Icons.keyboard_arrow_right, color: Colors.white),
+                    ),
+                  ),
+                  InkWell(
+                    onTap: (){
+                      Get.to(()=>View3DModel(title: 'View 3D Model',));
+                    },
+                    child: ListTile(
+                      title: Text(
+                        'View 3D Model',
+                        style: TextStyle(color: headColor),
+                      ),
+                      leading: Icon(Icons.sync, color: Colors.white),
+                      trailing:
+                          Icon(Icons.keyboard_arrow_right, color: Colors.white),
+                    ),
+                  ),
+                  InkWell(
+                    onTap: (){
+                      Get.to(()=>ExampleDragAndDrop( ));
+                    },
+                    child: ListTile(
+                      title: Text(
+                        'Drag and Drop',
                         style: TextStyle(color: headColor),
                       ),
                       leading: Icon(Icons.sync, color: Colors.white),

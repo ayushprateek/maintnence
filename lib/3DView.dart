@@ -16,20 +16,20 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'Flutter 3D controller example'),
+      home: const View3DModel(title: 'Flutter 3D controller example'),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
+class View3DModel extends StatefulWidget {
+  const View3DModel({super.key, required this.title});
   final String title;
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<View3DModel> createState() => _View3DModelState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _View3DModelState extends State<View3DModel> {
   Flutter3DController controller = Flutter3DController();
   String? chosenAnimation;
   String? chosenTexture;
@@ -130,7 +130,7 @@ class _MyHomePageState extends State<MyHomePage> {
           //You can set your custom color or use [Colors.transparent] for hiding loadingProgressBar.
           progressBarColor: Colors.blue,
           controller: controller,
-          src: 'assets/business_man.glb',
+          src: 'images/business_man.glb',
           //src: 'assets/sheen_chair.glb',
         ),
       ),
