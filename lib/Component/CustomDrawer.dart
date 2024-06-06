@@ -26,6 +26,7 @@ import 'package:maintenance/JobCard/JobCard.dart';
 import 'package:maintenance/Purchase/PurchaseRequest/PurchaseRequest.dart';
 import 'package:maintenance/Sync/DataSync.dart';
 import 'package:maintenance/Sync/SyncModels/ORTU.dart';
+import 'package:maintenance/zzzz.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 import '../main.dart';
@@ -465,6 +466,20 @@ class _CustomDrawerState extends State<CustomDrawer> {
                     ),
                   ),
                   // InkWell(
+                  //   onTap: (){
+                  //     Get.to(()=>ImageSwapPage( ));
+                  //   },
+                  //   child: ListTile(
+                  //     title: Text(
+                  //       'Drag and Drop 2',
+                  //       style: TextStyle(color: headColor),
+                  //     ),
+                  //     leading: Icon(Icons.sync, color: Colors.white),
+                  //     trailing:
+                  //         Icon(Icons.keyboard_arrow_right, color: Colors.white),
+                  //   ),
+                  // ),
+                  // InkWell(
                   //   onTap: () async {
                   //     Navigator.push(
                   //         context,
@@ -599,7 +614,6 @@ class _CustomDrawerState extends State<CustomDrawer> {
                   //         Icon(Icons.keyboard_arrow_right, color: Colors.white),
                   //   ),
                   // ),
-
                   InkWell(
                     onTap: () async {
                       List<Widget> titleRowWidgets = [Text("Share Via")];

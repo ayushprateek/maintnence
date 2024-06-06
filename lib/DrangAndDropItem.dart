@@ -9,20 +9,12 @@ void main() {
   );
 }
 
-const List<Item> _items = [
+ List<Item> _items = [
   Item(
-    name: 'Spinach Pizza',
-    totalPriceCents: 1299,
-    uid: '1',
-    imageProvider: NetworkImage('https://docs.flutter.dev'
-        'cookbook/img-files/effects/split-check/Food1.jpg'),
-  ),
-  Item(
-    name: 'Veggie Delight',
+    name: 'Tyre',
     totalPriceCents: 799,
     uid: '2',
-    imageProvider: NetworkImage('https://docs.flutter.dev'
-        '/cookbook/img-files/effects/split-check/Food2.jpg'),
+    imageProvider: NetworkImage('https://m.media-amazon.com/images/I/71iYxdZgElL._AC_UF1000,1000_QL80_.jpg'),
   ),
   Item(
     name: 'Chicken Parmesan',
@@ -135,6 +127,7 @@ class _ExampleDragAndDropState extends State<ExampleDragAndDrop>
   Widget _buildMenuItem({
     required Item item,
   }) {
+
     return LongPressDraggable<Item>(
       data: item,
       dragAnchorStrategy: pointerDragAnchorStrategy,
@@ -177,6 +170,7 @@ class _ExampleDragAndDropState extends State<ExampleDragAndDrop>
             );
           },
           onAcceptWithDetails: (details) {
+            _items=_items.reversed.toList();
             _itemDroppedOnCustomerCart(
               item: details.data,
               customer: customer,
