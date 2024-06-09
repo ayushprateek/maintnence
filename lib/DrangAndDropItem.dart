@@ -68,43 +68,39 @@ class _ExampleDragAndDropState extends State<ExampleDragAndDrop>
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFFF7F7F7),
-      appBar: _buildAppBar(),
-      body: _buildContent(),
-    );
-  }
-
-  PreferredSizeWidget _buildAppBar() {
-    return AppBar(
-      iconTheme: const IconThemeData(color: Color(0xFFF64209)),
-      title: Text(
-        'Order Food',
-        style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-          fontSize: 36,
-          color: const Color(0xFFF64209),
-          fontWeight: FontWeight.bold,
-        ),
-      ),
-      backgroundColor: const Color(0xFFF7F7F7),
-      elevation: 0,
-    );
-  }
-
-  Widget _buildContent() {
-    return Stack(
-      children: [
-        SafeArea(
-          child: Column(
-            children: [
-              Expanded(
-                child: _buildMenuList(),
-              ),
-              _buildPeopleRow(),
-            ],
+      appBar: AppBar(
+        iconTheme: const IconThemeData(color: Color(0xFFF64209)),
+        title: Text(
+          'Order Food',
+          style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+            fontSize: 36,
+            color: const Color(0xFFF64209),
+            fontWeight: FontWeight.bold,
           ),
         ),
-      ],
+        backgroundColor: const Color(0xFFF7F7F7),
+        elevation: 0,
+      ),
+      body: Stack(
+        children: [
+          SafeArea(
+            child: Column(
+              children: [
+                Expanded(
+                  child: _buildMenuList(),
+                ),
+                _buildPeopleRow(),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
+
+
+
+
 
   Widget _buildMenuList() {
     return ListView.separated(
@@ -127,7 +123,6 @@ class _ExampleDragAndDropState extends State<ExampleDragAndDrop>
   Widget _buildMenuItem({
     required Item item,
   }) {
-
     return LongPressDraggable<Item>(
       data: item,
       dragAnchorStrategy: pointerDragAnchorStrategy,

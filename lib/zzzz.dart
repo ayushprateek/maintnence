@@ -89,3 +89,91 @@
 //     );
 //   }
 // }
+
+import 'package:flutter/material.dart';
+
+class DragDemo extends StatefulWidget {
+  const DragDemo({super.key});
+
+  @override
+  State<DragDemo> createState() => _DragDemoState();
+}
+
+class _DragDemoState extends State<DragDemo> with TickerProviderStateMixin {
+  final GlobalKey _draggableKey = GlobalKey();
+  List<String> _items = [
+    'https://m.media-amazon.com/images/I/71iYxdZgElL._AC_UF1000,1000_QL80_.jpg',
+    'https://docs.flutter.dev/cookbook/img-files/effects/split-check/Food3.jpg',
+    'https://itfitt.com/assets/coming-soon.jpeg'
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Drag Demo'),
+      ),
+      body: Stack(
+        children: [
+          SafeArea(
+            child: Column(
+              children: [
+                Expanded(
+                  child: ListView.separated(
+                    padding: const EdgeInsets.all(16),
+                    itemCount: _items.length,
+                    separatorBuilder: (context, index) {
+                      return const SizedBox(
+                        height: 12,
+                      );
+                    },
+                    itemBuilder: (context, index) {
+                      final url = _items[index];
+                      return DragTarget(
+                        builder: (context, candidateItems, rejectedItems) {
+                          return LongPressDraggable(
+                            data: url,
+                            dragAnchorStrategy: pointerDragAnchorStrategy,
+                            feedback: FractionalTranslation(
+                              translation: const Offset(-0.5, -0.5),
+                              child: ClipRRect(
+                                key: _draggableKey,
+                                borderRadius: BorderRadius.circular(12),
+                                child: SizedBox(
+                                  height: 150,
+                                  width: 150,
+                                  child: Opacity(
+                                    opacity: 0.85,
+                                    child: Image.network(
+                                      url,
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            child: Image.network(
+                              url,
+                              fit: BoxFit.cover,
+                            ),
+                          );
+                        },
+                        onAcceptWithDetails: (details) {
+                          print('received $index $details');
+                          setState(() {
+                            _items[index]=details.data?.toString()??_items[index];
+                          });
+
+                        },
+                      );
+                    },
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}

@@ -451,13 +451,27 @@ class _CustomDrawerState extends State<CustomDrawer> {
                           Icon(Icons.keyboard_arrow_right, color: Colors.white),
                     ),
                   ),
+                  // InkWell(
+                  //   onTap: (){
+                  //     Get.to(()=>ExampleDragAndDrop( ));
+                  //   },
+                  //   child: ListTile(
+                  //     title: Text(
+                  //       'Drag and Drop',
+                  //       style: TextStyle(color: headColor),
+                  //     ),
+                  //     leading: Icon(Icons.sync, color: Colors.white),
+                  //     trailing:
+                  //         Icon(Icons.keyboard_arrow_right, color: Colors.white),
+                  //   ),
+                  // ),
                   InkWell(
                     onTap: (){
-                      Get.to(()=>ExampleDragAndDrop( ));
+                      Get.to(()=>DragDemo( ));
                     },
                     child: ListTile(
                       title: Text(
-                        'Drag and Drop',
+                        'DragDemo',
                         style: TextStyle(color: headColor),
                       ),
                       leading: Icon(Icons.sync, color: Colors.white),
