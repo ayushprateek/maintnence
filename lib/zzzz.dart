@@ -129,6 +129,7 @@ class _DragDemoState extends State<DragDemo> with TickerProviderStateMixin {
                     },
                     itemBuilder: (context, index) {
                       final url = _items[index];
+                      ///TODO:CREATE A MODEL CLASS TO PADD INDEX WITH OTHER DATA
                       return DragTarget(
                         builder: (context, candidateItems, rejectedItems) {
                           return LongPressDraggable(
@@ -160,6 +161,9 @@ class _DragDemoState extends State<DragDemo> with TickerProviderStateMixin {
                         },
                         onAcceptWithDetails: (details) {
                           print('received $index $details');
+                          //TODO: FOLLOWING IS THE SWAP PRODUCT LOGIC
+                          ///_items[details.index]=url;
+                          ///_items[index]=details.data?.toString()??_items[index];
                           setState(() {
                             _items[index]=details.data?.toString()??_items[index];
                           });
