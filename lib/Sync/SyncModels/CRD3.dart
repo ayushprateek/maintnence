@@ -164,7 +164,7 @@ Future<void> insertCRD3(Database db, {List? list}) async {
   stopwatch.start();
   for (var i = 0; i < customers.length; i += batchSize) {
     var end =
-    (i + batchSize < customers.length) ? i + batchSize : customers.length;
+        (i + batchSize < customers.length) ? i + batchSize : customers.length;
     var batchRecords = customers.sublist(i, end);
     await db.transaction((txn) async {
       var batch = txn.batch();
@@ -205,7 +205,7 @@ Future<void> insertCRD3(Database db, {List? list}) async {
         try {
           batch.update("CRD3", element,
               where:
-              "RowId = ? AND Code = ? AND ifnull(has_created,0) <> ? AND ifnull(has_updated,0) <> ?",
+                  "RowId = ? AND Code = ? AND ifnull(has_created,0) <> ? AND ifnull(has_updated,0) <> ?",
               whereArgs: [element["RowId"], element["Code"], 1, 1]);
         } catch (e) {
           writeToLogFile(
@@ -259,7 +259,6 @@ WHERE T1.Code IS NULL AND T1.RowId IS NULL;
   await db.delete('CRD3_Temp');
   // stopwatch.stop();
 }
-
 
 Future<List<CRD3Model>> retrieveCRD3(BuildContext context) async {
   final Database db = await initializeDB(context);
@@ -326,37 +325,38 @@ Future<void> insertCRD3ToServer(BuildContext? context,
       sentSuccessInServer = false;
       try {
         map.remove('ID');
-        String queryParams='Code=${list[i].Code}&RowId=${list[i].RowId}';
+        String queryParams = 'Code=${list[i].Code}&RowId=${list[i].RowId}';
         var res = await http
             .post(Uri.parse(prefix + "CRD3/Add?$queryParams"),
-            headers: header, body: jsonEncode(map))
+                headers: header, body: jsonEncode(map))
             .timeout(Duration(seconds: 30), onTimeout: () {
           writeToLogFile(
-              text: '500 error \nMap : $map', fileName: StackTrace.current.toString(), lineNo: 141);return http.Response('Error', 500);
+              text: '500 error \nMap : $map',
+              fileName: StackTrace.current.toString(),
+              lineNo: 141);
+          return http.Response('Error', 500);
         });
         response = await res.body;
 
         print("status");
         print(await res.statusCode);
-        if(res.statusCode != 201)
-        {
+        if (res.statusCode != 201) {
           await writeToLogFile(
-              text: '${res.statusCode} error \nMap : $map\nResponse : ${res.body}',
+              text:
+                  '${res.statusCode} error \nMap : $map\nResponse : ${res.body}',
               fileName: StackTrace.current.toString(),
               lineNo: 141);
         }
 
-        if(res.statusCode ==409)
-        {
+        if (res.statusCode == 409) {
           ///Already added in server
           final Database db = await initializeDB(context);
-          CRD3Model model=CRD3Model.fromJson(jsonDecode(res.body));
+          CRD3Model model = CRD3Model.fromJson(jsonDecode(res.body));
           var x = await db.update("CRD3", model.toJson(),
-              where: "Code = ? AND RowId = ?", whereArgs: [model.Code,model.RowId]);
+              where: "Code = ? AND RowId = ?",
+              whereArgs: [model.Code, model.RowId]);
           print(x.toString());
-        }
-        else
-        if (res.statusCode == 201 || res.statusCode == 500) {
+        } else if (res.statusCode == 201 || res.statusCode == 500) {
           sentSuccessInServer = true;
           if (res.statusCode == 201) {
             map['ID'] = jsonDecode(res.body)['ID'];
@@ -366,7 +366,7 @@ Future<void> insertCRD3ToServer(BuildContext? context,
                 where: "Code = ? AND RowId = ?",
                 whereArgs: [map["Code"], map["RowId"]]);
             print(x.toString());
-          }else{
+          } else {
             writeToLogFile(
                 text: '500 error \nMap : $map',
                 fileName: StackTrace.current.toString(),
@@ -411,16 +411,19 @@ Future<void> updateCRD3OnServer(BuildContext? context,
       Map<String, dynamic> map = list[i].toJson();
       var res = await http
           .put(Uri.parse(prefix + 'CRD3/Update'),
-          headers: header, body: jsonEncode(map))
+              headers: header, body: jsonEncode(map))
           .timeout(Duration(seconds: 30), onTimeout: () {
         writeToLogFile(
-            text: '500 error \nMap : $map', fileName: StackTrace.current.toString(), lineNo: 141);return http.Response('Error', 500);
+            text: '500 error \nMap : $map',
+            fileName: StackTrace.current.toString(),
+            lineNo: 141);
+        return http.Response('Error', 500);
       });
       print(await res.statusCode);
-      if(res.statusCode != 201)
-      {
+      if (res.statusCode != 201) {
         await writeToLogFile(
-            text: '${res.statusCode} error \nMap : $map\nResponse : ${res.body}',
+            text:
+                '${res.statusCode} error \nMap : $map\nResponse : ${res.body}',
             fileName: StackTrace.current.toString(),
             lineNo: 141);
       }
@@ -433,7 +436,7 @@ Future<void> updateCRD3OnServer(BuildContext? context,
               where: "Code = ? AND RowId = ?",
               whereArgs: [map["Code"], map["RowId"]]);
           print(x.toString());
-        }else{
+        } else {
           writeToLogFile(
               text: '500 error \nMap : $map',
               fileName: StackTrace.current.toString(),

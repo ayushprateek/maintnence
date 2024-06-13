@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:maintenance/Component/LogFileFunctions.dart';
 import 'package:maintenance/Component/SnackbarComponent.dart';
@@ -43,14 +42,13 @@ class OUDAR {
     this.BranchId,
   });
 
-  factory OUDAR.fromJson(Map<String, dynamic> json) =>
-      OUDAR(
+  factory OUDAR.fromJson(Map<String, dynamic> json) => OUDAR(
         ID: int.tryParse(json['ID'].toString()) ?? 0,
         RoleId: int.tryParse(json['RoleId'].toString()) ?? 0,
         OudaId: int.tryParse(json['OudaId'].toString()) ?? 0,
         Sel: json['Sel'] is bool ? json['Sel'] : json['Sel'] == 1,
         Readonly:
-        json['Readonly'] is bool ? json['Readonly'] : json['Readonly'] == 1,
+            json['Readonly'] is bool ? json['Readonly'] : json['Readonly'] == 1,
         BranchName: json['BranchName'] ?? '',
         Active: json['Active'] is bool ? json['Active'] : json['Active'] == 1,
         UpdateDate: DateTime.tryParse(json['UpdateDate'].toString()) ??
@@ -60,13 +58,12 @@ class OUDAR {
         CreatedBy: json['CreatedBy'] ?? '',
         Edit: json['Edit'] is bool ? json['Edit'] : json['Edit'] == 1,
         Created:
-        json['Created'] is bool ? json['Created'] : json['Created'] == 1,
+            json['Created'] is bool ? json['Created'] : json['Created'] == 1,
         UpdatedBy: json['UpdatedBy'] ?? '',
         BranchId: json['BranchId'] ?? '',
       );
 
-  Map<String, dynamic> toJson() =>
-      {
+  Map<String, dynamic> toJson() => {
         'ID': ID,
         'RoleId': RoleId,
         'OudaId': OudaId,
@@ -92,7 +89,7 @@ String oUDARToJson(List<OUDAR> data) =>
 
 Future<List<OUDAR>> dataSyncOUDAR() async {
   var res =
-  await http.get(headers: header, Uri.parse(prefix + "OUDAR" + postfix));
+      await http.get(headers: header, Uri.parse(prefix + "OUDAR" + postfix));
   print(res.body);
   return oUDARFromJson(res.body);
 }
@@ -156,7 +153,7 @@ Future<void> insertOUDAR(Database db, {List? list}) async {
   stopwatch.start();
   for (var i = 0; i < customers.length; i += batchSize) {
     var end =
-    (i + batchSize < customers.length) ? i + batchSize : customers.length;
+        (i + batchSize < customers.length) ? i + batchSize : customers.length;
     var batchRecords = customers.sublist(i, end);
     await db.transaction((txn) async {
       var batch = txn.batch();
@@ -257,15 +254,16 @@ Future<List<OUDAR>> retrieveOUDAR(BuildContext context) async {
   return queryResult.map((e) => OUDAR.fromJson(e)).toList();
 }
 
-Future<void> updateOUDAR(int id, Map<String, dynamic> values,
-    BuildContext context) async {
+Future<void> updateOUDAR(
+    int id, Map<String, dynamic> values, BuildContext context) async {
   final db = await initializeDB(context);
   try {
     db.transaction((db) async {
       await db.update('OUDAR', values, where: 'ID = ?', whereArgs: [id]);
     });
   } catch (e) {
-    writeToLogFile(text: e.toString(),
+    writeToLogFile(
+        text: e.toString(),
         fileName: StackTrace.current.toString(),
         lineNo: 141);
     getErrorSnackBar('Sync Error ' + e.toString());
@@ -276,11 +274,11 @@ Future<void> deleteOUDAR(Database db) async {
   await db.delete('OUDAR');
 }
 
-Future<List<OUDAR>> retrieveOUDARById(BuildContext? context, String str,
-    List l) async {
+Future<List<OUDAR>> retrieveOUDARById(
+    BuildContext? context, String str, List l) async {
   final Database db = await initializeDB(context);
   final List<Map<String, Object?>> queryResult =
-  await db.query('OUDAR', where: str, whereArgs: l);
+      await db.query('OUDAR', where: str, whereArgs: l);
   return queryResult.map((e) => OUDAR.fromJson(e)).toList();
 }
 
@@ -304,24 +302,28 @@ Future<void> insertOUDARToServer(BuildContext? context,
     if (list.isEmpty) {
       return;
     }
-    do {Map<String, dynamic> map = list[i].toJson();
+    do {
+      Map<String, dynamic> map = list[i].toJson();
       sentSuccessInServer = false;
       try {
         map.remove('ID');
         var res = await http
             .post(Uri.parse(prefix + "OUDAR/Add"),
-            headers: header, body: jsonEncode(map))
+                headers: header, body: jsonEncode(map))
             .timeout(Duration(seconds: 30), onTimeout: () {
           writeToLogFile(
-            text: '500 error \nMap : $map', fileName: StackTrace.current.toString(), lineNo: 141);return http.Response('Error', 500);
+              text: '500 error \nMap : $map',
+              fileName: StackTrace.current.toString(),
+              lineNo: 141);
+          return http.Response('Error', 500);
         });
         response = await res.body;
         print("eeaaae status");
         print(await res.statusCode);
-        if(res.statusCode != 201)
-        {
+        if (res.statusCode != 201) {
           await writeToLogFile(
-              text: '${res.statusCode} error \nMap : $map\nResponse : ${res.body}',
+              text:
+                  '${res.statusCode} error \nMap : $map\nResponse : ${res.body}',
               fileName: StackTrace.current.toString(),
               lineNo: 141);
         }
@@ -336,7 +338,7 @@ Future<void> insertOUDARToServer(BuildContext? context,
                 where: "TransId = ? AND RowId = ?",
                 whereArgs: [map["TransId"], map["RowId"]]);
             print(x.toString());
-          }else{
+          } else {
             writeToLogFile(
                 text: '500 error \nMap : $map',
                 fileName: StackTrace.current.toString(),
@@ -346,14 +348,15 @@ Future<void> insertOUDARToServer(BuildContext? context,
         print(res.body);
       } catch (e) {
         writeToLogFile(
-            text: '${e.toString()}\nMap : $map', fileName: StackTrace.current.toString(), lineNo: 141);
-  sentSuccessInServer = true;
+            text: '${e.toString()}\nMap : $map',
+            fileName: StackTrace.current.toString(),
+            lineNo: 141);
+        sentSuccessInServer = true;
+      }
+      i++;
+      print("INDEX = " + i.toString());
+    } while (i < list.length && sentSuccessInServer == true);
   }
-  i++;
-  print("INDEX = " + i.toString());
-  } while (i < list.length && sentSuccessInServer == true);
-}
-
 }
 
 Future<void> updateOUDAROnServer(BuildContext? context,
@@ -368,7 +371,8 @@ Future<void> updateOUDAROnServer(BuildContext? context,
   if (list.isEmpty) {
     return;
   }
-  do {Map<String, dynamic> map = list[i].toJson();
+  do {
+    Map<String, dynamic> map = list[i].toJson();
     sentSuccessInServer = false;
     try {
       if (list.isEmpty) {
@@ -377,20 +381,23 @@ Future<void> updateOUDAROnServer(BuildContext? context,
       Map<String, dynamic> map = list[i].toJson();
       var res = await http
           .put(Uri.parse(prefix + 'OUDAR/Update'),
-          headers: header, body: jsonEncode(map))
+              headers: header, body: jsonEncode(map))
           .timeout(Duration(seconds: 30), onTimeout: () {
         writeToLogFile(
-            text: '500 error \nMap : $map', fileName: StackTrace.current.toString(), lineNo: 141);return http.Response('Error', 500);
+            text: '500 error \nMap : $map',
+            fileName: StackTrace.current.toString(),
+            lineNo: 141);
+        return http.Response('Error', 500);
       });
       print(await res.statusCode);
-      if(res.statusCode != 201)
-        {
-          await writeToLogFile(
-              text: '${res.statusCode} error \nMap : $map\nResponse : ${res.body}',
-              fileName: StackTrace.current.toString(),
-              lineNo: 141);
-        }
-        if (res.statusCode == 201 || res.statusCode == 500) {
+      if (res.statusCode != 201) {
+        await writeToLogFile(
+            text:
+                '${res.statusCode} error \nMap : $map\nResponse : ${res.body}',
+            fileName: StackTrace.current.toString(),
+            lineNo: 141);
+      }
+      if (res.statusCode == 201 || res.statusCode == 500) {
         sentSuccessInServer = true;
         if (res.statusCode == 201) {
           final Database db = await initializeDB(context);
@@ -404,11 +411,13 @@ Future<void> updateOUDAROnServer(BuildContext? context,
       print(res.body);
     } catch (e) {
       writeToLogFile(
-          text: '${e.toString()}\nMap : $map', fileName: StackTrace.current.toString(), lineNo: 141);
-  sentSuccessInServer = true;
-  }
+          text: '${e.toString()}\nMap : $map',
+          fileName: StackTrace.current.toString(),
+          lineNo: 141);
+      sentSuccessInServer = true;
+    }
 
-  i++;
-  print("INDEX = " + i.toString());
+    i++;
+    print("INDEX = " + i.toString());
   } while (i < list.length && sentSuccessInServer == true);
 }

@@ -1,14 +1,15 @@
-import 'package:maintenance/Component/LogFileFunctions.dart';
 import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:maintenance/Component/LogFileFunctions.dart';
 import 'package:maintenance/Component/SnackbarComponent.dart';
 import 'package:maintenance/DatabaseInitialization.dart';
 import 'package:maintenance/Sync/CustomURL.dart';
 import 'package:maintenance/Sync/DataSync.dart';
-import 'dart:convert';
 import 'package:sqflite/sqlite_api.dart';
-class MNOJCD{
+
+class MNOJCD {
   int? ID;
   String? PermanentTransId;
   int? DocEntry;
@@ -47,6 +48,7 @@ class MNOJCD{
   bool? IsRequest;
   bool hasCreated;
   bool hasUpdated;
+
   MNOJCD({
     this.ID,
     this.PermanentTransId,
@@ -87,103 +89,117 @@ class MNOJCD{
     this.hasCreated = false,
     this.hasUpdated = false,
   });
-  factory MNOJCD.fromJson(Map<String,dynamic> json)=>MNOJCD(
-    ID : int.tryParse(json['ID'].toString())??0,
-    PermanentTransId : json['PermanentTransId']?.toString() ?? '',
-    DocEntry : int.tryParse(json['DocEntry'].toString())??0,
-    DocNum : int.tryParse(json['DocNum'].toString())??0,
-    TransId : json['TransId']?.toString() ?? '',
-    Canceled : json['Canceled']?.toString() ?? '',
-    ObjectCode : json['ObjectCode']?.toString() ?? '',
-    ApprovalStatus : json['ApprovalStatus']?.toString() ?? '',
-    DocStatus : json['DocStatus']?.toString() ?? '',
-    PostingDate : DateTime.tryParse(json['PostingDate'].toString()),
-    ValidUntill : DateTime.tryParse(json['ValidUntill'].toString()),
-    JobCardStatus : json['JobCardStatus']?.toString() ?? '',
-    Remarks : json['Remarks']?.toString() ?? '',
-    EquipmentCode : json['EquipmentCode']?.toString() ?? '',
-    EquipmentName : json['EquipmentName']?.toString() ?? '',
-    CheckListCode : json['CheckListCode']?.toString() ?? '',
-    CheckListName : json['CheckListName']?.toString() ?? '',
-    WorkCenterCode : json['WorkCenterCode']?.toString() ?? '',
-    WorkCenterName : json['WorkCenterName']?.toString() ?? '',
-    OpenDate : DateTime.tryParse(json['OpenDate'].toString()),
-    CloseDate : DateTime.tryParse(json['CloseDate'].toString()),
-    LastReadingDate : DateTime.tryParse(json['LastReadingDate'].toString()),
-    LastReading : DateTime.tryParse(json['LastReading'].toString()),
-    AssignedUserCode : json['AssignedUserCode']?.toString() ?? '',
-    AssignedUserName : json['AssignedUserName']?.toString() ?? '',
-    WarrentyApplicable : json['WarrentyApplicable'] is bool ? json['WarrentyApplicable'] : json['WarrentyApplicable']==1,
-    Type : json['Type']?.toString() ?? '',
-    Subject : json['Subject']?.toString() ?? '',
-    Resolution : json['Resolution']?.toString() ?? '',
-    BranchId : json['BranchId']?.toString() ?? '',
-    CreatedBy : json['CreatedBy']?.toString() ?? '',
-    UpdatedBy : json['UpdatedBy']?.toString() ?? '',
-    CreateDate : DateTime.tryParse(json['CreateDate'].toString()),
-    UpdateDate : DateTime.tryParse(json['UpdateDate'].toString()),
-    IsConsumption : json['IsConsumption'] is bool ? json['IsConsumption'] : json['IsConsumption']==1,
-    IsRequest : json['IsRequest'] is bool ? json['IsRequest'] : json['IsRequest']==1,
-    hasCreated: json['has_created'] == 1,
-    hasUpdated: json['has_updated'] == 1,
-  );
-  Map<String,dynamic> toJson()=>{
-    'ID' : ID,
-    'PermanentTransId' : PermanentTransId,
-    'DocEntry' : DocEntry,
-    'DocNum' : DocNum,
-    'TransId' : TransId,
-    'Canceled' : Canceled,
-    'ObjectCode' : ObjectCode,
-    'ApprovalStatus' : ApprovalStatus,
-    'DocStatus' : DocStatus,
-    'PostingDate' : PostingDate?.toIso8601String(),
-    'ValidUntill' : ValidUntill?.toIso8601String(),
-    'JobCardStatus' : JobCardStatus,
-    'Remarks' : Remarks,
-    'EquipmentCode' : EquipmentCode,
-    'EquipmentName' : EquipmentName,
-    'CheckListCode' : CheckListCode,
-    'CheckListName' : CheckListName,
-    'WorkCenterCode' : WorkCenterCode,
-    'WorkCenterName' : WorkCenterName,
-    'OpenDate' : OpenDate?.toIso8601String(),
-    'CloseDate' : CloseDate?.toIso8601String(),
-    'LastReadingDate' : LastReadingDate?.toIso8601String(),
-    'LastReading' : LastReading?.toIso8601String(),
-    'AssignedUserCode' : AssignedUserCode,
-    'AssignedUserName' : AssignedUserName,
-    'WarrentyApplicable' : WarrentyApplicable,
-    'Type' : Type,
-    'Subject' : Subject,
-    'Resolution' : Resolution,
-    'BranchId' : BranchId,
-    'CreatedBy' : CreatedBy,
-    'UpdatedBy' : UpdatedBy,
-    'CreateDate' : CreateDate?.toIso8601String(),
-    'UpdateDate' : UpdateDate?.toIso8601String(),
-    'IsConsumption' : IsConsumption,
-    'IsRequest' : IsRequest,
-    "has_created": hasCreated ? 1 : 0,
-    "has_updated": hasUpdated ? 1 : 0,
-  };
+
+  factory MNOJCD.fromJson(Map<String, dynamic> json) => MNOJCD(
+        ID: int.tryParse(json['ID'].toString()) ?? 0,
+        PermanentTransId: json['PermanentTransId']?.toString() ?? '',
+        DocEntry: int.tryParse(json['DocEntry'].toString()) ?? 0,
+        DocNum: int.tryParse(json['DocNum'].toString()) ?? 0,
+        TransId: json['TransId']?.toString() ?? '',
+        Canceled: json['Canceled']?.toString() ?? '',
+        ObjectCode: json['ObjectCode']?.toString() ?? '',
+        ApprovalStatus: json['ApprovalStatus']?.toString() ?? '',
+        DocStatus: json['DocStatus']?.toString() ?? '',
+        PostingDate: DateTime.tryParse(json['PostingDate'].toString()),
+        ValidUntill: DateTime.tryParse(json['ValidUntill'].toString()),
+        JobCardStatus: json['JobCardStatus']?.toString() ?? '',
+        Remarks: json['Remarks']?.toString() ?? '',
+        EquipmentCode: json['EquipmentCode']?.toString() ?? '',
+        EquipmentName: json['EquipmentName']?.toString() ?? '',
+        CheckListCode: json['CheckListCode']?.toString() ?? '',
+        CheckListName: json['CheckListName']?.toString() ?? '',
+        WorkCenterCode: json['WorkCenterCode']?.toString() ?? '',
+        WorkCenterName: json['WorkCenterName']?.toString() ?? '',
+        OpenDate: DateTime.tryParse(json['OpenDate'].toString()),
+        CloseDate: DateTime.tryParse(json['CloseDate'].toString()),
+        LastReadingDate: DateTime.tryParse(json['LastReadingDate'].toString()),
+        LastReading: DateTime.tryParse(json['LastReading'].toString()),
+        AssignedUserCode: json['AssignedUserCode']?.toString() ?? '',
+        AssignedUserName: json['AssignedUserName']?.toString() ?? '',
+        WarrentyApplicable: json['WarrentyApplicable'] is bool
+            ? json['WarrentyApplicable']
+            : json['WarrentyApplicable'] == 1,
+        Type: json['Type']?.toString() ?? '',
+        Subject: json['Subject']?.toString() ?? '',
+        Resolution: json['Resolution']?.toString() ?? '',
+        BranchId: json['BranchId']?.toString() ?? '',
+        CreatedBy: json['CreatedBy']?.toString() ?? '',
+        UpdatedBy: json['UpdatedBy']?.toString() ?? '',
+        CreateDate: DateTime.tryParse(json['CreateDate'].toString()),
+        UpdateDate: DateTime.tryParse(json['UpdateDate'].toString()),
+        IsConsumption: json['IsConsumption'] is bool
+            ? json['IsConsumption']
+            : json['IsConsumption'] == 1,
+        IsRequest: json['IsRequest'] is bool
+            ? json['IsRequest']
+            : json['IsRequest'] == 1,
+        hasCreated: json['has_created'] == 1,
+        hasUpdated: json['has_updated'] == 1,
+      );
+
+  Map<String, dynamic> toJson() => {
+        'ID': ID,
+        'PermanentTransId': PermanentTransId,
+        'DocEntry': DocEntry,
+        'DocNum': DocNum,
+        'TransId': TransId,
+        'Canceled': Canceled,
+        'ObjectCode': ObjectCode,
+        'ApprovalStatus': ApprovalStatus,
+        'DocStatus': DocStatus,
+        'PostingDate': PostingDate?.toIso8601String(),
+        'ValidUntill': ValidUntill?.toIso8601String(),
+        'JobCardStatus': JobCardStatus,
+        'Remarks': Remarks,
+        'EquipmentCode': EquipmentCode,
+        'EquipmentName': EquipmentName,
+        'CheckListCode': CheckListCode,
+        'CheckListName': CheckListName,
+        'WorkCenterCode': WorkCenterCode,
+        'WorkCenterName': WorkCenterName,
+        'OpenDate': OpenDate?.toIso8601String(),
+        'CloseDate': CloseDate?.toIso8601String(),
+        'LastReadingDate': LastReadingDate?.toIso8601String(),
+        'LastReading': LastReading?.toIso8601String(),
+        'AssignedUserCode': AssignedUserCode,
+        'AssignedUserName': AssignedUserName,
+        'WarrentyApplicable': WarrentyApplicable,
+        'Type': Type,
+        'Subject': Subject,
+        'Resolution': Resolution,
+        'BranchId': BranchId,
+        'CreatedBy': CreatedBy,
+        'UpdatedBy': UpdatedBy,
+        'CreateDate': CreateDate?.toIso8601String(),
+        'UpdateDate': UpdateDate?.toIso8601String(),
+        'IsConsumption': IsConsumption,
+        'IsRequest': IsRequest,
+        "has_created": hasCreated ? 1 : 0,
+        "has_updated": hasUpdated ? 1 : 0,
+      };
 }
-List<MNOJCD> mNOJCDFromJson(String str) => List<MNOJCD>.from(
-    json.decode(str).map((x) => MNOJCD.fromJson(x)));
+
+List<MNOJCD> mNOJCDFromJson(String str) =>
+    List<MNOJCD>.from(json.decode(str).map((x) => MNOJCD.fromJson(x)));
+
 String mNOJCDToJson(List<MNOJCD> data) =>
     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+
 Future<List<MNOJCD>> dataSyncMNOJCD() async {
-  var res = await http.get(headers: header, Uri.parse(prefix + "MNOJCD" + postfix));
+  var res =
+      await http.get(headers: header, Uri.parse(prefix + "MNOJCD" + postfix));
   print(res.body);
-  return mNOJCDFromJson(res.body);}
+  return mNOJCDFromJson(res.body);
+}
 
 Future<List<MNOJCD>> retrieveMNOJCDForSearch({
   int? limit,
   String? query,
 }) async {
-  query="%$query%";
+  query = "%$query%";
   final Database db = await initializeDB(null);
-  final List<Map<String, Object?>> queryResult = await db.rawQuery("SELECT * FROM MNOJCD WHERE TransId LIKE '$query'");
+  final List<Map<String, Object?>> queryResult =
+      await db.rawQuery("SELECT * FROM MNOJCD WHERE TransId LIKE '$query'");
   return queryResult.map((e) => MNOJCD.fromJson(e)).toList();
 }
 
@@ -201,7 +217,8 @@ Future<void> insertMNOJCD(Database db, {List? list}) async {
   Stopwatch stopwatch = Stopwatch();
   stopwatch.start();
   for (var i = 0; i < customers.length; i += batchSize) {
-    var end = (i + batchSize < customers.length) ? i + batchSize : customers.length;
+    var end =
+        (i + batchSize < customers.length) ? i + batchSize : customers.length;
     var batchRecords = customers.sublist(i, end);
     await db.transaction((txn) async {
       var batch = txn.batch();
@@ -244,9 +261,9 @@ Future<void> insertMNOJCD(Database db, {List? list}) async {
       for (var element in batchRecords) {
         try {
           batch.update("MNOJCD", element,
-              where: "TransId = ? AND ifnull(has_created,0) <> ? AND ifnull(has_updated,0) <> ?",
+              where:
+                  "TransId = ? AND ifnull(has_created,0) <> ? AND ifnull(has_updated,0) <> ?",
               whereArgs: [element["TransId"], 1, 1]);
-
         } catch (e) {
           writeToLogFile(
               text: e.toString(),
@@ -304,28 +321,44 @@ Future<List<MNOJCD>> retrieveMNOJCD(BuildContext context) async {
   final List<Map<String, Object?>> queryResult = await db.query('MNOJCD');
   return queryResult.map((e) => MNOJCD.fromJson(e)).toList();
 }
-Future<void> updateMNOJCD(int id, Map<String, dynamic> values, BuildContext context) async {
+
+Future<void> updateMNOJCD(
+    int id, Map<String, dynamic> values, BuildContext context) async {
   final db = await initializeDB(context);
   try {
     db.transaction((db) async {
       await db.update('MNOJCD', values, where: 'ID = ?', whereArgs: [id]);
     });
   } catch (e) {
-    getErrorSnackBar('Sync Error ' + e.toString());}}
+    getErrorSnackBar('Sync Error ' + e.toString());
+  }
+}
+
 Future<void> deleteMNOJCD(Database db) async {
   await db.delete('MNOJCD');
 }
-Future<List<MNOJCD>> retrieveMNOJCDById(BuildContext? context, String str, List l) async {
+
+Future<List<MNOJCD>> retrieveMNOJCDById(
+    BuildContext? context, String str, List l) async {
   final Database db = await initializeDB(context);
-  final List<Map<String, Object?>> queryResult = await db.query('MNOJCD', where: str, whereArgs: l);
+  final List<Map<String, Object?>> queryResult =
+      await db.query('MNOJCD', where: str, whereArgs: l);
   return queryResult.map((e) => MNOJCD.fromJson(e)).toList();
 }
-Future<String> insertMNOJCDToServer(BuildContext? context, {String? TransId, int? id}) async {
+
+Future<String> insertMNOJCDToServer(BuildContext? context,
+    {String? TransId, int? id}) async {
   String response = "";
-  List<MNOJCD> list = await retrieveMNOJCDById(context, TransId == null ? DataSync.getInsertToServerStr() : "TransId = ? AND ID = ?", TransId == null ? DataSync.getInsertToServerList() : [TransId, id]);
+  List<MNOJCD> list = await retrieveMNOJCDById(
+      context,
+      TransId == null
+          ? DataSync.getInsertToServerStr()
+          : "TransId = ? AND ID = ?",
+      TransId == null ? DataSync.getInsertToServerList() : [TransId, id]);
   if (TransId != null) {
     list[0].ID = 0;
-    var res = await http.post(Uri.parse(prefix + "MNOJCD/Add"), headers: header, body: jsonEncode(list[0].toJson()));
+    var res = await http.post(Uri.parse(prefix + "MNOJCD/Add"),
+        headers: header, body: jsonEncode(list[0].toJson()));
     response = res.body;
   } else if (list.isNotEmpty) {
     int i = 0;
@@ -335,9 +368,12 @@ Future<String> insertMNOJCDToServer(BuildContext? context, {String? TransId, int
       try {
         Map<String, dynamic> map = list[i].toJson();
         map.remove('ID');
-        var res = await http.post(Uri.parse(prefix + "MNOJCD/Add"), headers: header,
-            body: jsonEncode(map)).timeout(Duration(seconds: 30), onTimeout: () {
-          return http.Response('Error', 500);});
+        var res = await http
+            .post(Uri.parse(prefix + "MNOJCD/Add"),
+                headers: header, body: jsonEncode(map))
+            .timeout(Duration(seconds: 30), onTimeout: () {
+          return http.Response('Error', 500);
+        });
         response = await res.body;
         print("eeaaae status");
         print(await res.statusCode);
@@ -348,18 +384,29 @@ Future<String> insertMNOJCDToServer(BuildContext? context, {String? TransId, int
             final Database db = await initializeDB(context);
             // map=jsonDecode(res.body);
             map["has_created"] = 0;
-            var x = await db.update("MNOJCD", map, where: "TransId = ?", whereArgs: [map["TransId"]]);
-            print(x.toString());}}
+            var x = await db.update("MNOJCD", map,
+                where: "TransId = ?", whereArgs: [map["TransId"]]);
+            print(x.toString());
+          }
+        }
         print(res.body);
       } catch (e) {
         print("Timeout " + e.toString());
-        sentSuccessInServer = true;}
+        sentSuccessInServer = true;
+      }
       i++;
       print("INDEX = " + i.toString());
-    } while (i < list.length && sentSuccessInServer == true);}
-  return response;}
-Future<void> updateMNOJCDOnServer(BuildContext? context, {String? condition, List? l}) async {
-  List<MNOJCD> list = await retrieveMNOJCDById(context, l == null ? DataSync.getUpdateOnServerStr() : condition ?? "", l == null ? DataSync.getUpdateOnServerList() : l);
+    } while (i < list.length && sentSuccessInServer == true);
+  }
+  return response;
+}
+
+Future<void> updateMNOJCDOnServer(BuildContext? context,
+    {String? condition, List? l}) async {
+  List<MNOJCD> list = await retrieveMNOJCDById(
+      context,
+      l == null ? DataSync.getUpdateOnServerStr() : condition ?? "",
+      l == null ? DataSync.getUpdateOnServerList() : l);
   print(list);
   int i = 0;
   bool sentSuccessInServer = false;
@@ -367,7 +414,10 @@ Future<void> updateMNOJCDOnServer(BuildContext? context, {String? condition, Lis
     sentSuccessInServer = false;
     try {
       Map<String, dynamic> map = list[i].toJson();
-      var res = await http.put(Uri.parse(prefix + 'MNOJCD/Update'), headers: header, body: jsonEncode(map)).timeout(Duration(seconds: 30), onTimeout: () {
+      var res = await http
+          .put(Uri.parse(prefix + 'MNOJCD/Update'),
+              headers: header, body: jsonEncode(map))
+          .timeout(Duration(seconds: 30), onTimeout: () {
         return http.Response('Error', 500);
       });
       print(await res.statusCode);
@@ -376,7 +426,8 @@ Future<void> updateMNOJCDOnServer(BuildContext? context, {String? condition, Lis
         if (res.statusCode == 201) {
           final Database db = await initializeDB(context);
           map["has_updated"] = 0;
-          var x = await db.update("MNOJCD", map, where: "TransId = ?", whereArgs: [map["TransId"]]);
+          var x = await db.update("MNOJCD", map,
+              where: "TransId = ?", whereArgs: [map["TransId"]]);
           print(x.toString());
         }
       }
@@ -390,4 +441,3 @@ Future<void> updateMNOJCDOnServer(BuildContext? context, {String? condition, Lis
     print("INDEX = " + i.toString());
   } while (i < list.length && sentSuccessInServer == true);
 }
-

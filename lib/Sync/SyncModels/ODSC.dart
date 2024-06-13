@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:maintenance/Component/LogFileFunctions.dart';
 import 'package:maintenance/Component/SnackbarComponent.dart';
@@ -102,8 +101,7 @@ class ODSCModel {
   String? Error;
   String? ObjectCode;
 
-  factory ODSCModel.fromJson(Map<String, dynamic> json) =>
-      ODSCModel(
+  factory ODSCModel.fromJson(Map<String, dynamic> json) => ODSCModel(
         ID: int.tryParse(json["ID"].toString()) ?? 0,
         DocEntry: int.tryParse(json["DocEntry"].toString()) ?? 0,
         SalesEmpId: json["SalesEmpId"] ?? "",
@@ -143,13 +141,12 @@ class ODSCModel {
         UpdatedBy: json['UpdatedBy'] ?? '',
         NrcNo: json['NrcNo'] ?? '',
         IsPosted:
-        json['IsPosted'] is bool ? json['IsPosted'] : json['IsPosted'] == 1,
+            json['IsPosted'] is bool ? json['IsPosted'] : json['IsPosted'] == 1,
         Error: json['Error'] ?? '',
         ObjectCode: json['ObjectCode'] ?? '',
       );
 
-  Map<String, dynamic> toJson() =>
-      {
+  Map<String, dynamic> toJson() => {
         "ID": ID,
         "DriverId": DriverId,
         "DriverMobileNo": DriverMobileNo,
@@ -286,7 +283,7 @@ Future<void> insertODSC(Database db, {List? list}) async {
   stopwatch.start();
   for (var i = 0; i < customers.length; i += batchSize) {
     var end =
-    (i + batchSize < customers.length) ? i + batchSize : customers.length;
+        (i + batchSize < customers.length) ? i + batchSize : customers.length;
     var batchRecords = customers.sublist(i, end);
     await db.transaction((txn) async {
       var batch = txn.batch();
@@ -326,9 +323,9 @@ Future<void> insertODSC(Database db, {List? list}) async {
       for (var element in batchRecords) {
         try {
           batch.update("ODSC", element,
-              where: "TransId = ? AND ifnull(has_created,0) <> ? AND ifnull(has_updated,0) <> ?",
+              where:
+                  "TransId = ? AND ifnull(has_created,0) <> ? AND ifnull(has_updated,0) <> ?",
               whereArgs: [element["TransId"], 1, 1]);
-
         } catch (e) {
           writeToLogFile(
               text: e.toString(),
@@ -384,7 +381,7 @@ WHERE T1.TransId IS NULL;
 
 Future<List<ODSCModel>> dataSyncODSC() async {
   var res =
-  await http.get(headers: header, Uri.parse(prefix + "ODSC" + postfix));
+      await http.get(headers: header, Uri.parse(prefix + "ODSC" + postfix));
   print(res.body);
   return ODSCModelFromJson(res.body);
 }
@@ -393,39 +390,39 @@ Future<List<ODSCModel>> retrieveODSC(BuildContext context,
     {String? orderBy}) async {
   final Database db = await initializeDB(context);
   final List<Map<String, Object?>> queryResult =
-  await db.query('ODSC', orderBy: orderBy);
+      await db.query('ODSC', orderBy: orderBy);
   return queryResult.map((e) => ODSCModel.fromJson(e)).toList();
 }
 
-Future<List<ODSCModel>> retrieveODSCById(BuildContext? context, String str,
-    List l,
+Future<List<ODSCModel>> retrieveODSCById(
+    BuildContext? context, String str, List l,
     {String? orderBy}) async {
   final Database db = await initializeDB(context);
   final List<Map<String, Object?>> queryResult =
-  await db.query('ODSC', where: str, whereArgs: l, orderBy: orderBy);
+      await db.query('ODSC', where: str, whereArgs: l, orderBy: orderBy);
   return queryResult.map((e) => ODSCModel.fromJson(e)).toList();
 }
 
 Future<ODSCModel?> retrieveLatestRoute() async {
   final Database db = await initializeDB(null);
   final List<Map<String, Object?>> queryResult = await db.rawQuery(
-      "SELECT * FROM ODSC WHERE CreatedBy='${userModel
-          .UserCode}'  ORDER BY CreateDate DESC  LIMIT 1");
+      "SELECT * FROM ODSC WHERE CreatedBy='${userModel.UserCode}'  ORDER BY CreateDate DESC  LIMIT 1");
   List<ODSCModel> list = queryResult.map((e) => ODSCModel.fromJson(e)).toList();
   if (list.isNotEmpty) {
     return list[0];
   }
 }
 
-Future<void> updateODSC(int id, Map<String, dynamic> values,
-    BuildContext context) async {
+Future<void> updateODSC(
+    int id, Map<String, dynamic> values, BuildContext context) async {
   final db = await initializeDB(context);
   try {
     db.transaction((db) async {
       await db.update("ODSC", values, where: 'ID = ?', whereArgs: [id]);
     });
   } catch (e) {
-    writeToLogFile(text: e.toString(),
+    writeToLogFile(
+        text: e.toString(),
         fileName: StackTrace.current.toString(),
         lineNo: 141);
     getErrorSnackBar("Sync Error " + e.toString());
@@ -441,7 +438,7 @@ Future<List<ODSCModel>> retrieveODSCByBranch(BuildContext context,
   List<String> list = [];
   String str = "CreatedBy = ?";
   List<OUSRModel> ousrModel =
-  await retrieveOUSRById(context, "BranchId = ?", [userModel.BranchId]);
+      await retrieveOUSRById(context, "BranchId = ?", [userModel.BranchId]);
   print(ousrModel);
 
   for (int i = 0; i < ousrModel.length; i++) {
@@ -455,7 +452,7 @@ Future<List<ODSCModel>> retrieveODSCByBranch(BuildContext context,
   }
   final Database db = await initializeDB(context);
   final List<Map<String, Object?>> queryResult =
-  await db.query("ODSC", where: str, whereArgs: list, orderBy: orderBy);
+      await db.query("ODSC", where: str, whereArgs: list, orderBy: orderBy);
   return queryResult.map((e) => ODSCModel.fromJson(e)).toList();
 }
 //SEND DATA TO SERVER
@@ -481,39 +478,41 @@ Future<void> insertODSCToServer(BuildContext? context,
     if (list.isEmpty) {
       return;
     }
-    do {Map<String, dynamic> map = list[i].toJson();
+    do {
+      Map<String, dynamic> map = list[i].toJson();
       sentSuccessInServer = false;
       try {
         map.remove('ID');
-        String queryParams='TransId=${list[i].TransId}';
-        var res = await http.post(Uri.parse(prefix + "ODSC/Add?$queryParams"),
-            headers: header, body: jsonEncode(map))
+        String queryParams = 'TransId=${list[i].TransId}';
+        var res = await http
+            .post(Uri.parse(prefix + "ODSC/Add?$queryParams"),
+                headers: header, body: jsonEncode(map))
             .timeout(Duration(seconds: 30), onTimeout: () {
           writeToLogFile(
-            text: '500 error \nMap : $map', fileName: StackTrace.current.toString(), lineNo: 141);return http.Response('Error', 500);
+              text: '500 error \nMap : $map',
+              fileName: StackTrace.current.toString(),
+              lineNo: 141);
+          return http.Response('Error', 500);
         });
         response = await res.body;
 
         print("eeaaae status");
         print(await res.statusCode);
-        if(res.statusCode != 201)
-        {
+        if (res.statusCode != 201) {
           await writeToLogFile(
-              text: '${res.statusCode} error \nMap : $map\nResponse : ${res.body}',
+              text:
+                  '${res.statusCode} error \nMap : $map\nResponse : ${res.body}',
               fileName: StackTrace.current.toString(),
               lineNo: 141);
         }
-        if(res.statusCode ==409)
-        {
+        if (res.statusCode == 409) {
           ///Already added in server
           final Database db = await initializeDB(context);
-          ODSCModel model=ODSCModel.fromJson(jsonDecode(res.body));
+          ODSCModel model = ODSCModel.fromJson(jsonDecode(res.body));
           var x = await db.update("ODSC", model.toJson(),
               where: "TransId = ?", whereArgs: [model.TransId]);
           print(x.toString());
-        }
-        else
-        if (res.statusCode == 201 || res.statusCode == 500) {
+        } else if (res.statusCode == 201 || res.statusCode == 500) {
           sentSuccessInServer = true;
           if (res.statusCode == 201) {
             map['ID'] = jsonDecode(res.body)['ID'];
@@ -528,15 +527,16 @@ Future<void> insertODSCToServer(BuildContext? context,
         print(res.body);
       } catch (e) {
         writeToLogFile(
-            text: '${e.toString()}\nMap : $map', fileName: StackTrace.current.toString(), lineNo: 141);
-  sentSuccessInServer = true;
+            text: '${e.toString()}\nMap : $map',
+            fileName: StackTrace.current.toString(),
+            lineNo: 141);
+        sentSuccessInServer = true;
+      }
+
+      i++;
+      print("INDEX = " + i.toString());
+    } while (i < list.length && sentSuccessInServer == true);
   }
-
-  i++;
-  print("INDEX = " + i.toString());
-  } while (i < list.length && sentSuccessInServer == true);
-}
-
 }
 
 Future<void> updateODSCOnServer(BuildContext? context,
@@ -551,7 +551,8 @@ Future<void> updateODSCOnServer(BuildContext? context,
   if (list.isEmpty) {
     return;
   }
-  do {Map<String, dynamic> map = list[i].toJson();
+  do {
+    Map<String, dynamic> map = list[i].toJson();
     sentSuccessInServer = false;
     try {
       if (list.isEmpty) {
@@ -560,20 +561,23 @@ Future<void> updateODSCOnServer(BuildContext? context,
       Map<String, dynamic> map = list[i].toJson();
       var res = await http
           .put(Uri.parse(prefix + 'ODSC/Update'),
-          headers: header, body: jsonEncode(map))
+              headers: header, body: jsonEncode(map))
           .timeout(Duration(seconds: 30), onTimeout: () {
         writeToLogFile(
-            text: '500 error \nMap : $map', fileName: StackTrace.current.toString(), lineNo: 141);return http.Response('Error', 500);
+            text: '500 error \nMap : $map',
+            fileName: StackTrace.current.toString(),
+            lineNo: 141);
+        return http.Response('Error', 500);
       });
       print(await res.statusCode);
-      if(res.statusCode != 201)
-        {
-          await writeToLogFile(
-              text: '${res.statusCode} error \nMap : $map\nResponse : ${res.body}',
-              fileName: StackTrace.current.toString(),
-              lineNo: 141);
-        }
-        if (res.statusCode == 201 || res.statusCode == 500) {
+      if (res.statusCode != 201) {
+        await writeToLogFile(
+            text:
+                '${res.statusCode} error \nMap : $map\nResponse : ${res.body}',
+            fileName: StackTrace.current.toString(),
+            lineNo: 141);
+      }
+      if (res.statusCode == 201 || res.statusCode == 500) {
         sentSuccessInServer = true;
         if (res.statusCode == 201) {
           final Database db = await initializeDB(context);
@@ -586,11 +590,13 @@ Future<void> updateODSCOnServer(BuildContext? context,
       print(res.body);
     } catch (e) {
       writeToLogFile(
-          text: '${e.toString()}\nMap : $map', fileName: StackTrace.current.toString(), lineNo: 141);
-  sentSuccessInServer = true;
-  }
+          text: '${e.toString()}\nMap : $map',
+          fileName: StackTrace.current.toString(),
+          lineNo: 141);
+      sentSuccessInServer = true;
+    }
 
-  i++;
-  print("INDEX = " + i.toString());
+    i++;
+    print("INDEX = " + i.toString());
   } while (i < list.length && sentSuccessInServer == true);
 }

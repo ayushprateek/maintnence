@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:maintenance/Component/LogFileFunctions.dart';
 import 'package:maintenance/Component/SnackbarComponent.dart';
@@ -40,8 +39,7 @@ class SecondaryCalendar {
         UpdateDate: DateTime.tryParse(json['UpdateDate'].toString()),
       );
 
-  Map<String, dynamic> toJson() =>
-      {
+  Map<String, dynamic> toJson() => {
         'ID': ID,
         'MonthName': MonthName,
         'EnglishDate': EnglishDate?.toIso8601String(),
@@ -124,7 +122,7 @@ Future<void> insertSecondaryCalendar(Database db, {List? list}) async {
   stopwatch.start();
   for (var i = 0; i < customers.length; i += batchSize) {
     var end =
-    (i + batchSize < customers.length) ? i + batchSize : customers.length;
+        (i + batchSize < customers.length) ? i + batchSize : customers.length;
     var batchRecords = customers.sublist(i, end);
     await db.transaction((txn) async {
       var batch = txn.batch();
@@ -178,7 +176,8 @@ Future<void> insertSecondaryCalendar(Database db, {List? list}) async {
   }
 
   stopwatch.stop();
-  print('Time taken for SecondaryCalendar update: ${stopwatch.elapsedMilliseconds}ms');
+  print(
+      'Time taken for SecondaryCalendar update: ${stopwatch.elapsedMilliseconds}ms');
   stopwatch.reset();
   stopwatch.start();
   // var v = await db.rawQuery("Select * from SecondaryCalendar_Temp where ID not in (Select ID from SecondaryCalendar)");
@@ -221,12 +220,12 @@ WHERE T1.ID IS NULL;
 Future<List<SecondaryCalendar>> retrieveSecondaryCalendar() async {
   final Database db = await initializeDB(null);
   final List<Map<String, Object?>> queryResult =
-  await db.query('SecondaryCalendar');
+      await db.query('SecondaryCalendar');
   return queryResult.map((e) => SecondaryCalendar.fromJson(e)).toList();
 }
 
-Future<void> updateSecondaryCalendar(int id, Map<String, dynamic> values,
-    BuildContext context) async {
+Future<void> updateSecondaryCalendar(
+    int id, Map<String, dynamic> values, BuildContext context) async {
   final db = await initializeDB(context);
   try {
     db.transaction((db) async {
@@ -234,7 +233,8 @@ Future<void> updateSecondaryCalendar(int id, Map<String, dynamic> values,
           where: 'ID = ?', whereArgs: [id]);
     });
   } catch (e) {
-    writeToLogFile(text: e.toString(),
+    writeToLogFile(
+        text: e.toString(),
         fileName: StackTrace.current.toString(),
         lineNo: 141);
     getErrorSnackBar('Sync Error ' + e.toString());
@@ -249,7 +249,7 @@ Future<List<SecondaryCalendar>> retrieveSecondaryCalendarById(
     BuildContext? context, String str, List l) async {
   final Database db = await initializeDB(context);
   final List<Map<String, Object?>> queryResult =
-  await db.query('SecondaryCalendar', where: str, whereArgs: l);
+      await db.query('SecondaryCalendar', where: str, whereArgs: l);
   return queryResult.map((e) => SecondaryCalendar.fromJson(e)).toList();
 }
 
@@ -273,24 +273,28 @@ Future<void> insertSecondaryCalendarToServer(BuildContext? context,
     if (list.isEmpty) {
       return;
     }
-    do {Map<String, dynamic> map = list[i].toJson();
+    do {
+      Map<String, dynamic> map = list[i].toJson();
       sentSuccessInServer = false;
       try {
         map.remove('ID');
         var res = await http
             .post(Uri.parse(prefix + "SecondaryCalendar/Add"),
-            headers: header, body: jsonEncode(map))
+                headers: header, body: jsonEncode(map))
             .timeout(Duration(seconds: 30), onTimeout: () {
           writeToLogFile(
-            text: '500 error \nMap : $map', fileName: StackTrace.current.toString(), lineNo: 141);return http.Response('Error', 500);
+              text: '500 error \nMap : $map',
+              fileName: StackTrace.current.toString(),
+              lineNo: 141);
+          return http.Response('Error', 500);
         });
         response = await res.body;
         print("eeaaae status");
         print(await res.statusCode);
-        if(res.statusCode != 201)
-        {
+        if (res.statusCode != 201) {
           await writeToLogFile(
-              text: '${res.statusCode} error \nMap : $map\nResponse : ${res.body}',
+              text:
+                  '${res.statusCode} error \nMap : $map\nResponse : ${res.body}',
               fileName: StackTrace.current.toString(),
               lineNo: 141);
         }
@@ -309,16 +313,15 @@ Future<void> insertSecondaryCalendarToServer(BuildContext? context,
         print(res.body);
       } catch (e) {
         writeToLogFile(
-            text: '${e.toString()}\nMap : $map', fileName: StackTrace.current.toString(), lineNo: 141);
-  sentSuccessInServer = true;
+            text: '${e.toString()}\nMap : $map',
+            fileName: StackTrace.current.toString(),
+            lineNo: 141);
+        sentSuccessInServer = true;
+      }
+      i++;
+      print("INDEX = " + i.toString());
+    } while (i < list.length && sentSuccessInServer == true);
   }
-  i++;
-  print("INDEX = " + i.toString());
-  } while (i < list.length && sentSuccessInServer ==
-  true
-  );
-}
-
 }
 
 Future<void> updateSecondaryCalendarOnServer(BuildContext? context,
@@ -333,7 +336,8 @@ Future<void> updateSecondaryCalendarOnServer(BuildContext? context,
   if (list.isEmpty) {
     return;
   }
-  do {Map<String, dynamic> map = list[i].toJson();
+  do {
+    Map<String, dynamic> map = list[i].toJson();
     sentSuccessInServer = false;
     try {
       if (list.isEmpty) {
@@ -342,20 +346,23 @@ Future<void> updateSecondaryCalendarOnServer(BuildContext? context,
       Map<String, dynamic> map = list[i].toJson();
       var res = await http
           .put(Uri.parse(prefix + 'SecondaryCalendar/Update'),
-          headers: header, body: jsonEncode(map))
+              headers: header, body: jsonEncode(map))
           .timeout(Duration(seconds: 30), onTimeout: () {
         writeToLogFile(
-            text: '500 error \nMap : $map', fileName: StackTrace.current.toString(), lineNo: 141);return http.Response('Error', 500);
+            text: '500 error \nMap : $map',
+            fileName: StackTrace.current.toString(),
+            lineNo: 141);
+        return http.Response('Error', 500);
       });
       print(await res.statusCode);
-      if(res.statusCode != 201)
-        {
-          await writeToLogFile(
-              text: '${res.statusCode} error \nMap : $map\nResponse : ${res.body}',
-              fileName: StackTrace.current.toString(),
-              lineNo: 141);
-        }
-        if (res.statusCode == 201 || res.statusCode == 500) {
+      if (res.statusCode != 201) {
+        await writeToLogFile(
+            text:
+                '${res.statusCode} error \nMap : $map\nResponse : ${res.body}',
+            fileName: StackTrace.current.toString(),
+            lineNo: 141);
+      }
+      if (res.statusCode == 201 || res.statusCode == 500) {
         sentSuccessInServer = true;
         if (res.statusCode == 201) {
           final Database db = await initializeDB(context);
@@ -368,11 +375,13 @@ Future<void> updateSecondaryCalendarOnServer(BuildContext? context,
       print(res.body);
     } catch (e) {
       writeToLogFile(
-          text: '${e.toString()}\nMap : $map', fileName: StackTrace.current.toString(), lineNo: 141);
-  sentSuccessInServer = true;
-  }
+          text: '${e.toString()}\nMap : $map',
+          fileName: StackTrace.current.toString(),
+          lineNo: 141);
+      sentSuccessInServer = true;
+    }
 
-  i++;
-  print("INDEX = " + i.toString());
+    i++;
+    print("INDEX = " + i.toString());
   } while (i < list.length && sentSuccessInServer == true);
 }

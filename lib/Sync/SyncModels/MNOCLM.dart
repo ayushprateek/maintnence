@@ -1,14 +1,15 @@
-import 'package:maintenance/Component/LogFileFunctions.dart';
 import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:maintenance/Component/LogFileFunctions.dart';
 import 'package:maintenance/Component/SnackbarComponent.dart';
 import 'package:maintenance/DatabaseInitialization.dart';
 import 'package:maintenance/Sync/CustomURL.dart';
 import 'package:maintenance/Sync/DataSync.dart';
-import 'dart:convert';
 import 'package:sqflite/sqlite_api.dart';
-class MNOCLM{
+
+class MNOCLM {
   int? ID;
   String? Code;
   String? Remarks;
@@ -24,6 +25,7 @@ class MNOCLM{
   String? CheckListName;
   String? CheckListCode;
   String? Name;
+
   MNOCLM({
     this.ID,
     this.Code,
@@ -41,49 +43,57 @@ class MNOCLM{
     this.CheckListCode,
     this.Name,
   });
-  factory MNOCLM.fromJson(Map<String,dynamic> json)=>MNOCLM(
-    ID : int.tryParse(json['ID'].toString())??0,
-    Code : json['Code'],
-    Remarks : json['Remarks'],
-    ObjectCode : json['ObjectCode'],
-    EquipmentGroupCode : json['EquipmentGroupCode'],
-    EquipmentGroupName : json['EquipmentGroupName'],
-    CreateDate : DateTime.tryParse(json['CreateDate'].toString()),
-    UpdateDate : DateTime.tryParse(json['UpdateDate'].toString()),
-    CreatedBy : json['CreatedBy'],
-    UpdatedBy : json['UpdatedBy'],
-    BranchId : json['BranchId'],
-    Active : json['Active'] is bool ? json['Active'] : json['Active']==1,
-    CheckListName : json['CheckListName'],
-    CheckListCode : json['CheckListCode'],
-    Name : json['Name'],
-  );
-  Map<String,dynamic> toJson()=>{
-    'ID' : ID,
-    'Code' : Code,
-    'Remarks' : Remarks,
-    'ObjectCode' : ObjectCode,
-    'EquipmentGroupCode' : EquipmentGroupCode,
-    'EquipmentGroupName' : EquipmentGroupName,
-    'CreateDate' : CreateDate?.toIso8601String(),
-    'UpdateDate' : UpdateDate?.toIso8601String(),
-    'CreatedBy' : CreatedBy,
-    'UpdatedBy' : UpdatedBy,
-    'BranchId' : BranchId,
-    'Active' : Active,
-    'CheckListName' : CheckListName,
-    'CheckListCode' : CheckListCode,
-    'Name' : Name,
-  };
+
+  factory MNOCLM.fromJson(Map<String, dynamic> json) => MNOCLM(
+        ID: int.tryParse(json['ID'].toString()) ?? 0,
+        Code: json['Code'],
+        Remarks: json['Remarks'],
+        ObjectCode: json['ObjectCode'],
+        EquipmentGroupCode: json['EquipmentGroupCode'],
+        EquipmentGroupName: json['EquipmentGroupName'],
+        CreateDate: DateTime.tryParse(json['CreateDate'].toString()),
+        UpdateDate: DateTime.tryParse(json['UpdateDate'].toString()),
+        CreatedBy: json['CreatedBy'],
+        UpdatedBy: json['UpdatedBy'],
+        BranchId: json['BranchId'],
+        Active: json['Active'] is bool ? json['Active'] : json['Active'] == 1,
+        CheckListName: json['CheckListName'],
+        CheckListCode: json['CheckListCode'],
+        Name: json['Name'],
+      );
+
+  Map<String, dynamic> toJson() => {
+        'ID': ID,
+        'Code': Code,
+        'Remarks': Remarks,
+        'ObjectCode': ObjectCode,
+        'EquipmentGroupCode': EquipmentGroupCode,
+        'EquipmentGroupName': EquipmentGroupName,
+        'CreateDate': CreateDate?.toIso8601String(),
+        'UpdateDate': UpdateDate?.toIso8601String(),
+        'CreatedBy': CreatedBy,
+        'UpdatedBy': UpdatedBy,
+        'BranchId': BranchId,
+        'Active': Active,
+        'CheckListName': CheckListName,
+        'CheckListCode': CheckListCode,
+        'Name': Name,
+      };
 }
-List<MNOCLM> mNOCLMFromJson(String str) => List<MNOCLM>.from(
-    json.decode(str).map((x) => MNOCLM.fromJson(x)));
+
+List<MNOCLM> mNOCLMFromJson(String str) =>
+    List<MNOCLM>.from(json.decode(str).map((x) => MNOCLM.fromJson(x)));
+
 String mNOCLMToJson(List<MNOCLM> data) =>
     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+
 Future<List<MNOCLM>> dataSyncMNOCLM() async {
-  var res = await http.get(headers: header, Uri.parse(prefix + "MNOCLM" + postfix));
+  var res =
+      await http.get(headers: header, Uri.parse(prefix + "MNOCLM" + postfix));
   print(res.body);
-  return mNOCLMFromJson(res.body);}
+  return mNOCLMFromJson(res.body);
+}
+
 Future<void> insertMNOCLM(Database db, {List? list}) async {
   if (postfix.toLowerCase().contains('all')) {
     await deleteMNOCLM(db);
@@ -98,7 +108,8 @@ Future<void> insertMNOCLM(Database db, {List? list}) async {
   Stopwatch stopwatch = Stopwatch();
   stopwatch.start();
   for (var i = 0; i < customers.length; i += batchSize) {
-    var end = (i + batchSize < customers.length) ? i + batchSize : customers.length;
+    var end =
+        (i + batchSize < customers.length) ? i + batchSize : customers.length;
     var batchRecords = customers.sublist(i, end);
     await db.transaction((txn) async {
       var batch = txn.batch();
@@ -141,9 +152,9 @@ Future<void> insertMNOCLM(Database db, {List? list}) async {
       for (var element in batchRecords) {
         try {
           batch.update("MNOCLM", element,
-              where: "Code = ? AND ifnull(has_created,0) <> ? AND ifnull(has_updated,0) <> ?",
+              where:
+                  "Code = ? AND ifnull(has_created,0) <> ? AND ifnull(has_updated,0) <> ?",
               whereArgs: [element["Code"], 1, 1]);
-
         } catch (e) {
           writeToLogFile(
               text: e.toString(),
@@ -201,39 +212,56 @@ Future<List<MNOCLM>> retrieveMNOCLM(BuildContext context) async {
   final List<Map<String, Object?>> queryResult = await db.query('MNOCLM');
   return queryResult.map((e) => MNOCLM.fromJson(e)).toList();
 }
-Future<void> updateMNOCLM(int id, Map<String, dynamic> values, BuildContext context) async {
+
+Future<void> updateMNOCLM(
+    int id, Map<String, dynamic> values, BuildContext context) async {
   final db = await initializeDB(context);
   try {
     db.transaction((db) async {
       await db.update('MNOCLM', values, where: 'ID = ?', whereArgs: [id]);
     });
   } catch (e) {
-    getErrorSnackBar('Sync Error ' + e.toString());}}
+    getErrorSnackBar('Sync Error ' + e.toString());
+  }
+}
+
 Future<void> deleteMNOCLM(Database db) async {
   await db.delete('MNOCLM');
 }
-Future<List<MNOCLM>> retrieveMNOCLMById(BuildContext? context, String str, List l,{
-  int? limit
-}) async {
+
+Future<List<MNOCLM>> retrieveMNOCLMById(
+    BuildContext? context, String str, List l,
+    {int? limit}) async {
   final Database db = await initializeDB(context);
-  final List<Map<String, Object?>> queryResult = await db.query('MNOCLM', where: str, whereArgs: l,limit: limit);
+  final List<Map<String, Object?>> queryResult =
+      await db.query('MNOCLM', where: str, whereArgs: l, limit: limit);
   return queryResult.map((e) => MNOCLM.fromJson(e)).toList();
 }
+
 Future<List<MNOCLM>> retrieveMNOCLMForSearch({
   int? limit,
   String? query,
 }) async {
-  query="%$query%";
+  query = "%$query%";
   final Database db = await initializeDB(null);
-  final List<Map<String, Object?>> queryResult = await db.rawQuery('SELECT * FROM MNOCLM WHERE Code LIKE "$query" OR Name LIKE "$query" LIMIT $limit');
+  final List<Map<String, Object?>> queryResult = await db.rawQuery(
+      'SELECT * FROM MNOCLM WHERE Code LIKE "$query" OR Name LIKE "$query" LIMIT $limit');
   return queryResult.map((e) => MNOCLM.fromJson(e)).toList();
 }
-Future<String> insertMNOCLMToServer(BuildContext? context, {String? TransId, int? id}) async {
+
+Future<String> insertMNOCLMToServer(BuildContext? context,
+    {String? TransId, int? id}) async {
   String response = "";
-  List<MNOCLM> list = await retrieveMNOCLMById(context, TransId == null ? DataSync.getInsertToServerStr() : "TransId = ? AND ID = ?", TransId == null ? DataSync.getInsertToServerList() : [TransId, id]);
+  List<MNOCLM> list = await retrieveMNOCLMById(
+      context,
+      TransId == null
+          ? DataSync.getInsertToServerStr()
+          : "TransId = ? AND ID = ?",
+      TransId == null ? DataSync.getInsertToServerList() : [TransId, id]);
   if (TransId != null) {
     list[0].ID = 0;
-    var res = await http.post(Uri.parse(prefix + "MNOCLM/Add"), headers: header, body: jsonEncode(list[0].toJson()));
+    var res = await http.post(Uri.parse(prefix + "MNOCLM/Add"),
+        headers: header, body: jsonEncode(list[0].toJson()));
     response = res.body;
   } else if (list.isNotEmpty) {
     int i = 0;
@@ -243,9 +271,12 @@ Future<String> insertMNOCLMToServer(BuildContext? context, {String? TransId, int
       try {
         Map<String, dynamic> map = list[i].toJson();
         map.remove('ID');
-        var res = await http.post(Uri.parse(prefix + "MNOCLM/Add"), headers: header,
-            body: jsonEncode(map)).timeout(Duration(seconds: 30), onTimeout: () {
-          return http.Response('Error', 500);});
+        var res = await http
+            .post(Uri.parse(prefix + "MNOCLM/Add"),
+                headers: header, body: jsonEncode(map))
+            .timeout(Duration(seconds: 30), onTimeout: () {
+          return http.Response('Error', 500);
+        });
         response = await res.body;
         print("eeaaae status");
         print(await res.statusCode);
@@ -256,18 +287,29 @@ Future<String> insertMNOCLMToServer(BuildContext? context, {String? TransId, int
             final Database db = await initializeDB(context);
             // map=jsonDecode(res.body);
             map["has_created"] = 0;
-            var x = await db.update("MNOCLM", map, where: "Code = ?", whereArgs: [map["Code"]]);
-            print(x.toString());}}
+            var x = await db.update("MNOCLM", map,
+                where: "Code = ?", whereArgs: [map["Code"]]);
+            print(x.toString());
+          }
+        }
         print(res.body);
       } catch (e) {
         print("Timeout " + e.toString());
-        sentSuccessInServer = true;}
+        sentSuccessInServer = true;
+      }
       i++;
       print("INDEX = " + i.toString());
-    } while (i < list.length && sentSuccessInServer == true);}
-  return response;}
-Future<void> updateMNOCLMOnServer(BuildContext? context, {String? condition, List? l}) async {
-  List<MNOCLM> list = await retrieveMNOCLMById(context, l == null ? DataSync.getUpdateOnServerStr() : condition ?? "", l == null ? DataSync.getUpdateOnServerList() : l);
+    } while (i < list.length && sentSuccessInServer == true);
+  }
+  return response;
+}
+
+Future<void> updateMNOCLMOnServer(BuildContext? context,
+    {String? condition, List? l}) async {
+  List<MNOCLM> list = await retrieveMNOCLMById(
+      context,
+      l == null ? DataSync.getUpdateOnServerStr() : condition ?? "",
+      l == null ? DataSync.getUpdateOnServerList() : l);
   print(list);
   int i = 0;
   bool sentSuccessInServer = false;
@@ -275,7 +317,10 @@ Future<void> updateMNOCLMOnServer(BuildContext? context, {String? condition, Lis
     sentSuccessInServer = false;
     try {
       Map<String, dynamic> map = list[i].toJson();
-      var res = await http.put(Uri.parse(prefix + 'MNOCLM/Update'), headers: header, body: jsonEncode(map)).timeout(Duration(seconds: 30), onTimeout: () {
+      var res = await http
+          .put(Uri.parse(prefix + 'MNOCLM/Update'),
+              headers: header, body: jsonEncode(map))
+          .timeout(Duration(seconds: 30), onTimeout: () {
         return http.Response('Error', 500);
       });
       print(await res.statusCode);
@@ -284,7 +329,8 @@ Future<void> updateMNOCLMOnServer(BuildContext? context, {String? condition, Lis
         if (res.statusCode == 201) {
           final Database db = await initializeDB(context);
           map["has_updated"] = 0;
-          var x = await db.update("MNOCLM", map, where: "Code = ?", whereArgs: [map["Code"]]);
+          var x = await db.update("MNOCLM", map,
+              where: "Code = ?", whereArgs: [map["Code"]]);
           print(x.toString());
         }
       }
@@ -298,4 +344,3 @@ Future<void> updateMNOCLMOnServer(BuildContext? context, {String? condition, Lis
     print("INDEX = " + i.toString());
   } while (i < list.length && sentSuccessInServer == true);
 }
-

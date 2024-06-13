@@ -441,8 +441,9 @@ Future<void> insertSUOITAToServer(BuildContext? context,
       try {
         print(map);
         map.remove('ID');
-        String queryParams='TransId=${list[i].TransId}';
-        var res = await http.post(Uri.parse(prefix + "SUOITA/Add?$queryParams"),
+        String queryParams = 'TransId=${list[i].TransId}';
+        var res = await http
+            .post(Uri.parse(prefix + "SUOITA/Add?$queryParams"),
                 headers: header, body: jsonEncode(map))
             .timeout(Duration(seconds: 30), onTimeout: () {
           return http.Response("Error", 500);
@@ -455,17 +456,14 @@ Future<void> insertSUOITAToServer(BuildContext? context,
               fileName: StackTrace.current.toString(),
               lineNo: 141);
         }
-        if(res.statusCode ==409)
-        {
+        if (res.statusCode == 409) {
           ///Already added in server
           final Database db = await initializeDB(context);
-          SUOITA model=SUOITA.fromJson(jsonDecode(res.body));
+          SUOITA model = SUOITA.fromJson(jsonDecode(res.body));
           var x = await db.update("SUOITA", model.toJson(),
               where: "TransId = ?", whereArgs: [model.TransId]);
           print(x.toString());
-        }
-        else
-        if (res.statusCode == 201 || res.statusCode == 500) {
+        } else if (res.statusCode == 201 || res.statusCode == 500) {
           sentSuccessInServer = true;
           if (res.statusCode == 201) {
             map['ID'] = jsonDecode(res.body)['ID'];

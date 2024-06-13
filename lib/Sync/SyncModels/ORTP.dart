@@ -9,7 +9,6 @@ import 'package:maintenance/Component/SnackbarComponent.dart';
 import 'package:maintenance/DatabaseInitialization.dart';
 import 'package:maintenance/Sync/CustomURL.dart';
 import 'package:maintenance/Sync/DataSync.dart';
-import 'package:maintenance/Sync/SyncModels/ODPT.dart';
 import 'package:maintenance/main.dart';
 import 'package:sqflite/sqlite_api.dart';
 
@@ -434,6 +433,7 @@ Future<List<ORTPModel>> retrieveORTPById(
       where: str, whereArgs: l, orderBy: orderBy, limit: limit);
   return queryResult.map((e) => ORTPModel.fromJson(e)).toList();
 }
+
 Future<List<ORTPModel>> retrieveORTPForCashRequest(
     BuildContext? context, String str, List l,
     {String? orderBy, int? limit}) async {
@@ -450,7 +450,7 @@ Future<List<ORTPModel>> retrieveORTPByCustomer() async {
     query = '''SELECT DISTINCT T0.RPTransId as TransId 
 FROM OCRT T0 INNER JOIN ORTP T1 ON T0.RPTransId=T1.TransId
 WHERE T0.OpenAmt > 0 ORDER BY (cast(substr(T0.RPTransId,4, length(RPTransID))as int)) DESC LIMIT 1;''';
-  } else  if (await Mode.isBranch(MenuDescription.routePlan)) {
+  } else if (await Mode.isBranch(MenuDescription.routePlan)) {
     query = '''SELECT DISTINCT T0.RPTransId as TransId
 FROM OCRT T0 INNER JOIN ORTP T1 ON T0.RPTransId=T1.TransId
 WHERE T0.OpenAmt > 0 AND T0.BranchId=${userModel.BranchId} ORDER BY (cast(substr(T0.RPTransId,4, length(RPTransID))as int)) DESC LIMIT 1;''';
@@ -459,7 +459,7 @@ WHERE T0.OpenAmt > 0 AND T0.BranchId=${userModel.BranchId} ORDER BY (cast(substr
 FROM OCRT T0 INNER JOIN ORTP T1 ON T0.RPTransId=T1.TransId
 WHERE T0.OpenAmt > 0 AND T0.CreatedBy='${userModel.UserCode}' ORDER BY (cast(substr(T0.RPTransId,4, length(RPTransID))as int)) DESC LIMIT 1;''';
   } else {
-   return [];
+    return [];
   }
 
   final List<Map<String, Object?>> queryResult = await db.rawQuery(query);
@@ -512,8 +512,9 @@ Future<void> insertORTPToServer(BuildContext? context,
       sentSuccessInServer = false;
       try {
         map.remove('ID');
-        String queryParams='TransId=${list[i].TransId}';
-        var res = await http.post(Uri.parse(prefix + "ORTP/Add?$queryParams"),
+        String queryParams = 'TransId=${list[i].TransId}';
+        var res = await http
+            .post(Uri.parse(prefix + "ORTP/Add?$queryParams"),
                 headers: header, body: jsonEncode(map))
             .timeout(Duration(seconds: 30), onTimeout: () {
           writeToLogFile(
@@ -526,24 +527,21 @@ Future<void> insertORTPToServer(BuildContext? context,
 
         print("eeaaae status");
         print(await res.statusCode);
-        if(res.statusCode != 201)
-        {
+        if (res.statusCode != 201) {
           await writeToLogFile(
-              text: '${res.statusCode} error \nMap : $map\nResponse : ${res.body}',
+              text:
+                  '${res.statusCode} error \nMap : $map\nResponse : ${res.body}',
               fileName: StackTrace.current.toString(),
               lineNo: 141);
         }
-        if(res.statusCode ==409)
-        {
+        if (res.statusCode == 409) {
           ///Already added in server
           final Database db = await initializeDB(context);
-          ORTPModel model=ORTPModel.fromJson(jsonDecode(res.body));
+          ORTPModel model = ORTPModel.fromJson(jsonDecode(res.body));
           var x = await db.update("ORTP", model.toJson(),
               where: "TransId = ?", whereArgs: [model.TransId]);
           print(x.toString());
-        }
-        else
-        if (res.statusCode == 201 || res.statusCode == 500) {
+        } else if (res.statusCode == 201 || res.statusCode == 500) {
           sentSuccessInServer = true;
           if (res.statusCode == 201) {
             map['ID'] = jsonDecode(res.body)['ID'];
@@ -601,14 +599,14 @@ Future<void> updateORTPOnServer(BuildContext? context,
         return http.Response('Error', 500);
       });
       print(await res.statusCode);
-      if(res.statusCode != 201)
-        {
-          await writeToLogFile(
-              text: '${res.statusCode} error \nMap : $map\nResponse : ${res.body}',
-              fileName: StackTrace.current.toString(),
-              lineNo: 141);
-        }
-        if (res.statusCode == 201 || res.statusCode == 500) {
+      if (res.statusCode != 201) {
+        await writeToLogFile(
+            text:
+                '${res.statusCode} error \nMap : $map\nResponse : ${res.body}',
+            fileName: StackTrace.current.toString(),
+            lineNo: 141);
+      }
+      if (res.statusCode == 201 || res.statusCode == 500) {
         sentSuccessInServer = true;
         if (res.statusCode == 201) {
           final Database db = await initializeDB(context);

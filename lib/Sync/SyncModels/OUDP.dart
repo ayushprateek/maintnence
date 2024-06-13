@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:maintenance/Component/LogFileFunctions.dart';
 import 'package:maintenance/Component/SnackbarComponent.dart';
@@ -35,8 +34,7 @@ class OUDP {
     this.BranchId,
   });
 
-  factory OUDP.fromJson(Map<String, dynamic> json) =>
-      OUDP(
+  factory OUDP.fromJson(Map<String, dynamic> json) => OUDP(
         ID: int.tryParse(json['ID'].toString()) ?? 0,
         Code: json['Code'] ?? '',
         Name: json['Name'] ?? '',
@@ -51,8 +49,7 @@ class OUDP {
         BranchId: json['BranchId'] ?? '',
       );
 
-  Map<String, dynamic> toJson() =>
-      {
+  Map<String, dynamic> toJson() => {
         'ID': ID,
         'Code': Code,
         'Name': Name,
@@ -65,15 +62,14 @@ class OUDP {
         'BranchId': BranchId,
       };
 }
-Future<List<OUDP>> retrieveOUDPForDisplay({
-  String dbQuery='',
-  int limit=30
-}) async {
-  final Database db = await initializeDB(null);
-  dbQuery='%$dbQuery%';
-  String searchQuery='';
 
-  searchQuery='''
+Future<List<OUDP>> retrieveOUDPForDisplay(
+    {String dbQuery = '', int limit = 30}) async {
+  final Database db = await initializeDB(null);
+  dbQuery = '%$dbQuery%';
+  String searchQuery = '';
+
+  searchQuery = '''
      SELECT * FROM OUDP 
  WHERE Active = 1 AND (Code LIKE '$dbQuery' OR Name LIKE '$dbQuery') 
  LIMIT $limit
@@ -81,6 +77,7 @@ Future<List<OUDP>> retrieveOUDPForDisplay({
   final List<Map<String, Object?>> queryResult = await db.rawQuery(searchQuery);
   return queryResult.map((e) => OUDP.fromJson(e)).toList();
 }
+
 List<OUDP> oUDPFromJson(String str) =>
     List<OUDP>.from(json.decode(str).map((x) => OUDP.fromJson(x)));
 
@@ -89,17 +86,18 @@ String oUDPToJson(List<OUDP> data) =>
 
 Future<List<OUDP>> dataSyncOUDP() async {
   var res =
-  await http.get(headers: header, Uri.parse(prefix + "OUDP" + postfix));
+      await http.get(headers: header, Uri.parse(prefix + "OUDP" + postfix));
   print(res.body);
   return oUDPFromJson(res.body);
 }
+
 Future<List<OUDP>> retrieveOUDPForSearch(
     {required String query, int? limit}) async {
   final Database db = await initializeDB(null);
-  query="%$query%";
-  String dbQuery="SELECT * FROM OUDP WHERE (Code LIKE '$query' OR Name LIKE '$query')  AND Active=1 LIMIT $limit";
-  final List<Map<String, Object?>> queryResult = await db.rawQuery(
-      dbQuery);
+  query = "%$query%";
+  String dbQuery =
+      "SELECT * FROM OUDP WHERE (Code LIKE '$query' OR Name LIKE '$query')  AND Active=1 LIMIT $limit";
+  final List<Map<String, Object?>> queryResult = await db.rawQuery(dbQuery);
   return queryResult.map((e) => OUDP.fromJson(e)).toList();
 }
 
@@ -162,7 +160,7 @@ Future<void> insertOUDP(Database db, {List? list}) async {
   stopwatch.start();
   for (var i = 0; i < customers.length; i += batchSize) {
     var end =
-    (i + batchSize < customers.length) ? i + batchSize : customers.length;
+        (i + batchSize < customers.length) ? i + batchSize : customers.length;
     var batchRecords = customers.sublist(i, end);
     await db.transaction((txn) async {
       var batch = txn.batch();
@@ -226,7 +224,8 @@ Future<void> insertOUDP(Database db, {List? list}) async {
 FROM OUDP_Temp T0
 LEFT JOIN OUDP T1 ON T0.Code = T1.Code 
 WHERE T1.Code IS NULL;
-''');for (var i = 0; i < v.length; i += batchSize) {
+''');
+  for (var i = 0; i < v.length; i += batchSize) {
     var end = (i + batchSize < v.length) ? i + batchSize : v.length;
     var batchRecords = v.sublist(i, end);
     await db.transaction((txn) async {
@@ -262,15 +261,16 @@ Future<List<OUDP>> retrieveOUDP(BuildContext context) async {
   return queryResult.map((e) => OUDP.fromJson(e)).toList();
 }
 
-Future<void> updateOUDP(int id, Map<String, dynamic> values,
-    BuildContext context) async {
+Future<void> updateOUDP(
+    int id, Map<String, dynamic> values, BuildContext context) async {
   final db = await initializeDB(context);
   try {
     await db.transaction((db) async {
       await db.update('OUDP', values, where: 'ID = ?', whereArgs: [id]);
     });
   } catch (e) {
-    writeToLogFile(text: e.toString(),
+    writeToLogFile(
+        text: e.toString(),
         fileName: StackTrace.current.toString(),
         lineNo: 141);
     getErrorSnackBar('Sync Error ' + e.toString());
@@ -281,11 +281,11 @@ Future<void> deleteOUDP(Database db) async {
   await db.delete('OUDP');
 }
 
-Future<List<OUDP>> retrieveOUDPById(BuildContext? context, String str,
-    List l) async {
+Future<List<OUDP>> retrieveOUDPById(
+    BuildContext? context, String str, List l) async {
   final Database db = await initializeDB(context);
   final List<Map<String, Object?>> queryResult =
-  await db.query('OUDP', where: str, whereArgs: l);
+      await db.query('OUDP', where: str, whereArgs: l);
   return queryResult.map((e) => OUDP.fromJson(e)).toList();
 }
 
@@ -307,24 +307,28 @@ Future<void> insertOUDPToServer(BuildContext? context,
     if (list.isEmpty) {
       return;
     }
-    do {Map<String, dynamic> map = list[i].toJson();
+    do {
+      Map<String, dynamic> map = list[i].toJson();
       sentSuccessInServer = false;
       try {
         map.remove('ID');
         var res = await http
             .post(Uri.parse(prefix + "OUDP/Add"),
-            headers: header, body: jsonEncode(map))
+                headers: header, body: jsonEncode(map))
             .timeout(Duration(seconds: 30), onTimeout: () {
           writeToLogFile(
-            text: '500 error \nMap : $map', fileName: StackTrace.current.toString(), lineNo: 141);return http.Response('Error', 500);
+              text: '500 error \nMap : $map',
+              fileName: StackTrace.current.toString(),
+              lineNo: 141);
+          return http.Response('Error', 500);
         });
         response = await res.body;
         print("eeaaae status");
         print(await res.statusCode);
-        if(res.statusCode != 201)
-        {
+        if (res.statusCode != 201) {
           await writeToLogFile(
-              text: '${res.statusCode} error \nMap : $map\nResponse : ${res.body}',
+              text:
+                  '${res.statusCode} error \nMap : $map\nResponse : ${res.body}',
               fileName: StackTrace.current.toString(),
               lineNo: 141);
         }
@@ -339,7 +343,7 @@ Future<void> insertOUDPToServer(BuildContext? context,
                 where: "ID = ? AND Code = ?",
                 whereArgs: [map["ID"], map["Code"]]);
             print(x.toString());
-          }else{
+          } else {
             writeToLogFile(
                 text: '500 error \nMap : $map',
                 fileName: StackTrace.current.toString(),
@@ -349,14 +353,15 @@ Future<void> insertOUDPToServer(BuildContext? context,
         print(res.body);
       } catch (e) {
         writeToLogFile(
-            text: '${e.toString()}\nMap : $map', fileName: StackTrace.current.toString(), lineNo: 141);
-  sentSuccessInServer = true;
+            text: '${e.toString()}\nMap : $map',
+            fileName: StackTrace.current.toString(),
+            lineNo: 141);
+        sentSuccessInServer = true;
+      }
+      i++;
+      print("INDEX = " + i.toString());
+    } while (i < list.length && sentSuccessInServer == true);
   }
-  i++;
-  print("INDEX = " + i.toString());
-  } while (i < list.length && sentSuccessInServer == true);
-}
-
 }
 
 Future<void> updateOUDPOnServer(BuildContext? context,
@@ -371,7 +376,8 @@ Future<void> updateOUDPOnServer(BuildContext? context,
   if (list.isEmpty) {
     return;
   }
-  do {Map<String, dynamic> map = list[i].toJson();
+  do {
+    Map<String, dynamic> map = list[i].toJson();
     sentSuccessInServer = false;
     try {
       if (list.isEmpty) {
@@ -380,20 +386,23 @@ Future<void> updateOUDPOnServer(BuildContext? context,
       Map<String, dynamic> map = list[i].toJson();
       var res = await http
           .put(Uri.parse(prefix + 'OUDP/Update'),
-          headers: header, body: jsonEncode(map))
+              headers: header, body: jsonEncode(map))
           .timeout(Duration(seconds: 30), onTimeout: () {
         writeToLogFile(
-            text: '500 error \nMap : $map', fileName: StackTrace.current.toString(), lineNo: 141);return http.Response('Error', 500);
+            text: '500 error \nMap : $map',
+            fileName: StackTrace.current.toString(),
+            lineNo: 141);
+        return http.Response('Error', 500);
       });
       print(await res.statusCode);
-      if(res.statusCode != 201)
-        {
-          await writeToLogFile(
-              text: '${res.statusCode} error \nMap : $map\nResponse : ${res.body}',
-              fileName: StackTrace.current.toString(),
-              lineNo: 141);
-        }
-        if (res.statusCode == 201 || res.statusCode == 500) {
+      if (res.statusCode != 201) {
+        await writeToLogFile(
+            text:
+                '${res.statusCode} error \nMap : $map\nResponse : ${res.body}',
+            fileName: StackTrace.current.toString(),
+            lineNo: 141);
+      }
+      if (res.statusCode == 201 || res.statusCode == 500) {
         sentSuccessInServer = true;
         if (res.statusCode == 201) {
           final Database db = await initializeDB(context);
@@ -402,7 +411,7 @@ Future<void> updateOUDPOnServer(BuildContext? context,
               where: "ID = ? AND Code = ?",
               whereArgs: [map["ID"], map["Code"]]);
           print(x.toString());
-        }else{
+        } else {
           writeToLogFile(
               text: '500 error \nMap : $map',
               fileName: StackTrace.current.toString(),
@@ -412,11 +421,13 @@ Future<void> updateOUDPOnServer(BuildContext? context,
       print(res.body);
     } catch (e) {
       writeToLogFile(
-          text: '${e.toString()}\nMap : $map', fileName: StackTrace.current.toString(), lineNo: 141);
-  sentSuccessInServer = true;
-  }
+          text: '${e.toString()}\nMap : $map',
+          fileName: StackTrace.current.toString(),
+          lineNo: 141);
+      sentSuccessInServer = true;
+    }
 
-  i++;
-  print("INDEX = " + i.toString());
+    i++;
+    print("INDEX = " + i.toString());
   } while (i < list.length && sentSuccessInServer == true);
 }

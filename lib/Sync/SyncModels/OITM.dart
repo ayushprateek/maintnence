@@ -131,15 +131,18 @@ Future<void> updateOITM(
     getErrorSnackBar("Sync Error " + e.toString());
   }
 }
+
 Future<List<OITMModel>> retrieveOITMForSearch({
   int? limit,
   String? query,
 }) async {
-  query="%$query%";
+  query = "%$query%";
   final Database db = await initializeDB(null);
-  final List<Map<String, Object?>> queryResult = await db.rawQuery('SELECT * FROM OITM WHERE ItemCode LIKE "$query" OR ItemName LIKE "$query" LIMIT $limit');
+  final List<Map<String, Object?>> queryResult = await db.rawQuery(
+      'SELECT * FROM OITM WHERE ItemCode LIKE "$query" OR ItemName LIKE "$query" LIMIT $limit');
   return queryResult.map((e) => OITMModel.fromJson(e)).toList();
 }
+
 Future<void> deleteOITM(Database db) async {
   await db.delete('OITM');
 }
@@ -245,7 +248,7 @@ Future<void> insertOITM(Database db, {List? list}) async {
   stopwatch.start();
   for (var i = 0; i < customers.length; i += batchSize) {
     var end =
-    (i + batchSize < customers.length) ? i + batchSize : customers.length;
+        (i + batchSize < customers.length) ? i + batchSize : customers.length;
     var batchRecords = customers.sublist(i, end);
     await db.transaction((txn) async {
       var batch = txn.batch();
@@ -285,9 +288,9 @@ Future<void> insertOITM(Database db, {List? list}) async {
       for (var element in batchRecords) {
         try {
           batch.update("OITM", element,
-              where: "ItemCode = ? AND ifnull(has_created,0) <> ? AND ifnull(has_updated,0) <> ?",
+              where:
+                  "ItemCode = ? AND ifnull(has_created,0) <> ? AND ifnull(has_updated,0) <> ?",
               whereArgs: [element["ItemCode"], 1, 1]);
-
         } catch (e) {
           writeToLogFile(
               text: e.toString(),

@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:maintenance/Component/LogFileFunctions.dart';
 import 'package:maintenance/Component/SnackbarComponent.dart';
@@ -46,7 +45,7 @@ class OXPT {
   factory OXPT.fromJson(Map<String, dynamic> json) => OXPT(
         ID: int.tryParse(json['ID'].toString()) ?? 0,
         ShortDesc: json['ShortDesc'] ?? '',
-    GLAccountCode: json['GLAccountCode'] ?? '',
+        GLAccountCode: json['GLAccountCode'] ?? '',
         Remarks: json['Remarks'] ?? '',
         Active: json['Active'] is bool ? json['Active'] : json['Active'] == 1,
         CreatedBy: json['CreatedBy'] ?? '',
@@ -157,7 +156,7 @@ Future<void> insertOXPT(Database db, {List? list}) async {
   stopwatch.start();
   for (var i = 0; i < customers.length; i += batchSize) {
     var end =
-    (i + batchSize < customers.length) ? i + batchSize : customers.length;
+        (i + batchSize < customers.length) ? i + batchSize : customers.length;
     var batchRecords = customers.sublist(i, end);
     await db.transaction((txn) async {
       var batch = txn.batch();
@@ -197,7 +196,8 @@ Future<void> insertOXPT(Database db, {List? list}) async {
       for (var element in batchRecords) {
         try {
           batch.update("OXPT", element,
-              where: "ShortDesc = ? AND ifnull(has_created,0) <> ? AND ifnull(has_updated,0) <> ?",
+              where:
+                  "ShortDesc = ? AND ifnull(has_created,0) <> ? AND ifnull(has_updated,0) <> ?",
               whereArgs: [element["ShortDesc"], 1, 1]);
         } catch (e) {
           writeToLogFile(
@@ -307,7 +307,8 @@ Future<void> insertOXPTToServer(BuildContext? context,
     if (list.isEmpty) {
       return;
     }
-    do {Map<String, dynamic> map = list[i].toJson();
+    do {
+      Map<String, dynamic> map = list[i].toJson();
       sentSuccessInServer = false;
       try {
         map.remove('ID');
@@ -316,15 +317,18 @@ Future<void> insertOXPTToServer(BuildContext? context,
                 headers: header, body: jsonEncode(map))
             .timeout(Duration(seconds: 30), onTimeout: () {
           writeToLogFile(
-            text: '500 error \nMap : $map', fileName: StackTrace.current.toString(), lineNo: 141);return http.Response('Error', 500);
+              text: '500 error \nMap : $map',
+              fileName: StackTrace.current.toString(),
+              lineNo: 141);
+          return http.Response('Error', 500);
         });
         response = await res.body;
         print("eeaaae status");
         print(await res.statusCode);
-        if(res.statusCode != 201)
-        {
+        if (res.statusCode != 201) {
           await writeToLogFile(
-              text: '${res.statusCode} error \nMap : $map\nResponse : ${res.body}',
+              text:
+                  '${res.statusCode} error \nMap : $map\nResponse : ${res.body}',
               fileName: StackTrace.current.toString(),
               lineNo: 141);
         }
@@ -339,7 +343,7 @@ Future<void> insertOXPTToServer(BuildContext? context,
                 where: "TransId = ? AND RowId = ?",
                 whereArgs: [map["TransId"], map["RowId"]]);
             print(x.toString());
-          }else{
+          } else {
             writeToLogFile(
                 text: '500 error \nMap : $map',
                 fileName: StackTrace.current.toString(),
@@ -372,7 +376,8 @@ Future<void> updateOXPTOnServer(BuildContext? context,
   if (list.isEmpty) {
     return;
   }
-  do {Map<String, dynamic> map = list[i].toJson();
+  do {
+    Map<String, dynamic> map = list[i].toJson();
     sentSuccessInServer = false;
     try {
       if (list.isEmpty) {
@@ -384,17 +389,20 @@ Future<void> updateOXPTOnServer(BuildContext? context,
               headers: header, body: jsonEncode(map))
           .timeout(Duration(seconds: 30), onTimeout: () {
         writeToLogFile(
-            text: '500 error \nMap : $map', fileName: StackTrace.current.toString(), lineNo: 141);return http.Response('Error', 500);
+            text: '500 error \nMap : $map',
+            fileName: StackTrace.current.toString(),
+            lineNo: 141);
+        return http.Response('Error', 500);
       });
       print(await res.statusCode);
-      if(res.statusCode != 201)
-        {
-          await writeToLogFile(
-              text: '${res.statusCode} error \nMap : $map\nResponse : ${res.body}',
-              fileName: StackTrace.current.toString(),
-              lineNo: 141);
-        }
-        if (res.statusCode == 201 || res.statusCode == 500) {
+      if (res.statusCode != 201) {
+        await writeToLogFile(
+            text:
+                '${res.statusCode} error \nMap : $map\nResponse : ${res.body}',
+            fileName: StackTrace.current.toString(),
+            lineNo: 141);
+      }
+      if (res.statusCode == 201 || res.statusCode == 500) {
         sentSuccessInServer = true;
         if (res.statusCode == 201) {
           final Database db = await initializeDB(context);
@@ -403,7 +411,7 @@ Future<void> updateOXPTOnServer(BuildContext? context,
               where: "TransId = ? AND RowId = ?",
               whereArgs: [map["TransId"], map["RowId"]]);
           print(x.toString());
-        }else{
+        } else {
           writeToLogFile(
               text: '500 error \nMap : $map',
               fileName: StackTrace.current.toString(),

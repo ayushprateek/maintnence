@@ -192,7 +192,7 @@ Future<void> insertOGRP(Database db, {List? list}) async {
   stopwatch.start();
   for (var i = 0; i < customers.length; i += batchSize) {
     var end =
-    (i + batchSize < customers.length) ? i + batchSize : customers.length;
+        (i + batchSize < customers.length) ? i + batchSize : customers.length;
     var batchRecords = customers.sublist(i, end);
     await db.transaction((txn) async {
       var batch = txn.batch();
@@ -232,9 +232,9 @@ Future<void> insertOGRP(Database db, {List? list}) async {
       for (var element in batchRecords) {
         try {
           batch.update("OGRP", element,
-              where: "GrpDesc = ? AND ifnull(has_created,0) <> ? AND ifnull(has_updated,0) <> ?",
+              where:
+                  "GrpDesc = ? AND ifnull(has_created,0) <> ? AND ifnull(has_updated,0) <> ?",
               whereArgs: [element["GrpDesc"], 1, 1]);
-
         } catch (e) {
           writeToLogFile(
               text: e.toString(),

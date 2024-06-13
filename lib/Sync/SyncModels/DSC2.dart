@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:maintenance/Component/LogFileFunctions.dart';
 import 'package:maintenance/Component/SnackbarComponent.dart';
@@ -29,7 +28,7 @@ class DSC2Model {
     this.DelDueDate,
     this.InvoiceQty,
     this.ShipToAddress,
-    this.CollectCash=false,
+    this.CollectCash = false,
     this.LineStatus,
     this.CreateDate,
     this.UpdateDate,
@@ -63,13 +62,11 @@ class DSC2Model {
   bool hasUpdated;
   String? LineStatus;
   bool? IsSelected;
-  bool checked = false,
-      enableCheckbox;
+  bool checked = false, enableCheckbox;
   int? DocEntry;
   String? DocNum;
 
-  factory DSC2Model.fromJson(Map<String, dynamic> json) =>
-      DSC2Model(
+  factory DSC2Model.fromJson(Map<String, dynamic> json) => DSC2Model(
         ID: int.tryParse(json["ID"].toString()) ?? 0,
         TransId: json["TransId"] ?? "",
         PermanentTransId: json["PermanentTransId"] ?? "",
@@ -83,7 +80,8 @@ class DSC2Model {
         ItemCode: json["ItemCode"] ?? "",
         InvoiceQty: double.tryParse(json['InvoiceQty'].toString()) ?? 0.0,
         ItemName: json["ItemName"] ?? "",
-        TransferredQty: double.tryParse(json["TransferredQty"].toString()) ?? 0.0,
+        TransferredQty:
+            double.tryParse(json["TransferredQty"].toString()) ?? 0.0,
         Quantity: double.tryParse(json["Quantity"].toString()) ?? 0.0,
         OpenQty: double.tryParse(json["OpenQty"].toString()) ?? 0.0,
         UOM: json["UOM"] ?? "",
@@ -102,8 +100,7 @@ class DSC2Model {
         DocNum: json['DocNum'],
       );
 
-  Map<String, dynamic> toJson() =>
-      {
+  Map<String, dynamic> toJson() => {
         "ID": ID,
         "CreateDate": CreateDate?.toIso8601String(),
         "UpdateDate": UpdateDate?.toIso8601String(),
@@ -128,25 +125,25 @@ class DSC2Model {
         'DocNum': DocNum,
       };
 
-  // Future<void> updateDSC2({required String str, List l}) async {
-  //   final db = await initializeDB(null);
-  //   try {
-  //     db.transaction((db) async {
-  //       await db.update("DSC2", this.toJson(), where: str, whereArgs: l);
-  //     });
-  //   } catch (e) {
-  //     writeToLogFile(
-  //         text: e.toString(),
-  //         fileName: StackTrace.current.toString(),
-  //         lineNo: 141);
-  //     getErrorSnackBar("Sync Error " + e.toString());
-  //   }
-  // }
+// Future<void> updateDSC2({required String str, List l}) async {
+//   final db = await initializeDB(null);
+//   try {
+//     db.transaction((db) async {
+//       await db.update("DSC2", this.toJson(), where: str, whereArgs: l);
+//     });
+//   } catch (e) {
+//     writeToLogFile(
+//         text: e.toString(),
+//         fileName: StackTrace.current.toString(),
+//         lineNo: 141);
+//     getErrorSnackBar("Sync Error " + e.toString());
+//   }
+// }
 }
 
 Future<List<DSC2Model>> dataSyncDSC2() async {
   var res =
-  await http.get(headers: header, Uri.parse(prefix + "DSC2" + postfix));
+      await http.get(headers: header, Uri.parse(prefix + "DSC2" + postfix));
   print(res.body);
   return DSC2ModelFromJson(res.body);
 }
@@ -210,7 +207,7 @@ Future<void> insertDSC2(Database db, {List? list}) async {
   stopwatch.start();
   for (var i = 0; i < customers.length; i += batchSize) {
     var end =
-    (i + batchSize < customers.length) ? i + batchSize : customers.length;
+        (i + batchSize < customers.length) ? i + batchSize : customers.length;
     var batchRecords = customers.sublist(i, end);
     await db.transaction((txn) async {
       var batch = txn.batch();
@@ -250,7 +247,8 @@ Future<void> insertDSC2(Database db, {List? list}) async {
       for (var element in batchRecords) {
         try {
           batch.update("DSC2", element,
-              where: "RowId = ? AND TransId = ? AND ifnull(has_created,0) <> ? AND ifnull(has_updated,0) <> ?",
+              where:
+                  "RowId = ? AND TransId = ? AND ifnull(has_created,0) <> ? AND ifnull(has_updated,0) <> ?",
               whereArgs: [element["RowId"], element["TransId"], 1, 1]);
         } catch (e) {
           writeToLogFile(
@@ -305,7 +303,6 @@ WHERE T1.TransId IS NULL AND T1.RowId IS NULL;
   // stopwatch.stop();
 }
 
-
 Future<List<DSC2Model>> retrieveDSC2(BuildContext context) async {
   final Database db = await initializeDB(context);
   final List<Map<String, Object?>> queryResult = await db.query('DSC2');
@@ -318,11 +315,11 @@ Future<void> deleteDSC2(Database db) async {
 
 //SEND DATA TO SERVER
 //--------------------------
-Future<List<DSC2Model>> retrieveDSC2ById(BuildContext? context, String str,
-    List l) async {
+Future<List<DSC2Model>> retrieveDSC2ById(
+    BuildContext? context, String str, List l) async {
   final Database db = await initializeDB(context);
   final List<Map<String, Object?>> queryResult =
-  await db.query('DSC2', where: str, whereArgs: l);
+      await db.query('DSC2', where: str, whereArgs: l);
   return queryResult.map((e) => DSC2Model.fromJson(e)).toList();
 }
 
@@ -349,39 +346,43 @@ Future<void> insertDSC2ToServer(BuildContext? context,
     if (list.isEmpty) {
       return;
     }
-    do {Map<String, dynamic> map = list[i].toJson();
+    do {
+      Map<String, dynamic> map = list[i].toJson();
       sentSuccessInServer = false;
       try {
         map.remove('ID');
-        String queryParams='TransId=${list[i].TransId}&RowId=${list[i].RowId}';
-        var res = await http.post(Uri.parse(prefix + "DSC2/Add?$queryParams"),
-            headers: header, body: jsonEncode(map))
+        String queryParams =
+            'TransId=${list[i].TransId}&RowId=${list[i].RowId}';
+        var res = await http
+            .post(Uri.parse(prefix + "DSC2/Add?$queryParams"),
+                headers: header, body: jsonEncode(map))
             .timeout(Duration(seconds: 30), onTimeout: () {
           writeToLogFile(
-            text: '500 error \nMap : $map', fileName: StackTrace.current.toString(), lineNo: 141);return http.Response('Error', 500);
+              text: '500 error \nMap : $map',
+              fileName: StackTrace.current.toString(),
+              lineNo: 141);
+          return http.Response('Error', 500);
         });
         response = await res.body;
 
         print("eeaaae status");
         print(await res.statusCode);
-        if(res.statusCode != 201)
-        {
+        if (res.statusCode != 201) {
           await writeToLogFile(
-              text: '${res.statusCode} error \nMap : $map\nResponse : ${res.body}',
+              text:
+                  '${res.statusCode} error \nMap : $map\nResponse : ${res.body}',
               fileName: StackTrace.current.toString(),
               lineNo: 141);
         }
-        if(res.statusCode ==409)
-        {
+        if (res.statusCode == 409) {
           ///Already added in server
           final Database db = await initializeDB(context);
-          DSC2Model model=DSC2Model.fromJson(jsonDecode(res.body));
+          DSC2Model model = DSC2Model.fromJson(jsonDecode(res.body));
           var x = await db.update("DSC2", model.toJson(),
-              where: "TransId = ? AND RowId = ?", whereArgs: [model.TransId,model.RowId]);
+              where: "TransId = ? AND RowId = ?",
+              whereArgs: [model.TransId, model.RowId]);
           print(x.toString());
-        }
-        else
-        if (res.statusCode == 201 || res.statusCode == 500) {
+        } else if (res.statusCode == 201 || res.statusCode == 500) {
           sentSuccessInServer = true;
           if (res.statusCode == 201) {
             map['ID'] = jsonDecode(res.body)['ID'];
@@ -396,15 +397,16 @@ Future<void> insertDSC2ToServer(BuildContext? context,
         print(res.body);
       } catch (e) {
         writeToLogFile(
-            text: '${e.toString()}\nMap : $map', fileName: StackTrace.current.toString(), lineNo: 141);
-  sentSuccessInServer = true;
+            text: '${e.toString()}\nMap : $map',
+            fileName: StackTrace.current.toString(),
+            lineNo: 141);
+        sentSuccessInServer = true;
+      }
+
+      i++;
+      print("INDEX = " + i.toString());
+    } while (i < list.length && sentSuccessInServer == true);
   }
-
-  i++;
-  print("INDEX = " + i.toString());
-  } while (i < list.length && sentSuccessInServer == true);
-}
-
 }
 
 Future<void> updateDSC2OnServer(BuildContext? context,
@@ -419,7 +421,8 @@ Future<void> updateDSC2OnServer(BuildContext? context,
   if (list.isEmpty) {
     return;
   }
-  do {Map<String, dynamic> map = list[i].toJson();
+  do {
+    Map<String, dynamic> map = list[i].toJson();
     sentSuccessInServer = false;
     try {
       if (list.isEmpty) {
@@ -428,20 +431,23 @@ Future<void> updateDSC2OnServer(BuildContext? context,
       Map<String, dynamic> map = list[i].toJson();
       var res = await http
           .put(Uri.parse(prefix + 'DSC2/Update'),
-          headers: header, body: jsonEncode(map))
+              headers: header, body: jsonEncode(map))
           .timeout(Duration(seconds: 30), onTimeout: () {
         writeToLogFile(
-            text: '500 error \nMap : $map', fileName: StackTrace.current.toString(), lineNo: 141);return http.Response('Error', 500);
+            text: '500 error \nMap : $map',
+            fileName: StackTrace.current.toString(),
+            lineNo: 141);
+        return http.Response('Error', 500);
       });
       print(await res.statusCode);
-      if(res.statusCode != 201)
-        {
-          await writeToLogFile(
-              text: '${res.statusCode} error \nMap : $map\nResponse : ${res.body}',
-              fileName: StackTrace.current.toString(),
-              lineNo: 141);
-        }
-        if (res.statusCode == 201 || res.statusCode == 500) {
+      if (res.statusCode != 201) {
+        await writeToLogFile(
+            text:
+                '${res.statusCode} error \nMap : $map\nResponse : ${res.body}',
+            fileName: StackTrace.current.toString(),
+            lineNo: 141);
+      }
+      if (res.statusCode == 201 || res.statusCode == 500) {
         sentSuccessInServer = true;
         if (res.statusCode == 201) {
           final Database db = await initializeDB(context);
@@ -455,11 +461,13 @@ Future<void> updateDSC2OnServer(BuildContext? context,
       print(res.body);
     } catch (e) {
       writeToLogFile(
-          text: '${e.toString()}\nMap : $map', fileName: StackTrace.current.toString(), lineNo: 141);
-  sentSuccessInServer = true;
-  }
+          text: '${e.toString()}\nMap : $map',
+          fileName: StackTrace.current.toString(),
+          lineNo: 141);
+      sentSuccessInServer = true;
+    }
 
-  i++;
-  print("INDEX = " + i.toString());
+    i++;
+    print("INDEX = " + i.toString());
   } while (i < list.length && sentSuccessInServer == true);
 }

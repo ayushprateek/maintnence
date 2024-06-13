@@ -1,14 +1,15 @@
-import 'package:maintenance/Component/LogFileFunctions.dart';
 import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:maintenance/Component/LogFileFunctions.dart';
 import 'package:maintenance/Component/SnackbarComponent.dart';
 import 'package:maintenance/DatabaseInitialization.dart';
 import 'package:maintenance/Sync/CustomURL.dart';
 import 'package:maintenance/Sync/DataSync.dart';
-import 'dart:convert';
 import 'package:sqflite/sqlite_api.dart';
-class MNOCLT{
+
+class MNOCLT {
   int? ID;
   String? Code;
   String? Name;
@@ -23,6 +24,7 @@ class MNOCLT{
   int? MediumPriorityDays;
   int? HighPriorityDays;
   String? CheckType;
+
   MNOCLT({
     this.ID,
     this.Code,
@@ -39,47 +41,57 @@ class MNOCLT{
     this.HighPriorityDays,
     this.CheckType,
   });
-  factory MNOCLT.fromJson(Map<String,dynamic> json)=>MNOCLT(
-    ID : int.tryParse(json['ID'].toString())??0,
-    Code : json['Code']?.toString() ?? '',
-    Name : json['Name']?.toString() ?? '',
-    Unit : json['Unit']?.toString() ?? '',
-    UnitValue : json['UnitValue']?.toString() ?? '',
-    CreateDate : DateTime.tryParse(json['CreateDate'].toString()),
-    UpdateDate : DateTime.tryParse(json['UpdateDate'].toString()),
-    CreatedBy : json['CreatedBy']?.toString() ?? '',
-    UpdatedBy : json['UpdatedBy']?.toString() ?? '',
-    BranchId : json['BranchId']?.toString() ?? '',
-    Active : json['Active'] is bool ? json['Active'] : json['Active']==1,
-    MediumPriorityDays : int.tryParse(json['MediumPriorityDays'].toString())??0,
-    HighPriorityDays : int.tryParse(json['HighPriorityDays'].toString())??0,
-    CheckType : json['CheckType']?.toString() ?? '',
-  );
-  Map<String,dynamic> toJson()=>{
-    'ID' : ID,
-    'Code' : Code,
-    'Name' : Name,
-    'Unit' : Unit,
-    'UnitValue' : UnitValue,
-    'CreateDate' : CreateDate?.toIso8601String(),
-    'UpdateDate' : UpdateDate?.toIso8601String(),
-    'CreatedBy' : CreatedBy,
-    'UpdatedBy' : UpdatedBy,
-    'BranchId' : BranchId,
-    'Active' : Active,
-    'MediumPriorityDays' : MediumPriorityDays,
-    'HighPriorityDays' : HighPriorityDays,
-    'CheckType' : CheckType,
-  };
+
+  factory MNOCLT.fromJson(Map<String, dynamic> json) => MNOCLT(
+        ID: int.tryParse(json['ID'].toString()) ?? 0,
+        Code: json['Code']?.toString() ?? '',
+        Name: json['Name']?.toString() ?? '',
+        Unit: json['Unit']?.toString() ?? '',
+        UnitValue: json['UnitValue']?.toString() ?? '',
+        CreateDate: DateTime.tryParse(json['CreateDate'].toString()),
+        UpdateDate: DateTime.tryParse(json['UpdateDate'].toString()),
+        CreatedBy: json['CreatedBy']?.toString() ?? '',
+        UpdatedBy: json['UpdatedBy']?.toString() ?? '',
+        BranchId: json['BranchId']?.toString() ?? '',
+        Active: json['Active'] is bool ? json['Active'] : json['Active'] == 1,
+        MediumPriorityDays:
+            int.tryParse(json['MediumPriorityDays'].toString()) ?? 0,
+        HighPriorityDays:
+            int.tryParse(json['HighPriorityDays'].toString()) ?? 0,
+        CheckType: json['CheckType']?.toString() ?? '',
+      );
+
+  Map<String, dynamic> toJson() => {
+        'ID': ID,
+        'Code': Code,
+        'Name': Name,
+        'Unit': Unit,
+        'UnitValue': UnitValue,
+        'CreateDate': CreateDate?.toIso8601String(),
+        'UpdateDate': UpdateDate?.toIso8601String(),
+        'CreatedBy': CreatedBy,
+        'UpdatedBy': UpdatedBy,
+        'BranchId': BranchId,
+        'Active': Active,
+        'MediumPriorityDays': MediumPriorityDays,
+        'HighPriorityDays': HighPriorityDays,
+        'CheckType': CheckType,
+      };
 }
-List<MNOCLT> mNOCLTFromJson(String str) => List<MNOCLT>.from(
-    json.decode(str).map((x) => MNOCLT.fromJson(x)));
+
+List<MNOCLT> mNOCLTFromJson(String str) =>
+    List<MNOCLT>.from(json.decode(str).map((x) => MNOCLT.fromJson(x)));
+
 String mNOCLTToJson(List<MNOCLT> data) =>
     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+
 Future<List<MNOCLT>> dataSyncMNOCLT() async {
-  var res = await http.get(headers: header, Uri.parse(prefix + "MNOCLT" + postfix));
+  var res =
+      await http.get(headers: header, Uri.parse(prefix + "MNOCLT" + postfix));
   print(res.body);
-  return mNOCLTFromJson(res.body);}
+  return mNOCLTFromJson(res.body);
+}
+
 Future<void> insertMNOCLT(Database db, {List? list}) async {
   if (postfix.toLowerCase().contains('all')) {
     await deleteMNOCLT(db);
@@ -94,7 +106,8 @@ Future<void> insertMNOCLT(Database db, {List? list}) async {
   Stopwatch stopwatch = Stopwatch();
   stopwatch.start();
   for (var i = 0; i < customers.length; i += batchSize) {
-    var end = (i + batchSize < customers.length) ? i + batchSize : customers.length;
+    var end =
+        (i + batchSize < customers.length) ? i + batchSize : customers.length;
     var batchRecords = customers.sublist(i, end);
     await db.transaction((txn) async {
       var batch = txn.batch();
@@ -137,9 +150,9 @@ Future<void> insertMNOCLT(Database db, {List? list}) async {
       for (var element in batchRecords) {
         try {
           batch.update("MNOCLT", element,
-              where: "Code = ? AND ifnull(has_created,0) <> ? AND ifnull(has_updated,0) <> ?",
+              where:
+                  "Code = ? AND ifnull(has_created,0) <> ? AND ifnull(has_updated,0) <> ?",
               whereArgs: [element["Code"], 1, 1]);
-
         } catch (e) {
           writeToLogFile(
               text: e.toString(),
@@ -197,28 +210,44 @@ Future<List<MNOCLT>> retrieveMNOCLT(BuildContext context) async {
   final List<Map<String, Object?>> queryResult = await db.query('MNOCLT');
   return queryResult.map((e) => MNOCLT.fromJson(e)).toList();
 }
-Future<void> updateMNOCLT(int id, Map<String, dynamic> values, BuildContext context) async {
+
+Future<void> updateMNOCLT(
+    int id, Map<String, dynamic> values, BuildContext context) async {
   final db = await initializeDB(context);
   try {
     db.transaction((db) async {
       await db.update('MNOCLT', values, where: 'ID = ?', whereArgs: [id]);
     });
   } catch (e) {
-    getErrorSnackBar('Sync Error ' + e.toString());}}
+    getErrorSnackBar('Sync Error ' + e.toString());
+  }
+}
+
 Future<void> deleteMNOCLT(Database db) async {
   await db.delete('MNOCLT');
 }
-Future<List<MNOCLT>> retrieveMNOCLTById(BuildContext? context, String str, List l) async {
+
+Future<List<MNOCLT>> retrieveMNOCLTById(
+    BuildContext? context, String str, List l) async {
   final Database db = await initializeDB(context);
-  final List<Map<String, Object?>> queryResult = await db.query('MNOCLT', where: str, whereArgs: l);
+  final List<Map<String, Object?>> queryResult =
+      await db.query('MNOCLT', where: str, whereArgs: l);
   return queryResult.map((e) => MNOCLT.fromJson(e)).toList();
 }
-Future<String> insertMNOCLTToServer(BuildContext? context, {String? TransId, int? id}) async {
+
+Future<String> insertMNOCLTToServer(BuildContext? context,
+    {String? TransId, int? id}) async {
   String response = "";
-  List<MNOCLT> list = await retrieveMNOCLTById(context, TransId == null ? DataSync.getInsertToServerStr() : "TransId = ? AND ID = ?", TransId == null ? DataSync.getInsertToServerList() : [TransId, id]);
+  List<MNOCLT> list = await retrieveMNOCLTById(
+      context,
+      TransId == null
+          ? DataSync.getInsertToServerStr()
+          : "TransId = ? AND ID = ?",
+      TransId == null ? DataSync.getInsertToServerList() : [TransId, id]);
   if (TransId != null) {
     list[0].ID = 0;
-    var res = await http.post(Uri.parse(prefix + "MNOCLT/Add"), headers: header, body: jsonEncode(list[0].toJson()));
+    var res = await http.post(Uri.parse(prefix + "MNOCLT/Add"),
+        headers: header, body: jsonEncode(list[0].toJson()));
     response = res.body;
   } else if (list.isNotEmpty) {
     int i = 0;
@@ -228,9 +257,12 @@ Future<String> insertMNOCLTToServer(BuildContext? context, {String? TransId, int
       try {
         Map<String, dynamic> map = list[i].toJson();
         map.remove('ID');
-        var res = await http.post(Uri.parse(prefix + "MNOCLT/Add"), headers: header,
-            body: jsonEncode(map)).timeout(Duration(seconds: 30), onTimeout: () {
-          return http.Response('Error', 500);});
+        var res = await http
+            .post(Uri.parse(prefix + "MNOCLT/Add"),
+                headers: header, body: jsonEncode(map))
+            .timeout(Duration(seconds: 30), onTimeout: () {
+          return http.Response('Error', 500);
+        });
         response = await res.body;
         print("eeaaae status");
         print(await res.statusCode);
@@ -241,18 +273,29 @@ Future<String> insertMNOCLTToServer(BuildContext? context, {String? TransId, int
             final Database db = await initializeDB(context);
             // map=jsonDecode(res.body);
             map["has_created"] = 0;
-            var x = await db.update("MNOCLT", map, where: "Code = ?", whereArgs: [map["Code"]]);
-            print(x.toString());}}
+            var x = await db.update("MNOCLT", map,
+                where: "Code = ?", whereArgs: [map["Code"]]);
+            print(x.toString());
+          }
+        }
         print(res.body);
       } catch (e) {
         print("Timeout " + e.toString());
-        sentSuccessInServer = true;}
+        sentSuccessInServer = true;
+      }
       i++;
       print("INDEX = " + i.toString());
-    } while (i < list.length && sentSuccessInServer == true);}
-  return response;}
-Future<void> updateMNOCLTOnServer(BuildContext? context, {String? condition, List? l}) async {
-  List<MNOCLT> list = await retrieveMNOCLTById(context, l == null ? DataSync.getUpdateOnServerStr() : condition ?? "", l == null ? DataSync.getUpdateOnServerList() : l);
+    } while (i < list.length && sentSuccessInServer == true);
+  }
+  return response;
+}
+
+Future<void> updateMNOCLTOnServer(BuildContext? context,
+    {String? condition, List? l}) async {
+  List<MNOCLT> list = await retrieveMNOCLTById(
+      context,
+      l == null ? DataSync.getUpdateOnServerStr() : condition ?? "",
+      l == null ? DataSync.getUpdateOnServerList() : l);
   print(list);
   int i = 0;
   bool sentSuccessInServer = false;
@@ -260,7 +303,10 @@ Future<void> updateMNOCLTOnServer(BuildContext? context, {String? condition, Lis
     sentSuccessInServer = false;
     try {
       Map<String, dynamic> map = list[i].toJson();
-      var res = await http.put(Uri.parse(prefix + 'MNOCLT/Update'), headers: header, body: jsonEncode(map)).timeout(Duration(seconds: 30), onTimeout: () {
+      var res = await http
+          .put(Uri.parse(prefix + 'MNOCLT/Update'),
+              headers: header, body: jsonEncode(map))
+          .timeout(Duration(seconds: 30), onTimeout: () {
         return http.Response('Error', 500);
       });
       print(await res.statusCode);
@@ -269,7 +315,8 @@ Future<void> updateMNOCLTOnServer(BuildContext? context, {String? condition, Lis
         if (res.statusCode == 201) {
           final Database db = await initializeDB(context);
           map["has_updated"] = 0;
-          var x = await db.update("MNOCLT", map, where: "Code = ?", whereArgs: [map["Code"]]);
+          var x = await db.update("MNOCLT", map,
+              where: "Code = ?", whereArgs: [map["Code"]]);
           print(x.toString());
         }
       }
@@ -283,4 +330,3 @@ Future<void> updateMNOCLTOnServer(BuildContext? context, {String? condition, Lis
     print("INDEX = " + i.toString());
   } while (i < list.length && sentSuccessInServer == true);
 }
-

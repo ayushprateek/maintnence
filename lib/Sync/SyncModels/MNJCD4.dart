@@ -1,14 +1,15 @@
-import 'package:maintenance/Component/LogFileFunctions.dart';
 import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:maintenance/Component/LogFileFunctions.dart';
 import 'package:maintenance/Component/SnackbarComponent.dart';
 import 'package:maintenance/DatabaseInitialization.dart';
 import 'package:maintenance/Sync/CustomURL.dart';
 import 'package:maintenance/Sync/DataSync.dart';
-import 'dart:convert';
 import 'package:sqflite/sqlite_api.dart';
-class MNJCD4{
+
+class MNJCD4 {
   int? ID;
   String? TransId;
   int? RowId;
@@ -46,6 +47,7 @@ class MNJCD4{
   bool hasCreated;
   bool hasUpdated;
   bool insertedIntoDatabase;
+
   MNJCD4({
     this.ID,
     this.TransId,
@@ -85,91 +87,105 @@ class MNJCD4{
     this.hasUpdated = false,
     this.insertedIntoDatabase = true,
   });
-  factory MNJCD4.fromJson(Map<String,dynamic> json)=>MNJCD4(
-    ID : int.tryParse(json['ID'].toString())??0,
-    TransId : json['TransId']?.toString() ?? '',
-    RowId : int.tryParse(json['RowId'].toString())??0,
-    ItemCode : json['ItemCode']?.toString() ?? '',
-    ItemName : json['ItemName']?.toString() ?? '',
-    Qunatity : double.tryParse(json['Qunatity'].toString())??0.0,
-    UOM : json['UOM']?.toString() ?? '',
-    IsFromStock : json['IsFromStock'] is bool ? json['IsFromStock'] : json['IsFromStock']==1,
-    SupplierCode : json['SupplierCode']?.toString() ?? '',
-    SupplierName : json['SupplierName']?.toString() ?? '',
-    RequestDate : DateTime.tryParse(json['RequestDate'].toString()),
-    MNGITransId : json['MNGITransId']?.toString() ?? '',
-    MNGIRowId : int.tryParse(json['MNGIRowId'].toString())??0,
-    PRTransId : json['PRTransId']?.toString() ?? '',
-    PRRowId : int.tryParse(json['PRRowId'].toString())??0,
-    MNITTransId : json['MNITTransId']?.toString() ?? '',
-    MNITRowId : int.tryParse(json['MNITRowId'].toString())??0,
-    CreateDate : DateTime.tryParse(json['CreateDate'].toString()),
-    UpdateDate : DateTime.tryParse(json['UpdateDate'].toString()),
-    IsConsumption : json['IsConsumption'] is bool ? json['IsConsumption'] : json['IsConsumption']==1,
-    IsRequest : json['IsRequest'] is bool ? json['IsRequest'] : json['IsRequest']==1,
-    TyreStatus : json['TyreStatus']?.toString() ?? '',
-    JobCardType : json['JobCardType']?.toString() ?? '',
-    ExistingOrAnotherTyre : json['ExistingOrAnotherTyre']?.toString() ?? '',
-    TyreCode : json['TyreCode']?.toString() ?? '',
-    SerialNo : json['SerialNo']?.toString() ?? '',
-    XAxles : int.tryParse(json['XAxles'].toString())??0,
-    YTyres : int.tryParse(json['YTyres'].toString())??0,
-    Tread : double.tryParse(json['Tread'].toString())??0.0,
-    Pressure : json['Pressure']?.toString() ?? '',
-    ZPosition : int.tryParse(json['ZPosition'].toString())??0,
-    LR : int.tryParse(json['LR'].toString())??0,
-    Attachment : json['Attachment']?.toString() ?? '',
-    Remarks : json['Remarks']?.toString() ?? '',
-    hasCreated: json['has_created'] == 1,
-    hasUpdated: json['has_updated'] == 1,
-  );
-  Map<String,dynamic> toJson()=>{
-    'ID' : ID,
-    'TransId' : TransId,
-    'RowId' : RowId,
-    'ItemCode' : ItemCode,
-    'ItemName' : ItemName,
-    'Qunatity' : Qunatity,
-    'UOM' : UOM,
-    'IsFromStock' : IsFromStock,
-    'SupplierCode' : SupplierCode,
-    'SupplierName' : SupplierName,
-    'RequestDate' : RequestDate?.toIso8601String(),
-    'MNGITransId' : MNGITransId,
-    'MNGIRowId' : MNGIRowId,
-    'PRTransId' : PRTransId,
-    'PRRowId' : PRRowId,
-    'MNITTransId' : MNITTransId,
-    'MNITRowId' : MNITRowId,
-    'CreateDate' : CreateDate?.toIso8601String(),
-    'UpdateDate' : UpdateDate?.toIso8601String(),
-    'IsConsumption' : IsConsumption,
-    'IsRequest' : IsRequest,
-    'TyreStatus' : TyreStatus,
-    'JobCardType' : JobCardType,
-    'ExistingOrAnotherTyre' : ExistingOrAnotherTyre,
-    'TyreCode' : TyreCode,
-    'SerialNo' : SerialNo,
-    'XAxles' : XAxles,
-    'YTyres' : YTyres,
-    'Tread' : Tread,
-    'Pressure' : Pressure,
-    'ZPosition' : ZPosition,
-    'LR' : LR,
-    'Attachment' : Attachment,
-    'Remarks' : Remarks,
-    "has_created": hasCreated ? 1 : 0,
-    "has_updated": hasUpdated ? 1 : 0,
-  };
+
+  factory MNJCD4.fromJson(Map<String, dynamic> json) => MNJCD4(
+        ID: int.tryParse(json['ID'].toString()) ?? 0,
+        TransId: json['TransId']?.toString() ?? '',
+        RowId: int.tryParse(json['RowId'].toString()) ?? 0,
+        ItemCode: json['ItemCode']?.toString() ?? '',
+        ItemName: json['ItemName']?.toString() ?? '',
+        Qunatity: double.tryParse(json['Qunatity'].toString()) ?? 0.0,
+        UOM: json['UOM']?.toString() ?? '',
+        IsFromStock: json['IsFromStock'] is bool
+            ? json['IsFromStock']
+            : json['IsFromStock'] == 1,
+        SupplierCode: json['SupplierCode']?.toString() ?? '',
+        SupplierName: json['SupplierName']?.toString() ?? '',
+        RequestDate: DateTime.tryParse(json['RequestDate'].toString()),
+        MNGITransId: json['MNGITransId']?.toString() ?? '',
+        MNGIRowId: int.tryParse(json['MNGIRowId'].toString()) ?? 0,
+        PRTransId: json['PRTransId']?.toString() ?? '',
+        PRRowId: int.tryParse(json['PRRowId'].toString()) ?? 0,
+        MNITTransId: json['MNITTransId']?.toString() ?? '',
+        MNITRowId: int.tryParse(json['MNITRowId'].toString()) ?? 0,
+        CreateDate: DateTime.tryParse(json['CreateDate'].toString()),
+        UpdateDate: DateTime.tryParse(json['UpdateDate'].toString()),
+        IsConsumption: json['IsConsumption'] is bool
+            ? json['IsConsumption']
+            : json['IsConsumption'] == 1,
+        IsRequest: json['IsRequest'] is bool
+            ? json['IsRequest']
+            : json['IsRequest'] == 1,
+        TyreStatus: json['TyreStatus']?.toString() ?? '',
+        JobCardType: json['JobCardType']?.toString() ?? '',
+        ExistingOrAnotherTyre: json['ExistingOrAnotherTyre']?.toString() ?? '',
+        TyreCode: json['TyreCode']?.toString() ?? '',
+        SerialNo: json['SerialNo']?.toString() ?? '',
+        XAxles: int.tryParse(json['XAxles'].toString()) ?? 0,
+        YTyres: int.tryParse(json['YTyres'].toString()) ?? 0,
+        Tread: double.tryParse(json['Tread'].toString()) ?? 0.0,
+        Pressure: json['Pressure']?.toString() ?? '',
+        ZPosition: int.tryParse(json['ZPosition'].toString()) ?? 0,
+        LR: int.tryParse(json['LR'].toString()) ?? 0,
+        Attachment: json['Attachment']?.toString() ?? '',
+        Remarks: json['Remarks']?.toString() ?? '',
+        hasCreated: json['has_created'] == 1,
+        hasUpdated: json['has_updated'] == 1,
+      );
+
+  Map<String, dynamic> toJson() => {
+        'ID': ID,
+        'TransId': TransId,
+        'RowId': RowId,
+        'ItemCode': ItemCode,
+        'ItemName': ItemName,
+        'Qunatity': Qunatity,
+        'UOM': UOM,
+        'IsFromStock': IsFromStock,
+        'SupplierCode': SupplierCode,
+        'SupplierName': SupplierName,
+        'RequestDate': RequestDate?.toIso8601String(),
+        'MNGITransId': MNGITransId,
+        'MNGIRowId': MNGIRowId,
+        'PRTransId': PRTransId,
+        'PRRowId': PRRowId,
+        'MNITTransId': MNITTransId,
+        'MNITRowId': MNITRowId,
+        'CreateDate': CreateDate?.toIso8601String(),
+        'UpdateDate': UpdateDate?.toIso8601String(),
+        'IsConsumption': IsConsumption,
+        'IsRequest': IsRequest,
+        'TyreStatus': TyreStatus,
+        'JobCardType': JobCardType,
+        'ExistingOrAnotherTyre': ExistingOrAnotherTyre,
+        'TyreCode': TyreCode,
+        'SerialNo': SerialNo,
+        'XAxles': XAxles,
+        'YTyres': YTyres,
+        'Tread': Tread,
+        'Pressure': Pressure,
+        'ZPosition': ZPosition,
+        'LR': LR,
+        'Attachment': Attachment,
+        'Remarks': Remarks,
+        "has_created": hasCreated ? 1 : 0,
+        "has_updated": hasUpdated ? 1 : 0,
+      };
 }
-List<MNJCD4> mNJCD4FromJson(String str) => List<MNJCD4>.from(
-    json.decode(str).map((x) => MNJCD4.fromJson(x)));
+
+List<MNJCD4> mNJCD4FromJson(String str) =>
+    List<MNJCD4>.from(json.decode(str).map((x) => MNJCD4.fromJson(x)));
+
 String mNJCD4ToJson(List<MNJCD4> data) =>
     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+
 Future<List<MNJCD4>> dataSyncMNJCD4() async {
-  var res = await http.get(headers: header, Uri.parse(prefix + "MNJCD4" + postfix));
+  var res =
+      await http.get(headers: header, Uri.parse(prefix + "MNJCD4" + postfix));
   print(res.body);
-  return mNJCD4FromJson(res.body);}
+  return mNJCD4FromJson(res.body);
+}
+
 Future<void> insertMNJCD4(Database db, {List? list}) async {
   if (postfix.toLowerCase().contains('all')) {
     await deleteMNJCD4(db);
@@ -184,7 +200,8 @@ Future<void> insertMNJCD4(Database db, {List? list}) async {
   Stopwatch stopwatch = Stopwatch();
   stopwatch.start();
   for (var i = 0; i < customers.length; i += batchSize) {
-    var end = (i + batchSize < customers.length) ? i + batchSize : customers.length;
+    var end =
+        (i + batchSize < customers.length) ? i + batchSize : customers.length;
     var batchRecords = customers.sublist(i, end);
     await db.transaction((txn) async {
       var batch = txn.batch();
@@ -227,9 +244,9 @@ Future<void> insertMNJCD4(Database db, {List? list}) async {
       for (var element in batchRecords) {
         try {
           batch.update("MNJCD4", element,
-              where: "TransId = ? AND ifnull(has_created,0) <> ? AND ifnull(has_updated,0) <> ?",
+              where:
+                  "TransId = ? AND ifnull(has_created,0) <> ? AND ifnull(has_updated,0) <> ?",
               whereArgs: [element["TransId"], 1, 1]);
-
         } catch (e) {
           writeToLogFile(
               text: e.toString(),
@@ -287,28 +304,44 @@ Future<List<MNJCD4>> retrieveMNJCD4(BuildContext context) async {
   final List<Map<String, Object?>> queryResult = await db.query('MNJCD4');
   return queryResult.map((e) => MNJCD4.fromJson(e)).toList();
 }
-Future<void> updateMNJCD4(int id, Map<String, dynamic> values, BuildContext context) async {
+
+Future<void> updateMNJCD4(
+    int id, Map<String, dynamic> values, BuildContext context) async {
   final db = await initializeDB(context);
   try {
     db.transaction((db) async {
       await db.update('MNJCD4', values, where: 'ID = ?', whereArgs: [id]);
     });
   } catch (e) {
-    getErrorSnackBar('Sync Error ' + e.toString());}}
+    getErrorSnackBar('Sync Error ' + e.toString());
+  }
+}
+
 Future<void> deleteMNJCD4(Database db) async {
   await db.delete('MNJCD4');
 }
-Future<List<MNJCD4>> retrieveMNJCD4ById(BuildContext? context, String str, List l) async {
+
+Future<List<MNJCD4>> retrieveMNJCD4ById(
+    BuildContext? context, String str, List l) async {
   final Database db = await initializeDB(context);
-  final List<Map<String, Object?>> queryResult = await db.query('MNJCD4', where: str, whereArgs: l);
+  final List<Map<String, Object?>> queryResult =
+      await db.query('MNJCD4', where: str, whereArgs: l);
   return queryResult.map((e) => MNJCD4.fromJson(e)).toList();
 }
-Future<String> insertMNJCD4ToServer(BuildContext? context, {String? TransId, int? id}) async {
+
+Future<String> insertMNJCD4ToServer(BuildContext? context,
+    {String? TransId, int? id}) async {
   String response = "";
-  List<MNJCD4> list = await retrieveMNJCD4ById(context, TransId == null ? DataSync.getInsertToServerStr() : "TransId = ? AND ID = ?", TransId == null ? DataSync.getInsertToServerList() : [TransId, id]);
+  List<MNJCD4> list = await retrieveMNJCD4ById(
+      context,
+      TransId == null
+          ? DataSync.getInsertToServerStr()
+          : "TransId = ? AND ID = ?",
+      TransId == null ? DataSync.getInsertToServerList() : [TransId, id]);
   if (TransId != null) {
     list[0].ID = 0;
-    var res = await http.post(Uri.parse(prefix + "MNJCD4/Add"), headers: header, body: jsonEncode(list[0].toJson()));
+    var res = await http.post(Uri.parse(prefix + "MNJCD4/Add"),
+        headers: header, body: jsonEncode(list[0].toJson()));
     response = res.body;
   } else if (list.isNotEmpty) {
     int i = 0;
@@ -318,9 +351,12 @@ Future<String> insertMNJCD4ToServer(BuildContext? context, {String? TransId, int
       try {
         Map<String, dynamic> map = list[i].toJson();
         map.remove('ID');
-        var res = await http.post(Uri.parse(prefix + "MNJCD4/Add"), headers: header,
-            body: jsonEncode(map)).timeout(Duration(seconds: 30), onTimeout: () {
-          return http.Response('Error', 500);});
+        var res = await http
+            .post(Uri.parse(prefix + "MNJCD4/Add"),
+                headers: header, body: jsonEncode(map))
+            .timeout(Duration(seconds: 30), onTimeout: () {
+          return http.Response('Error', 500);
+        });
         response = await res.body;
         print("eeaaae status");
         print(await res.statusCode);
@@ -331,18 +367,30 @@ Future<String> insertMNJCD4ToServer(BuildContext? context, {String? TransId, int
             final Database db = await initializeDB(context);
             // map=jsonDecode(res.body);
             map["has_created"] = 0;
-            var x = await db.update("MNJCD4", map, where: "TransId = ? AND RowId = ?", whereArgs: [map["TransId"], map["RowId"]]);
-            print(x.toString());}}
+            var x = await db.update("MNJCD4", map,
+                where: "TransId = ? AND RowId = ?",
+                whereArgs: [map["TransId"], map["RowId"]]);
+            print(x.toString());
+          }
+        }
         print(res.body);
       } catch (e) {
         print("Timeout " + e.toString());
-        sentSuccessInServer = true;}
+        sentSuccessInServer = true;
+      }
       i++;
       print("INDEX = " + i.toString());
-    } while (i < list.length && sentSuccessInServer == true);}
-  return response;}
-Future<void> updateMNJCD4OnServer(BuildContext? context, {String? condition, List? l}) async {
-  List<MNJCD4> list = await retrieveMNJCD4ById(context, l == null ? DataSync.getUpdateOnServerStr() : condition ?? "", l == null ? DataSync.getUpdateOnServerList() : l);
+    } while (i < list.length && sentSuccessInServer == true);
+  }
+  return response;
+}
+
+Future<void> updateMNJCD4OnServer(BuildContext? context,
+    {String? condition, List? l}) async {
+  List<MNJCD4> list = await retrieveMNJCD4ById(
+      context,
+      l == null ? DataSync.getUpdateOnServerStr() : condition ?? "",
+      l == null ? DataSync.getUpdateOnServerList() : l);
   print(list);
   int i = 0;
   bool sentSuccessInServer = false;
@@ -350,7 +398,10 @@ Future<void> updateMNJCD4OnServer(BuildContext? context, {String? condition, Lis
     sentSuccessInServer = false;
     try {
       Map<String, dynamic> map = list[i].toJson();
-      var res = await http.put(Uri.parse(prefix + 'MNJCD4/Update'), headers: header, body: jsonEncode(map)).timeout(Duration(seconds: 30), onTimeout: () {
+      var res = await http
+          .put(Uri.parse(prefix + 'MNJCD4/Update'),
+              headers: header, body: jsonEncode(map))
+          .timeout(Duration(seconds: 30), onTimeout: () {
         return http.Response('Error', 500);
       });
       print(await res.statusCode);
@@ -359,7 +410,9 @@ Future<void> updateMNJCD4OnServer(BuildContext? context, {String? condition, Lis
         if (res.statusCode == 201) {
           final Database db = await initializeDB(context);
           map["has_updated"] = 0;
-          var x = await db.update("MNJCD4", map, where: "TransId = ? AND RowId = ?", whereArgs: [map["TransId"], map["RowId"]]);
+          var x = await db.update("MNJCD4", map,
+              where: "TransId = ? AND RowId = ?",
+              whereArgs: [map["TransId"], map["RowId"]]);
           print(x.toString());
         }
       }
@@ -373,4 +426,3 @@ Future<void> updateMNJCD4OnServer(BuildContext? context, {String? condition, Lis
     print("INDEX = " + i.toString());
   } while (i < list.length && sentSuccessInServer == true);
 }
-

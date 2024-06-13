@@ -225,7 +225,10 @@ Future<void> insertSUATP1(Database db, {List? list}) async {
         try {
           batch.update("SUATP1", element,
               where: "Code = ? AND RowId = ?",
-              whereArgs: [element["Code"],element["RowId"], ]);
+              whereArgs: [
+                element["Code"],
+                element["RowId"],
+              ]);
         } catch (e) {
           writeToLogFile(
               text: e.toString(),

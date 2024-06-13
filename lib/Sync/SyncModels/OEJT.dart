@@ -1,14 +1,14 @@
-import 'package:maintenance/Component/LogFileFunctions.dart';
 import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:maintenance/Component/LogFileFunctions.dart';
 import 'package:maintenance/Component/SnackbarComponent.dart';
 import 'package:maintenance/DatabaseInitialization.dart';
 import 'package:maintenance/Sync/CustomURL.dart';
-import 'package:maintenance/Sync/DataSync.dart';
-import 'dart:convert';
 import 'package:sqflite/sqlite_api.dart';
-class OEJT{
+
+class OEJT {
   int? ID;
   String? Code;
   String? ShortDesc;
@@ -18,6 +18,7 @@ class OEJT{
   String? CreatedBy;
   String? BranchId;
   String? UpdatedBy;
+
   OEJT({
     this.ID,
     this.Code,
@@ -29,39 +30,39 @@ class OEJT{
     this.BranchId,
     this.UpdatedBy,
   });
-  factory OEJT.fromJson(Map<String,dynamic> json)=>OEJT(
-    ID : int.tryParse(json['ID'].toString())??0,
-    Code : json['Code']??'',
-    ShortDesc : json['ShortDesc']??'',
-    Active : json['Active'] is bool ? json['Active'] : json['Active']==1,
-    CreateDate : DateTime.tryParse(json['CreateDate'].toString()),
-    UpdateDate : DateTime.tryParse(json['UpdateDate'].toString()),
-    CreatedBy : json['CreatedBy']??'',
-    BranchId : json['BranchId']??'',
-    UpdatedBy : json['UpdatedBy']??'',
-  );
-  Map<String,dynamic> toJson()=>{
-    'ID' : ID,
-    'Code' : Code,
-    'ShortDesc' : ShortDesc,
-    'Active' : Active,
-    'CreateDate' : CreateDate?.toIso8601String(),
-    'UpdateDate' : UpdateDate?.toIso8601String(),
-    'CreatedBy' : CreatedBy,
-    'BranchId' : BranchId,
-    'UpdatedBy' : UpdatedBy,
-  };
+
+  factory OEJT.fromJson(Map<String, dynamic> json) => OEJT(
+        ID: int.tryParse(json['ID'].toString()) ?? 0,
+        Code: json['Code'] ?? '',
+        ShortDesc: json['ShortDesc'] ?? '',
+        Active: json['Active'] is bool ? json['Active'] : json['Active'] == 1,
+        CreateDate: DateTime.tryParse(json['CreateDate'].toString()),
+        UpdateDate: DateTime.tryParse(json['UpdateDate'].toString()),
+        CreatedBy: json['CreatedBy'] ?? '',
+        BranchId: json['BranchId'] ?? '',
+        UpdatedBy: json['UpdatedBy'] ?? '',
+      );
+
+  Map<String, dynamic> toJson() => {
+        'ID': ID,
+        'Code': Code,
+        'ShortDesc': ShortDesc,
+        'Active': Active,
+        'CreateDate': CreateDate?.toIso8601String(),
+        'UpdateDate': UpdateDate?.toIso8601String(),
+        'CreatedBy': CreatedBy,
+        'BranchId': BranchId,
+        'UpdatedBy': UpdatedBy,
+      };
 }
 
-Future<List<OEJT>> retrieveOEJTForDisplay({
-  String dbQuery='',
-  int limit=30
-}) async {
+Future<List<OEJT>> retrieveOEJTForDisplay(
+    {String dbQuery = '', int limit = 30}) async {
   final Database db = await initializeDB(null);
-  dbQuery='%$dbQuery%';
-  String searchQuery='';
+  dbQuery = '%$dbQuery%';
+  String searchQuery = '';
 
-  searchQuery='''
+  searchQuery = '''
      SELECT * FROM OEJT 
  WHERE Active = 1 AND (Code LIKE '$dbQuery' OR ShortDesc LIKE '$dbQuery') 
  LIMIT $limit
@@ -69,14 +70,20 @@ Future<List<OEJT>> retrieveOEJTForDisplay({
   final List<Map<String, Object?>> queryResult = await db.rawQuery(searchQuery);
   return queryResult.map((e) => OEJT.fromJson(e)).toList();
 }
-List<OEJT> oEJTFromJson(String str) => List<OEJT>.from(
-    json.decode(str).map((x) => OEJT.fromJson(x)));
+
+List<OEJT> oEJTFromJson(String str) =>
+    List<OEJT>.from(json.decode(str).map((x) => OEJT.fromJson(x)));
+
 String oEJTToJson(List<OEJT> data) =>
     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+
 Future<List<OEJT>> dataSyncOEJT() async {
-  var res = await http.get(headers: header, Uri.parse(prefix + "OEJT" + postfix));
+  var res =
+      await http.get(headers: header, Uri.parse(prefix + "OEJT" + postfix));
   print(res.body);
-  return oEJTFromJson(res.body);}
+  return oEJTFromJson(res.body);
+}
+
 Future<void> insertOEJT(Database db, {List? list}) async {
   if (postfix.toLowerCase().contains('all')) {
     await deleteOEJT(db);
@@ -91,7 +98,8 @@ Future<void> insertOEJT(Database db, {List? list}) async {
   Stopwatch stopwatch = Stopwatch();
   stopwatch.start();
   for (var i = 0; i < customers.length; i += batchSize) {
-    var end = (i + batchSize < customers.length) ? i + batchSize : customers.length;
+    var end =
+        (i + batchSize < customers.length) ? i + batchSize : customers.length;
     var batchRecords = customers.sublist(i, end);
     await db.transaction((txn) async {
       var batch = txn.batch();
@@ -138,7 +146,6 @@ Future<void> insertOEJT(Database db, {List? list}) async {
               // where: "ID = ? AND ifnull(has_created,0) <> ? AND ifnull(has_updated,0) <> ?",
               where: "ID = ?",
               whereArgs: [element["ID"]]);
-
         } catch (e) {
           writeToLogFile(
               text: e.toString(),
@@ -196,20 +203,28 @@ Future<List<OEJT>> retrieveOEJT(BuildContext context) async {
   final List<Map<String, Object?>> queryResult = await db.query('OEJT');
   return queryResult.map((e) => OEJT.fromJson(e)).toList();
 }
-Future<void> updateOEJT(int id, Map<String, dynamic> values, BuildContext context) async {
+
+Future<void> updateOEJT(
+    int id, Map<String, dynamic> values, BuildContext context) async {
   final db = await initializeDB(context);
   try {
     db.transaction((db) async {
       await db.update('OEJT', values, where: 'ID = ?', whereArgs: [id]);
     });
   } catch (e) {
-    getErrorSnackBar('Sync Error ' + e.toString());}}
+    getErrorSnackBar('Sync Error ' + e.toString());
+  }
+}
+
 Future<void> deleteOEJT(Database db) async {
   await db.delete('OEJT');
 }
-Future<List<OEJT>> retrieveOEJTById(BuildContext? context, String str, List l) async {
+
+Future<List<OEJT>> retrieveOEJTById(
+    BuildContext? context, String str, List l) async {
   final Database db = await initializeDB(context);
-  final List<Map<String, Object?>> queryResult = await db.query('OEJT', where: str, whereArgs: l);
+  final List<Map<String, Object?>> queryResult =
+      await db.query('OEJT', where: str, whereArgs: l);
   return queryResult.map((e) => OEJT.fromJson(e)).toList();
 }
 // Future<String> insertOEJTToServer(BuildContext? context, {String? TransId, int? id}) async {
@@ -282,4 +297,3 @@ Future<List<OEJT>> retrieveOEJTById(BuildContext? context, String str, List l) a
 //     print("INDEX = " + i.toString());
 //   } while (i < list.length && sentSuccessInServer == true);
 // }
-  

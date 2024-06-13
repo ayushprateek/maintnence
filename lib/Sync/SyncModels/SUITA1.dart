@@ -28,8 +28,8 @@ class SUITA1 {
     this.UpdateDate,
     this.Attachment,
     this.Remarks,
-    this.hasCreated=false,
-    this.hasUpdated=false,
+    this.hasCreated = false,
+    this.hasUpdated = false,
   });
 
   factory SUITA1.fromJson(Map<String, dynamic> json) => SUITA1(
@@ -40,8 +40,12 @@ class SUITA1 {
         UpdateDate: DateTime.tryParse(json['UpdateDate'].toString()),
         Attachment: json['Attachment'],
         Remarks: json['Remarks'],
-        hasCreated: json['has_created'] is bool? json['has_created']:json['has_created']==1,
-        hasUpdated: json['has_updated'] is bool ? json['has_updated']:json['has_updated']==1,
+        hasCreated: json['has_created'] is bool
+            ? json['has_created']
+            : json['has_created'] == 1,
+        hasUpdated: json['has_updated'] is bool
+            ? json['has_updated']
+            : json['has_updated'] == 1,
       );
 
   Map<String, dynamic> toJson() => {
@@ -52,8 +56,8 @@ class SUITA1 {
         'UpdateDate': UpdateDate?.toIso8601String(),
         'Attachment': Attachment,
         'Remarks': Remarks,
-        'has_created': hasCreated?1:0,
-        'has_updated': hasUpdated?1:0,
+        'has_created': hasCreated ? 1 : 0,
+        'has_updated': hasUpdated ? 1 : 0,
       };
 }
 
@@ -229,7 +233,10 @@ Future<void> insertSUITA1(Database db, {List? list}) async {
         try {
           batch.update("SUITA1", element,
               where: " TransId = ? AND RowId = ?",
-              whereArgs: [element["TransId"],element["RowId"], ]);
+              whereArgs: [
+                element["TransId"],
+                element["RowId"],
+              ]);
         } catch (e) {
           writeToLogFile(
               text: e.toString(),
@@ -328,8 +335,10 @@ Future<void> insertSUITA1ToServer(BuildContext? context,
       sentSuccessInServer = false;
       try {
         map.remove('ID');
-        String queryParams='TransId=${list[i].TransId}&RowId=${list[i].RowId}';
-        var res = await http.post(Uri.parse(prefix + "SUITA1/Add?$queryParams"),
+        String queryParams =
+            'TransId=${list[i].TransId}&RowId=${list[i].RowId}';
+        var res = await http
+            .post(Uri.parse(prefix + "SUITA1/Add?$queryParams"),
                 headers: header, body: jsonEncode(map))
             .timeout(Duration(seconds: 30), onTimeout: () {
           return http.Response("Error", 500);
@@ -342,17 +351,15 @@ Future<void> insertSUITA1ToServer(BuildContext? context,
               fileName: StackTrace.current.toString(),
               lineNo: 141);
         }
-        if(res.statusCode ==409)
-        {
+        if (res.statusCode == 409) {
           ///Already added in server
           final Database db = await initializeDB(context);
-          SUITA1 model=SUITA1.fromJson(jsonDecode(res.body));
+          SUITA1 model = SUITA1.fromJson(jsonDecode(res.body));
           var x = await db.update("SUITA1", model.toJson(),
-              where: "TransId = ? AND RowId = ?", whereArgs: [model.TransId,model.RowId]);
+              where: "TransId = ? AND RowId = ?",
+              whereArgs: [model.TransId, model.RowId]);
           print(x.toString());
-        }
-        else
-        if (res.statusCode == 201 || res.statusCode == 500) {
+        } else if (res.statusCode == 201 || res.statusCode == 500) {
           sentSuccessInServer = true;
           if (res.statusCode == 201) {
             map['ID'] = jsonDecode(res.body)['ID'];

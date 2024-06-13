@@ -289,8 +289,7 @@ Future<String> insertTROTYRToServer(BuildContext? context,
             // map = jsonDecode(res.body);
             map["has_created"] = 0;
             var x = await db.update("TROTYR", map,
-                where: "ItemCode = ?",
-                whereArgs: [map["ItemCode"]]);
+                where: "ItemCode = ?", whereArgs: [map["ItemCode"]]);
             print(x.toString());
           }
         }
@@ -332,8 +331,7 @@ Future<void> updateTROTYROnServer(BuildContext? context,
           final Database db = await initializeDB(context);
           map["has_updated"] = 0;
           var x = await db.update("TROTYR", map,
-              where: "ItemCode = ?",
-              whereArgs: [map["ItemCode"]]);
+              where: "ItemCode = ?", whereArgs: [map["ItemCode"]]);
           print(x.toString());
         }
       }

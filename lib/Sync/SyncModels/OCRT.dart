@@ -304,7 +304,8 @@ Future<void> insertOCRT(Database db, {List? list}) async {
       for (var element in batchRecords) {
         try {
           batch.update("OCRT", element,
-              where: "TransId = ? AND ifnull(has_created,0) <> ? AND ifnull(has_updated,0) <> ?",
+              where:
+                  "TransId = ? AND ifnull(has_created,0) <> ? AND ifnull(has_updated,0) <> ?",
               whereArgs: [element["TransId"], 1, 1]);
         } catch (e) {
           writeToLogFile(
@@ -448,8 +449,9 @@ Future<void> insertOCRTToServer(BuildContext? context,
       sentSuccessInServer = false;
       try {
         map.remove('ID');
-        String queryParams='TransId=${list[i].TransId}';
-        var res = await http.post(Uri.parse(prefix + "OCRT/Add?$queryParams"),
+        String queryParams = 'TransId=${list[i].TransId}';
+        var res = await http
+            .post(Uri.parse(prefix + "OCRT/Add?$queryParams"),
                 headers: header, body: jsonEncode(map))
             .timeout(Duration(seconds: 30), onTimeout: () {
           writeToLogFile(
@@ -469,17 +471,14 @@ Future<void> insertOCRTToServer(BuildContext? context,
               fileName: StackTrace.current.toString(),
               lineNo: 141);
         }
-        if(res.statusCode ==409)
-        {
+        if (res.statusCode == 409) {
           ///Already added in server
           final Database db = await initializeDB(context);
-          OCRTModel model=OCRTModel.fromJson(jsonDecode(res.body));
+          OCRTModel model = OCRTModel.fromJson(jsonDecode(res.body));
           var x = await db.update("OCRT", model.toJson(),
               where: "TransId = ?", whereArgs: [model.TransId]);
           print(x.toString());
-        }
-        else
-        if (res.statusCode == 201 || res.statusCode == 500) {
+        } else if (res.statusCode == 201 || res.statusCode == 500) {
           if (res.statusCode == 201) {
             map['ID'] = jsonDecode(res.body)['ID'];
             map['PermanentTransId'] = jsonDecode(res.body)['PermanentTransId'];

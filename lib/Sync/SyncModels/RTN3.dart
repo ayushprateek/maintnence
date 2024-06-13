@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:maintenance/Component/LogFileFunctions.dart';
 import 'package:maintenance/Component/SnackbarComponent.dart';
@@ -53,8 +52,7 @@ class RTN3Model {
   String? CountryName;
   String? BaseObjectCode;
 
-  factory RTN3Model.fromJson(Map<String, dynamic> json) =>
-      RTN3Model(
+  factory RTN3Model.fromJson(Map<String, dynamic> json) => RTN3Model(
         ID: int.tryParse(json["ID"].toString()) ?? 0,
         TransId: json["TransId"] ?? "",
         RowId: int.tryParse(json["RowId"].toString()) ?? 0,
@@ -79,8 +77,7 @@ class RTN3Model {
         BaseObjectCode: json['BaseObjectCode'] ?? '',
       );
 
-  Map<String, dynamic> toJson() =>
-      {
+  Map<String, dynamic> toJson() => {
         "ID": ID,
         "TransId": TransId,
         "CreateDate": CreateDate?.toIso8601String(),
@@ -102,7 +99,7 @@ class RTN3Model {
 
 Future<List<RTN3Model>> dataSyncRTN3() async {
   var res =
-  await http.get(headers: header, Uri.parse(prefix + "RTN3" + postfix));
+      await http.get(headers: header, Uri.parse(prefix + "RTN3" + postfix));
   print(res.body);
   return RTN3ModelFromJson(res.body);
 }
@@ -113,15 +110,16 @@ Future<List<RTN3Model>> retrieveRTN3(BuildContext context) async {
   return queryResult.map((e) => RTN3Model.fromJson(e)).toList();
 }
 
-Future<void> updateRTN3(int id, Map<String, dynamic> values,
-    BuildContext context) async {
+Future<void> updateRTN3(
+    int id, Map<String, dynamic> values, BuildContext context) async {
   final db = await initializeDB(context);
   try {
     db.transaction((db) async {
       await db.update("RTN3", values, where: 'ID = ?', whereArgs: [id]);
     });
   } catch (e) {
-    writeToLogFile(text: e.toString(),
+    writeToLogFile(
+        text: e.toString(),
         fileName: StackTrace.current.toString(),
         lineNo: 141);
     getErrorSnackBar("Sync Error " + e.toString());
@@ -224,7 +222,7 @@ Future<void> insertRTN3(Database db, {List? list}) async {
   stopwatch.start();
   for (var i = 0; i < customers.length; i += batchSize) {
     var end =
-    (i + batchSize < customers.length) ? i + batchSize : customers.length;
+        (i + batchSize < customers.length) ? i + batchSize : customers.length;
     var batchRecords = customers.sublist(i, end);
     await db.transaction((txn) async {
       var batch = txn.batch();
@@ -264,7 +262,8 @@ Future<void> insertRTN3(Database db, {List? list}) async {
       for (var element in batchRecords) {
         try {
           batch.update("RTN3", element,
-              where: "RowId = ? AND TransId = ? AND ifnull(has_created,0) <> ? AND ifnull(has_updated,0) <> ?",
+              where:
+                  "RowId = ? AND TransId = ? AND ifnull(has_created,0) <> ? AND ifnull(has_updated,0) <> ?",
               whereArgs: [element["RowId"], element["TransId"], 1, 1]);
         } catch (e) {
           writeToLogFile(
@@ -321,11 +320,11 @@ WHERE T1.TransId IS NULL AND T1.RowId IS NULL;
 
 //SEND DATA TO SERVER
 //--------------------------
-Future<List<RTN3Model>> retrieveRTN3ById(BuildContext? context, String str,
-    List l) async {
+Future<List<RTN3Model>> retrieveRTN3ById(
+    BuildContext? context, String str, List l) async {
   final Database db = await initializeDB(context);
   final List<Map<String, Object?>> queryResult =
-  await db.query('RTN3', where: str, whereArgs: l);
+      await db.query('RTN3', where: str, whereArgs: l);
   return queryResult.map((e) => RTN3Model.fromJson(e)).toList();
 }
 
@@ -352,39 +351,43 @@ Future<void> insertRTN3ToServer(BuildContext? context,
     if (list.isEmpty) {
       return;
     }
-    do {Map<String, dynamic> map = list[i].toJson();
+    do {
+      Map<String, dynamic> map = list[i].toJson();
       sentSuccessInServer = false;
       try {
         map.remove('ID');
-        String queryParams='TransId=${list[i].TransId}&RowId=${list[i].RowId}';
-        var res = await http.post(Uri.parse(prefix + "RTN3/Add?$queryParams"),
-            headers: header, body: jsonEncode(map))
+        String queryParams =
+            'TransId=${list[i].TransId}&RowId=${list[i].RowId}';
+        var res = await http
+            .post(Uri.parse(prefix + "RTN3/Add?$queryParams"),
+                headers: header, body: jsonEncode(map))
             .timeout(Duration(seconds: 30), onTimeout: () {
           writeToLogFile(
-            text: '500 error \nMap : $map', fileName: StackTrace.current.toString(), lineNo: 141);return http.Response('Error', 500);
+              text: '500 error \nMap : $map',
+              fileName: StackTrace.current.toString(),
+              lineNo: 141);
+          return http.Response('Error', 500);
         });
         response = await res.body;
 
         print("eeaaae status");
         print(await res.statusCode);
-        if(res.statusCode != 201)
-        {
+        if (res.statusCode != 201) {
           await writeToLogFile(
-              text: '${res.statusCode} error \nMap : $map\nResponse : ${res.body}',
+              text:
+                  '${res.statusCode} error \nMap : $map\nResponse : ${res.body}',
               fileName: StackTrace.current.toString(),
               lineNo: 141);
         }
-        if(res.statusCode ==409)
-        {
+        if (res.statusCode == 409) {
           ///Already added in server
           final Database db = await initializeDB(context);
-          RTN3Model model=RTN3Model.fromJson(jsonDecode(res.body));
+          RTN3Model model = RTN3Model.fromJson(jsonDecode(res.body));
           var x = await db.update("RTN3", model.toJson(),
-              where: "TransId = ? AND RowId = ?", whereArgs: [model.TransId,model.RowId]);
+              where: "TransId = ? AND RowId = ?",
+              whereArgs: [model.TransId, model.RowId]);
           print(x.toString());
-        }
-        else
-        if (res.statusCode == 201 || res.statusCode == 500) {
+        } else if (res.statusCode == 201 || res.statusCode == 500) {
           sentSuccessInServer = true;
           if (res.statusCode == 201) {
             map['ID'] = jsonDecode(res.body)['ID'];
@@ -394,7 +397,7 @@ Future<void> insertRTN3ToServer(BuildContext? context,
                 where: "TransId = ? AND RowId = ?",
                 whereArgs: [map["TransId"], map["RowId"]]);
             print(x.toString());
-          }else{
+          } else {
             writeToLogFile(
                 text: '500 error \nMap : $map',
                 fileName: StackTrace.current.toString(),
@@ -404,16 +407,16 @@ Future<void> insertRTN3ToServer(BuildContext? context,
         print(res.body);
       } catch (e) {
         writeToLogFile(
-            text: '${e.toString()}\nMap : $map', fileName: StackTrace.current.toString(), lineNo: 141);
-  sentSuccessInServer = true;
+            text: '${e.toString()}\nMap : $map',
+            fileName: StackTrace.current.toString(),
+            lineNo: 141);
+        sentSuccessInServer = true;
+      }
+
+      i++;
+      print("INDEX = " + i.toString());
+    } while (i < list.length && sentSuccessInServer == true);
   }
-
-  i++;
-  print("INDEX = " + i.toString());
-  } while (i < list.length && sentSuccessInServer == true);
-}
-
-
 }
 
 Future<void> updateRTN3OnServer(BuildContext? context,
@@ -428,7 +431,8 @@ Future<void> updateRTN3OnServer(BuildContext? context,
   if (list.isEmpty) {
     return;
   }
-  do {Map<String, dynamic> map = list[i].toJson();
+  do {
+    Map<String, dynamic> map = list[i].toJson();
     sentSuccessInServer = false;
     try {
       if (list.isEmpty) {
@@ -437,20 +441,23 @@ Future<void> updateRTN3OnServer(BuildContext? context,
       Map<String, dynamic> map = list[i].toJson();
       var res = await http
           .put(Uri.parse(prefix + 'RTN3/Update'),
-          headers: header, body: jsonEncode(map))
+              headers: header, body: jsonEncode(map))
           .timeout(Duration(seconds: 30), onTimeout: () {
         writeToLogFile(
-            text: '500 error \nMap : $map', fileName: StackTrace.current.toString(), lineNo: 141);return http.Response('Error', 500);
+            text: '500 error \nMap : $map',
+            fileName: StackTrace.current.toString(),
+            lineNo: 141);
+        return http.Response('Error', 500);
       });
       print(await res.statusCode);
-      if(res.statusCode != 201)
-        {
-          await writeToLogFile(
-              text: '${res.statusCode} error \nMap : $map\nResponse : ${res.body}',
-              fileName: StackTrace.current.toString(),
-              lineNo: 141);
-        }
-        if (res.statusCode == 201 || res.statusCode == 500) {
+      if (res.statusCode != 201) {
+        await writeToLogFile(
+            text:
+                '${res.statusCode} error \nMap : $map\nResponse : ${res.body}',
+            fileName: StackTrace.current.toString(),
+            lineNo: 141);
+      }
+      if (res.statusCode == 201 || res.statusCode == 500) {
         sentSuccessInServer = true;
         if (res.statusCode == 201) {
           final Database db = await initializeDB(context);
@@ -464,11 +471,13 @@ Future<void> updateRTN3OnServer(BuildContext? context,
       print(res.body);
     } catch (e) {
       writeToLogFile(
-          text: '${e.toString()}\nMap : $map', fileName: StackTrace.current.toString(), lineNo: 141);
-  sentSuccessInServer = true;
-  }
+          text: '${e.toString()}\nMap : $map',
+          fileName: StackTrace.current.toString(),
+          lineNo: 141);
+      sentSuccessInServer = true;
+    }
 
-  i++;
-  print("INDEX = " + i.toString());
+    i++;
+    print("INDEX = " + i.toString());
   } while (i < list.length && sentSuccessInServer == true);
 }

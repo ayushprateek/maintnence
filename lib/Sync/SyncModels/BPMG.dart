@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:maintenance/Component/LogFileFunctions.dart';
 import 'package:maintenance/Component/SnackbarComponent.dart';
@@ -33,8 +32,7 @@ class BPMG {
     this.BranchId,
   });
 
-  factory BPMG.fromJson(Map<String, dynamic> json) =>
-      BPMG(
+  factory BPMG.fromJson(Map<String, dynamic> json) => BPMG(
         ID: json['ID'],
         Code: json['Code'],
         ShortDesc: json['ShortDesc'],
@@ -46,8 +44,7 @@ class BPMG {
         BranchId: json['BranchId'],
       );
 
-  Map<String, dynamic> toJson() =>
-      {
+  Map<String, dynamic> toJson() => {
         'ID': ID,
         'Code': Code,
         'ShortDesc': ShortDesc,
@@ -68,19 +65,18 @@ String bPMGToJson(List<BPMG> data) =>
 
 Future<List<BPMG>> dataSyncBPMG() async {
   var res =
-  await http.get(headers: header, Uri.parse(prefix + "BPMG" + postfix));
+      await http.get(headers: header, Uri.parse(prefix + "BPMG" + postfix));
   print(res.body);
   return bPMGFromJson(res.body);
 }
-Future<List<BPMG>> retrieveBPMGForDisplay({
-  String dbQuery='',
-  int limit=30
-}) async {
-  final Database db = await initializeDB(null);
-  dbQuery='%$dbQuery%';
-  String searchQuery='';
 
-  searchQuery='''
+Future<List<BPMG>> retrieveBPMGForDisplay(
+    {String dbQuery = '', int limit = 30}) async {
+  final Database db = await initializeDB(null);
+  dbQuery = '%$dbQuery%';
+  String searchQuery = '';
+
+  searchQuery = '''
      SELECT * FROM BPMG 
  WHERE Active = 1 AND (Code LIKE '$dbQuery' OR ShortDesc LIKE '$dbQuery') 
  LIMIT $limit
@@ -148,7 +144,7 @@ Future<void> insertBPMG(Database db, {List? list}) async {
   stopwatch.start();
   for (var i = 0; i < customers.length; i += batchSize) {
     var end =
-    (i + batchSize < customers.length) ? i + batchSize : customers.length;
+        (i + batchSize < customers.length) ? i + batchSize : customers.length;
     var batchRecords = customers.sublist(i, end);
     await db.transaction((txn) async {
       var batch = txn.batch();
@@ -188,8 +184,7 @@ Future<void> insertBPMG(Database db, {List? list}) async {
       for (var record in batchRecords) {
         try {
           batch.update("BPMG", record,
-              where:
-              "ID = ? AND Code = ?",
+              where: "ID = ? AND Code = ?",
               whereArgs: [record["ID"], record["Code"]]);
         } catch (e) {
           writeToLogFile(
@@ -250,15 +245,16 @@ Future<List<BPMG>> retrieveBPMG(BuildContext context) async {
   return queryResult.map((e) => BPMG.fromJson(e)).toList();
 }
 
-Future<void> updateBPMG(int id, Map<String, dynamic> values,
-    BuildContext context) async {
+Future<void> updateBPMG(
+    int id, Map<String, dynamic> values, BuildContext context) async {
   final db = await initializeDB(context);
   try {
     db.transaction((db) async {
       await db.update('BPMG', values, where: 'ID = ?', whereArgs: [id]);
     });
   } catch (e) {
-    writeToLogFile(text: e.toString(),
+    writeToLogFile(
+        text: e.toString(),
         fileName: StackTrace.current.toString(),
         lineNo: 141);
     getErrorSnackBar('Sync Error ' + e.toString());
@@ -269,11 +265,11 @@ Future<void> deleteBPMG(Database db) async {
   await db.delete('BPMG');
 }
 
-Future<List<BPMG>> retrieveBPMGById(BuildContext? context, String str,
-    List l) async {
+Future<List<BPMG>> retrieveBPMGById(
+    BuildContext? context, String str, List l) async {
   final Database db = await initializeDB(context);
   final List<Map<String, Object?>> queryResult =
-  await db.query('BPMG', where: str, whereArgs: l);
+      await db.query('BPMG', where: str, whereArgs: l);
   return queryResult.map((e) => BPMG.fromJson(e)).toList();
 }
 
@@ -297,38 +293,40 @@ Future<void> insertBPMGToServer(BuildContext? context,
     if (list.isEmpty) {
       return;
     }
-    do {Map<String, dynamic> map = list[i].toJson();
+    do {
+      Map<String, dynamic> map = list[i].toJson();
       sentSuccessInServer = false;
       try {
         map.remove('ID');
-        String queryParams='TransId=${list[i].Code}';
-        var res = await http.post(Uri.parse(prefix + "BPMG/Add?$queryParams"),
-            headers: header, body: jsonEncode(map))
+        String queryParams = 'TransId=${list[i].Code}';
+        var res = await http
+            .post(Uri.parse(prefix + "BPMG/Add?$queryParams"),
+                headers: header, body: jsonEncode(map))
             .timeout(Duration(seconds: 30), onTimeout: () {
           writeToLogFile(
-            text: '500 error \nMap : $map', fileName: StackTrace.current.toString(), lineNo: 141);return http.Response('Error', 500);
+              text: '500 error \nMap : $map',
+              fileName: StackTrace.current.toString(),
+              lineNo: 141);
+          return http.Response('Error', 500);
         });
         response = await res.body;
         print("eeaaae status");
         print(await res.statusCode);
-        if(res.statusCode != 201)
-        {
+        if (res.statusCode != 201) {
           await writeToLogFile(
-              text: '${res.statusCode} error \nMap : $map\nResponse : ${res.body}',
+              text:
+                  '${res.statusCode} error \nMap : $map\nResponse : ${res.body}',
               fileName: StackTrace.current.toString(),
               lineNo: 141);
         }
-        if(res.statusCode ==409)
-        {
+        if (res.statusCode == 409) {
           ///Already added in server
           final Database db = await initializeDB(context);
-          BPMG model=BPMG.fromJson(jsonDecode(res.body));
+          BPMG model = BPMG.fromJson(jsonDecode(res.body));
           var x = await db.update("BPMG", model.toJson(),
               where: "Code = ?", whereArgs: [model.Code]);
           print(x.toString());
-        }
-        else
-        if (res.statusCode == 201 || res.statusCode == 500) {
+        } else if (res.statusCode == 201 || res.statusCode == 500) {
           sentSuccessInServer = true;
           if (res.statusCode == 201) {
             map['ID'] = jsonDecode(res.body)['ID'];
@@ -339,7 +337,7 @@ Future<void> insertBPMGToServer(BuildContext? context,
                 where: "TransId = ? AND RowId = ?",
                 whereArgs: [map["TransId"], map["RowId"]]);
             print(x.toString());
-          }else{
+          } else {
             writeToLogFile(
                 text: '500 error \nMap : $map',
                 fileName: StackTrace.current.toString(),
@@ -382,20 +380,23 @@ Future<void> updateBPMGOnServer(BuildContext? context,
       Map<String, dynamic> map = list[i].toJson();
       var res = await http
           .put(Uri.parse(prefix + 'BPMG/Update'),
-          headers: header, body: jsonEncode(map))
+              headers: header, body: jsonEncode(map))
           .timeout(Duration(seconds: 30), onTimeout: () {
         writeToLogFile(
-            text: '500 error \nMap : $map', fileName: StackTrace.current.toString(), lineNo: 141);return http.Response('Error', 500);
+            text: '500 error \nMap : $map',
+            fileName: StackTrace.current.toString(),
+            lineNo: 141);
+        return http.Response('Error', 500);
       });
       print(await res.statusCode);
-      if(res.statusCode != 201)
-        {
-          await writeToLogFile(
-              text: '${res.statusCode} error \nMap : $map\nResponse : ${res.body}',
-              fileName: StackTrace.current.toString(),
-              lineNo: 141);
-        }
-        if (res.statusCode == 201 || res.statusCode == 500) {
+      if (res.statusCode != 201) {
+        await writeToLogFile(
+            text:
+                '${res.statusCode} error \nMap : $map\nResponse : ${res.body}',
+            fileName: StackTrace.current.toString(),
+            lineNo: 141);
+      }
+      if (res.statusCode == 201 || res.statusCode == 500) {
         sentSuccessInServer = true;
         if (res.statusCode == 201) {
           final Database db = await initializeDB(context);
@@ -404,7 +405,7 @@ Future<void> updateBPMGOnServer(BuildContext? context,
               where: "TransId = ? AND RowId = ?",
               whereArgs: [map["TransId"], map["RowId"]]);
           print(x.toString());
-        }else{
+        } else {
           writeToLogFile(
               text: '500 error \nMap : $map',
               fileName: StackTrace.current.toString(),
@@ -414,11 +415,13 @@ Future<void> updateBPMGOnServer(BuildContext? context,
       print(res.body);
     } catch (e) {
       writeToLogFile(
-          text: '${e.toString()}\nMap : $map', fileName: StackTrace.current.toString(), lineNo: 141);
-  sentSuccessInServer = true;
-  }
+          text: '${e.toString()}\nMap : $map',
+          fileName: StackTrace.current.toString(),
+          lineNo: 141);
+      sentSuccessInServer = true;
+    }
 
-  i++;
-  print("INDEX = " + i.toString());
+    i++;
+    print("INDEX = " + i.toString());
   } while (i < list.length && sentSuccessInServer == true);
 }

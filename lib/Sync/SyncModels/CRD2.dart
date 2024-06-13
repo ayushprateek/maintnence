@@ -7,7 +7,6 @@ import 'package:maintenance/Component/SnackbarComponent.dart';
 import 'package:maintenance/DatabaseInitialization.dart';
 import 'package:maintenance/Sync/CustomURL.dart';
 import 'package:maintenance/Sync/DataSync.dart';
-
 import 'package:sqflite/sqlite_api.dart';
 
 List<CRD2Model> CRD2ModelFromJson(String str) =>
@@ -354,36 +353,37 @@ Future<void> insertCRD2ToServer(BuildContext? context,
       sentSuccessInServer = false;
       try {
         map.remove('ID');
-        String queryParams='Code=${list[i].Code}&RowId=${list[i].RowId}';
+        String queryParams = 'Code=${list[i].Code}&RowId=${list[i].RowId}';
         var res = await http
             .post(Uri.parse(prefix + "CRD2/Add?$queryParams"),
-            headers: header, body: jsonEncode(map))
+                headers: header, body: jsonEncode(map))
             .timeout(Duration(seconds: 30), onTimeout: () {
           writeToLogFile(
-              text: '500 error \nMap : $map', fileName: StackTrace.current.toString(), lineNo: 141);return http.Response('Error', 500);
+              text: '500 error \nMap : $map',
+              fileName: StackTrace.current.toString(),
+              lineNo: 141);
+          return http.Response('Error', 500);
         });
         response = await res.body;
 
         print("status");
         print(await res.statusCode);
-        if(res.statusCode != 201)
-        {
+        if (res.statusCode != 201) {
           await writeToLogFile(
-              text: '${res.statusCode} error \nMap : $map\nResponse : ${res.body}',
+              text:
+                  '${res.statusCode} error \nMap : $map\nResponse : ${res.body}',
               fileName: StackTrace.current.toString(),
               lineNo: 141);
         }
-        if(res.statusCode ==409)
-        {
+        if (res.statusCode == 409) {
           ///Already added in server
           final Database db = await initializeDB(context);
-          CRD2Model model=CRD2Model.fromJson(jsonDecode(res.body));
+          CRD2Model model = CRD2Model.fromJson(jsonDecode(res.body));
           var x = await db.update("CRD2", model.toJson(),
-              where: "Code = ? AND RowId = ?", whereArgs: [model.Code,model.RowId]);
+              where: "Code = ? AND RowId = ?",
+              whereArgs: [model.Code, model.RowId]);
           print(x.toString());
-        }
-        else
-        if (res.statusCode == 201 || res.statusCode == 500) {
+        } else if (res.statusCode == 201 || res.statusCode == 500) {
           sentSuccessInServer = true;
           if (res.statusCode == 201) {
             map['ID'] = jsonDecode(res.body)['ID'];
@@ -393,7 +393,7 @@ Future<void> insertCRD2ToServer(BuildContext? context,
                 where: "Code = ? AND RowId = ?",
                 whereArgs: [map["Code"], map["RowId"]]);
             print(x.toString());
-          }else{
+          } else {
             writeToLogFile(
                 text: '500 error \nMap : $map',
                 fileName: StackTrace.current.toString(),
@@ -438,16 +438,19 @@ Future<void> updateCRD2OnServer(BuildContext? context,
       Map<String, dynamic> map = list[i].toJson();
       var res = await http
           .put(Uri.parse(prefix + 'CRD2/Update'),
-          headers: header, body: jsonEncode(map))
+              headers: header, body: jsonEncode(map))
           .timeout(Duration(seconds: 30), onTimeout: () {
         writeToLogFile(
-            text: '500 error \nMap : $map', fileName: StackTrace.current.toString(), lineNo: 141);return http.Response('Error', 500);
+            text: '500 error \nMap : $map',
+            fileName: StackTrace.current.toString(),
+            lineNo: 141);
+        return http.Response('Error', 500);
       });
       print(await res.statusCode);
-      if(res.statusCode != 201)
-      {
+      if (res.statusCode != 201) {
         await writeToLogFile(
-            text: '${res.statusCode} error \nMap : $map\nResponse : ${res.body}',
+            text:
+                '${res.statusCode} error \nMap : $map\nResponse : ${res.body}',
             fileName: StackTrace.current.toString(),
             lineNo: 141);
       }
@@ -460,7 +463,7 @@ Future<void> updateCRD2OnServer(BuildContext? context,
               where: "Code = ? AND RowId = ?",
               whereArgs: [map["Code"], map["RowId"]]);
           print(x.toString());
-        }else{
+        } else {
           writeToLogFile(
               text: '500 error \nMap : $map',
               fileName: StackTrace.current.toString(),

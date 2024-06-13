@@ -147,9 +147,10 @@ Future<List<ROUTModel>> retrieveRouteForSearch({
   int? limit,
   String? query,
 }) async {
-  query="%$query%";
+  query = "%$query%";
   final Database db = await initializeDB(null);
-  final List<Map<String, Object?>> queryResult = await db.rawQuery('SELECT * FROM ROUT WHERE RouteCode LIKE "$query" OR RouteName LIKE "$query" LIMIT $limit');
+  final List<Map<String, Object?>> queryResult = await db.rawQuery(
+      'SELECT * FROM ROUT WHERE RouteCode LIKE "$query" OR RouteName LIKE "$query" LIMIT $limit');
   return queryResult.map((e) => ROUTModel.fromJson(e)).toList();
 }
 

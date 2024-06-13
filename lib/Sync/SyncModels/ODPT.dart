@@ -468,8 +468,9 @@ Future<void> insertODPTToServer(BuildContext? context,
           list[i].Attachment = prefix + url;
         }
         map.remove('ID');
-        String queryParams='TransId=${list[i].TransId}';
-        var res = await http.post(Uri.parse(prefix + "ODPT/Add?$queryParams"),
+        String queryParams = 'TransId=${list[i].TransId}';
+        var res = await http
+            .post(Uri.parse(prefix + "ODPT/Add?$queryParams"),
                 headers: header, body: jsonEncode(jsonDecode(jsonEncode(map))))
             .timeout(Duration(seconds: 30), onTimeout: () {
           writeToLogFile(
@@ -489,17 +490,14 @@ Future<void> insertODPTToServer(BuildContext? context,
               fileName: StackTrace.current.toString(),
               lineNo: 141);
         }
-        if(res.statusCode ==409)
-        {
+        if (res.statusCode == 409) {
           ///Already added in server
           final Database db = await initializeDB(context);
-          ODPTModel model=ODPTModel.fromJson(jsonDecode(res.body));
+          ODPTModel model = ODPTModel.fromJson(jsonDecode(res.body));
           var x = await db.update("ODPT", model.toJson(),
               where: "TransId = ?", whereArgs: [model.TransId]);
           print(x.toString());
-        }
-        else
-        if (res.statusCode == 201 || res.statusCode == 500) {
+        } else if (res.statusCode == 201 || res.statusCode == 500) {
           sentSuccessInServer = true;
           if (res.statusCode == 201) {
             map['ID'] = jsonDecode(res.body)['ID'];

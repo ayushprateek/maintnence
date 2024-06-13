@@ -1,18 +1,9 @@
-import 'dart:convert';
-
-import 'package:http/http.dart' as http;
-import 'package:maintenance/Component/GetCredentials.dart';
-import 'package:maintenance/Component/LogFileFunctions.dart';
-import 'package:maintenance/DatabaseInitialization.dart';
-import 'package:maintenance/Sync/CustomURL.dart';
 import 'package:maintenance/Sync/SyncModels/CRT1.dart';
 import 'package:maintenance/Sync/SyncModels/ECP1.dart';
 import 'package:maintenance/Sync/SyncModels/OCRO.dart';
 import 'package:maintenance/Sync/SyncModels/ORCT.dart';
 import 'package:maintenance/Sync/SyncModels/OVUL.dart';
 import 'package:maintenance/Sync/SyncModels/RCT1.dart';
-import 'package:maintenance/Sync/SyncModels/SUAOPC.dart';
-import 'package:maintenance/Sync/SyncModels/SUAPC1.dart';
 import 'package:maintenance/Sync/SyncModels/SUISU1.dart';
 import 'package:maintenance/Sync/SyncModels/SUOATE.dart';
 import 'package:maintenance/Sync/SyncModels/SUOISU.dart';
@@ -27,7 +18,6 @@ import 'package:maintenance/Sync/SyncModels/SUPRM1.dart';
 import 'package:maintenance/Sync/SyncModels/SUPRP1.dart';
 import 'package:maintenance/Sync/SyncModels/SUPRU1.dart';
 import 'package:maintenance/Sync/SyncModels/VUL1.dart';
-import 'package:sqflite/sqlite_api.dart';
 
 class Transaction2 {
   // static bool isFirstTimeSync = false;
@@ -38,6 +28,7 @@ class Transaction2 {
   List<OVULModel>? ovul;
   List<VUL1Model>? vul1;
   List<CRT1>? crt1;
+
   // List<SUAOPC>? suaopc;
   // List<SUAPC1>? suapc1;
   List<SUISU1>? suisu1;
@@ -215,7 +206,5 @@ class Transaction2 {
   //   await insertSUPRU1(db, list: transactions.supru1);
   // }
 
-  getTransaction2FromWeb(bool isFirstTimeSync)
-  async {
-  }
+  getTransaction2FromWeb(bool isFirstTimeSync) async {}
 }

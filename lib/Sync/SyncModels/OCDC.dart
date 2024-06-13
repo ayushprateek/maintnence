@@ -30,10 +30,10 @@ class OCDC {
 
   factory OCDC.fromJson(Map<String, dynamic> json) => OCDC(
         ID: int.tryParse(json['ID'].toString()) ?? 0,
-        Code: json['Code']??'',
+        Code: json['Code'] ?? '',
         RowId: int.tryParse(json['RowId'].toString()) ?? 0,
-        DocName: json['DocName']??'',
-        Attachment: json['Attachment']??'',
+        DocName: json['DocName'] ?? '',
+        Attachment: json['Attachment'] ?? '',
         CreateDate: DateTime.tryParse(json['CreateDate'].toString()),
         UpdateDate: DateTime.tryParse(json['UpdateDate'].toString()),
       );

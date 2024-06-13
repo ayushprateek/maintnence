@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:maintenance/Component/LogFileFunctions.dart';
 import 'package:maintenance/Component/SnackbarComponent.dart';
@@ -77,8 +76,6 @@ Future<List<CRDDModel>> dataSyncCRDD() async {
   return CRDDModelFromJson(res.body);
 }
 
-
-
 Future<void> insertCRDD(Database db, {List? list}) async {
   if (postfix.toLowerCase().contains('all')) {
     await deleteCRDD(db);
@@ -94,7 +91,7 @@ Future<void> insertCRDD(Database db, {List? list}) async {
   stopwatch.start();
   for (var i = 0; i < customers.length; i += batchSize) {
     var end =
-    (i + batchSize < customers.length) ? i + batchSize : customers.length;
+        (i + batchSize < customers.length) ? i + batchSize : customers.length;
     var batchRecords = customers.sublist(i, end);
     await db.transaction((txn) async {
       var batch = txn.batch();
@@ -135,7 +132,7 @@ Future<void> insertCRDD(Database db, {List? list}) async {
         try {
           batch.update("CRDD", element,
               where:
-              "RowId = ? AND Code = ? AND ifnull(has_created,0) <> ? AND ifnull(has_updated,0) <> ?",
+                  "RowId = ? AND Code = ? AND ifnull(has_created,0) <> ? AND ifnull(has_updated,0) <> ?",
               whereArgs: [element["RowId"], element["Code"], 1, 1]);
         } catch (e) {
           writeToLogFile(
@@ -245,64 +242,64 @@ Future<void> insertCRDDToServer(BuildContext? context,
     if (list.isEmpty) {
       return;
     }
-    do {Map<String, dynamic> map = list[i].toJson();
-    sentSuccessInServer = false;
-    try {
-      print(map);
-      map.remove('ID');
-      String queryParams='TransId=${list[i].Code}&RowId=${list[i].RowId}';
-      var res = await http.post(Uri.parse(prefix + "CRDD/Add?$queryParams"),
-          headers: header, body: jsonEncode(map))
-          .timeout(Duration(seconds: 30), onTimeout: () {
-        return http.Response("Error", 500);
-      });
-      response = await res.body;
-      if(res.statusCode != 201)
-      {
-        await writeToLogFile(
-            text: '${res.statusCode} error \nMap : $map\nResponse : ${res.body}',
-            fileName: StackTrace.current.toString(),
-            lineNo: 141);
-      }
-      if(res.statusCode ==409)
-      {
-        ///Already added in server
-        final Database db = await initializeDB(context);
-        CRDDModel model=CRDDModel.fromJson(jsonDecode(res.body));
-        var x = await db.update("CRDD", model.toJson(),
-            where: "Code = ? AND RowId = ?", whereArgs: [model.Code,model.RowId]);
-        print(x.toString());
-      }
-      else
-
-      if (res.statusCode == 201 || res.statusCode == 500) {
-        sentSuccessInServer = true;
-        if (res.statusCode == 201) {
-          map['ID'] = jsonDecode(res.body)['ID'];
-          map['PermanentTransId'] = jsonDecode(res.body)['PermanentTransId'];
-          final Database db = await initializeDB(context);
-          map["has_created"] = 0;
-          var x = await db.update("CRDD", map,
-              where: "TransId = ?", whereArgs: [map["TransId"]]);
-          print(x.toString());
-        }else{
-          writeToLogFile(
-              text: '500 error \nMap : $map',
+    do {
+      Map<String, dynamic> map = list[i].toJson();
+      sentSuccessInServer = false;
+      try {
+        print(map);
+        map.remove('ID');
+        String queryParams = 'TransId=${list[i].Code}&RowId=${list[i].RowId}';
+        var res = await http
+            .post(Uri.parse(prefix + "CRDD/Add?$queryParams"),
+                headers: header, body: jsonEncode(map))
+            .timeout(Duration(seconds: 30), onTimeout: () {
+          return http.Response("Error", 500);
+        });
+        response = await res.body;
+        if (res.statusCode != 201) {
+          await writeToLogFile(
+              text:
+                  '${res.statusCode} error \nMap : $map\nResponse : ${res.body}',
               fileName: StackTrace.current.toString(),
               lineNo: 141);
         }
+        if (res.statusCode == 409) {
+          ///Already added in server
+          final Database db = await initializeDB(context);
+          CRDDModel model = CRDDModel.fromJson(jsonDecode(res.body));
+          var x = await db.update("CRDD", model.toJson(),
+              where: "Code = ? AND RowId = ?",
+              whereArgs: [model.Code, model.RowId]);
+          print(x.toString());
+        } else if (res.statusCode == 201 || res.statusCode == 500) {
+          sentSuccessInServer = true;
+          if (res.statusCode == 201) {
+            map['ID'] = jsonDecode(res.body)['ID'];
+            map['PermanentTransId'] = jsonDecode(res.body)['PermanentTransId'];
+            final Database db = await initializeDB(context);
+            map["has_created"] = 0;
+            var x = await db.update("CRDD", map,
+                where: "TransId = ?", whereArgs: [map["TransId"]]);
+            print(x.toString());
+          } else {
+            writeToLogFile(
+                text: '500 error \nMap : $map',
+                fileName: StackTrace.current.toString(),
+                lineNo: 141);
+          }
+        }
+        print(res.body);
+      } catch (e) {
+        writeToLogFile(
+            text: '${e.toString()}\nMap : $map',
+            fileName: StackTrace.current.toString(),
+            lineNo: 141);
+        sentSuccessInServer = true;
       }
-      print(res.body);
-    } catch (e) {
-      writeToLogFile(
-          text: '${e.toString()}\nMap : $map', fileName: StackTrace.current.toString(), lineNo: 141);
-      sentSuccessInServer = true;
-    }
-    i++;
-    print("INDEX = " + i.toString());
+      i++;
+      print("INDEX = " + i.toString());
     } while (i < list.length && sentSuccessInServer == true);
   }
-
 }
 
 Future<void> updateCRDDOnServer(BuildContext? context,
@@ -317,51 +314,57 @@ Future<void> updateCRDDOnServer(BuildContext? context,
   if (list.isEmpty) {
     return;
   }
-  do {Map<String, dynamic> map = list[i].toJson();
-  sentSuccessInServer = false;
-  try {
-    if (list.isEmpty) {
-      return;
-    }
+  do {
     Map<String, dynamic> map = list[i].toJson();
-    var res = await http
-        .put(Uri.parse(prefix + 'CRDD/Update'),
-        headers: header, body: jsonEncode(map))
-        .timeout(Duration(seconds: 30), onTimeout: () {
-      writeToLogFile(
-          text: '500 error \nMap : $map', fileName: StackTrace.current.toString(), lineNo: 141);return http.Response('Error', 500);
-    });
-    print(await res.statusCode);
-    if(res.statusCode != 201)
-    {
-      await writeToLogFile(
-          text: '${res.statusCode} error \nMap : $map\nResponse : ${res.body}',
-          fileName: StackTrace.current.toString(),
-          lineNo: 141);
-    }
-    if (res.statusCode == 201 || res.statusCode == 500) {
-      sentSuccessInServer = true;
-      if (res.statusCode == 201) {
-        final Database db = await initializeDB(context);
-        map["has_updated"] = 0;
-        var x = await db.update("CRDD", map,
-            where: "TransId = ?", whereArgs: [map["TransId"]]);
-        print(x.toString());
-      }else{
+    sentSuccessInServer = false;
+    try {
+      if (list.isEmpty) {
+        return;
+      }
+      Map<String, dynamic> map = list[i].toJson();
+      var res = await http
+          .put(Uri.parse(prefix + 'CRDD/Update'),
+              headers: header, body: jsonEncode(map))
+          .timeout(Duration(seconds: 30), onTimeout: () {
         writeToLogFile(
             text: '500 error \nMap : $map',
             fileName: StackTrace.current.toString(),
             lineNo: 141);
+        return http.Response('Error', 500);
+      });
+      print(await res.statusCode);
+      if (res.statusCode != 201) {
+        await writeToLogFile(
+            text:
+                '${res.statusCode} error \nMap : $map\nResponse : ${res.body}',
+            fileName: StackTrace.current.toString(),
+            lineNo: 141);
       }
+      if (res.statusCode == 201 || res.statusCode == 500) {
+        sentSuccessInServer = true;
+        if (res.statusCode == 201) {
+          final Database db = await initializeDB(context);
+          map["has_updated"] = 0;
+          var x = await db.update("CRDD", map,
+              where: "TransId = ?", whereArgs: [map["TransId"]]);
+          print(x.toString());
+        } else {
+          writeToLogFile(
+              text: '500 error \nMap : $map',
+              fileName: StackTrace.current.toString(),
+              lineNo: 141);
+        }
+      }
+      print(res.body);
+    } catch (e) {
+      writeToLogFile(
+          text: '${e.toString()}\nMap : $map',
+          fileName: StackTrace.current.toString(),
+          lineNo: 141);
+      sentSuccessInServer = true;
     }
-    print(res.body);
-  } catch (e) {
-    writeToLogFile(
-        text: '${e.toString()}\nMap : $map', fileName: StackTrace.current.toString(), lineNo: 141);
-    sentSuccessInServer = true;
-  }
 
-  i++;
-  print("INDEX = " + i.toString());
+    i++;
+    print("INDEX = " + i.toString());
   } while (i < list.length && sentSuccessInServer == true);
 }

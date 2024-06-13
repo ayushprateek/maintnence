@@ -95,7 +95,7 @@ class LITPL_OOAL {
     Map<String, dynamic> map = {
       'ALID': ALID,
       'RejectRemarks': RejectRemarks,
-      'TransDocID': TransDocID??0,
+      'TransDocID': TransDocID ?? 0,
       'BranchId': BranchId,
       'ACID': ACID,
       'Level': Level,
@@ -337,7 +337,7 @@ Future<List<LITPL_OOAL>> retrieveLITPL_OOALById(
 Future<List<LITPL_OOAL>> retrieveLITPL_OOALUnApprovedDoc(
     {required String TransId}) async {
   final Database db = await initializeDB(null);
-  String query='''
+  String query = '''
         SELECT Max(ooal.Level),(ooal.Level),ooal.ACID,ooal.ALID,ooal.Approve,ooal.Reject,ooal.AUserCode,
 ooal.DocStatus,ooal.TransDocID,ooal.RejectRemarks,ooal.BranchId,ooal.TransId,ooal.AUserName,
 ooal.AUserCode,ooal.OUserCode,ooal.DocStatus,ooal.OUserName,ooal.CreatedBy,ooal.DocNum,
@@ -356,9 +356,9 @@ ooal.DocID,ooal.DocEntry,ooal.CreatedDate,ooal.UpdateDate,ooal.DocDate,ooal.Rema
   final List<Map<String, Object?>> queryResult = await db.rawQuery(query);
   return queryResult.map((e) => LITPL_OOAL.fromJson(e)).toList();
 }
-Future<List<LITPL_OOAL>> getLITPL_OOALApprovalData({
-  required Database db
-}) async {
+
+Future<List<LITPL_OOAL>> getLITPL_OOALApprovalData(
+    {required Database db}) async {
   final List<Map<String, Object?>> queryResult = await db.rawQuery('''
   SELECT litplooal.* from   LITPL_OOAL litplooal
                      inner join  LITPL_OAC2 ooac2 on litplooal.Level = ooac2.Level
@@ -419,10 +419,10 @@ Future<void> insertLITPL_OOALToServer(BuildContext? context,
         response = await res.body;
         print("eeaaae status");
         print(await res.statusCode);
-        if(res.statusCode != 201)
-        {
+        if (res.statusCode != 201) {
           await writeToLogFile(
-              text: '${res.statusCode} error \nMap : $map\nResponse : ${res.body}',
+              text:
+                  '${res.statusCode} error \nMap : $map\nResponse : ${res.body}',
               fileName: StackTrace.current.toString(),
               lineNo: 141);
         }
@@ -494,10 +494,10 @@ Future<void> updateLITPL_OOALOnServer(BuildContext? context,
           return http.Response('Error', 500);
         });
         print(await res.statusCode);
-        if(res.statusCode != 201)
-        {
+        if (res.statusCode != 201) {
           await writeToLogFile(
-              text: '${res.statusCode} error \nMap : $map\nResponse : ${res.body}',
+              text:
+                  '${res.statusCode} error \nMap : $map\nResponse : ${res.body}',
               fileName: StackTrace.current.toString(),
               lineNo: 141);
         }

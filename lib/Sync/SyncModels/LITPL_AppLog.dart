@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:maintenance/Component/LogFileFunctions.dart';
 import 'package:maintenance/Component/SnackbarComponent.dart';
@@ -53,8 +52,7 @@ class LITPL_AppLog {
     this.ApprovalLevel,
   });
 
-  factory LITPL_AppLog.fromJson(Map<String, dynamic> json) =>
-      LITPL_AppLog(
+  factory LITPL_AppLog.fromJson(Map<String, dynamic> json) => LITPL_AppLog(
         BPLID: int.tryParse(json['BPLID'].toString()) ?? 0,
         AppLogID: int.tryParse(json['AppLogID'].toString()) ?? 0,
         AppStageID: int.tryParse(json['AppStageID'].toString()) ?? 0,
@@ -76,8 +74,7 @@ class LITPL_AppLog {
         ApprovalLevel: int.tryParse(json['ApprovalLevel'].toString()) ?? 0,
       );
 
-  Map<String, dynamic> toJson() =>
-      {
+  Map<String, dynamic> toJson() => {
         'BPLID': BPLID,
         'AppLogID': AppLogID,
         'AppStageID': AppStageID,
@@ -100,9 +97,8 @@ class LITPL_AppLog {
       };
 }
 
-List<LITPL_AppLog> lITPL_AppLogFromJson(String str) =>
-    List<LITPL_AppLog>.from(
-        json.decode(str).map((x) => LITPL_AppLog.fromJson(x)));
+List<LITPL_AppLog> lITPL_AppLogFromJson(String str) => List<LITPL_AppLog>.from(
+    json.decode(str).map((x) => LITPL_AppLog.fromJson(x)));
 
 String lITPL_AppLogToJson(List<LITPL_AppLog> data) =>
     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
@@ -174,7 +170,7 @@ Future<void> insertLITPL_AppLog(Database db, {List? list}) async {
   stopwatch.start();
   for (var i = 0; i < customers.length; i += batchSize) {
     var end =
-    (i + batchSize < customers.length) ? i + batchSize : customers.length;
+        (i + batchSize < customers.length) ? i + batchSize : customers.length;
     var batchRecords = customers.sublist(i, end);
     await db.transaction((txn) async {
       var batch = txn.batch();
@@ -229,7 +225,8 @@ Future<void> insertLITPL_AppLog(Database db, {List? list}) async {
   }
 
   stopwatch.stop();
-  print('Time taken for LITPL_AppLog update: ${stopwatch.elapsedMilliseconds}ms');
+  print(
+      'Time taken for LITPL_AppLog update: ${stopwatch.elapsedMilliseconds}ms');
   stopwatch.reset();
   stopwatch.start();
   // var v = await db.rawQuery("Select * from LITPL_AppLog_Temp where TransId || RowId not in (Select TransId || RowId from LITPL_AppLog)");
@@ -269,22 +266,22 @@ WHERE T1.TransId IS NULL AND T1.RowId IS NULL;
   // stopwatch.stop();
 }
 
-
 Future<List<LITPL_AppLog>> retrieveLITPL_AppLog(BuildContext context) async {
   final Database db = await initializeDB(context);
   final List<Map<String, Object?>> queryResult = await db.query('LITPL_AppLog');
   return queryResult.map((e) => LITPL_AppLog.fromJson(e)).toList();
 }
 
-Future<void> updateLITPL_AppLog(int id, Map<String, dynamic> values,
-    BuildContext context) async {
+Future<void> updateLITPL_AppLog(
+    int id, Map<String, dynamic> values, BuildContext context) async {
   final db = await initializeDB(context);
   try {
     db.transaction((db) async {
       await db.update('LITPL_AppLog', values, where: 'ID = ?', whereArgs: [id]);
     });
   } catch (e) {
-    writeToLogFile(text: e.toString(),
+    writeToLogFile(
+        text: e.toString(),
         fileName: StackTrace.current.toString(),
         lineNo: 141);
     getErrorSnackBar('Sync Error ' + e.toString());
@@ -295,11 +292,11 @@ Future<void> deleteLITPL_AppLog(Database db) async {
   await db.delete('LITPL_AppLog');
 }
 
-Future<List<LITPL_AppLog>> retrieveLITPL_AppLogById(BuildContext? context,
-    String str, List l) async {
+Future<List<LITPL_AppLog>> retrieveLITPL_AppLogById(
+    BuildContext? context, String str, List l) async {
   final Database db = await initializeDB(context);
   final List<Map<String, Object?>> queryResult =
-  await db.query('LITPL_AppLog', where: str, whereArgs: l);
+      await db.query('LITPL_AppLog', where: str, whereArgs: l);
   return queryResult.map((e) => LITPL_AppLog.fromJson(e)).toList();
 }
 
@@ -323,24 +320,28 @@ Future<void> insertLITPL_AppLogToServer(BuildContext? context,
     if (list.isEmpty) {
       return;
     }
-    do {Map<String, dynamic> map = list[i].toJson();
+    do {
+      Map<String, dynamic> map = list[i].toJson();
       sentSuccessInServer = false;
       try {
         map.remove('ID');
         var res = await http
             .post(Uri.parse(prefix + "LITPL_AppLog/Add"),
-            headers: header, body: jsonEncode(map))
+                headers: header, body: jsonEncode(map))
             .timeout(Duration(seconds: 30), onTimeout: () {
           writeToLogFile(
-            text: '500 error \nMap : $map', fileName: StackTrace.current.toString(), lineNo: 141);return http.Response('Error', 500);
+              text: '500 error \nMap : $map',
+              fileName: StackTrace.current.toString(),
+              lineNo: 141);
+          return http.Response('Error', 500);
         });
         response = await res.body;
         print("eeaaae status");
         print(await res.statusCode);
-        if(res.statusCode != 201)
-        {
+        if (res.statusCode != 201) {
           await writeToLogFile(
-              text: '${res.statusCode} error \nMap : $map\nResponse : ${res.body}',
+              text:
+                  '${res.statusCode} error \nMap : $map\nResponse : ${res.body}',
               fileName: StackTrace.current.toString(),
               lineNo: 141);
         }
@@ -360,14 +361,15 @@ Future<void> insertLITPL_AppLogToServer(BuildContext? context,
         print(res.body);
       } catch (e) {
         writeToLogFile(
-            text: '${e.toString()}\nMap : $map', fileName: StackTrace.current.toString(), lineNo: 141);
-  sentSuccessInServer = true;
+            text: '${e.toString()}\nMap : $map',
+            fileName: StackTrace.current.toString(),
+            lineNo: 141);
+        sentSuccessInServer = true;
+      }
+      i++;
+      print("INDEX = " + i.toString());
+    } while (i < list.length && sentSuccessInServer == true);
   }
-  i++;
-  print("INDEX = " + i.toString());
-  } while (i < list.length && sentSuccessInServer == true);
-}
-
 }
 
 Future<void> updateLITPL_AppLogOnServer(BuildContext? context,
@@ -382,7 +384,8 @@ Future<void> updateLITPL_AppLogOnServer(BuildContext? context,
   if (list.isEmpty) {
     return;
   }
-  do {Map<String, dynamic> map = list[i].toJson();
+  do {
+    Map<String, dynamic> map = list[i].toJson();
     sentSuccessInServer = false;
     try {
       if (list.isEmpty) {
@@ -391,20 +394,23 @@ Future<void> updateLITPL_AppLogOnServer(BuildContext? context,
       Map<String, dynamic> map = list[i].toJson();
       var res = await http
           .put(Uri.parse(prefix + 'LITPL_AppLog/Update'),
-          headers: header, body: jsonEncode(map))
+              headers: header, body: jsonEncode(map))
           .timeout(Duration(seconds: 30), onTimeout: () {
         writeToLogFile(
-            text: '500 error \nMap : $map', fileName: StackTrace.current.toString(), lineNo: 141);return http.Response('Error', 500);
+            text: '500 error \nMap : $map',
+            fileName: StackTrace.current.toString(),
+            lineNo: 141);
+        return http.Response('Error', 500);
       });
       print(await res.statusCode);
-      if(res.statusCode != 201)
-        {
-          await writeToLogFile(
-              text: '${res.statusCode} error \nMap : $map\nResponse : ${res.body}',
-              fileName: StackTrace.current.toString(),
-              lineNo: 141);
-        }
-        if (res.statusCode == 201 || res.statusCode == 500) {
+      if (res.statusCode != 201) {
+        await writeToLogFile(
+            text:
+                '${res.statusCode} error \nMap : $map\nResponse : ${res.body}',
+            fileName: StackTrace.current.toString(),
+            lineNo: 141);
+      }
+      if (res.statusCode == 201 || res.statusCode == 500) {
         sentSuccessInServer = true;
         if (res.statusCode == 201) {
           final Database db = await initializeDB(context);
@@ -418,11 +424,13 @@ Future<void> updateLITPL_AppLogOnServer(BuildContext? context,
       print(res.body);
     } catch (e) {
       writeToLogFile(
-          text: '${e.toString()}\nMap : $map', fileName: StackTrace.current.toString(), lineNo: 141);
-  sentSuccessInServer = true;
-  }
+          text: '${e.toString()}\nMap : $map',
+          fileName: StackTrace.current.toString(),
+          lineNo: 141);
+      sentSuccessInServer = true;
+    }
 
-  i++;
-  print("INDEX = " + i.toString());
+    i++;
+    print("INDEX = " + i.toString());
   } while (i < list.length && sentSuccessInServer == true);
 }

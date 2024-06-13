@@ -74,7 +74,6 @@ Future<List<DOC1Model>> dataSyncDOC1() async {
   return DOC1ModelFromJson(res.body);
 }
 
-
 // Future<void> insertDOC1(Database db, {List? list}) async {
 //   if (postfix.toLowerCase().contains('all')) {
 //     await deleteDOC1(db);
@@ -136,7 +135,7 @@ Future<void> insertDOC1(Database db, {List? list}) async {
   stopwatch.start();
   for (var i = 0; i < customers.length; i += batchSize) {
     var end =
-    (i + batchSize < customers.length) ? i + batchSize : customers.length;
+        (i + batchSize < customers.length) ? i + batchSize : customers.length;
     var batchRecords = customers.sublist(i, end);
     await db.transaction((txn) async {
       var batch = txn.batch();
@@ -177,7 +176,7 @@ Future<void> insertDOC1(Database db, {List? list}) async {
         try {
           batch.update("DOC1", element,
               where:
-              "RowId = ? AND EmpGroupId = ? AND ifnull(has_created,0) <> ? AND ifnull(has_updated,0) <> ?",
+                  "RowId = ? AND EmpGroupId = ? AND ifnull(has_created,0) <> ? AND ifnull(has_updated,0) <> ?",
               whereArgs: [element["RowId"], element["EmpGroupId"], 1, 1]);
         } catch (e) {
           writeToLogFile(
@@ -232,6 +231,7 @@ WHERE T1.EmpGroupId IS NULL AND T1.RowId IS NULL;
   await db.delete('DOC1_Temp');
   // stopwatch.stop();
 }
+
 Future<List<DOC1Model>> retrieveDOC1(BuildContext context) async {
   final Database db = await initializeDB(context);
   final List<Map<String, Object?>> queryResult = await db.query('DOC1');

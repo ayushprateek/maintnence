@@ -116,8 +116,7 @@ class OEXRModel {
   String? BranchId;
   String? LocalDate;
 
-  factory OEXRModel.fromJson(Map<String, dynamic> json) =>
-      OEXRModel(
+  factory OEXRModel.fromJson(Map<String, dynamic> json) => OEXRModel(
         ID: int.tryParse(json["ID"].toString()) ?? 0,
         CRTransId: json["CRTransId"] ?? '',
         TransId: json["TransId"] ?? '',
@@ -141,7 +140,7 @@ class OEXRModel {
         Currency: json["Currency"] ?? json["Currency"].toString(),
         Remarks: json["Remarks"].toString(),
         CRRequestedAmt:
-        double.tryParse(json["CRRequestedAmt"].toString()) ?? 0.0,
+            double.tryParse(json["CRRequestedAmt"].toString()) ?? 0.0,
         CRApprovedAmt: double.tryParse(json["CRApprovedAmt"].toString()) ?? 0.0,
         Rate: double.tryParse(json["Rate"].toString()) ?? 0.0,
         RequestedAmt: double.tryParse(json['RequestedAmt'].toString()) ?? 0.0,
@@ -157,9 +156,9 @@ class OEXRModel {
             DateTime.parse("1900-01-01"),
         Factor: double.tryParse(json["Factor"].toString()) ?? 0.0,
         AdditionalCash:
-        double.tryParse(json["AdditionalCash"].toString()) ?? 0.0,
+            double.tryParse(json["AdditionalCash"].toString()) ?? 0.0,
         AdditionalApprovedCash:
-        double.tryParse(json["AdditionalApprovedCash"].toString()) ?? 0.0,
+            double.tryParse(json["AdditionalApprovedCash"].toString()) ?? 0.0,
         // ReconDate: DateTime.tryParse(json["ReconDate"].toString()) ??
         //     DateTime.parse("1900-01-01"),
         // ReconAmt: double.tryParse(json["ReconAmt"].toString()) ?? 0.0,
@@ -168,10 +167,10 @@ class OEXRModel {
         ApprovalStatus: json["ApprovalStatus"] == null
             ? "Pending"
             : json["ApprovalStatus"] != 'Pending' &&
-            json["ApprovalStatus"] != 'Rejected' &&
-            json["ApprovalStatus"] != 'Approved'
-            ? "Pending"
-            : json["ApprovalStatus"],
+                    json["ApprovalStatus"] != 'Rejected' &&
+                    json["ApprovalStatus"] != 'Approved'
+                ? "Pending"
+                : json["ApprovalStatus"],
         DocEntry: int.tryParse(json['DocEntry'].toString()),
         DocNum: json['DocNum'] ?? '',
         DraftKey: json['DraftKey'] ?? '',
@@ -181,8 +180,7 @@ class OEXRModel {
         LocalDate: json['LocalDate'] ?? '',
       );
 
-  Map<String, dynamic> toJson() =>
-      {
+  Map<String, dynamic> toJson() => {
         "ID": ID,
         "CRRequestedAmt": CRRequestedAmt,
         "CRApprovedAmt": CRApprovedAmt,
@@ -232,29 +230,30 @@ class OEXRModel {
 
 Future<List<OEXRModel>> dataSyncOEXR() async {
   var res =
-  await http.get(headers: header, Uri.parse(prefix + "OEXR" + postfix));
+      await http.get(headers: header, Uri.parse(prefix + "OEXR" + postfix));
   print(res.body);
   return OEXRModelFromJson(res.body);
 }
 
-Future<List<OEXRModel>> retrieveOEXR(BuildContext context,{
-  String? orderBy
-}) async {
+Future<List<OEXRModel>> retrieveOEXR(BuildContext context,
+    {String? orderBy}) async {
   final Database db = await initializeDB(context);
-  final List<Map<String, Object?>> queryResult = await db.query('OEXR',orderBy: orderBy);
+  final List<Map<String, Object?>> queryResult =
+      await db.query('OEXR', orderBy: orderBy);
   print("Total rows in OEXR" + queryResult.length.toString());
   return queryResult.map((e) => OEXRModel.fromJson(e)).toList();
 }
 
-Future<void> updateOEXR(int id, Map<String, dynamic> values,
-    BuildContext context) async {
+Future<void> updateOEXR(
+    int id, Map<String, dynamic> values, BuildContext context) async {
   final db = await initializeDB(context);
   try {
     db.transaction((db) async {
       await db.update("OEXR", values, where: 'ID = ?', whereArgs: [id]);
     });
   } catch (e) {
-    writeToLogFile(text: e.toString(),
+    writeToLogFile(
+        text: e.toString(),
         fileName: StackTrace.current.toString(),
         lineNo: 141);
     getErrorSnackBar("Sync Error " + e.toString());
@@ -357,7 +356,7 @@ Future<void> insertOEXR(Database db, {List? list}) async {
   stopwatch.start();
   for (var i = 0; i < customers.length; i += batchSize) {
     var end =
-    (i + batchSize < customers.length) ? i + batchSize : customers.length;
+        (i + batchSize < customers.length) ? i + batchSize : customers.length;
     var batchRecords = customers.sublist(i, end);
     await db.transaction((txn) async {
       var batch = txn.batch();
@@ -397,9 +396,9 @@ Future<void> insertOEXR(Database db, {List? list}) async {
       for (var element in batchRecords) {
         try {
           batch.update("OEXR", element,
-              where: "TransId = ? AND ifnull(has_created,0) <> ? AND ifnull(has_updated,0) <> ?",
+              where:
+                  "TransId = ? AND ifnull(has_created,0) <> ? AND ifnull(has_updated,0) <> ?",
               whereArgs: [element["TransId"], 1, 1]);
-
         } catch (e) {
           writeToLogFile(
               text: e.toString(),
@@ -462,7 +461,7 @@ Future<List<OEXRModel>> retrieveOEXRByBranch(BuildContext context) async {
   List<String> list = [];
   String str = "CreatedBy = ?";
   List<OUSRModel> ousrModel =
-  await retrieveOUSRById(context, "BranchId = ?", [userModel.BranchId]);
+      await retrieveOUSRById(context, "BranchId = ?", [userModel.BranchId]);
 
   for (int i = 0; i < ousrModel.length; i++) {
     list.add(ousrModel[i].UserCode);
@@ -475,17 +474,17 @@ Future<List<OEXRModel>> retrieveOEXRByBranch(BuildContext context) async {
   }
   final Database db = await initializeDB(context);
   final List<Map<String, Object?>> queryResult =
-  await db.query("OEXR", where: str, whereArgs: list);
+      await db.query("OEXR", where: str, whereArgs: list);
   return queryResult.map((e) => OEXRModel.fromJson(e)).toList();
 }
 
 //SEND DATA TO SERVER
 //--------------------------
-Future<List<OEXRModel>> retrieveOEXRById(BuildContext? context, String str,
-    List l) async {
+Future<List<OEXRModel>> retrieveOEXRById(
+    BuildContext? context, String str, List l) async {
   final Database db = await initializeDB(null);
   final List<Map<String, Object?>> queryResult =
-  await db.query('OEXR', where: str, whereArgs: l);
+      await db.query('OEXR', where: str, whereArgs: l);
   return queryResult.map((e) => OEXRModel.fromJson(e)).toList();
 }
 
@@ -509,13 +508,15 @@ Future<void> insertOEXRToServer(BuildContext? context,
     if (list.isEmpty) {
       return;
     }
-    do {Map<String, dynamic> map = list[i].toJson();
+    do {
+      Map<String, dynamic> map = list[i].toJson();
       sentSuccessInServer = false;
       try {
         map.remove('ID');
-        String queryParams='TransId=${list[i].TransId}';
-        var res = await http.post(Uri.parse(prefix + "OEXR/Add?$queryParams"),
-            headers: header, body: jsonEncode(map))
+        String queryParams = 'TransId=${list[i].TransId}';
+        var res = await http
+            .post(Uri.parse(prefix + "OEXR/Add?$queryParams"),
+                headers: header, body: jsonEncode(map))
             .timeout(Duration(seconds: 30), onTimeout: () {
           writeToLogFile(
               text: '500 error \nMap : $map',
@@ -524,24 +525,21 @@ Future<void> insertOEXRToServer(BuildContext? context,
           return http.Response("Error", 500);
         });
         response = await res.body;
-        if(res.statusCode != 201)
-        {
+        if (res.statusCode != 201) {
           await writeToLogFile(
-              text: '${res.statusCode} error \nMap : $map\nResponse : ${res.body}',
+              text:
+                  '${res.statusCode} error \nMap : $map\nResponse : ${res.body}',
               fileName: StackTrace.current.toString(),
               lineNo: 141);
         }
-        if(res.statusCode ==409)
-        {
+        if (res.statusCode == 409) {
           ///Already added in server
           final Database db = await initializeDB(context);
-          OEXRModel model=OEXRModel.fromJson(jsonDecode(res.body));
+          OEXRModel model = OEXRModel.fromJson(jsonDecode(res.body));
           var x = await db.update("OEXR", model.toJson(),
               where: "TransId = ?", whereArgs: [model.TransId]);
           print(x.toString());
-        }
-        else
-        if (res.statusCode == 201 || res.statusCode == 500) {
+        } else if (res.statusCode == 201 || res.statusCode == 500) {
           sentSuccessInServer = true;
           if (res.statusCode == 201) {
             map['ID'] = jsonDecode(res.body)['ID'];
@@ -551,7 +549,7 @@ Future<void> insertOEXRToServer(BuildContext? context,
             var x = await db.update("OEXR", map,
                 where: "TransId = ?", whereArgs: [map["TransId"]]);
             print(x.toString());
-          }else{
+          } else {
             writeToLogFile(
                 text: '500 error \nMap : $map',
                 fileName: StackTrace.current.toString(),
@@ -561,14 +559,15 @@ Future<void> insertOEXRToServer(BuildContext? context,
         print(res.body);
       } catch (e) {
         writeToLogFile(
-            text: '${e.toString()}\nMap : $map', fileName: StackTrace.current.toString(), lineNo: 141);
-  sentSuccessInServer = true;
+            text: '${e.toString()}\nMap : $map',
+            fileName: StackTrace.current.toString(),
+            lineNo: 141);
+        sentSuccessInServer = true;
+      }
+      i++;
+      print("INDEX = " + i.toString());
+    } while (i < list.length && sentSuccessInServer == true);
   }
-  i++;
-  print("INDEX = " + i.toString());
-  } while (i < list.length && sentSuccessInServer == true);
-}
-
 }
 
 Future<void> updateOEXROnServer(BuildContext? context,
@@ -583,7 +582,8 @@ Future<void> updateOEXROnServer(BuildContext? context,
   if (list.isEmpty) {
     return;
   }
-  do {Map<String, dynamic> map = list[i].toJson();
+  do {
+    Map<String, dynamic> map = list[i].toJson();
     sentSuccessInServer = false;
     try {
       if (list.isEmpty) {
@@ -592,20 +592,23 @@ Future<void> updateOEXROnServer(BuildContext? context,
       Map<String, dynamic> map = list[i].toJson();
       var res = await http
           .put(Uri.parse(prefix + 'OEXR/Update'),
-          headers: header, body: jsonEncode(map))
+              headers: header, body: jsonEncode(map))
           .timeout(Duration(seconds: 30), onTimeout: () {
         writeToLogFile(
-            text: '500 error \nMap : $map', fileName: StackTrace.current.toString(), lineNo: 141);return http.Response('Error', 500);
+            text: '500 error \nMap : $map',
+            fileName: StackTrace.current.toString(),
+            lineNo: 141);
+        return http.Response('Error', 500);
       });
       print(await res.statusCode);
-      if(res.statusCode != 201)
-        {
-          await writeToLogFile(
-              text: '${res.statusCode} error \nMap : $map\nResponse : ${res.body}',
-              fileName: StackTrace.current.toString(),
-              lineNo: 141);
-        }
-        if (res.statusCode == 201 || res.statusCode == 500) {
+      if (res.statusCode != 201) {
+        await writeToLogFile(
+            text:
+                '${res.statusCode} error \nMap : $map\nResponse : ${res.body}',
+            fileName: StackTrace.current.toString(),
+            lineNo: 141);
+      }
+      if (res.statusCode == 201 || res.statusCode == 500) {
         sentSuccessInServer = true;
         if (res.statusCode == 201) {
           final Database db = await initializeDB(context);
@@ -613,7 +616,7 @@ Future<void> updateOEXROnServer(BuildContext? context,
           var x = await db.update("OEXR", map,
               where: "TransId = ?", whereArgs: [map["TransId"]]);
           print(x.toString());
-        }else{
+        } else {
           writeToLogFile(
               text: '500 error \nMap : $map',
               fileName: StackTrace.current.toString(),
@@ -623,11 +626,13 @@ Future<void> updateOEXROnServer(BuildContext? context,
       print(res.body);
     } catch (e) {
       writeToLogFile(
-          text: '${e.toString()}\nMap : $map', fileName: StackTrace.current.toString(), lineNo: 141);
-  sentSuccessInServer = true;
-  }
+          text: '${e.toString()}\nMap : $map',
+          fileName: StackTrace.current.toString(),
+          lineNo: 141);
+      sentSuccessInServer = true;
+    }
 
-  i++;
-  print("INDEX = " + i.toString());
+    i++;
+    print("INDEX = " + i.toString());
   } while (i < list.length && sentSuccessInServer == true);
 }

@@ -265,7 +265,7 @@ class Customer1 {
       print("Not Syncing First Time");
     }
     credentials = getCredentials();
-    String encoded = stringToBase64.encode(credentials+secretKey);
+    String encoded = stringToBase64.encode(credentials + secretKey);
     header = {
       'Authorization': 'Basic $encoded',
       "content-type": "application/json",

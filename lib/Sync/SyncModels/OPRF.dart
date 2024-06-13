@@ -8,7 +8,8 @@ import 'package:maintenance/Sync/CustomURL.dart';
 import 'package:maintenance/Sync/DataSync.dart';
 import 'dart:convert';
 import 'package:sqflite/sqlite_api.dart';
-class OPRF{
+
+class OPRF {
   int? ID;
   String? Code;
   String? Name;
@@ -19,6 +20,7 @@ class OPRF{
   DateTime? CreateDate;
   DateTime? UpdateDate;
   bool? Active;
+
   OPRF({
     this.ID,
     this.Code,
@@ -31,39 +33,47 @@ class OPRF{
     this.UpdateDate,
     this.Active,
   });
-  factory OPRF.fromJson(Map<String,dynamic> json)=>OPRF(
-    ID : int.tryParse(json['ID'].toString())??0,
-    Code : json['Code']??'',
-    Name : json['Name']??'',
-    Remarks : json['Remarks']??'',
-    CreatedBy : json['CreatedBy']??'',
-    UpdatedBy : json['UpdatedBy']??'',
-    BranchId : json['BranchId']??'',
-    CreateDate : DateTime.tryParse(json['CreateDate'].toString()),
-    UpdateDate : DateTime.tryParse(json['UpdateDate'].toString()),
-    Active : json['Active'] is bool ? json['Active'] : json['Active']==1,
-  );
-  Map<String,dynamic> toJson()=>{
-    'ID' : ID,
-    'Code' : Code,
-    'Name' : Name,
-    'Remarks' : Remarks,
-    'CreatedBy' : CreatedBy,
-    'UpdatedBy' : UpdatedBy,
-    'BranchId' : BranchId,
-    'CreateDate' : CreateDate?.toIso8601String(),
-    'UpdateDate' : UpdateDate?.toIso8601String(),
-    'Active' : Active,
-  };
+
+  factory OPRF.fromJson(Map<String, dynamic> json) => OPRF(
+        ID: int.tryParse(json['ID'].toString()) ?? 0,
+        Code: json['Code'] ?? '',
+        Name: json['Name'] ?? '',
+        Remarks: json['Remarks'] ?? '',
+        CreatedBy: json['CreatedBy'] ?? '',
+        UpdatedBy: json['UpdatedBy'] ?? '',
+        BranchId: json['BranchId'] ?? '',
+        CreateDate: DateTime.tryParse(json['CreateDate'].toString()),
+        UpdateDate: DateTime.tryParse(json['UpdateDate'].toString()),
+        Active: json['Active'] is bool ? json['Active'] : json['Active'] == 1,
+      );
+
+  Map<String, dynamic> toJson() => {
+        'ID': ID,
+        'Code': Code,
+        'Name': Name,
+        'Remarks': Remarks,
+        'CreatedBy': CreatedBy,
+        'UpdatedBy': UpdatedBy,
+        'BranchId': BranchId,
+        'CreateDate': CreateDate?.toIso8601String(),
+        'UpdateDate': UpdateDate?.toIso8601String(),
+        'Active': Active,
+      };
 }
-List<OPRF> oPRFFromJson(String str) => List<OPRF>.from(
-    json.decode(str).map((x) => OPRF.fromJson(x)));
+
+List<OPRF> oPRFFromJson(String str) =>
+    List<OPRF>.from(json.decode(str).map((x) => OPRF.fromJson(x)));
+
 String oPRFToJson(List<OPRF> data) =>
     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+
 Future<List<OPRF>> dataSyncOPRF() async {
-  var res = await http.get(headers: header, Uri.parse(prefix + "OPRF" + postfix));
+  var res =
+      await http.get(headers: header, Uri.parse(prefix + "OPRF" + postfix));
   print(res.body);
-  return oPRFFromJson(res.body);}
+  return oPRFFromJson(res.body);
+}
+
 Future<void> insertOPRF(Database db, {List? list}) async {
   if (postfix.toLowerCase().contains('all')) {
     await deleteOPRF(db);
@@ -78,7 +88,8 @@ Future<void> insertOPRF(Database db, {List? list}) async {
   Stopwatch stopwatch = Stopwatch();
   stopwatch.start();
   for (var i = 0; i < customers.length; i += batchSize) {
-    var end = (i + batchSize < customers.length) ? i + batchSize : customers.length;
+    var end =
+        (i + batchSize < customers.length) ? i + batchSize : customers.length;
     var batchRecords = customers.sublist(i, end);
     await db.transaction((txn) async {
       var batch = txn.batch();
@@ -125,7 +136,6 @@ Future<void> insertOPRF(Database db, {List? list}) async {
               // where: "ID = ? AND ifnull(has_created,0) <> ? AND ifnull(has_updated,0) <> ?",
               where: "ID = ?",
               whereArgs: [element["ID"]]);
-
         } catch (e) {
           writeToLogFile(
               text: e.toString(),
@@ -183,20 +193,28 @@ Future<List<OPRF>> retrieveOPRF(BuildContext context) async {
   final List<Map<String, Object?>> queryResult = await db.query('OPRF');
   return queryResult.map((e) => OPRF.fromJson(e)).toList();
 }
-Future<void> updateOPRF(int id, Map<String, dynamic> values, BuildContext context) async {
+
+Future<void> updateOPRF(
+    int id, Map<String, dynamic> values, BuildContext context) async {
   final db = await initializeDB(context);
   try {
     db.transaction((db) async {
       await db.update('OPRF', values, where: 'ID = ?', whereArgs: [id]);
     });
   } catch (e) {
-    getErrorSnackBar('Sync Error ' + e.toString());}}
+    getErrorSnackBar('Sync Error ' + e.toString());
+  }
+}
+
 Future<void> deleteOPRF(Database db) async {
   await db.delete('OPRF');
 }
-Future<List<OPRF>> retrieveOPRFById(BuildContext? context, String str, List l) async {
+
+Future<List<OPRF>> retrieveOPRFById(
+    BuildContext? context, String str, List l) async {
   final Database db = await initializeDB(context);
-  final List<Map<String, Object?>> queryResult = await db.query('OPRF', where: str, whereArgs: l);
+  final List<Map<String, Object?>> queryResult =
+      await db.query('OPRF', where: str, whereArgs: l);
   return queryResult.map((e) => OPRF.fromJson(e)).toList();
 }
 // Future<String> insertOPRFToServer(BuildContext? context, {String? TransId, int? id}) async {
@@ -269,4 +287,3 @@ Future<List<OPRF>> retrieveOPRFById(BuildContext? context, String str, List l) a
 //     print("INDEX = " + i.toString());
 //   } while (i < list.length && sentSuccessInServer == true);
 // }
-  

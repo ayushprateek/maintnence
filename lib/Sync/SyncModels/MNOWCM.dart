@@ -283,8 +283,7 @@ Future<String> insertMNOWCMToServer(BuildContext? context,
             // map = jsonDecode(res.body);
             map["has_created"] = 0;
             var x = await db.update("MNOWCM", map,
-                where: "Code = ? ",
-                whereArgs: [map["Code"]]);
+                where: "Code = ? ", whereArgs: [map["Code"]]);
             print(x.toString());
           }
         }
@@ -326,8 +325,7 @@ Future<void> updateMNOWCMOnServer(BuildContext? context,
           final Database db = await initializeDB(context);
           map["has_updated"] = 0;
           var x = await db.update("MNOWCM", map,
-              where: "Code = ?",
-              whereArgs: [map["Code"]]);
+              where: "Code = ?", whereArgs: [map["Code"]]);
           print(x.toString());
         }
       }

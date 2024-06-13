@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:maintenance/Component/LogFileFunctions.dart';
 import 'package:maintenance/Component/SnackbarComponent.dart';
@@ -109,8 +108,7 @@ class ODLNModel {
   String? WhsCode;
   String? ObjectCode;
 
-  factory ODLNModel.fromJson(Map<String, dynamic> json) =>
-      ODLNModel(
+  factory ODLNModel.fromJson(Map<String, dynamic> json) => ODLNModel(
         ID: int.tryParse(json["ID"].toString()) ?? 0,
         DocEntry: int.tryParse(json["DocEntry"].toString()) ?? 0,
         CreateDate: DateTime.tryParse(json["CreateDate"].toString()) ??
@@ -160,8 +158,7 @@ class ODLNModel {
         ObjectCode: json['ObjectCode'] ?? '',
       );
 
-  Map<String, dynamic> toJson() =>
-      {
+  Map<String, dynamic> toJson() => {
         "DocNum": DocNum,
         "ID": ID,
         "CreateDate": CreateDate?.toIso8601String(),
@@ -197,7 +194,7 @@ class ODLNModel {
         "DiscVal": DiscVal,
         "TaxVal": TaxVal,
         "ApprovedBy": ApprovedBy,
-        "DocTotal": double.tryParse(DocTotal?.toStringAsFixed(2)??'0')??0.0,
+        "DocTotal": double.tryParse(DocTotal?.toStringAsFixed(2) ?? '0') ?? 0.0,
         'UpdatedBy': UpdatedBy,
         'BranchId': BranchId,
         'Remarks': Remarks,
@@ -299,7 +296,7 @@ Future<void> insertODLN(Database db, {List? list}) async {
   stopwatch.start();
   for (var i = 0; i < customers.length; i += batchSize) {
     var end =
-    (i + batchSize < customers.length) ? i + batchSize : customers.length;
+        (i + batchSize < customers.length) ? i + batchSize : customers.length;
     var batchRecords = customers.sublist(i, end);
     await db.transaction((txn) async {
       var batch = txn.batch();
@@ -339,9 +336,9 @@ Future<void> insertODLN(Database db, {List? list}) async {
       for (var element in batchRecords) {
         try {
           batch.update("ODLN", element,
-              where: "TransId = ? AND ifnull(has_created,0) <> ? AND ifnull(has_updated,0) <> ?",
+              where:
+                  "TransId = ? AND ifnull(has_created,0) <> ? AND ifnull(has_updated,0) <> ?",
               whereArgs: [element["TransId"], 1, 1]);
-
         } catch (e) {
           writeToLogFile(
               text: e.toString(),
@@ -397,7 +394,7 @@ WHERE T1.TransId IS NULL;
 
 Future<List<ODLNModel>> dataSyncODLN() async {
   var res =
-  await http.get(headers: header, Uri.parse(prefix + "ODLN" + postfix));
+      await http.get(headers: header, Uri.parse(prefix + "ODLN" + postfix));
   print(res.body);
   return ODLNModelFromJson(res.body);
 }
@@ -406,19 +403,20 @@ Future<List<ODLNModel>> retrieveODLN(BuildContext context,
     {String? orderBy}) async {
   final Database db = await initializeDB(context);
   final List<Map<String, Object?>> queryResult =
-  await db.query('ODLN', orderBy: orderBy);
+      await db.query('ODLN', orderBy: orderBy);
   return queryResult.map((e) => ODLNModel.fromJson(e)).toList();
 }
 
-Future<void> updateODLN(int id, Map<String, dynamic> values,
-    BuildContext context) async {
+Future<void> updateODLN(
+    int id, Map<String, dynamic> values, BuildContext context) async {
   final db = await initializeDB(context);
   try {
     db.transaction((db) async {
       await db.update("ODLN", values, where: 'ID = ?', whereArgs: [id]);
     });
   } catch (e) {
-    writeToLogFile(text: e.toString(),
+    writeToLogFile(
+        text: e.toString(),
         fileName: StackTrace.current.toString(),
         lineNo: 141);
     getErrorSnackBar("Sync Error " + e.toString());
@@ -439,7 +437,7 @@ Future<List<ODLNModel>> retrieveODLNByBranch(BuildContext context,
   List<String> list = [];
   String str = "userCode = ?";
   List<OUSRModel> ousrModel =
-  await retrieveOUSRById(context, "BranchId = ?", [userModel.BranchId]);
+      await retrieveOUSRById(context, "BranchId = ?", [userModel.BranchId]);
 
   for (int i = 0; i < ousrModel.length; i++) {
     list.add(ousrModel[i].UserCode);
@@ -452,18 +450,18 @@ Future<List<ODLNModel>> retrieveODLNByBranch(BuildContext context,
   }
   final Database db = await initializeDB(context);
   final List<Map<String, Object?>> queryResult =
-  await db.query("ODLN", where: str, whereArgs: list, orderBy: orderBy);
+      await db.query("ODLN", where: str, whereArgs: list, orderBy: orderBy);
   return queryResult.map((e) => ODLNModel.fromJson(e)).toList();
 }
 
 //SEND DATA TO SERVER
 //--------------------------
-Future<List<ODLNModel>> retrieveODLNById(BuildContext? context, String str,
-    List l,
+Future<List<ODLNModel>> retrieveODLNById(
+    BuildContext? context, String str, List l,
     {String? orderBy}) async {
   final Database db = await initializeDB(context);
   final List<Map<String, Object?>> queryResult =
-  await db.query('ODLN', where: str, whereArgs: l, orderBy: orderBy);
+      await db.query('ODLN', where: str, whereArgs: l, orderBy: orderBy);
   return queryResult.map((e) => ODLNModel.fromJson(e)).toList();
 }
 
@@ -488,39 +486,41 @@ Future<void> insertODLNToServer(BuildContext? context,
     if (list.isEmpty) {
       return;
     }
-    do {Map<String, dynamic> map = list[i].toJson();
+    do {
+      Map<String, dynamic> map = list[i].toJson();
       sentSuccessInServer = false;
       try {
         map.remove('ID');
-        String queryParams='TransId=${list[i].TransId}';
-        var res = await http.post(Uri.parse(prefix + "ODLN/Add?$queryParams"),
-            headers: header, body: jsonEncode(map))
+        String queryParams = 'TransId=${list[i].TransId}';
+        var res = await http
+            .post(Uri.parse(prefix + "ODLN/Add?$queryParams"),
+                headers: header, body: jsonEncode(map))
             .timeout(Duration(seconds: 30), onTimeout: () {
           writeToLogFile(
-            text: '500 error \nMap : $map', fileName: StackTrace.current.toString(), lineNo: 141);return http.Response('Error', 500);
+              text: '500 error \nMap : $map',
+              fileName: StackTrace.current.toString(),
+              lineNo: 141);
+          return http.Response('Error', 500);
         });
         response = await res.body;
 
         print("eeaaae status");
         print(await res.statusCode);
-        if(res.statusCode != 201)
-        {
+        if (res.statusCode != 201) {
           await writeToLogFile(
-              text: '${res.statusCode} error \nMap : $map\nResponse : ${res.body}',
+              text:
+                  '${res.statusCode} error \nMap : $map\nResponse : ${res.body}',
               fileName: StackTrace.current.toString(),
               lineNo: 141);
         }
-        if(res.statusCode ==409)
-        {
+        if (res.statusCode == 409) {
           ///Already added in server
           final Database db = await initializeDB(context);
-          ODLNModel model=ODLNModel.fromJson(jsonDecode(res.body));
+          ODLNModel model = ODLNModel.fromJson(jsonDecode(res.body));
           var x = await db.update("ODLN", model.toJson(),
               where: "TransId = ?", whereArgs: [model.TransId]);
           print(x.toString());
-        }
-        else
-        if (res.statusCode == 201 || res.statusCode == 500) {
+        } else if (res.statusCode == 201 || res.statusCode == 500) {
           sentSuccessInServer = true;
           if (res.statusCode == 201) {
             map['ID'] = jsonDecode(res.body)['ID'];
@@ -559,7 +559,8 @@ Future<void> updateODLNOnServer(BuildContext? context,
   if (list.isEmpty) {
     return;
   }
-  do {Map<String, dynamic> map = list[i].toJson();
+  do {
+    Map<String, dynamic> map = list[i].toJson();
     sentSuccessInServer = false;
     try {
       if (list.isEmpty) {
@@ -568,20 +569,23 @@ Future<void> updateODLNOnServer(BuildContext? context,
       Map<String, dynamic> map = list[i].toJson();
       var res = await http
           .put(Uri.parse(prefix + 'ODLN/Update'),
-          headers: header, body: jsonEncode(map))
+              headers: header, body: jsonEncode(map))
           .timeout(Duration(seconds: 30), onTimeout: () {
         writeToLogFile(
-            text: '500 error \nMap : $map', fileName: StackTrace.current.toString(), lineNo: 141);return http.Response('Error', 500);
+            text: '500 error \nMap : $map',
+            fileName: StackTrace.current.toString(),
+            lineNo: 141);
+        return http.Response('Error', 500);
       });
       print(await res.statusCode);
-      if(res.statusCode != 201)
-        {
-          await writeToLogFile(
-              text: '${res.statusCode} error \nMap : $map\nResponse : ${res.body}',
-              fileName: StackTrace.current.toString(),
-              lineNo: 141);
-        }
-        if (res.statusCode == 201 || res.statusCode == 500) {
+      if (res.statusCode != 201) {
+        await writeToLogFile(
+            text:
+                '${res.statusCode} error \nMap : $map\nResponse : ${res.body}',
+            fileName: StackTrace.current.toString(),
+            lineNo: 141);
+      }
+      if (res.statusCode == 201 || res.statusCode == 500) {
         sentSuccessInServer = true;
         if (res.statusCode == 201) {
           final Database db = await initializeDB(context);
@@ -594,11 +598,13 @@ Future<void> updateODLNOnServer(BuildContext? context,
       print(res.body);
     } catch (e) {
       writeToLogFile(
-          text: '${e.toString()}\nMap : $map', fileName: StackTrace.current.toString(), lineNo: 141);
-  sentSuccessInServer = true;
-  }
+          text: '${e.toString()}\nMap : $map',
+          fileName: StackTrace.current.toString(),
+          lineNo: 141);
+      sentSuccessInServer = true;
+    }
 
-  i++;
-  print("INDEX = " + i.toString());
+    i++;
+    print("INDEX = " + i.toString());
   } while (i < list.length && sentSuccessInServer == true);
 }

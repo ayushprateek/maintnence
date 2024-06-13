@@ -180,7 +180,7 @@ Future<void> insertOUOM(Database db, {List? list}) async {
   stopwatch.start();
   for (var i = 0; i < customers.length; i += batchSize) {
     var end =
-    (i + batchSize < customers.length) ? i + batchSize : customers.length;
+        (i + batchSize < customers.length) ? i + batchSize : customers.length;
     var batchRecords = customers.sublist(i, end);
     await db.transaction((txn) async {
       var batch = txn.batch();
@@ -279,12 +279,12 @@ Future<List<OUOMModel>> retrieveOUOMForSearch({
   int? limit,
   String? query,
 }) async {
-  query="%$query%";
+  query = "%$query%";
   final Database db = await initializeDB(null);
-  final List<Map<String, Object?>> queryResult = await db.rawQuery('SELECT * FROM OUOM WHERE UomCode LIKE "$query" OR UomName LIKE "$query" LIMIT $limit');
+  final List<Map<String, Object?>> queryResult = await db.rawQuery(
+      'SELECT * FROM OUOM WHERE UomCode LIKE "$query" OR UomName LIKE "$query" LIMIT $limit');
   return queryResult.map((e) => OUOMModel.fromJson(e)).toList();
 }
-
 
 //SEND DATA TO SERVER
 //--------------------------

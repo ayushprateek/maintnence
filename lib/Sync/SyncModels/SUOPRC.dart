@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:maintenance/Component/LogFileFunctions.dart';
 import 'package:maintenance/Component/SnackbarComponent.dart';
@@ -37,8 +36,7 @@ class SUOPRC {
     this.hasUpdated,
   });
 
-  factory SUOPRC.fromJson(Map<String, dynamic> json) =>
-      SUOPRC(
+  factory SUOPRC.fromJson(Map<String, dynamic> json) => SUOPRC(
         ID: int.tryParse(json['ID'].toString()) ?? 0,
         CategoryCode: json['CategoryCode'],
         CategoryName: json['CategoryName'],
@@ -56,8 +54,7 @@ class SUOPRC {
             : json['has_updated'] == 1,
       );
 
-  Map<String, dynamic> toJson() =>
-      {
+  Map<String, dynamic> toJson() => {
         'ID': ID,
         'CategoryCode': CategoryCode,
         'CategoryName': CategoryName,
@@ -80,7 +77,7 @@ String sUOPRCToJson(List<SUOPRC> data) =>
 
 Future<List<SUOPRC>> dataSyncSUOPRC() async {
   var res =
-  await http.get(headers: header, Uri.parse(prefix + "SUOPRC" + postfix));
+      await http.get(headers: header, Uri.parse(prefix + "SUOPRC" + postfix));
   print(res.body);
   return sUOPRCFromJson(res.body);
 }
@@ -144,7 +141,7 @@ Future<void> insertSUOPRC(Database db, {List? list}) async {
   stopwatch.start();
   for (var i = 0; i < customers.length; i += batchSize) {
     var end =
-    (i + batchSize < customers.length) ? i + batchSize : customers.length;
+        (i + batchSize < customers.length) ? i + batchSize : customers.length;
     var batchRecords = customers.sublist(i, end);
     await db.transaction((txn) async {
       var batch = txn.batch();
@@ -184,7 +181,8 @@ Future<void> insertSUOPRC(Database db, {List? list}) async {
       for (var element in batchRecords) {
         try {
           batch.update("SUOPRC", element,
-              where: "CategoryCode = ? AND ifnull(has_created,0) <> ? AND ifnull(has_updated,0) <> ?",
+              where:
+                  "CategoryCode = ? AND ifnull(has_created,0) <> ? AND ifnull(has_updated,0) <> ?",
               whereArgs: [element["CategoryCode"], 1, 1]);
         } catch (e) {
           writeToLogFile(
@@ -245,15 +243,16 @@ Future<List<SUOPRC>> retrieveSUOPRC(BuildContext context) async {
   return queryResult.map((e) => SUOPRC.fromJson(e)).toList();
 }
 
-Future<void> updateSUOPRC(int id, Map<String, dynamic> values,
-    BuildContext context) async {
+Future<void> updateSUOPRC(
+    int id, Map<String, dynamic> values, BuildContext context) async {
   final db = await initializeDB(context);
   try {
     db.transaction((db) async {
       await db.update('SUOPRC', values, where: 'ID = ?', whereArgs: [id]);
     });
   } catch (e) {
-    writeToLogFile(text: e.toString(),
+    writeToLogFile(
+        text: e.toString(),
         fileName: StackTrace.current.toString(),
         lineNo: 141);
     getErrorSnackBar('Sync Error ' + e.toString());
@@ -264,11 +263,11 @@ Future<void> deleteSUOPRC(Database db) async {
   await db.delete('SUOPRC');
 }
 
-Future<List<SUOPRC>> retrieveSUOPRCById(BuildContext? context, String str,
-    List l) async {
+Future<List<SUOPRC>> retrieveSUOPRCById(
+    BuildContext? context, String str, List l) async {
   final Database db = await initializeDB(context);
   final List<Map<String, Object?>> queryResult =
-  await db.query('SUOPRC', where: str, whereArgs: l);
+      await db.query('SUOPRC', where: str, whereArgs: l);
   return queryResult.map((e) => SUOPRC.fromJson(e)).toList();
 }
 
@@ -292,24 +291,28 @@ Future<void> insertSUOPRCToServer(BuildContext? context,
     if (list.isEmpty) {
       return;
     }
-    do {Map<String, dynamic> map = list[i].toJson();
+    do {
+      Map<String, dynamic> map = list[i].toJson();
       sentSuccessInServer = false;
       try {
         map.remove('ID');
         var res = await http
             .post(Uri.parse(prefix + "SUOPRC/Add"),
-            headers: header, body: jsonEncode(map))
+                headers: header, body: jsonEncode(map))
             .timeout(Duration(seconds: 30), onTimeout: () {
           writeToLogFile(
-            text: '500 error \nMap : $map', fileName: StackTrace.current.toString(), lineNo: 141);return http.Response('Error', 500);
+              text: '500 error \nMap : $map',
+              fileName: StackTrace.current.toString(),
+              lineNo: 141);
+          return http.Response('Error', 500);
         });
         response = await res.body;
         print("eeaaae status");
         print(await res.statusCode);
-        if(res.statusCode != 201)
-        {
+        if (res.statusCode != 201) {
           await writeToLogFile(
-              text: '${res.statusCode} error \nMap : $map\nResponse : ${res.body}',
+              text:
+                  '${res.statusCode} error \nMap : $map\nResponse : ${res.body}',
               fileName: StackTrace.current.toString(),
               lineNo: 141);
         }
@@ -328,16 +331,15 @@ Future<void> insertSUOPRCToServer(BuildContext? context,
         print(res.body);
       } catch (e) {
         writeToLogFile(
-            text: '${e.toString()}\nMap : $map', fileName: StackTrace.current.toString(), lineNo: 141);
-  sentSuccessInServer = true;
+            text: '${e.toString()}\nMap : $map',
+            fileName: StackTrace.current.toString(),
+            lineNo: 141);
+        sentSuccessInServer = true;
+      }
+      i++;
+      print("INDEX = " + i.toString());
+    } while (i < list.length && sentSuccessInServer == true);
   }
-  i++;
-  print("INDEX = " + i.toString());
-  } while (i < list.length && sentSuccessInServer ==
-  true
-  );
-}
-
 }
 
 Future<void> updateSUOPRCOnServer(BuildContext? context,
@@ -352,7 +354,8 @@ Future<void> updateSUOPRCOnServer(BuildContext? context,
   if (list.isEmpty) {
     return;
   }
-  do {Map<String, dynamic> map = list[i].toJson();
+  do {
+    Map<String, dynamic> map = list[i].toJson();
     sentSuccessInServer = false;
     try {
       if (list.isEmpty) {
@@ -361,20 +364,23 @@ Future<void> updateSUOPRCOnServer(BuildContext? context,
       Map<String, dynamic> map = list[i].toJson();
       var res = await http
           .put(Uri.parse(prefix + 'SUOPRC/Update'),
-          headers: header, body: jsonEncode(map))
+              headers: header, body: jsonEncode(map))
           .timeout(Duration(seconds: 30), onTimeout: () {
         writeToLogFile(
-            text: '500 error \nMap : $map', fileName: StackTrace.current.toString(), lineNo: 141);return http.Response('Error', 500);
+            text: '500 error \nMap : $map',
+            fileName: StackTrace.current.toString(),
+            lineNo: 141);
+        return http.Response('Error', 500);
       });
       print(await res.statusCode);
-      if(res.statusCode != 201)
-        {
-          await writeToLogFile(
-              text: '${res.statusCode} error \nMap : $map\nResponse : ${res.body}',
-              fileName: StackTrace.current.toString(),
-              lineNo: 141);
-        }
-        if (res.statusCode == 201 || res.statusCode == 500) {
+      if (res.statusCode != 201) {
+        await writeToLogFile(
+            text:
+                '${res.statusCode} error \nMap : $map\nResponse : ${res.body}',
+            fileName: StackTrace.current.toString(),
+            lineNo: 141);
+      }
+      if (res.statusCode == 201 || res.statusCode == 500) {
         sentSuccessInServer = true;
         if (res.statusCode == 201) {
           final Database db = await initializeDB(context);
@@ -387,11 +393,13 @@ Future<void> updateSUOPRCOnServer(BuildContext? context,
       print(res.body);
     } catch (e) {
       writeToLogFile(
-          text: '${e.toString()}\nMap : $map', fileName: StackTrace.current.toString(), lineNo: 141);
-  sentSuccessInServer = true;
-  }
+          text: '${e.toString()}\nMap : $map',
+          fileName: StackTrace.current.toString(),
+          lineNo: 141);
+      sentSuccessInServer = true;
+    }
 
-  i++;
-  print("INDEX = " + i.toString());
+    i++;
+    print("INDEX = " + i.toString());
   } while (i < list.length && sentSuccessInServer == true);
 }

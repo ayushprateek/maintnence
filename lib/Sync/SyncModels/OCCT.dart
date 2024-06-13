@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:maintenance/Component/LogFileFunctions.dart';
 import 'package:maintenance/Component/SnackbarComponent.dart';
@@ -85,15 +84,14 @@ class OCCTModel {
         'BranchId': BranchId,
       };
 }
-Future<List<OCCTModel>> retrieveOCCTForDisplay({
-  String dbQuery='',
-  int limit=30
-}) async {
-  final Database db = await initializeDB(null);
-  dbQuery='%$dbQuery%';
-  String searchQuery='';
 
-  searchQuery='''
+Future<List<OCCTModel>> retrieveOCCTForDisplay(
+    {String dbQuery = '', int limit = 30}) async {
+  final Database db = await initializeDB(null);
+  dbQuery = '%$dbQuery%';
+  String searchQuery = '';
+
+  searchQuery = '''
      SELECT * FROM OCCT 
  WHERE Active = 1 AND (Code LIKE '$dbQuery' OR Name LIKE '$dbQuery' OR StateCode LIKE '$dbQuery' OR StateName LIKE '$dbQuery') 
  LIMIT $limit
@@ -101,6 +99,7 @@ Future<List<OCCTModel>> retrieveOCCTForDisplay({
   final List<Map<String, Object?>> queryResult = await db.rawQuery(searchQuery);
   return queryResult.map((e) => OCCTModel.fromJson(e)).toList();
 }
+
 // Future<void> insertOCCT(Database db)async{
 //   if(postfix.toLowerCase().contains("all"))
 //   await deleteOCCT(db);
@@ -194,7 +193,7 @@ Future<void> insertOCCT(Database db, {List? list}) async {
   stopwatch.start();
   for (var i = 0; i < customers.length; i += batchSize) {
     var end =
-    (i + batchSize < customers.length) ? i + batchSize : customers.length;
+        (i + batchSize < customers.length) ? i + batchSize : customers.length;
     var batchRecords = customers.sublist(i, end);
     await db.transaction((txn) async {
       var batch = txn.batch();
@@ -234,9 +233,9 @@ Future<void> insertOCCT(Database db, {List? list}) async {
       for (var element in batchRecords) {
         try {
           batch.update("OCCT", element,
-              where: "Code = ? AND ifnull(has_created,0) <> ? AND ifnull(has_updated,0) <> ?",
+              where:
+                  "Code = ? AND ifnull(has_created,0) <> ? AND ifnull(has_updated,0) <> ?",
               whereArgs: [element["Code"], 1, 1]);
-
         } catch (e) {
           writeToLogFile(
               text: e.toString(),

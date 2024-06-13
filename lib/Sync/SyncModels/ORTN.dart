@@ -321,7 +321,7 @@ Future<void> insertORTN(Database db, {List? list}) async {
   stopwatch.start();
   for (var i = 0; i < customers.length; i += batchSize) {
     var end =
-    (i + batchSize < customers.length) ? i + batchSize : customers.length;
+        (i + batchSize < customers.length) ? i + batchSize : customers.length;
     var batchRecords = customers.sublist(i, end);
     await db.transaction((txn) async {
       var batch = txn.batch();
@@ -362,7 +362,6 @@ Future<void> insertORTN(Database db, {List? list}) async {
         try {
           batch.update("ORTN", element,
               where: "TransId = ?", whereArgs: [element["TransId"]]);
-
         } catch (e) {
           writeToLogFile(
               text: e.toString(),

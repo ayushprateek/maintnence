@@ -30,9 +30,7 @@ import 'package:maintenance/Sync/SyncModels/OTRM.dart';
 import 'package:maintenance/Sync/SyncModels/OTRNS.dart';
 import 'package:maintenance/Sync/SyncModels/OUDA.dart';
 import 'package:maintenance/Sync/SyncModels/OUDAR.dart';
-import 'package:maintenance/Sync/SyncModels/OUOM.dart';
 import 'package:maintenance/Sync/SyncModels/OVCL.dart';
-import 'package:maintenance/Sync/SyncModels/PRF1.dart';
 import 'package:maintenance/Sync/SyncModels/SecondaryCalendar.dart';
 import 'package:maintenance/Sync/SyncModels/SecondaryCalendarYears.dart';
 import 'package:sqflite/sqlite_api.dart';
@@ -91,6 +89,7 @@ class GetAllMaster2 {
   List<CRD1Model>? crd1;
   List<CRD2Model>? crd2;
   List<CRD3Model>? crd3;
+
   // List<PRF1>? prf1;
 
   // List<OROLModel>? orol;
@@ -98,6 +97,7 @@ class GetAllMaster2 {
   List<OVCLModel>? ovcl;
   List<IUOM>? iuom;
   List<IWHS>? iwhs;
+
   // List<OUOMModel>? ouom;
   List<BPSG>? bpsg;
 
@@ -225,7 +225,7 @@ class GetAllMaster2 {
       print("Not Syncing First Time");
     }
     credentials = getCredentials();
-    String encoded = stringToBase64.encode(credentials+secretKey);
+    String encoded = stringToBase64.encode(credentials + secretKey);
     header = {
       'Authorization': 'Basic $encoded',
       "content-type": "application/json",

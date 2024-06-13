@@ -377,8 +377,7 @@ Future<String> insertIMOGDIToServer(BuildContext? context,
             // map = jsonDecode(res.body);
             map["has_created"] = 0;
             var x = await db.update("IMOGDI", map,
-                where: "TransId = ?",
-                whereArgs: [map["TransId"]]);
+                where: "TransId = ?", whereArgs: [map["TransId"]]);
             print(x.toString());
           }
         }
@@ -393,15 +392,18 @@ Future<String> insertIMOGDIToServer(BuildContext? context,
   }
   return response;
 }
+
 Future<List<IMOGDI>> retrieveIMOGDIForSearch({
   int? limit,
   String? query,
 }) async {
-  query="%$query%";
+  query = "%$query%";
   final Database db = await initializeDB(null);
-  final List<Map<String, Object?>> queryResult = await db.rawQuery("SELECT * FROM IMOGDI WHERE TransId LIKE '$query'");
+  final List<Map<String, Object?>> queryResult =
+      await db.rawQuery("SELECT * FROM IMOGDI WHERE TransId LIKE '$query'");
   return queryResult.map((e) => IMOGDI.fromJson(e)).toList();
 }
+
 Future<void> updateIMOGDIOnServer(BuildContext? context,
     {String? condition, List? l}) async {
   List<IMOGDI> list = await retrieveIMOGDIById(
@@ -428,8 +430,7 @@ Future<void> updateIMOGDIOnServer(BuildContext? context,
           final Database db = await initializeDB(context);
           map["has_updated"] = 0;
           var x = await db.update("IMOGDI", map,
-              where: "TransId = ?",
-              whereArgs: [map["TransId"]]);
+              where: "TransId = ?", whereArgs: [map["TransId"]]);
           print(x.toString());
         }
       }

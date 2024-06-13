@@ -74,15 +74,13 @@ class OCRNModel {
       };
 }
 
-Future<List<OCRNModel>> retrieveOCRNForDisplay({
-  String dbQuery='',
-  int limit=30
-}) async {
+Future<List<OCRNModel>> retrieveOCRNForDisplay(
+    {String dbQuery = '', int limit = 30}) async {
   final Database db = await initializeDB(null);
-  dbQuery='%$dbQuery%';
-  String searchQuery='';
+  dbQuery = '%$dbQuery%';
+  String searchQuery = '';
 
-  searchQuery='''
+  searchQuery = '''
      SELECT * FROM OCRN 
  WHERE Active = 1 AND (Code LIKE '$dbQuery' OR Name LIKE '$dbQuery' OR Symbol LIKE '$dbQuery') 
  LIMIT $limit
@@ -191,7 +189,7 @@ Future<void> insertOCRN(Database db, {List? list}) async {
   stopwatch.start();
   for (var i = 0; i < customers.length; i += batchSize) {
     var end =
-    (i + batchSize < customers.length) ? i + batchSize : customers.length;
+        (i + batchSize < customers.length) ? i + batchSize : customers.length;
     var batchRecords = customers.sublist(i, end);
     await db.transaction((txn) async {
       var batch = txn.batch();
@@ -231,9 +229,9 @@ Future<void> insertOCRN(Database db, {List? list}) async {
       for (var element in batchRecords) {
         try {
           batch.update("OCRN", element,
-              where: "Code = ? AND ifnull(has_created,0) <> ? AND ifnull(has_updated,0) <> ?",
+              where:
+                  "Code = ? AND ifnull(has_created,0) <> ? AND ifnull(has_updated,0) <> ?",
               whereArgs: [element["Code"], 1, 1]);
-
         } catch (e) {
           writeToLogFile(
               text: e.toString(),

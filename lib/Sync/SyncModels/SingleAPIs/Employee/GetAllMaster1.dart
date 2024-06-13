@@ -316,7 +316,7 @@ class GetAllMaster1 {
             List<TROEMM>.from(json["TROEMM"].map((x) => TROEMM.fromJson(x))),
         mnodtm:
             List<MNODTM>.from(json["MNODTM"].map((x) => MNODTM.fromJson(x))),
-    mnclm1:
+        mnclm1:
             List<MNCLM1>.from(json["MNCLM1"].map((x) => MNCLM1.fromJson(x))),
       );
 

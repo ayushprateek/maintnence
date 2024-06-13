@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:maintenance/Component/LogFileFunctions.dart';
 import 'package:maintenance/Component/SnackbarComponent.dart';
@@ -43,8 +42,7 @@ class OPTRModel {
   String? UpdatedBy;
   String? BranchId;
 
-  factory OPTRModel.fromJson(Map<String, dynamic> json) =>
-      OPTRModel(
+  factory OPTRModel.fromJson(Map<String, dynamic> json) => OPTRModel(
         ID: int.tryParse(json["ID"].toString()) ?? 0,
         CreateDate: DateTime.tryParse(json["CreateDate"].toString()) ??
             DateTime.parse("1900-01-01"),
@@ -60,8 +58,7 @@ class OPTRModel {
         BranchId: json['BranchId'] ?? '',
       );
 
-  Map<String, dynamic> toJson() =>
-      {
+  Map<String, dynamic> toJson() => {
         "ID": ID,
         "Code": Code,
         "Name": Name,
@@ -75,15 +72,14 @@ class OPTRModel {
         'BranchId': BranchId,
       };
 }
-Future<List<OPTRModel>> retrieveOPTRForDisplay({
-  String dbQuery='',
-  int limit=30
-}) async {
-  final Database db = await initializeDB(null);
-  dbQuery='%$dbQuery%';
-  String searchQuery='';
 
-  searchQuery='''
+Future<List<OPTRModel>> retrieveOPTRForDisplay(
+    {String dbQuery = '', int limit = 30}) async {
+  final Database db = await initializeDB(null);
+  dbQuery = '%$dbQuery%';
+  String searchQuery = '';
+
+  searchQuery = '''
      SELECT * FROM OPTR 
  WHERE Active = 1 AND (Code LIKE '$dbQuery' OR Name LIKE '$dbQuery' OR Days LIKE '$dbQuery') 
  LIMIT $limit
@@ -94,7 +90,7 @@ Future<List<OPTRModel>> retrieveOPTRForDisplay({
 
 Future<List<OPTRModel>> dataSyncOPTR() async {
   var res =
-  await http.get(headers: header, Uri.parse(prefix + "OPTR" + postfix));
+      await http.get(headers: header, Uri.parse(prefix + "OPTR" + postfix));
   print(res.body);
   return OPTRModelFromJson(res.body);
 }
@@ -105,15 +101,16 @@ Future<List<OPTRModel>> retrieveOPTR(BuildContext context) async {
   return queryResult.map((e) => OPTRModel.fromJson(e)).toList();
 }
 
-Future<void> updateOPTR(int id, Map<String, dynamic> values,
-    BuildContext context) async {
+Future<void> updateOPTR(
+    int id, Map<String, dynamic> values, BuildContext context) async {
   final db = await initializeDB(context);
   try {
     db.transaction((db) async {
       await db.update("OPTR", values, where: 'ID = ?', whereArgs: [id]);
     });
   } catch (e) {
-    writeToLogFile(text: e.toString(),
+    writeToLogFile(
+        text: e.toString(),
         fileName: StackTrace.current.toString(),
         lineNo: 141);
     getErrorSnackBar("Sync Error " + e.toString());
@@ -225,7 +222,7 @@ Future<void> insertOPTR(Database db, {List? list}) async {
   stopwatch.start();
   for (var i = 0; i < customers.length; i += batchSize) {
     var end =
-    (i + batchSize < customers.length) ? i + batchSize : customers.length;
+        (i + batchSize < customers.length) ? i + batchSize : customers.length;
     var batchRecords = customers.sublist(i, end);
     await db.transaction((txn) async {
       var batch = txn.batch();
@@ -265,9 +262,9 @@ Future<void> insertOPTR(Database db, {List? list}) async {
       for (var element in batchRecords) {
         try {
           batch.update("OPTR", element,
-              where: "Code = ? AND ifnull(has_created,0) <> ? AND ifnull(has_updated,0) <> ?",
+              where:
+                  "Code = ? AND ifnull(has_created,0) <> ? AND ifnull(has_updated,0) <> ?",
               whereArgs: [element["Code"], 1, 1]);
-
         } catch (e) {
           writeToLogFile(
               text: e.toString(),
@@ -323,11 +320,11 @@ WHERE T1.Code IS NULL;
 
 //SEND DATA TO SERVER
 //--------------------------
-Future<List<OPTRModel>> retrieveOPTRById(BuildContext? context, String str,
-    List l) async {
+Future<List<OPTRModel>> retrieveOPTRById(
+    BuildContext? context, String str, List l) async {
   final Database db = await initializeDB(context);
   final List<Map<String, Object?>> queryResult =
-  await db.query('OPTR', where: str, whereArgs: l);
+      await db.query('OPTR', where: str, whereArgs: l);
   return queryResult.map((e) => OPTRModel.fromJson(e)).toList();
 }
 
@@ -360,21 +357,22 @@ Future<void> insertOPTRToServer(BuildContext? context,
     if (list.isEmpty) {
       return;
     }
-    do {Map<String, dynamic> map = list[i].toJson();
+    do {
+      Map<String, dynamic> map = list[i].toJson();
       sentSuccessInServer = false;
       try {
         map.remove('ID');
         var res = await http
             .post(Uri.parse(prefix + "OPTR/Add"),
-            headers: header, body: jsonEncode(map))
+                headers: header, body: jsonEncode(map))
             .timeout(Duration(seconds: 30), onTimeout: () {
           return http.Response("Error", 500);
         });
         response = await res.body;
-        if(res.statusCode != 201)
-        {
+        if (res.statusCode != 201) {
           await writeToLogFile(
-              text: '${res.statusCode} error \nMap : $map\nResponse : ${res.body}',
+              text:
+                  '${res.statusCode} error \nMap : $map\nResponse : ${res.body}',
               fileName: StackTrace.current.toString(),
               lineNo: 141);
         }
@@ -392,14 +390,15 @@ Future<void> insertOPTRToServer(BuildContext? context,
         print(res.body);
       } catch (e) {
         writeToLogFile(
-            text: '${e.toString()}\nMap : $map', fileName: StackTrace.current.toString(), lineNo: 141);
-  sentSuccessInServer = true;
+            text: '${e.toString()}\nMap : $map',
+            fileName: StackTrace.current.toString(),
+            lineNo: 141);
+        sentSuccessInServer = true;
+      }
+      i++;
+      print("INDEX = " + i.toString());
+    } while (i < list.length && sentSuccessInServer == true);
   }
-  i++;
-  print("INDEX = " + i.toString());
-  } while (i < list.length && sentSuccessInServer == true);
-}
-
 }
 
 Future<void> updateOPTROnServer(BuildContext? context,
@@ -414,7 +413,8 @@ Future<void> updateOPTROnServer(BuildContext? context,
   if (list.isEmpty) {
     return;
   }
-  do {Map<String, dynamic> map = list[i].toJson();
+  do {
+    Map<String, dynamic> map = list[i].toJson();
     sentSuccessInServer = false;
     try {
       if (list.isEmpty) {
@@ -423,20 +423,23 @@ Future<void> updateOPTROnServer(BuildContext? context,
       Map<String, dynamic> map = list[i].toJson();
       var res = await http
           .put(Uri.parse(prefix + 'OPTR/Update'),
-          headers: header, body: jsonEncode(map))
+              headers: header, body: jsonEncode(map))
           .timeout(Duration(seconds: 30), onTimeout: () {
         writeToLogFile(
-            text: '500 error \nMap : $map', fileName: StackTrace.current.toString(), lineNo: 141);return http.Response('Error', 500);
+            text: '500 error \nMap : $map',
+            fileName: StackTrace.current.toString(),
+            lineNo: 141);
+        return http.Response('Error', 500);
       });
       print(await res.statusCode);
-      if(res.statusCode != 201)
-        {
-          await writeToLogFile(
-              text: '${res.statusCode} error \nMap : $map\nResponse : ${res.body}',
-              fileName: StackTrace.current.toString(),
-              lineNo: 141);
-        }
-        if (res.statusCode == 201 || res.statusCode == 500) {
+      if (res.statusCode != 201) {
+        await writeToLogFile(
+            text:
+                '${res.statusCode} error \nMap : $map\nResponse : ${res.body}',
+            fileName: StackTrace.current.toString(),
+            lineNo: 141);
+      }
+      if (res.statusCode == 201 || res.statusCode == 500) {
         sentSuccessInServer = true;
         if (res.statusCode == 201) {
           final Database db = await initializeDB(context);
@@ -449,11 +452,13 @@ Future<void> updateOPTROnServer(BuildContext? context,
       print(res.body);
     } catch (e) {
       writeToLogFile(
-          text: '${e.toString()}\nMap : $map', fileName: StackTrace.current.toString(), lineNo: 141);
-  sentSuccessInServer = true;
-  }
+          text: '${e.toString()}\nMap : $map',
+          fileName: StackTrace.current.toString(),
+          lineNo: 141);
+      sentSuccessInServer = true;
+    }
 
-  i++;
-  print("INDEX = " + i.toString());
+    i++;
+    print("INDEX = " + i.toString());
   } while (i < list.length && sentSuccessInServer == true);
 }

@@ -56,7 +56,7 @@ class CVMTP1 {
 Future<List<CVMTP1>> retrieveCVMTP1ForSearch(
     {required query, required String Code}) async {
   final Database db = await initializeDB(null);
-  String qq='''
+  String qq = '''
       SELECT * FROM CVMTP1 where (SubMeetingCode LIKE '%$query%' COLLATE NOCASE
 or SubMeetingName LIKE '%$query%' COLLATE NOCASE) AND Code='$Code' AND Active=1 
       ''';
@@ -240,8 +240,9 @@ Future<String> insertCVMTP1ToServer(BuildContext? context,
       try {
         Map<String, dynamic> map = list[i].toJson();
         map.remove('ID');
-        String queryParams='Code=${list[i].Code}&RowId=${list[i].RowId}';
-        var res = await http.post(Uri.parse(prefix + "CVMTP1/Add?$queryParams"),
+        String queryParams = 'Code=${list[i].Code}&RowId=${list[i].RowId}';
+        var res = await http
+            .post(Uri.parse(prefix + "CVMTP1/Add?$queryParams"),
                 headers: header, body: jsonEncode(map))
             .timeout(Duration(seconds: 30), onTimeout: () {
           return http.Response('Error', 500);
@@ -249,17 +250,15 @@ Future<String> insertCVMTP1ToServer(BuildContext? context,
         response = await res.body;
         print("eeaaae status");
         print(await res.statusCode);
-        if(res.statusCode ==409)
-        {
+        if (res.statusCode == 409) {
           ///Already added in server
           final Database db = await initializeDB(context);
-          CVMTP1 model=CVMTP1.fromJson(jsonDecode(res.body));
+          CVMTP1 model = CVMTP1.fromJson(jsonDecode(res.body));
           var x = await db.update("CVMTP1", model.toJson(),
-              where: "Code = ? AND RowId = ?", whereArgs: [model.Code,model.RowId]);
+              where: "Code = ? AND RowId = ?",
+              whereArgs: [model.Code, model.RowId]);
           print(x.toString());
-        }
-        else
-        if (res.statusCode == 201 || res.statusCode == 500) {
+        } else if (res.statusCode == 201 || res.statusCode == 500) {
           sentSuccessInServer = true;
           if (res.statusCode == 201) {
             map['ID'] = jsonDecode(res.body)['ID'];

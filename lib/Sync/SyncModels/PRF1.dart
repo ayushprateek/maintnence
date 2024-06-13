@@ -188,24 +188,20 @@ WHERE T1.ID IS NULL;
   await db.delete('PRF1_Temp');
 }
 
-Future<List<PRF1>> retrievePRF1({
-  int? limit,
-  String? orderBy
-}) async {
+Future<List<PRF1>> retrievePRF1({int? limit, String? orderBy}) async {
   final Database db = await initializeDB(null);
-  final List<Map<String, Object?>> queryResult = await db.query('PRF1',limit: limit,orderBy: orderBy);
+  final List<Map<String, Object?>> queryResult =
+      await db.query('PRF1', limit: limit, orderBy: orderBy);
   return queryResult.map((e) => PRF1.fromJson(e)).toList();
 }
 
-Future<List<PRF1>> retrievePRF1ForDisplay({
-  String dbQuery='',
-  int limit=30
-}) async {
+Future<List<PRF1>> retrievePRF1ForDisplay(
+    {String dbQuery = '', int limit = 30}) async {
   final Database db = await initializeDB(null);
-  dbQuery='%$dbQuery%';
-  String searchQuery='';
+  dbQuery = '%$dbQuery%';
+  String searchQuery = '';
 
-  searchQuery='''
+  searchQuery = '''
      SELECT * FROM PRF1 
  WHERE Active = 1 AND (PrefixCode LIKE '$dbQuery' OR DocNumber LIKE '$dbQuery') 
  LIMIT $limit
@@ -276,9 +272,8 @@ Future<String> insertPRF1ToServer(BuildContext? context,
             final Database db = await initializeDB(context);
             // map = jsonDecode(res.body);
             map["has_created"] = 0;
-            var x = await db.update("PRF1", map,
-                where: "ID = ?",
-                whereArgs: [map["ID"]]);
+            var x = await db
+                .update("PRF1", map, where: "ID = ?", whereArgs: [map["ID"]]);
             print(x.toString());
           }
         }

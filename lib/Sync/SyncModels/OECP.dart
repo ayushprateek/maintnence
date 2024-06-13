@@ -372,7 +372,8 @@ Future<void> insertOECP(Database db, {List? list}) async {
       for (var element in batchRecords) {
         try {
           batch.update("OECP", element,
-              where: "TransId = ? AND ifnull(has_created,0) <> ? AND ifnull(has_updated,0) <> ?",
+              where:
+                  "TransId = ? AND ifnull(has_created,0) <> ? AND ifnull(has_updated,0) <> ?",
               whereArgs: [element["TransId"], 1, 1]);
         } catch (e) {
           writeToLogFile(
@@ -519,8 +520,9 @@ Future<void> insertOECPToServer(BuildContext? context,
       try {
         map.remove('ID');
         print(jsonEncode(map));
-        String queryParams='TransId=${list[i].TransId}';
-        var res = await http.post(Uri.parse(prefix + "OECP/Add?$queryParams"),
+        String queryParams = 'TransId=${list[i].TransId}';
+        var res = await http
+            .post(Uri.parse(prefix + "OECP/Add?$queryParams"),
                 headers: header, body: jsonEncode(map))
             .timeout(Duration(seconds: 30), onTimeout: () {
           return http.Response("Error", 500);
@@ -533,17 +535,14 @@ Future<void> insertOECPToServer(BuildContext? context,
               fileName: StackTrace.current.toString(),
               lineNo: 141);
         }
-        if(res.statusCode ==409)
-        {
+        if (res.statusCode == 409) {
           ///Already added in server
           final Database db = await initializeDB(context);
-          OECPModel model=OECPModel.fromJson(jsonDecode(res.body));
+          OECPModel model = OECPModel.fromJson(jsonDecode(res.body));
           var x = await db.update("OECP", model.toJson(),
               where: "TransId = ?", whereArgs: [model.TransId]);
           print(x.toString());
-        }
-        else
-        if (res.statusCode == 201 || res.statusCode == 500) {
+        } else if (res.statusCode == 201 || res.statusCode == 500) {
           sentSuccessInServer = true;
           if (res.statusCode == 201) {
             map['ID'] = jsonDecode(res.body)['ID'];

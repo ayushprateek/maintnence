@@ -35,8 +35,7 @@ class ITMP {
     this.PriceListName,
   });
 
-  factory ITMP.fromJson(Map<String, dynamic> json) =>
-      ITMP(
+  factory ITMP.fromJson(Map<String, dynamic> json) => ITMP(
         ID: int.tryParse(json['ID'].toString()) ?? 0,
         PriceListCode: json['PriceListCode'],
         CurrencyCode: json['CurrencyCode'],
@@ -49,8 +48,7 @@ class ITMP {
         PriceListName: json['PriceListName'],
       );
 
-  Map<String, dynamic> toJson() =>
-      {
+  Map<String, dynamic> toJson() => {
         'ID': ID,
         'PriceListCode': PriceListCode,
         'CurrencyCode': CurrencyCode,
@@ -72,7 +70,7 @@ String iTMPToJson(List<ITMP> data) =>
 
 Future<List<ITMP>> dataSyncITMP() async {
   var res =
-  await http.get(headers: header, Uri.parse(prefix + "ITMP" + postfix));
+      await http.get(headers: header, Uri.parse(prefix + "ITMP" + postfix));
   print(res.body);
   return iTMPFromJson(res.body);
 }
@@ -120,15 +118,13 @@ Future<List<ITMP>> dataSyncITMP() async {
 //   await db.delete('ITMP_Temp');
 // }
 
-Future<List<ITMP>> retrieveITMPForDisplay({
-  String dbQuery='',
-  int limit=30
-}) async {
+Future<List<ITMP>> retrieveITMPForDisplay(
+    {String dbQuery = '', int limit = 30}) async {
   final Database db = await initializeDB(null);
-  dbQuery='%$dbQuery%';
-  String searchQuery='';
+  dbQuery = '%$dbQuery%';
+  String searchQuery = '';
 
-  searchQuery='''
+  searchQuery = '''
      SELECT * FROM ITMP 
  WHERE Active = 1 AND (PriceListCode LIKE '$dbQuery' OR PriceListName LIKE '$dbQuery') 
  LIMIT $limit
@@ -136,6 +132,7 @@ Future<List<ITMP>> retrieveITMPForDisplay({
   final List<Map<String, Object?>> queryResult = await db.rawQuery(searchQuery);
   return queryResult.map((e) => ITMP.fromJson(e)).toList();
 }
+
 Future<void> insertITMP(Database db, {List? list}) async {
   if (postfix.toLowerCase().contains('all')) {
     await deleteITMP(db);
@@ -151,7 +148,7 @@ Future<void> insertITMP(Database db, {List? list}) async {
   stopwatch.start();
   for (var i = 0; i < customers.length; i += batchSize) {
     var end =
-    (i + batchSize < customers.length) ? i + batchSize : customers.length;
+        (i + batchSize < customers.length) ? i + batchSize : customers.length;
     var batchRecords = customers.sublist(i, end);
     await db.transaction((txn) async {
       var batch = txn.batch();
@@ -251,15 +248,16 @@ Future<List<ITMP>> retrieveITMP(BuildContext context) async {
   return queryResult.map((e) => ITMP.fromJson(e)).toList();
 }
 
-Future<void> updateITMP(int id, Map<String, dynamic> values,
-    BuildContext context) async {
+Future<void> updateITMP(
+    int id, Map<String, dynamic> values, BuildContext context) async {
   final db = await initializeDB(context);
   try {
     db.transaction((db) async {
       await db.update('ITMP', values, where: 'ID = ?', whereArgs: [id]);
     });
   } catch (e) {
-    writeToLogFile(text: e.toString(),
+    writeToLogFile(
+        text: e.toString(),
         fileName: StackTrace.current.toString(),
         lineNo: 141);
     getErrorSnackBar('Sync Error ' + e.toString());
@@ -270,11 +268,11 @@ Future<void> deleteITMP(Database db) async {
   await db.delete('ITMP');
 }
 
-Future<List<ITMP>> retrieveITMPById(BuildContext? context, String str,
-    List l) async {
+Future<List<ITMP>> retrieveITMPById(
+    BuildContext? context, String str, List l) async {
   final Database db = await initializeDB(context);
   final List<Map<String, Object?>> queryResult =
-  await db.query('ITMP', where: str, whereArgs: l);
+      await db.query('ITMP', where: str, whereArgs: l);
   return queryResult.map((e) => ITMP.fromJson(e)).toList();
 }
 
@@ -298,25 +296,29 @@ Future<void> insertITMPToServer(BuildContext? context,
     if (list.isEmpty) {
       return;
     }
-    do {Map<String, dynamic> map = list[i].toJson();
+    do {
+      Map<String, dynamic> map = list[i].toJson();
       sentSuccessInServer = false;
       try {
         map.remove('ID');
         //todo: like others
         var res = await http
             .post(Uri.parse(prefix + "ITMP/Add"),
-            headers: header, body: jsonEncode(map))
+                headers: header, body: jsonEncode(map))
             .timeout(Duration(seconds: 30), onTimeout: () {
           writeToLogFile(
-            text: '500 error \nMap : $map', fileName: StackTrace.current.toString(), lineNo: 141);return http.Response('Error', 500);
+              text: '500 error \nMap : $map',
+              fileName: StackTrace.current.toString(),
+              lineNo: 141);
+          return http.Response('Error', 500);
         });
         response = await res.body;
         print("eeaaae status");
         print(await res.statusCode);
-        if(res.statusCode != 201)
-        {
+        if (res.statusCode != 201) {
           await writeToLogFile(
-              text: '${res.statusCode} error \nMap : $map\nResponse : ${res.body}',
+              text:
+                  '${res.statusCode} error \nMap : $map\nResponse : ${res.body}',
               fileName: StackTrace.current.toString(),
               lineNo: 141);
         }
@@ -331,7 +333,7 @@ Future<void> insertITMPToServer(BuildContext? context,
                 where: "TransId = ? AND RowId = ?",
                 whereArgs: [map["TransId"], map["RowId"]]);
             print(x.toString());
-          }else{
+          } else {
             writeToLogFile(
                 text: '500 error \nMap : $map',
                 fileName: StackTrace.current.toString(),
@@ -341,14 +343,15 @@ Future<void> insertITMPToServer(BuildContext? context,
         print(res.body);
       } catch (e) {
         writeToLogFile(
-            text: '${e.toString()}\nMap : $map', fileName: StackTrace.current.toString(), lineNo: 141);
-  sentSuccessInServer = true;
+            text: '${e.toString()}\nMap : $map',
+            fileName: StackTrace.current.toString(),
+            lineNo: 141);
+        sentSuccessInServer = true;
+      }
+      i++;
+      print("INDEX = " + i.toString());
+    } while (i < list.length && sentSuccessInServer == true);
   }
-  i++;
-  print("INDEX = " + i.toString());
-  } while (i < list.length && sentSuccessInServer == true);
-}
-
 }
 
 Future<void> updateITMPOnServer(BuildContext? context,
@@ -363,7 +366,8 @@ Future<void> updateITMPOnServer(BuildContext? context,
   if (list.isEmpty) {
     return;
   }
-  do {Map<String, dynamic> map = list[i].toJson();
+  do {
+    Map<String, dynamic> map = list[i].toJson();
     sentSuccessInServer = false;
     try {
       if (list.isEmpty) {
@@ -372,20 +376,23 @@ Future<void> updateITMPOnServer(BuildContext? context,
       Map<String, dynamic> map = list[i].toJson();
       var res = await http
           .put(Uri.parse(prefix + 'ITMP/Update'),
-          headers: header, body: jsonEncode(map))
+              headers: header, body: jsonEncode(map))
           .timeout(Duration(seconds: 30), onTimeout: () {
         writeToLogFile(
-            text: '500 error \nMap : $map', fileName: StackTrace.current.toString(), lineNo: 141);return http.Response('Error', 500);
+            text: '500 error \nMap : $map',
+            fileName: StackTrace.current.toString(),
+            lineNo: 141);
+        return http.Response('Error', 500);
       });
       print(await res.statusCode);
-      if(res.statusCode != 201)
-        {
-          await writeToLogFile(
-              text: '${res.statusCode} error \nMap : $map\nResponse : ${res.body}',
-              fileName: StackTrace.current.toString(),
-              lineNo: 141);
-        }
-        if (res.statusCode == 201 || res.statusCode == 500) {
+      if (res.statusCode != 201) {
+        await writeToLogFile(
+            text:
+                '${res.statusCode} error \nMap : $map\nResponse : ${res.body}',
+            fileName: StackTrace.current.toString(),
+            lineNo: 141);
+      }
+      if (res.statusCode == 201 || res.statusCode == 500) {
         sentSuccessInServer = true;
         if (res.statusCode == 201) {
           final Database db = await initializeDB(context);
@@ -394,7 +401,7 @@ Future<void> updateITMPOnServer(BuildContext? context,
               where: "TransId = ? AND RowId = ?",
               whereArgs: [map["TransId"], map["RowId"]]);
           print(x.toString());
-        }else{
+        } else {
           writeToLogFile(
               text: '500 error \nMap : $map',
               fileName: StackTrace.current.toString(),
@@ -404,11 +411,13 @@ Future<void> updateITMPOnServer(BuildContext? context,
       print(res.body);
     } catch (e) {
       writeToLogFile(
-          text: '${e.toString()}\nMap : $map', fileName: StackTrace.current.toString(), lineNo: 141);
-  sentSuccessInServer = true;
-  }
+          text: '${e.toString()}\nMap : $map',
+          fileName: StackTrace.current.toString(),
+          lineNo: 141);
+      sentSuccessInServer = true;
+    }
 
-  i++;
-  print("INDEX = " + i.toString());
+    i++;
+    print("INDEX = " + i.toString());
   } while (i < list.length && sentSuccessInServer == true);
 }

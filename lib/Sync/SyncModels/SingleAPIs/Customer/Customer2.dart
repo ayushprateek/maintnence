@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:maintenance/Component/GetCredentials.dart';
 import 'package:maintenance/Component/LogFileFunctions.dart';
@@ -163,7 +162,7 @@ class Customer2 {
       print("Not Syncing First Time");
     }
     credentials = getCredentials();
-    String encoded = stringToBase64.encode(credentials+secretKey);
+    String encoded = stringToBase64.encode(credentials + secretKey);
     header = {
       'Authorization': 'Basic $encoded',
       "content-type": "application/json",

@@ -1,14 +1,14 @@
-import 'package:maintenance/Component/LogFileFunctions.dart';
 import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:maintenance/Component/LogFileFunctions.dart';
 import 'package:maintenance/Component/SnackbarComponent.dart';
 import 'package:maintenance/DatabaseInitialization.dart';
 import 'package:maintenance/Sync/CustomURL.dart';
-import 'package:maintenance/Sync/DataSync.dart';
-import 'dart:convert';
 import 'package:sqflite/sqlite_api.dart';
-class OTRM{
+
+class OTRM {
   int? ID;
   String? Code;
   String? Name;
@@ -24,6 +24,7 @@ class OTRM{
   DateTime? CreateDate;
   DateTime? UpdateDate;
   bool? Active;
+
   OTRM({
     this.ID,
     this.Code,
@@ -41,49 +42,57 @@ class OTRM{
     this.UpdateDate,
     this.Active,
   });
-  factory OTRM.fromJson(Map<String,dynamic> json)=>OTRM(
-    ID : int.tryParse(json['ID'].toString())??0,
-    Code : json['Code']??'',
-    Name : json['Name']??'',
-    CityCode : json['CityCode']??'',
-    CityName : json['CityName']??'',
-    StateCode : json['StateCode']??'',
-    StateName : json['StateName']??'',
-    CountryCode : json['CountryCode']??'',
-    CountryName : json['CountryName']??'',
-    CreatedBy : json['CreatedBy']??'',
-    UpdatedBy : json['UpdatedBy']??'',
-    BranchId : json['BranchId']??'',
-    CreateDate : DateTime.tryParse(json['CreateDate'].toString()),
-    UpdateDate : DateTime.tryParse(json['UpdateDate'].toString()),
-    Active : json['Active'] is bool ? json['Active'] : json['Active']==1,
-  );
-  Map<String,dynamic> toJson()=>{
-    'ID' : ID,
-    'Code' : Code,
-    'Name' : Name,
-    'CityCode' : CityCode,
-    'CityName' : CityName,
-    'StateCode' : StateCode,
-    'StateName' : StateName,
-    'CountryCode' : CountryCode,
-    'CountryName' : CountryName,
-    'CreatedBy' : CreatedBy,
-    'UpdatedBy' : UpdatedBy,
-    'BranchId' : BranchId,
-    'CreateDate' : CreateDate?.toIso8601String(),
-    'UpdateDate' : UpdateDate?.toIso8601String(),
-    'Active' : Active,
-  };
+
+  factory OTRM.fromJson(Map<String, dynamic> json) => OTRM(
+        ID: int.tryParse(json['ID'].toString()) ?? 0,
+        Code: json['Code'] ?? '',
+        Name: json['Name'] ?? '',
+        CityCode: json['CityCode'] ?? '',
+        CityName: json['CityName'] ?? '',
+        StateCode: json['StateCode'] ?? '',
+        StateName: json['StateName'] ?? '',
+        CountryCode: json['CountryCode'] ?? '',
+        CountryName: json['CountryName'] ?? '',
+        CreatedBy: json['CreatedBy'] ?? '',
+        UpdatedBy: json['UpdatedBy'] ?? '',
+        BranchId: json['BranchId'] ?? '',
+        CreateDate: DateTime.tryParse(json['CreateDate'].toString()),
+        UpdateDate: DateTime.tryParse(json['UpdateDate'].toString()),
+        Active: json['Active'] is bool ? json['Active'] : json['Active'] == 1,
+      );
+
+  Map<String, dynamic> toJson() => {
+        'ID': ID,
+        'Code': Code,
+        'Name': Name,
+        'CityCode': CityCode,
+        'CityName': CityName,
+        'StateCode': StateCode,
+        'StateName': StateName,
+        'CountryCode': CountryCode,
+        'CountryName': CountryName,
+        'CreatedBy': CreatedBy,
+        'UpdatedBy': UpdatedBy,
+        'BranchId': BranchId,
+        'CreateDate': CreateDate?.toIso8601String(),
+        'UpdateDate': UpdateDate?.toIso8601String(),
+        'Active': Active,
+      };
 }
-List<OTRM> oTRMFromJson(String str) => List<OTRM>.from(
-    json.decode(str).map((x) => OTRM.fromJson(x)));
+
+List<OTRM> oTRMFromJson(String str) =>
+    List<OTRM>.from(json.decode(str).map((x) => OTRM.fromJson(x)));
+
 String oTRMToJson(List<OTRM> data) =>
     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+
 Future<List<OTRM>> dataSyncOTRM() async {
-  var res = await http.get(headers: header, Uri.parse(prefix + "OTRM" + postfix));
+  var res =
+      await http.get(headers: header, Uri.parse(prefix + "OTRM" + postfix));
   print(res.body);
-  return oTRMFromJson(res.body);}
+  return oTRMFromJson(res.body);
+}
+
 Future<void> insertOTRM(Database db, {List? list}) async {
   if (postfix.toLowerCase().contains('all')) {
     await deleteOTRM(db);
@@ -98,7 +107,8 @@ Future<void> insertOTRM(Database db, {List? list}) async {
   Stopwatch stopwatch = Stopwatch();
   stopwatch.start();
   for (var i = 0; i < customers.length; i += batchSize) {
-    var end = (i + batchSize < customers.length) ? i + batchSize : customers.length;
+    var end =
+        (i + batchSize < customers.length) ? i + batchSize : customers.length;
     var batchRecords = customers.sublist(i, end);
     await db.transaction((txn) async {
       var batch = txn.batch();
@@ -145,7 +155,6 @@ Future<void> insertOTRM(Database db, {List? list}) async {
               // where: "ID = ? AND ifnull(has_created,0) <> ? AND ifnull(has_updated,0) <> ?",
               where: "ID = ?",
               whereArgs: [element["ID"]]);
-
         } catch (e) {
           writeToLogFile(
               text: e.toString(),
@@ -203,20 +212,28 @@ Future<List<OTRM>> retrieveOTRM(BuildContext context) async {
   final List<Map<String, Object?>> queryResult = await db.query('OTRM');
   return queryResult.map((e) => OTRM.fromJson(e)).toList();
 }
-Future<void> updateOTRM(int id, Map<String, dynamic> values, BuildContext context) async {
+
+Future<void> updateOTRM(
+    int id, Map<String, dynamic> values, BuildContext context) async {
   final db = await initializeDB(context);
   try {
     db.transaction((db) async {
       await db.update('OTRM', values, where: 'ID = ?', whereArgs: [id]);
     });
   } catch (e) {
-    getErrorSnackBar('Sync Error ' + e.toString());}}
+    getErrorSnackBar('Sync Error ' + e.toString());
+  }
+}
+
 Future<void> deleteOTRM(Database db) async {
   await db.delete('OTRM');
 }
-Future<List<OTRM>> retrieveOTRMById(BuildContext? context, String str, List l) async {
+
+Future<List<OTRM>> retrieveOTRMById(
+    BuildContext? context, String str, List l) async {
   final Database db = await initializeDB(context);
-  final List<Map<String, Object?>> queryResult = await db.query('OTRM', where: str, whereArgs: l);
+  final List<Map<String, Object?>> queryResult =
+      await db.query('OTRM', where: str, whereArgs: l);
   return queryResult.map((e) => OTRM.fromJson(e)).toList();
 }
 // Future<String> insertOTRMToServer(BuildContext? context, {String? TransId, int? id}) async {
@@ -289,4 +306,3 @@ Future<List<OTRM>> retrieveOTRMById(BuildContext? context, String str, List l) a
 //     print("INDEX = " + i.toString());
 //   } while (i < list.length && sentSuccessInServer == true);
 // }
-

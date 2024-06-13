@@ -33,21 +33,19 @@ class BPSG {
     this.BranchId,
   });
 
-  factory BPSG.fromJson(Map<String, dynamic> json) =>
-      BPSG(
+  factory BPSG.fromJson(Map<String, dynamic> json) => BPSG(
         ID: int.tryParse(json['ID'].toString()),
-        Code: json['Code']??'',
-        ShortDesc: json['ShortDesc']??'',
-        Active: json['Active'] is bool? json['Active']:json['Active']==1,
+        Code: json['Code'] ?? '',
+        ShortDesc: json['ShortDesc'] ?? '',
+        Active: json['Active'] is bool ? json['Active'] : json['Active'] == 1,
         CreateDate: DateTime.tryParse(json['CreateDate'].toString()),
         UpdateDate: DateTime.tryParse(json['UpdateDate'].toString()),
-        CreatedBy: json['CreatedBy']??'',
-        UpdatedBy: json['UpdatedBy']??'',
-        BranchId: json['BranchId']??'',
+        CreatedBy: json['CreatedBy'] ?? '',
+        UpdatedBy: json['UpdatedBy'] ?? '',
+        BranchId: json['BranchId'] ?? '',
       );
 
-  Map<String, dynamic> toJson() =>
-      {
+  Map<String, dynamic> toJson() => {
         'ID': ID,
         'Code': Code,
         'ShortDesc': ShortDesc,
@@ -68,19 +66,18 @@ String bPSGToJson(List<BPSG> data) =>
 
 Future<List<BPSG>> dataSyncBPSG() async {
   var res =
-  await http.get(headers: header, Uri.parse(prefix + "BPSG" + postfix));
+      await http.get(headers: header, Uri.parse(prefix + "BPSG" + postfix));
   print(res.body);
   return bPSGFromJson(res.body);
 }
-Future<List<BPSG>> retrieveBPSGForDisplay({
-  String dbQuery='',
-  int limit=30
-}) async {
-  final Database db = await initializeDB(null);
-  dbQuery='%$dbQuery%';
-  String searchQuery='';
 
-  searchQuery='''
+Future<List<BPSG>> retrieveBPSGForDisplay(
+    {String dbQuery = '', int limit = 30}) async {
+  final Database db = await initializeDB(null);
+  dbQuery = '%$dbQuery%';
+  String searchQuery = '';
+
+  searchQuery = '''
      SELECT * FROM BPSG 
  WHERE Active = 1 AND (Code LIKE '$dbQuery' OR ShortDesc LIKE '$dbQuery') 
  LIMIT $limit
@@ -88,6 +85,7 @@ Future<List<BPSG>> retrieveBPSGForDisplay({
   final List<Map<String, Object?>> queryResult = await db.rawQuery(searchQuery);
   return queryResult.map((e) => BPSG.fromJson(e)).toList();
 }
+
 // Future<void> insertBPSG(Database db, {List? list}) async {
 //   if (postfix.toLowerCase().contains('all')) {
 //     await deleteBPSG(db);
@@ -147,7 +145,7 @@ Future<void> insertBPSG(Database db, {List? list}) async {
   stopwatch.start();
   for (var i = 0; i < customers.length; i += batchSize) {
     var end =
-    (i + batchSize < customers.length) ? i + batchSize : customers.length;
+        (i + batchSize < customers.length) ? i + batchSize : customers.length;
     var batchRecords = customers.sublist(i, end);
     await db.transaction((txn) async {
       var batch = txn.batch();
@@ -186,10 +184,9 @@ Future<void> insertBPSG(Database db, {List? list}) async {
       var batch = txn.batch();
       for (var record in batchRecords) {
         try {
-          batch.update("BPSG", record,
-              where:
-              "ID = ?",
-              whereArgs: [record["ID"], ]);
+          batch.update("BPSG", record, where: "ID = ?", whereArgs: [
+            record["ID"],
+          ]);
         } catch (e) {
           writeToLogFile(
               text: e.toString(),
@@ -243,22 +240,22 @@ WHERE T1.ID IS NULL;
   // stopwatch.stop();
 }
 
-
 Future<List<BPSG>> retrieveBPSG(BuildContext context) async {
   final Database db = await initializeDB(context);
   final List<Map<String, Object?>> queryResult = await db.query('BPSG');
   return queryResult.map((e) => BPSG.fromJson(e)).toList();
 }
 
-Future<void> updateBPSG(int id, Map<String, dynamic> values,
-    BuildContext context) async {
+Future<void> updateBPSG(
+    int id, Map<String, dynamic> values, BuildContext context) async {
   final db = await initializeDB(context);
   try {
     db.transaction((db) async {
       await db.update('BPSG', values, where: 'ID = ?', whereArgs: [id]);
     });
   } catch (e) {
-    writeToLogFile(text: e.toString(),
+    writeToLogFile(
+        text: e.toString(),
         fileName: StackTrace.current.toString(),
         lineNo: 141);
     getErrorSnackBar('Sync Error ' + e.toString());
@@ -269,11 +266,11 @@ Future<void> deleteBPSG(Database db) async {
   await db.delete('BPSG');
 }
 
-Future<List<BPSG>> retrieveBPSGById(BuildContext? context, String str,
-    List l) async {
+Future<List<BPSG>> retrieveBPSGById(
+    BuildContext? context, String str, List l) async {
   final Database db = await initializeDB(context);
   final List<Map<String, Object?>> queryResult =
-  await db.query('BPSG', where: str, whereArgs: l);
+      await db.query('BPSG', where: str, whereArgs: l);
   return queryResult.map((e) => BPSG.fromJson(e)).toList();
 }
 

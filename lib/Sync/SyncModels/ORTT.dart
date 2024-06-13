@@ -77,7 +77,6 @@ Future<List<ORTTModel>> dataSyncORTT() async {
   return ORTTModelFromJson(res.body);
 }
 
-
 // Future<void> insertORTT(Database db, {List? list}) async {
 //   if (postfix.toLowerCase().contains('all')) {
 //     await deleteORTT(db);
@@ -144,7 +143,7 @@ Future<void> insertORTT(Database db, {List? list}) async {
   stopwatch.start();
   for (var i = 0; i < customers.length; i += batchSize) {
     var end =
-    (i + batchSize < customers.length) ? i + batchSize : customers.length;
+        (i + batchSize < customers.length) ? i + batchSize : customers.length;
     var batchRecords = customers.sublist(i, end);
     await db.transaction((txn) async {
       var batch = txn.batch();
@@ -185,7 +184,7 @@ Future<void> insertORTT(Database db, {List? list}) async {
         try {
           batch.update("ORTT", element,
               where:
-              "RateDate = ? AND Rate = ? AND Currency = ? AND CreatedBy = ? AND ifnull(has_created,0) <> ? AND ifnull(has_updated,0) <> ?",
+                  "RateDate = ? AND Rate = ? AND Currency = ? AND CreatedBy = ? AND ifnull(has_created,0) <> ? AND ifnull(has_updated,0) <> ?",
               whereArgs: [
                 element["RateDate"],
                 element["Rate"],

@@ -194,7 +194,7 @@ Future<void> insertOTRNS(Database db, {List? list}) async {
   stopwatch.start();
   for (var i = 0; i < customers.length; i += batchSize) {
     var end =
-    (i + batchSize < customers.length) ? i + batchSize : customers.length;
+        (i + batchSize < customers.length) ? i + batchSize : customers.length;
     var batchRecords = customers.sublist(i, end);
     await db.transaction((txn) async {
       var batch = txn.batch();
@@ -234,7 +234,8 @@ Future<void> insertOTRNS(Database db, {List? list}) async {
       for (var element in batchRecords) {
         try {
           batch.update("OTRNS", element,
-              where:"CardCode = ? AND GroupCode = ?",whereArgs: [element["CardCode"],element["GroupCode"]]);
+              where: "CardCode = ? AND GroupCode = ?",
+              whereArgs: [element["CardCode"], element["GroupCode"]]);
         } catch (e) {
           writeToLogFile(
               text: e.toString(),

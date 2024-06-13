@@ -6,7 +6,6 @@ import 'package:maintenance/Component/LogFileFunctions.dart';
 import 'package:maintenance/Component/SnackbarComponent.dart';
 import 'package:maintenance/DatabaseInitialization.dart';
 import 'package:maintenance/Sync/CustomURL.dart';
-import 'package:maintenance/Sync/DataSync.dart';
 import 'package:maintenance/Sync/SyncModels/OUSR.dart';
 import 'package:sqflite/sqlite_api.dart';
 
@@ -98,6 +97,7 @@ Future<void> updateUSR1(
 Future<void> deleteUSR1(Database db) async {
   await db.delete('USR1');
 }
+
 Future<void> insertUSR1(Database db, {List? list}) async {
   if (postfix.toLowerCase().contains('all')) {
     await deleteUSR1(db);
@@ -154,7 +154,7 @@ Future<void> insertUSR1(Database db, {List? list}) async {
         try {
           batch.update("USR1", element,
               where:
-              "ID = ? AND UserCode = ? AND ifnull(has_created,0) <> ? AND ifnull(has_updated,0) <> ?",
+                  "ID = ? AND UserCode = ? AND ifnull(has_created,0) <> ? AND ifnull(has_updated,0) <> ?",
               whereArgs: [element["ID"], element["Code"], 1, 1]);
         } catch (e) {
           writeToLogFile(

@@ -7,9 +7,7 @@ import 'package:maintenance/Component/SnackbarComponent.dart';
 import 'package:maintenance/DatabaseInitialization.dart';
 import 'package:maintenance/Sync/CustomURL.dart';
 import 'package:maintenance/Sync/DataSync.dart';
-import 'package:maintenance/main.dart';
 import 'package:sqflite/sqlite_api.dart';
-
 
 List<XPM1Model> XPM1ModelFromJson(String str) =>
     List<XPM1Model>.from(json.decode(str).map((x) => XPM1Model.fromJson(x)));

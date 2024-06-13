@@ -29,11 +29,9 @@ class CVCVP1 {
     this.EmpCode,
     this.CardCode,
     this.CardName,
-
     this.EmpName,
     this.TransId,
     this.RowId,
-
     this.UpdateDate,
     this.hasCreated = false,
     this.hasUpdated = false,
@@ -73,8 +71,7 @@ class CVCVP1 {
   int? DocEntry;
   String? DocNum;
 
-  factory CVCVP1.fromJson(Map<String, dynamic> json) =>
-      CVCVP1(
+  factory CVCVP1.fromJson(Map<String, dynamic> json) => CVCVP1(
         ID: int.tryParse(json["ID"].toString()) ?? 0,
         RowId: int.tryParse(json["RowId"].toString()) ?? 0,
         ContactPersonId: int.tryParse(json["ContactPersonId"].toString()) ?? 0,
@@ -97,8 +94,7 @@ class CVCVP1 {
         DocNum: json['DocNum'],
       );
 
-  Map<String, dynamic> toJson() =>
-      {
+  Map<String, dynamic> toJson() => {
         "RowId": RowId,
         "ID": ID,
         "LineStatus": LineStatus,
@@ -121,7 +117,7 @@ class CVCVP1 {
 
 Future<List<CVCVP1>> dataSyncCVCVP1() async {
   var res =
-  await http.get(headers: header, Uri.parse(prefix + "CVCVP1" + postfix));
+      await http.get(headers: header, Uri.parse(prefix + "CVCVP1" + postfix));
   print(res.body);
   return CVCVP1FromJson(res.body);
 }
@@ -130,19 +126,20 @@ Future<List<CVCVP1>> retrieveCVCVP1(BuildContext context,
     {String? orderBy}) async {
   final Database db = await initializeDB(context);
   final List<Map<String, Object?>> queryResult =
-  await db.query('CVCVP1', orderBy: orderBy);
+      await db.query('CVCVP1', orderBy: orderBy);
   return queryResult.map((e) => CVCVP1.fromJson(e)).toList();
 }
 
-Future<void> updateCVCVP1(int id, Map<String, dynamic> values,
-    BuildContext context) async {
+Future<void> updateCVCVP1(
+    int id, Map<String, dynamic> values, BuildContext context) async {
   final db = await initializeDB(context);
   try {
     db.transaction((db) async {
       await db.update("CVCVP1", values, where: 'ID = ?', whereArgs: [id]);
     });
   } catch (e) {
-    writeToLogFile(text: e.toString(),
+    writeToLogFile(
+        text: e.toString(),
         fileName: StackTrace.current.toString(),
         lineNo: 141);
     getErrorSnackBar("Sync Error " + e.toString());
@@ -214,7 +211,7 @@ Future<void> insertCVCVP1(Database db, {List? list}) async {
   stopwatch.start();
   for (var i = 0; i < customers.length; i += batchSize) {
     var end =
-    (i + batchSize < customers.length) ? i + batchSize : customers.length;
+        (i + batchSize < customers.length) ? i + batchSize : customers.length;
     var batchRecords = customers.sublist(i, end);
     await db.transaction((txn) async {
       var batch = txn.batch();
@@ -255,7 +252,7 @@ Future<void> insertCVCVP1(Database db, {List? list}) async {
         try {
           batch.update("CVCVP1", element,
               where:
-              "ATTransId = ? AND ifnull(has_created,0) <> ? AND ifnull(has_updated,0) <> ?",
+                  "ATTransId = ? AND ifnull(has_created,0) <> ? AND ifnull(has_updated,0) <> ?",
               whereArgs: [element["ATTransId"], 1, 1]);
         } catch (e) {
           writeToLogFile(
@@ -311,7 +308,6 @@ WHERE T1.ATTransId IS NULL;
   // stopwatch.stop();
 }
 
-
 Future<List<CVCVP1>> retrieveCVCVP1ByBranch(BuildContext context,
     {String? orderBy}) async {
   // 1. Find BranchId using CreatedBy from OUSR table. (done)
@@ -322,7 +318,7 @@ Future<List<CVCVP1>> retrieveCVCVP1ByBranch(BuildContext context,
   List<String> list = [];
   String str = "CreatedBy = ?";
   List<OUSRModel> ousrModel =
-  await retrieveOUSRById(context, "BranchId = ?", [userModel.BranchId]);
+      await retrieveOUSRById(context, "BranchId = ?", [userModel.BranchId]);
 
   for (int i = 0; i < ousrModel.length; i++) {
     list.add(ousrModel[i].UserCode);
@@ -335,15 +331,15 @@ Future<List<CVCVP1>> retrieveCVCVP1ByBranch(BuildContext context,
   }
   final Database db = await initializeDB(context);
   final List<Map<String, Object?>> queryResult =
-  await db.query("CVCVP1", where: str, whereArgs: list, orderBy: orderBy);
+      await db.query("CVCVP1", where: str, whereArgs: list, orderBy: orderBy);
 
   return queryResult.map((e) => CVCVP1.fromJson(e)).toList();
 }
 
 //SEND DATA TO SERVER
 //--------------------------
-Future<List<CVCVP1>> retrieveCVCVP1ById(BuildContext? context, String str,
-    List l,
+Future<List<CVCVP1>> retrieveCVCVP1ById(
+    BuildContext? context, String str, List l,
     {String? orderBy}) async {
   final Database db = await initializeDB(context);
   final List<Map<String, Object?>> queryResult = await db.rawQuery(
@@ -355,7 +351,7 @@ Future<List<CVCVP1>> retrieveCVCVP1ById(BuildContext? context, String str,
 Future<List<CVCVP1>> retrieveCVCVP1ForSearch(String TransId) async {
   final Database db = await initializeDB(null);
   final List<Map<String, Object?>> queryResult =
-  await db.rawQuery('CVCVP1', []);
+      await db.rawQuery('CVCVP1', []);
   return queryResult.map((e) => CVCVP1.fromJson(e)).toList();
 }
 
@@ -377,35 +373,36 @@ Future<void> insertCVCVP1ToServer(BuildContext? context,
     if (list.isEmpty) {
       return;
     }
-    do {Map<String, dynamic> map = list[i].toJson();
+    do {
+      Map<String, dynamic> map = list[i].toJson();
       sentSuccessInServer = false;
       try {
         map.remove('ID');
-        String queryParams='TransId=${list[i].TransId}&RowId=${list[i].RowId}';
-        var res = await http.post(Uri.parse(prefix + "CVCVP1/Add?$queryParams"),
-            headers: header, body: jsonEncode(map))
+        String queryParams =
+            'TransId=${list[i].TransId}&RowId=${list[i].RowId}';
+        var res = await http
+            .post(Uri.parse(prefix + "CVCVP1/Add?$queryParams"),
+                headers: header, body: jsonEncode(map))
             .timeout(Duration(seconds: 30), onTimeout: () {
           return http.Response("Error", 500);
         });
         response = await res.body;
-        if(res.statusCode != 201)
-        {
+        if (res.statusCode != 201) {
           await writeToLogFile(
-              text: '${res.statusCode} error \nMap : $map\nResponse : ${res.body}',
+              text:
+                  '${res.statusCode} error \nMap : $map\nResponse : ${res.body}',
               fileName: StackTrace.current.toString(),
               lineNo: 141);
         }
-        if(res.statusCode ==409)
-        {
+        if (res.statusCode == 409) {
           ///Already added in server
           final Database db = await initializeDB(context);
-          CVCVP1 model=CVCVP1.fromJson(jsonDecode(res.body));
+          CVCVP1 model = CVCVP1.fromJson(jsonDecode(res.body));
           var x = await db.update("CVCVP1", model.toJson(),
-              where: "TransId = ? AND RowId = ?", whereArgs: [model.TransId,model.RowId]);
+              where: "TransId = ? AND RowId = ?",
+              whereArgs: [model.TransId, model.RowId]);
           print(x.toString());
-        }
-        else
-        if (res.statusCode == 201 || res.statusCode == 500) {
+        } else if (res.statusCode == 201 || res.statusCode == 500) {
           sentSuccessInServer = true;
           if (res.statusCode == 201) {
             map['ID'] = jsonDecode(res.body)['ID'];
@@ -414,7 +411,7 @@ Future<void> insertCVCVP1ToServer(BuildContext? context,
             var x = await db.update("CVCVP1", map,
                 where: "ATTransId = ?", whereArgs: [map["ATTransId"]]);
             print(x.toString());
-          }else{
+          } else {
             writeToLogFile(
                 text: '500 error \nMap : $map',
                 fileName: StackTrace.current.toString(),
@@ -424,14 +421,15 @@ Future<void> insertCVCVP1ToServer(BuildContext? context,
         print(res.body);
       } catch (e) {
         writeToLogFile(
-            text: '${e.toString()}\nMap : $map', fileName: StackTrace.current.toString(), lineNo: 141);
-  sentSuccessInServer = true;
+            text: '${e.toString()}\nMap : $map',
+            fileName: StackTrace.current.toString(),
+            lineNo: 141);
+        sentSuccessInServer = true;
+      }
+      i++;
+      print("INDEX = " + i.toString());
+    } while (i < list.length && sentSuccessInServer == true);
   }
-  i++;
-  print("INDEX = " + i.toString());
-  } while (i < list.length && sentSuccessInServer == true);
-}
-
 }
 
 Future<void> updateCVCVP1OnServer(BuildContext? context,
@@ -456,20 +454,23 @@ Future<void> updateCVCVP1OnServer(BuildContext? context,
       Map<String, dynamic> map = list[i].toJson();
       var res = await http
           .put(Uri.parse(prefix + 'CVCVP1/Update'),
-          headers: header, body: jsonEncode(map))
+              headers: header, body: jsonEncode(map))
           .timeout(Duration(seconds: 30), onTimeout: () {
         writeToLogFile(
-            text: '500 error \nMap : $map', fileName: StackTrace.current.toString(), lineNo: 141);return http.Response('Error', 500);
+            text: '500 error \nMap : $map',
+            fileName: StackTrace.current.toString(),
+            lineNo: 141);
+        return http.Response('Error', 500);
       });
       print(await res.statusCode);
-      if(res.statusCode != 201)
-        {
-          await writeToLogFile(
-              text: '${res.statusCode} error \nMap : $map\nResponse : ${res.body}',
-              fileName: StackTrace.current.toString(),
-              lineNo: 141);
-        }
-        if (res.statusCode == 201 || res.statusCode == 500) {
+      if (res.statusCode != 201) {
+        await writeToLogFile(
+            text:
+                '${res.statusCode} error \nMap : $map\nResponse : ${res.body}',
+            fileName: StackTrace.current.toString(),
+            lineNo: 141);
+      }
+      if (res.statusCode == 201 || res.statusCode == 500) {
         sentSuccessInServer = true;
         if (res.statusCode == 201) {
           final Database db = await initializeDB(context);
@@ -477,7 +478,7 @@ Future<void> updateCVCVP1OnServer(BuildContext? context,
           var x = await db.update("CVCVP1", map,
               where: "ATTransId = ?", whereArgs: [map["ATTransId"]]);
           print(x.toString());
-        }else{
+        } else {
           writeToLogFile(
               text: '500 error \nMap : $map',
               fileName: StackTrace.current.toString(),
@@ -487,11 +488,13 @@ Future<void> updateCVCVP1OnServer(BuildContext? context,
       print(res.body);
     } catch (e) {
       writeToLogFile(
-          text: '${e.toString()}\nMap : $map', fileName: StackTrace.current.toString(), lineNo: 141);
-  sentSuccessInServer = true;
-  }
+          text: '${e.toString()}\nMap : $map',
+          fileName: StackTrace.current.toString(),
+          lineNo: 141);
+      sentSuccessInServer = true;
+    }
 
-  i++;
-  print("INDEX = " + i.toString());
+    i++;
+    print("INDEX = " + i.toString());
   } while (i < list.length && sentSuccessInServer == true);
 }

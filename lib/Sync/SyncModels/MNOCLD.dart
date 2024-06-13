@@ -1,14 +1,15 @@
-import 'package:maintenance/Component/LogFileFunctions.dart';
 import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:maintenance/Component/LogFileFunctions.dart';
 import 'package:maintenance/Component/SnackbarComponent.dart';
 import 'package:maintenance/DatabaseInitialization.dart';
 import 'package:maintenance/Sync/CustomURL.dart';
 import 'package:maintenance/Sync/DataSync.dart';
-import 'dart:convert';
 import 'package:sqflite/sqlite_api.dart';
-class MNOCLD{
+
+class MNOCLD {
   int? ID;
   String? PermanentTransId;
   String? TransId;
@@ -45,6 +46,7 @@ class MNOCLD{
   bool? IsRequest;
   bool hasCreated;
   bool hasUpdated;
+
   MNOCLD({
     this.ID,
     this.PermanentTransId,
@@ -83,91 +85,103 @@ class MNOCLD{
     this.hasCreated = false,
     this.hasUpdated = false,
   });
-  factory MNOCLD.fromJson(Map<String,dynamic> json)=>MNOCLD(
-    ID : int.tryParse(json['ID'].toString())??0,
-    PermanentTransId : json['PermanentTransId']?.toString()??'',
-    TransId : json['TransId']?.toString()??'',
-    DocEntry : int.tryParse(json['DocEntry'].toString())??0,
-    DocNum : json['DocNum']?.toString()??'',
-    Canceled : json['Canceled']?.toString()??'',
-    DocStatus : json['DocStatus']?.toString()??'',
-    hasCreated: json['has_created'] == 1,
-    hasUpdated: json['has_updated'] == 1,
-    ApprovalStatus : json['ApprovalStatus']?.toString()??'',
-    CheckListStatus : json['CheckListStatus']?.toString()??'',
-    ObjectCode : json['ObjectCode']?.toString()??'',
-    EquipmentCode : json['EquipmentCode']?.toString()??'',
-    EquipmentName : json['EquipmentName']?.toString()??'',
-    CheckListCode : json['CheckListCode']?.toString()??'',
-    CheckListName : json['CheckListName']?.toString()??'',
-    WorkCenterCode : json['WorkCenterCode']?.toString()??'',
-    WorkCenterName : json['WorkCenterName']?.toString()??'',
-    OpenDate : DateTime.tryParse(json['OpenDate'].toString()),
-    CloseDate : DateTime.tryParse(json['CloseDate'].toString()),
-    PostingDate : DateTime.tryParse(json['PostingDate'].toString()),
-    ValidUntill : DateTime.tryParse(json['ValidUntill'].toString()),
-    LastReadingDate : DateTime.tryParse(json['LastReadingDate'].toString()),
-    LastReading : json['LastReading']?.toString()??'',
-    AssignedUserCode : json['AssignedUserCode']?.toString()??'',
-    AssignedUserName : json['AssignedUserName']?.toString()??'',
-    MNJCTransId : json['MNJCTransId']?.toString()??'',
-    Remarks : json['Remarks']?.toString()??'',
-    CreatedBy : json['CreatedBy']?.toString()??'',
-    UpdatedBy : json['UpdatedBy']?.toString()??'',
-    BranchId : json['BranchId']?.toString()??'',
-    CreateDate : DateTime.tryParse(json['CreateDate'].toString()),
-    UpdateDate : DateTime.tryParse(json['UpdateDate'].toString()),
-    CurrentReading : json['CurrentReading']?.toString()??'',
-    IsConsumption : json['IsConsumption'] is bool ? json['IsConsumption'] : json['IsConsumption']==1,
-    IsRequest : json['IsRequest'] is bool ? json['IsRequest'] : json['IsRequest']==1,
-  );
-  Map<String,dynamic> toJson()=>{
-    'ID' : ID,
-    'PermanentTransId' : PermanentTransId,
-    'TransId' : TransId,
-    'DocEntry' : DocEntry,
-    'DocNum' : DocNum,
-    'Canceled' : Canceled,
-    'DocStatus' : DocStatus,
-    'ApprovalStatus' : ApprovalStatus,
-    'CheckListStatus' : CheckListStatus,
-    'ObjectCode' : ObjectCode,
-    'EquipmentCode' : EquipmentCode,
-    'EquipmentName' : EquipmentName,
-    'CheckListCode' : CheckListCode,
-    'CheckListName' : CheckListName,
-    'WorkCenterCode' : WorkCenterCode,
-    'WorkCenterName' : WorkCenterName,
-    "has_created": hasCreated ? 1 : 0,
-    "has_updated": hasUpdated ? 1 : 0,
-    'OpenDate' : OpenDate?.toIso8601String(),
-    'CloseDate' : CloseDate?.toIso8601String(),
-    'PostingDate' : PostingDate?.toIso8601String(),
-    'ValidUntill' : ValidUntill?.toIso8601String(),
-    'LastReadingDate' : LastReadingDate?.toIso8601String(),
-    'LastReading' : LastReading,
-    'AssignedUserCode' : AssignedUserCode,
-    'AssignedUserName' : AssignedUserName,
-    'MNJCTransId' : MNJCTransId,
-    'Remarks' : Remarks,
-    'CreatedBy' : CreatedBy,
-    'UpdatedBy' : UpdatedBy,
-    'BranchId' : BranchId,
-    'CreateDate' : CreateDate?.toIso8601String(),
-    'UpdateDate' : UpdateDate?.toIso8601String(),
-    'CurrentReading' : CurrentReading,
-    'IsConsumption' : IsConsumption,
-    'IsRequest' : IsRequest,
-  };
+
+  factory MNOCLD.fromJson(Map<String, dynamic> json) => MNOCLD(
+        ID: int.tryParse(json['ID'].toString()) ?? 0,
+        PermanentTransId: json['PermanentTransId']?.toString() ?? '',
+        TransId: json['TransId']?.toString() ?? '',
+        DocEntry: int.tryParse(json['DocEntry'].toString()) ?? 0,
+        DocNum: json['DocNum']?.toString() ?? '',
+        Canceled: json['Canceled']?.toString() ?? '',
+        DocStatus: json['DocStatus']?.toString() ?? '',
+        hasCreated: json['has_created'] == 1,
+        hasUpdated: json['has_updated'] == 1,
+        ApprovalStatus: json['ApprovalStatus']?.toString() ?? '',
+        CheckListStatus: json['CheckListStatus']?.toString() ?? '',
+        ObjectCode: json['ObjectCode']?.toString() ?? '',
+        EquipmentCode: json['EquipmentCode']?.toString() ?? '',
+        EquipmentName: json['EquipmentName']?.toString() ?? '',
+        CheckListCode: json['CheckListCode']?.toString() ?? '',
+        CheckListName: json['CheckListName']?.toString() ?? '',
+        WorkCenterCode: json['WorkCenterCode']?.toString() ?? '',
+        WorkCenterName: json['WorkCenterName']?.toString() ?? '',
+        OpenDate: DateTime.tryParse(json['OpenDate'].toString()),
+        CloseDate: DateTime.tryParse(json['CloseDate'].toString()),
+        PostingDate: DateTime.tryParse(json['PostingDate'].toString()),
+        ValidUntill: DateTime.tryParse(json['ValidUntill'].toString()),
+        LastReadingDate: DateTime.tryParse(json['LastReadingDate'].toString()),
+        LastReading: json['LastReading']?.toString() ?? '',
+        AssignedUserCode: json['AssignedUserCode']?.toString() ?? '',
+        AssignedUserName: json['AssignedUserName']?.toString() ?? '',
+        MNJCTransId: json['MNJCTransId']?.toString() ?? '',
+        Remarks: json['Remarks']?.toString() ?? '',
+        CreatedBy: json['CreatedBy']?.toString() ?? '',
+        UpdatedBy: json['UpdatedBy']?.toString() ?? '',
+        BranchId: json['BranchId']?.toString() ?? '',
+        CreateDate: DateTime.tryParse(json['CreateDate'].toString()),
+        UpdateDate: DateTime.tryParse(json['UpdateDate'].toString()),
+        CurrentReading: json['CurrentReading']?.toString() ?? '',
+        IsConsumption: json['IsConsumption'] is bool
+            ? json['IsConsumption']
+            : json['IsConsumption'] == 1,
+        IsRequest: json['IsRequest'] is bool
+            ? json['IsRequest']
+            : json['IsRequest'] == 1,
+      );
+
+  Map<String, dynamic> toJson() => {
+        'ID': ID,
+        'PermanentTransId': PermanentTransId,
+        'TransId': TransId,
+        'DocEntry': DocEntry,
+        'DocNum': DocNum,
+        'Canceled': Canceled,
+        'DocStatus': DocStatus,
+        'ApprovalStatus': ApprovalStatus,
+        'CheckListStatus': CheckListStatus,
+        'ObjectCode': ObjectCode,
+        'EquipmentCode': EquipmentCode,
+        'EquipmentName': EquipmentName,
+        'CheckListCode': CheckListCode,
+        'CheckListName': CheckListName,
+        'WorkCenterCode': WorkCenterCode,
+        'WorkCenterName': WorkCenterName,
+        "has_created": hasCreated ? 1 : 0,
+        "has_updated": hasUpdated ? 1 : 0,
+        'OpenDate': OpenDate?.toIso8601String(),
+        'CloseDate': CloseDate?.toIso8601String(),
+        'PostingDate': PostingDate?.toIso8601String(),
+        'ValidUntill': ValidUntill?.toIso8601String(),
+        'LastReadingDate': LastReadingDate?.toIso8601String(),
+        'LastReading': LastReading,
+        'AssignedUserCode': AssignedUserCode,
+        'AssignedUserName': AssignedUserName,
+        'MNJCTransId': MNJCTransId,
+        'Remarks': Remarks,
+        'CreatedBy': CreatedBy,
+        'UpdatedBy': UpdatedBy,
+        'BranchId': BranchId,
+        'CreateDate': CreateDate?.toIso8601String(),
+        'UpdateDate': UpdateDate?.toIso8601String(),
+        'CurrentReading': CurrentReading,
+        'IsConsumption': IsConsumption,
+        'IsRequest': IsRequest,
+      };
 }
-List<MNOCLD> mNOCLDFromJson(String str) => List<MNOCLD>.from(
-    json.decode(str).map((x) => MNOCLD.fromJson(x)));
+
+List<MNOCLD> mNOCLDFromJson(String str) =>
+    List<MNOCLD>.from(json.decode(str).map((x) => MNOCLD.fromJson(x)));
+
 String mNOCLDToJson(List<MNOCLD> data) =>
     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+
 Future<List<MNOCLD>> dataSyncMNOCLD() async {
-  var res = await http.get(headers: header, Uri.parse(prefix + "MNOCLD" + postfix));
+  var res =
+      await http.get(headers: header, Uri.parse(prefix + "MNOCLD" + postfix));
   print(res.body);
-  return mNOCLDFromJson(res.body);}
+  return mNOCLDFromJson(res.body);
+}
+
 Future<void> insertMNOCLD(Database db, {List? list}) async {
   if (postfix.toLowerCase().contains('all')) {
     await deleteMNOCLD(db);
@@ -182,7 +196,8 @@ Future<void> insertMNOCLD(Database db, {List? list}) async {
   Stopwatch stopwatch = Stopwatch();
   stopwatch.start();
   for (var i = 0; i < customers.length; i += batchSize) {
-    var end = (i + batchSize < customers.length) ? i + batchSize : customers.length;
+    var end =
+        (i + batchSize < customers.length) ? i + batchSize : customers.length;
     var batchRecords = customers.sublist(i, end);
     await db.transaction((txn) async {
       var batch = txn.batch();
@@ -225,9 +240,9 @@ Future<void> insertMNOCLD(Database db, {List? list}) async {
       for (var element in batchRecords) {
         try {
           batch.update("MNOCLD", element,
-              where: "TransId = ? AND ifnull(has_created,0) <> ? AND ifnull(has_updated,0) <> ?",
+              where:
+                  "TransId = ? AND ifnull(has_created,0) <> ? AND ifnull(has_updated,0) <> ?",
               whereArgs: [element["TransId"], 1, 1]);
-
         } catch (e) {
           writeToLogFile(
               text: e.toString(),
@@ -285,37 +300,55 @@ Future<List<MNOCLD>> retrieveMNOCLD(BuildContext context) async {
   final List<Map<String, Object?>> queryResult = await db.query('MNOCLD');
   return queryResult.map((e) => MNOCLD.fromJson(e)).toList();
 }
+
 Future<List<MNOCLD>> retrieveMNOCLDFORSEARCH({
   int? limit,
   String? query,
 }) async {
-  query="%$query%";
+  query = "%$query%";
   final Database db = await initializeDB(null);
-  final List<Map<String, Object?>> queryResult = await db.rawQuery("SELECT * FROM MNOCLD WHERE TransId LIKE '$query'");
+  final List<Map<String, Object?>> queryResult =
+      await db.rawQuery("SELECT * FROM MNOCLD WHERE TransId LIKE '$query'");
   return queryResult.map((e) => MNOCLD.fromJson(e)).toList();
 }
-Future<void> updateMNOCLD(int id, Map<String, dynamic> values, BuildContext context) async {
+
+Future<void> updateMNOCLD(
+    int id, Map<String, dynamic> values, BuildContext context) async {
   final db = await initializeDB(context);
   try {
     db.transaction((db) async {
       await db.update('MNOCLD', values, where: 'ID = ?', whereArgs: [id]);
     });
   } catch (e) {
-    getErrorSnackBar('Sync Error ' + e.toString());}}
+    getErrorSnackBar('Sync Error ' + e.toString());
+  }
+}
+
 Future<void> deleteMNOCLD(Database db) async {
   await db.delete('MNOCLD');
 }
-Future<List<MNOCLD>> retrieveMNOCLDById(BuildContext? context, String str, List l) async {
+
+Future<List<MNOCLD>> retrieveMNOCLDById(
+    BuildContext? context, String str, List l) async {
   final Database db = await initializeDB(context);
-  final List<Map<String, Object?>> queryResult = await db.query('MNOCLD', where: str, whereArgs: l);
+  final List<Map<String, Object?>> queryResult =
+      await db.query('MNOCLD', where: str, whereArgs: l);
   return queryResult.map((e) => MNOCLD.fromJson(e)).toList();
 }
-Future<String> insertMNOCLDToServer(BuildContext? context, {String? TransId, int? id}) async {
+
+Future<String> insertMNOCLDToServer(BuildContext? context,
+    {String? TransId, int? id}) async {
   String response = "";
-  List<MNOCLD> list = await retrieveMNOCLDById(context, TransId == null ? DataSync.getInsertToServerStr() : "TransId = ? AND ID = ?", TransId == null ? DataSync.getInsertToServerList() : [TransId, id]);
+  List<MNOCLD> list = await retrieveMNOCLDById(
+      context,
+      TransId == null
+          ? DataSync.getInsertToServerStr()
+          : "TransId = ? AND ID = ?",
+      TransId == null ? DataSync.getInsertToServerList() : [TransId, id]);
   if (TransId != null) {
     list[0].ID = 0;
-    var res = await http.post(Uri.parse(prefix + "MNOCLD/Add"), headers: header, body: jsonEncode(list[0].toJson()));
+    var res = await http.post(Uri.parse(prefix + "MNOCLD/Add"),
+        headers: header, body: jsonEncode(list[0].toJson()));
     response = res.body;
   } else if (list.isNotEmpty) {
     int i = 0;
@@ -325,9 +358,12 @@ Future<String> insertMNOCLDToServer(BuildContext? context, {String? TransId, int
       try {
         Map<String, dynamic> map = list[i].toJson();
         map.remove('ID');
-        var res = await http.post(Uri.parse(prefix + "MNOCLD/Add"), headers: header,
-            body: jsonEncode(map)).timeout(Duration(seconds: 30), onTimeout: () {
-          return http.Response('Error', 500);});
+        var res = await http
+            .post(Uri.parse(prefix + "MNOCLD/Add"),
+                headers: header, body: jsonEncode(map))
+            .timeout(Duration(seconds: 30), onTimeout: () {
+          return http.Response('Error', 500);
+        });
         response = await res.body;
         print("eeaaae status");
         print(await res.statusCode);
@@ -338,18 +374,30 @@ Future<String> insertMNOCLDToServer(BuildContext? context, {String? TransId, int
             final Database db = await initializeDB(context);
             // map=jsonDecode(res.body);
             map["has_created"] = 0;
-            var x = await db.update("MNOCLD", map, where: "TransId = ? AND RowId = ?", whereArgs: [map["TransId"], map["RowId"]]);
-            print(x.toString());}}
+            var x = await db.update("MNOCLD", map,
+                where: "TransId = ? AND RowId = ?",
+                whereArgs: [map["TransId"], map["RowId"]]);
+            print(x.toString());
+          }
+        }
         print(res.body);
       } catch (e) {
         print("Timeout " + e.toString());
-        sentSuccessInServer = true;}
+        sentSuccessInServer = true;
+      }
       i++;
       print("INDEX = " + i.toString());
-    } while (i < list.length && sentSuccessInServer == true);}
-  return response;}
-Future<void> updateMNOCLDOnServer(BuildContext? context, {String? condition, List? l}) async {
-  List<MNOCLD> list = await retrieveMNOCLDById(context, l == null ? DataSync.getUpdateOnServerStr() : condition ?? "", l == null ? DataSync.getUpdateOnServerList() : l);
+    } while (i < list.length && sentSuccessInServer == true);
+  }
+  return response;
+}
+
+Future<void> updateMNOCLDOnServer(BuildContext? context,
+    {String? condition, List? l}) async {
+  List<MNOCLD> list = await retrieveMNOCLDById(
+      context,
+      l == null ? DataSync.getUpdateOnServerStr() : condition ?? "",
+      l == null ? DataSync.getUpdateOnServerList() : l);
   print(list);
   int i = 0;
   bool sentSuccessInServer = false;
@@ -357,7 +405,10 @@ Future<void> updateMNOCLDOnServer(BuildContext? context, {String? condition, Lis
     sentSuccessInServer = false;
     try {
       Map<String, dynamic> map = list[i].toJson();
-      var res = await http.put(Uri.parse(prefix + 'MNOCLD/Update'), headers: header, body: jsonEncode(map)).timeout(Duration(seconds: 30), onTimeout: () {
+      var res = await http
+          .put(Uri.parse(prefix + 'MNOCLD/Update'),
+              headers: header, body: jsonEncode(map))
+          .timeout(Duration(seconds: 30), onTimeout: () {
         return http.Response('Error', 500);
       });
       print(await res.statusCode);
@@ -366,7 +417,9 @@ Future<void> updateMNOCLDOnServer(BuildContext? context, {String? condition, Lis
         if (res.statusCode == 201) {
           final Database db = await initializeDB(context);
           map["has_updated"] = 0;
-          var x = await db.update("MNOCLD", map, where: "TransId = ? AND RowId = ?", whereArgs: [map["TransId"], map["RowId"]]);
+          var x = await db.update("MNOCLD", map,
+              where: "TransId = ? AND RowId = ?",
+              whereArgs: [map["TransId"], map["RowId"]]);
           print(x.toString());
         }
       }
@@ -380,4 +433,3 @@ Future<void> updateMNOCLDOnServer(BuildContext? context, {String? condition, Lis
     print("INDEX = " + i.toString());
   } while (i < list.length && sentSuccessInServer == true);
 }
-

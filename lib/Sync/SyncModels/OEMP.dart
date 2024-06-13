@@ -160,7 +160,7 @@ class OEMPModel {
         IsTeamLeader: json["IsTeamLeader"] is bool
             ? json["IsTeamLeader"]
             : json["IsTeamLeader"] == 1,
-    IsTechnician: json["IsTechnician"] is bool
+        IsTechnician: json["IsTechnician"] is bool
             ? json["IsTechnician"]
             : json["IsTechnician"] == 1,
         IsSalesExecutive: json["IsSalesExecutive"] is bool
@@ -238,6 +238,7 @@ Future<List<OEMPModel>> retrieveOEMPForSearch(
       "SELECT FirstName || MiddleName || LastName as Name,* FROM OEMP where Name LIKE \'%$query%\' COLLATE NOCASE LIMIT $limit");
   return queryResult.map((e) => OEMPModel.fromJson(e)).toList();
 }
+
 Future<List<OEMPModel>> retrieveTechnicianForSearch(
     {required String query, int? limit}) async {
   final Database db = await initializeDB(null);

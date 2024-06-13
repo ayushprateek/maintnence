@@ -64,7 +64,7 @@ class OCINModel {
     this.OrganizationLogoUrl,
     this.OrganizationBackgroundUrl,
     // this.DBUploadPsw,
-    this.IsAdditionalDeposit=false,
+    this.IsAdditionalDeposit = false,
   });
 
   int? ID;
@@ -113,14 +113,18 @@ class OCINModel {
   String? OrganizationBackgroundUrl;
   String? OrganizationLogoUrl;
   String? MinMobileVersion;
+
   // String? DBUploadPsw;
   int? MinMobileBuildNo;
+
   factory OCINModel.fromJson(Map<String, dynamic> json) => OCINModel(
         ID: int.tryParse(json["ID"].toString()) ?? 0,
         MobSessionTimoutMinute:
             int.tryParse(json["MobSessionTimoutMinute"].toString()) ?? 0,
-        MobSyncTimeMinute: int.tryParse(json["MobSyncTimeMinute"].toString()) ?? 0,
-    MinMobileBuildNo: int.tryParse(json["MinMobileBuildNo"].toString()) ?? 0,
+        MobSyncTimeMinute:
+            int.tryParse(json["MobSyncTimeMinute"].toString()) ?? 0,
+        MinMobileBuildNo:
+            int.tryParse(json["MinMobileBuildNo"].toString()) ?? 0,
         CompanyName: json["CompanyName"] ?? "",
         CreateDate: DateTime.tryParse(json["CreateDate"].toString()) ??
             DateTime.parse("1900-01-01"),
@@ -141,14 +145,14 @@ class OCINModel {
         WebSite: json["WebSite"] ?? "",
         Telephone: json["Telephone"] ?? "",
         MobURL: json["MobURL"] ?? "",
-    // DBUploadPsw: json["DBUploadPsw"] ?? "",
+        // DBUploadPsw: json["DBUploadPsw"] ?? "",
         Longitude: json["Longitude"] ?? "",
         Latitude: json["Latitude"] ?? "",
         Fax: json["Fax"] ?? "",
         SDRequired: json["SDRequired"] is bool
             ? json["SDRequired"]
             : json["SDRequired"] == 1,
-    IsAdditionalDeposit: json["IsAdditionalDeposit"] is bool
+        IsAdditionalDeposit: json["IsAdditionalDeposit"] is bool
             ? json["IsAdditionalDeposit"]
             : json["IsAdditionalDeposit"] == 1,
         PAN: json["PAN"] ?? "",
@@ -158,13 +162,13 @@ class OCINModel {
         SCurr: json["SCurr"] ?? "",
         LCurr: json["LCurr"] ?? "",
         Email: json["Email"] ?? "",
-    OrganizationBackgroundUrl: json["OrganizationBackgroundUrl"] ?? "",
-    OrganizationLogoUrl: json["OrganizationLogoUrl"] ?? "",
+        OrganizationBackgroundUrl: json["OrganizationBackgroundUrl"] ?? "",
+        OrganizationLogoUrl: json["OrganizationLogoUrl"] ?? "",
         CountryName: json["CountryName"] ?? "",
         StateName: json["StateName"] ?? "",
         CreatedBy: json['CreatedBy'] ?? '',
         UpdatedBy: json['UpdatedBy'] ?? '',
-    MinMobileVersion: json['MinMobileVersion'] ?? '',
+        MinMobileVersion: json['MinMobileVersion'] ?? '',
         MapRange: double.tryParse(json['MapRange'].toString()) ?? 0.0,
         DateFormat: json['DateFormat'] ?? '',
         BranchId: json['BranchId'] ?? '',
@@ -321,7 +325,7 @@ Future<void> insertOCIN(Database db, {List? list}) async {
   stopwatch.start();
   for (var i = 0; i < customers.length; i += batchSize) {
     var end =
-    (i + batchSize < customers.length) ? i + batchSize : customers.length;
+        (i + batchSize < customers.length) ? i + batchSize : customers.length;
     var batchRecords = customers.sublist(i, end);
     await db.transaction((txn) async {
       var batch = txn.batch();
@@ -361,9 +365,9 @@ Future<void> insertOCIN(Database db, {List? list}) async {
       for (var element in batchRecords) {
         try {
           batch.update("OCIN", element,
-              where: "CompanyName = ? AND ifnull(has_created,0) <> ? AND ifnull(has_updated,0) <> ?",
+              where:
+                  "CompanyName = ? AND ifnull(has_created,0) <> ? AND ifnull(has_updated,0) <> ?",
               whereArgs: [element["CompanyName"], 1, 1]);
-
         } catch (e) {
           writeToLogFile(
               text: e.toString(),

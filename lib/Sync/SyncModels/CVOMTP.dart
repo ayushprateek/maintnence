@@ -237,8 +237,9 @@ Future<String> insertCVOMTPToServer(BuildContext? context,
       try {
         Map<String, dynamic> map = list[i].toJson();
         map.remove('ID');
-        String queryParams='Code=${list[i].Code}';
-        var res = await http.post(Uri.parse(prefix + "CVOMTP/Add?$queryParams"),
+        String queryParams = 'Code=${list[i].Code}';
+        var res = await http
+            .post(Uri.parse(prefix + "CVOMTP/Add?$queryParams"),
                 headers: header, body: jsonEncode(map))
             .timeout(Duration(seconds: 30), onTimeout: () {
           return http.Response('Error', 500);
@@ -246,17 +247,14 @@ Future<String> insertCVOMTPToServer(BuildContext? context,
         response = await res.body;
         print("eeaaae status");
         print(await res.statusCode);
-        if(res.statusCode ==409)
-        {
+        if (res.statusCode == 409) {
           ///Already added in server
           final Database db = await initializeDB(context);
-          CVOMTP model=CVOMTP.fromJson(jsonDecode(res.body));
+          CVOMTP model = CVOMTP.fromJson(jsonDecode(res.body));
           var x = await db.update("CVOMTP", model.toJson(),
               where: "Code = ?", whereArgs: [model.Code]);
           print(x.toString());
-        }
-        else
-        if (res.statusCode == 201 || res.statusCode == 500) {
+        } else if (res.statusCode == 201 || res.statusCode == 500) {
           sentSuccessInServer = true;
           if (res.statusCode == 201) {
             map['ID'] = jsonDecode(res.body)['ID'];

@@ -57,8 +57,7 @@ class SUOTSL {
     this.IsChild,
   });
 
-  factory SUOTSL.fromJson(Map<String, dynamic> json) =>
-      SUOTSL(
+  factory SUOTSL.fromJson(Map<String, dynamic> json) => SUOTSL(
         ID: int.tryParse(json['ID'].toString()) ?? 0,
         TaskUniqueId: int.tryParse(json['TaskUniqueId'].toString()) ?? 0,
         TaskParentId: int.tryParse(json['TaskParentId'].toString()) ?? 0,
@@ -80,7 +79,7 @@ class SUOTSL {
             ? json['has_created']
             : json['has_created'] == 1,
         IsChild:
-        json['IsChild'] is bool ? json['IsChild'] : json['IsChild'] == 1,
+            json['IsChild'] is bool ? json['IsChild'] : json['IsChild'] == 1,
         hasUpdated: json['has_updated'] is bool
             ? json['has_updated']
             : json['has_updated'] == 1,
@@ -89,8 +88,7 @@ class SUOTSL {
             : json['IsTaskChecked'] == 1,
       );
 
-  Map<String, dynamic> toJson() =>
-      {
+  Map<String, dynamic> toJson() => {
         'ID': ID,
         'TaskUniqueId': TaskUniqueId,
         'TaskParentId': TaskParentId,
@@ -123,7 +121,7 @@ String sUOTSKLToJson(List<SUOTSL> data) =>
 
 Future<List<SUOTSL>> dataSyncSUOTSL() async {
   var res =
-  await http.get(headers: header, Uri.parse(prefix + "SUOTSL" + postfix));
+      await http.get(headers: header, Uri.parse(prefix + "SUOTSL" + postfix));
   print(res.body);
   return sUOTSKLFromJson(res.body);
 }
@@ -187,7 +185,7 @@ Future<void> insertSUOTSL(Database db, {List? list}) async {
   stopwatch.start();
   for (var i = 0; i < customers.length; i += batchSize) {
     var end =
-    (i + batchSize < customers.length) ? i + batchSize : customers.length;
+        (i + batchSize < customers.length) ? i + batchSize : customers.length;
     var batchRecords = customers.sublist(i, end);
     await db.transaction((txn) async {
       var batch = txn.batch();
@@ -227,7 +225,8 @@ Future<void> insertSUOTSL(Database db, {List? list}) async {
       for (var element in batchRecords) {
         try {
           batch.update("SUOTSL", element,
-              where: "TicketCode = ? AND ifnull(has_created,0) <> ? AND ifnull(has_updated,0) <> ?",
+              where:
+                  "TicketCode = ? AND ifnull(has_created,0) <> ? AND ifnull(has_updated,0) <> ?",
               whereArgs: [element["TicketCode"], 1, 1]);
         } catch (e) {
           writeToLogFile(
@@ -288,15 +287,16 @@ Future<List<SUOTSL>> retrieveSUOTSL(BuildContext context) async {
   return queryResult.map((e) => SUOTSL.fromJson(e)).toList();
 }
 
-Future<void> updateSUOTSL(int id, Map<String, dynamic> values,
-    BuildContext context) async {
+Future<void> updateSUOTSL(
+    int id, Map<String, dynamic> values, BuildContext context) async {
   final db = await initializeDB(context);
   try {
     db.transaction((db) async {
       await db.update('SUOTSL', values, where: 'ID = ?', whereArgs: [id]);
     });
   } catch (e) {
-    writeToLogFile(text: e.toString(),
+    writeToLogFile(
+        text: e.toString(),
         fileName: StackTrace.current.toString(),
         lineNo: 141);
     getErrorSnackBar('Sync Error ' + e.toString());
@@ -307,11 +307,11 @@ Future<void> deleteSUOTSL(Database db) async {
   await db.delete('SUOTSL');
 }
 
-Future<List<SUOTSL>> retrieveSUOTSLById(BuildContext? context, String str,
-    List l) async {
+Future<List<SUOTSL>> retrieveSUOTSLById(
+    BuildContext? context, String str, List l) async {
   final Database db = await initializeDB(context);
   final List<Map<String, Object?>> queryResult =
-  await db.query('SUOTSL', where: str, whereArgs: l);
+      await db.query('SUOTSL', where: str, whereArgs: l);
   return queryResult.map((e) => SUOTSL.fromJson(e)).toList();
 }
 
@@ -335,24 +335,28 @@ Future<void> insertSUOTSLToServer(BuildContext? context,
     if (list.isEmpty) {
       return;
     }
-    do {Map<String, dynamic> map = list[i].toJson();
+    do {
+      Map<String, dynamic> map = list[i].toJson();
       sentSuccessInServer = false;
       try {
         map.remove('ID');
         var res = await http
             .post(Uri.parse(prefix + "SUOTSL/Add"),
-            headers: header, body: jsonEncode(map))
+                headers: header, body: jsonEncode(map))
             .timeout(Duration(seconds: 30), onTimeout: () {
           writeToLogFile(
-            text: '500 error \nMap : $map', fileName: StackTrace.current.toString(), lineNo: 141);return http.Response('Error', 500);
+              text: '500 error \nMap : $map',
+              fileName: StackTrace.current.toString(),
+              lineNo: 141);
+          return http.Response('Error', 500);
         });
         response = await res.body;
         print("eeaaae status");
         print(await res.statusCode);
-        if(res.statusCode != 201)
-        {
+        if (res.statusCode != 201) {
           await writeToLogFile(
-              text: '${res.statusCode} error \nMap : $map\nResponse : ${res.body}',
+              text:
+                  '${res.statusCode} error \nMap : $map\nResponse : ${res.body}',
               fileName: StackTrace.current.toString(),
               lineNo: 141);
         }
@@ -371,16 +375,15 @@ Future<void> insertSUOTSLToServer(BuildContext? context,
         print(res.body);
       } catch (e) {
         writeToLogFile(
-            text: '${e.toString()}\nMap : $map', fileName: StackTrace.current.toString(), lineNo: 141);
-  sentSuccessInServer = true;
+            text: '${e.toString()}\nMap : $map',
+            fileName: StackTrace.current.toString(),
+            lineNo: 141);
+        sentSuccessInServer = true;
+      }
+      i++;
+      print("INDEX = " + i.toString());
+    } while (i < list.length && sentSuccessInServer == true);
   }
-  i++;
-  print("INDEX = " + i.toString());
-  } while (i < list.length && sentSuccessInServer ==
-  true
-  );
-}
-
 }
 
 Future<void> updateSUOTSLOnServer(BuildContext? context,
@@ -395,7 +398,8 @@ Future<void> updateSUOTSLOnServer(BuildContext? context,
   if (list.isEmpty) {
     return;
   }
-  do {Map<String, dynamic> map = list[i].toJson();
+  do {
+    Map<String, dynamic> map = list[i].toJson();
     sentSuccessInServer = false;
     try {
       if (list.isEmpty) {
@@ -404,20 +408,23 @@ Future<void> updateSUOTSLOnServer(BuildContext? context,
       Map<String, dynamic> map = list[i].toJson();
       var res = await http
           .put(Uri.parse(prefix + 'SUOTSL/Update'),
-          headers: header, body: jsonEncode(map))
+              headers: header, body: jsonEncode(map))
           .timeout(Duration(seconds: 30), onTimeout: () {
         writeToLogFile(
-            text: '500 error \nMap : $map', fileName: StackTrace.current.toString(), lineNo: 141);return http.Response('Error', 500);
+            text: '500 error \nMap : $map',
+            fileName: StackTrace.current.toString(),
+            lineNo: 141);
+        return http.Response('Error', 500);
       });
       print(await res.statusCode);
-      if(res.statusCode != 201)
-        {
-          await writeToLogFile(
-              text: '${res.statusCode} error \nMap : $map\nResponse : ${res.body}',
-              fileName: StackTrace.current.toString(),
-              lineNo: 141);
-        }
-        if (res.statusCode == 201 || res.statusCode == 500) {
+      if (res.statusCode != 201) {
+        await writeToLogFile(
+            text:
+                '${res.statusCode} error \nMap : $map\nResponse : ${res.body}',
+            fileName: StackTrace.current.toString(),
+            lineNo: 141);
+      }
+      if (res.statusCode == 201 || res.statusCode == 500) {
         sentSuccessInServer = true;
         if (res.statusCode == 201) {
           final Database db = await initializeDB(context);
@@ -430,12 +437,14 @@ Future<void> updateSUOTSLOnServer(BuildContext? context,
       print(res.body);
     } catch (e) {
       writeToLogFile(
-          text: '${e.toString()}\nMap : $map', fileName: StackTrace.current.toString(), lineNo: 141);
-  sentSuccessInServer = true;
-  }
+          text: '${e.toString()}\nMap : $map',
+          fileName: StackTrace.current.toString(),
+          lineNo: 141);
+      sentSuccessInServer = true;
+    }
 
-  i++;
-  print("INDEX = " + i.toString());
+    i++;
+    print("INDEX = " + i.toString());
   } while (i < list.length && sentSuccessInServer == true);
 }
 
@@ -443,14 +452,14 @@ Future<List<SUOTSL>> getExpansionTileData() async {
   Database db = await initializeDB(null);
   //results = db.SUOTSLs.Where(s => s.TaskUniqueId.HasValue && s.TaskParentId.HasValue && s.TaskUniqueId.Value == s.TaskParentId.Value).ToList();
   final List<Map<String, Object?>> queryResult =
-  await db.rawQuery('SELECT * FROM SUOTSL WHERE TaskUniqueId=TaskParentId');
+      await db.rawQuery('SELECT * FROM SUOTSL WHERE TaskUniqueId=TaskParentId');
   return queryResult.map((e) => SUOTSL.fromJson(e)).toList();
 }
 
 Future<SUOTSL?> GetSingleTask(int? TaskUniqueId) async {
   // SUOTSL sUOTSL = db.SUOTSLs.Where(x => TaskUniqueId == TaskUniqueId).First();
   List<SUOTSL> suotslList =
-  await retrieveSUOTSLById(null, 'TaskUniqueId = ?', [TaskUniqueId]);
+      await retrieveSUOTSLById(null, 'TaskUniqueId = ?', [TaskUniqueId]);
   if (suotslList.isEmpty) {
     return suotslList[0];
   } else {
@@ -462,14 +471,14 @@ Future<SUOTSL?> GetSingleTask(int? TaskUniqueId) async {
 Future<List<SUOTSL>> GetAllParentTask() async {
   Database db = await initializeDB(null);
   final List<Map<String, Object?>> queryResult =
-  await db.rawQuery('SELECT * FROM SUOTSL WHERE TaskUniqueId=TaskParentId');
+      await db.rawQuery('SELECT * FROM SUOTSL WHERE TaskUniqueId=TaskParentId');
   return queryResult.map((e) => SUOTSL.fromJson(e)).toList();
 }
 
 Future<List<SUOTSL>> getAllChildTask(int? TaskUniqueId) async {
   // List<SUOTSL> sUOTSL = db.SUOTSLs.Where(x => x.TaskParentId == TaskUniqueId).ToList();
   List<SUOTSL> sUOTSL =
-  await retrieveSUOTSLById(null, 'TaskParentId = ?', [TaskUniqueId]);
+      await retrieveSUOTSLById(null, 'TaskParentId = ?', [TaskUniqueId]);
   return sUOTSL;
 }
 

@@ -66,7 +66,7 @@ class OMNUModel {
 
   factory OMNUModel.fromJson(Map<String, dynamic> json) => OMNUModel(
         ID: int.tryParse(json["ID"].toString()) ?? 0,
-    NoOfPrints: int.tryParse(json["NoOfPrints"].toString()) ?? 1,
+        NoOfPrints: int.tryParse(json["NoOfPrints"].toString()) ?? 1,
         MenuDesc: json["MenuDesc"] ?? "",
         CreateDate: DateTime.tryParse(json["CreateDate"].toString()) ??
             DateTime.parse("1900-01-01"),
@@ -85,7 +85,7 @@ class OMNUModel {
             : json["BranchName"] == 1,
         Self: json["Self"] is bool ? json["Self"] : json["Self"] == 1,
         Url: json['Url'] ?? '',
-    Code: json['Code'] ?? '',
+        Code: json['Code'] ?? '',
         MenuPath: json['MenuPath'] ?? '',
         ControllerName: json['ControllerName'] ?? '',
         CreatedBy: json['CreatedBy'] ?? '',
@@ -246,7 +246,7 @@ Future<void> insertOMNU(Database db, {List? list}) async {
   stopwatch.start();
   for (var i = 0; i < customers.length; i += batchSize) {
     var end =
-    (i + batchSize < customers.length) ? i + batchSize : customers.length;
+        (i + batchSize < customers.length) ? i + batchSize : customers.length;
     var batchRecords = customers.sublist(i, end);
     await db.transaction((txn) async {
       var batch = txn.batch();
@@ -286,9 +286,9 @@ Future<void> insertOMNU(Database db, {List? list}) async {
       for (var element in batchRecords) {
         try {
           batch.update("OMNU", element,
-              where: "MenuDesc = ? AND ifnull(has_created,0) <> ? AND ifnull(has_updated,0) <> ?",
+              where:
+                  "MenuDesc = ? AND ifnull(has_created,0) <> ? AND ifnull(has_updated,0) <> ?",
               whereArgs: [element["MenuDesc"], 1, 1]);
-
         } catch (e) {
           writeToLogFile(
               text: e.toString(),

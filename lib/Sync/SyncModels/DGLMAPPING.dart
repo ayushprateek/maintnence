@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:maintenance/Component/LogFileFunctions.dart';
 import 'package:maintenance/Component/SnackbarComponent.dart';
@@ -39,8 +38,7 @@ class DGLMAPPING {
     this.ID,
   });
 
-  factory DGLMAPPING.fromJson(Map<String, dynamic> json) =>
-      DGLMAPPING(
+  factory DGLMAPPING.fromJson(Map<String, dynamic> json) => DGLMAPPING(
         AcctCode: json['AcctCode'] ?? '',
         AcctName: json['AcctName'] ?? '',
         UBranch: json['U_Branch'] ?? '',
@@ -55,8 +53,7 @@ class DGLMAPPING {
         ID: int.tryParse(json['ID'].toString()),
       );
 
-  Map<String, dynamic> toJson() =>
-      {
+  Map<String, dynamic> toJson() => {
         'AcctCode': AcctCode,
         'AcctName': AcctName,
         'U_Branch': UBranch,
@@ -145,7 +142,7 @@ Future<void> insertDGLMAPPING(Database db, {List? list}) async {
   stopwatch.start();
   for (var i = 0; i < customers.length; i += batchSize) {
     var end =
-    (i + batchSize < customers.length) ? i + batchSize : customers.length;
+        (i + batchSize < customers.length) ? i + batchSize : customers.length;
     var batchRecords = customers.sublist(i, end);
     await db.transaction((txn) async {
       var batch = txn.batch();
@@ -185,8 +182,7 @@ Future<void> insertDGLMAPPING(Database db, {List? list}) async {
       for (var element in batchRecords) {
         try {
           batch.update("DGLMAPPING", element,
-              where:
-              "ID = ? AND AcctCode = ?",
+              where: "ID = ? AND AcctCode = ?",
               whereArgs: [element["ID"], element["AcctCode"]]);
         } catch (e) {
           writeToLogFile(
@@ -241,22 +237,22 @@ WHERE T1.AcctCode IS NULL;
   // stopwatch.stop();
 }
 
-
 Future<List<DGLMAPPING>> retrieveDGLMAPPING(BuildContext context) async {
   final Database db = await initializeDB(context);
   final List<Map<String, Object?>> queryResult = await db.query('DGLMAPPING');
   return queryResult.map((e) => DGLMAPPING.fromJson(e)).toList();
 }
 
-Future<void> updateDGLMAPPING(int id, Map<String, dynamic> values,
-    BuildContext context) async {
+Future<void> updateDGLMAPPING(
+    int id, Map<String, dynamic> values, BuildContext context) async {
   final db = await initializeDB(context);
   try {
     await db.transaction((db) async {
       await db.update('DGLMAPPING', values, where: 'ID = ?', whereArgs: [id]);
     });
   } catch (e) {
-    writeToLogFile(text: e.toString(),
+    writeToLogFile(
+        text: e.toString(),
         fileName: StackTrace.current.toString(),
         lineNo: 141);
     getErrorSnackBar('Sync Error ' + e.toString());
@@ -267,11 +263,11 @@ Future<void> deleteDGLMAPPING(Database db) async {
   await db.delete('DGLMAPPING');
 }
 
-Future<List<DGLMAPPING>> retrieveDGLMAPPINGById(BuildContext? context,
-    String str, List l) async {
+Future<List<DGLMAPPING>> retrieveDGLMAPPINGById(
+    BuildContext? context, String str, List l) async {
   final Database db = await initializeDB(context);
   final List<Map<String, Object?>> queryResult =
-  await db.query('DGLMAPPING', where: str, whereArgs: l);
+      await db.query('DGLMAPPING', where: str, whereArgs: l);
   return queryResult.map((e) => DGLMAPPING.fromJson(e)).toList();
 }
 
@@ -295,38 +291,40 @@ Future<void> insertDGLMAPPINGToServer(BuildContext? context,
     if (list.isEmpty) {
       return;
     }
-    do {Map<String, dynamic> map = list[i].toJson();
+    do {
+      Map<String, dynamic> map = list[i].toJson();
       sentSuccessInServer = false;
       try {
         map.remove('ID');
-        String queryParams='TransId=${list[i].AcctCode}';
-        var res = await http.post(Uri.parse(prefix + "DGLMAPPING/Add?$queryParams"),
-            headers: header, body: jsonEncode(map))
+        String queryParams = 'TransId=${list[i].AcctCode}';
+        var res = await http
+            .post(Uri.parse(prefix + "DGLMAPPING/Add?$queryParams"),
+                headers: header, body: jsonEncode(map))
             .timeout(Duration(seconds: 30), onTimeout: () {
           writeToLogFile(
-            text: '500 error \nMap : $map', fileName: StackTrace.current.toString(), lineNo: 141);return http.Response('Error', 500);
+              text: '500 error \nMap : $map',
+              fileName: StackTrace.current.toString(),
+              lineNo: 141);
+          return http.Response('Error', 500);
         });
         response = await res.body;
         print("eeaaae status");
         print(await res.statusCode);
-        if(res.statusCode != 201)
-        {
+        if (res.statusCode != 201) {
           await writeToLogFile(
-              text: '${res.statusCode} error \nMap : $map\nResponse : ${res.body}',
+              text:
+                  '${res.statusCode} error \nMap : $map\nResponse : ${res.body}',
               fileName: StackTrace.current.toString(),
               lineNo: 141);
         }
-        if(res.statusCode ==409)
-        {
+        if (res.statusCode == 409) {
           ///Already added in server
           final Database db = await initializeDB(context);
-          DGLMAPPING model=DGLMAPPING.fromJson(jsonDecode(res.body));
+          DGLMAPPING model = DGLMAPPING.fromJson(jsonDecode(res.body));
           var x = await db.update("DGLMAPPING", model.toJson(),
               where: "AcctCode = ?", whereArgs: [model.AcctCode]);
           print(x.toString());
-        }
-        else
-        if (res.statusCode == 201 || res.statusCode == 500) {
+        } else if (res.statusCode == 201 || res.statusCode == 500) {
           sentSuccessInServer = true;
           if (res.statusCode == 201) {
             map['ID'] = jsonDecode(res.body)['ID'];
@@ -337,7 +335,7 @@ Future<void> insertDGLMAPPINGToServer(BuildContext? context,
                 where: "ID = ? AND AcctCode = ?",
                 whereArgs: [map["ID"], map["AcctCode"]]);
             print(x.toString());
-          }else{
+          } else {
             writeToLogFile(
                 text: '500 error \nMap : $map',
                 fileName: StackTrace.current.toString(),
@@ -347,14 +345,15 @@ Future<void> insertDGLMAPPINGToServer(BuildContext? context,
         print(res.body);
       } catch (e) {
         writeToLogFile(
-            text: '${e.toString()}\nMap : $map', fileName: StackTrace.current.toString(), lineNo: 141);
-  sentSuccessInServer = true;
+            text: '${e.toString()}\nMap : $map',
+            fileName: StackTrace.current.toString(),
+            lineNo: 141);
+        sentSuccessInServer = true;
+      }
+      i++;
+      print("INDEX = " + i.toString());
+    } while (i < list.length && sentSuccessInServer == true);
   }
-  i++;
-  print("INDEX = " + i.toString());
-  } while (i < list.length && sentSuccessInServer == true);
-}
-
 }
 
 Future<void> updateDGLMAPPINGOnServer(BuildContext? context,
@@ -369,7 +368,8 @@ Future<void> updateDGLMAPPINGOnServer(BuildContext? context,
   if (list.isEmpty) {
     return;
   }
-  do {Map<String, dynamic> map = list[i].toJson();
+  do {
+    Map<String, dynamic> map = list[i].toJson();
     sentSuccessInServer = false;
     try {
       if (list.isEmpty) {
@@ -378,20 +378,23 @@ Future<void> updateDGLMAPPINGOnServer(BuildContext? context,
       Map<String, dynamic> map = list[i].toJson();
       var res = await http
           .put(Uri.parse(prefix + 'DGLMAPPING/Update'),
-          headers: header, body: jsonEncode(map))
+              headers: header, body: jsonEncode(map))
           .timeout(Duration(seconds: 30), onTimeout: () {
         writeToLogFile(
-            text: '500 error \nMap : $map', fileName: StackTrace.current.toString(), lineNo: 141);return http.Response('Error', 500);
+            text: '500 error \nMap : $map',
+            fileName: StackTrace.current.toString(),
+            lineNo: 141);
+        return http.Response('Error', 500);
       });
       print(await res.statusCode);
-      if(res.statusCode != 201)
-        {
-          await writeToLogFile(
-              text: '${res.statusCode} error \nMap : $map\nResponse : ${res.body}',
-              fileName: StackTrace.current.toString(),
-              lineNo: 141);
-        }
-        if (res.statusCode == 201 || res.statusCode == 500) {
+      if (res.statusCode != 201) {
+        await writeToLogFile(
+            text:
+                '${res.statusCode} error \nMap : $map\nResponse : ${res.body}',
+            fileName: StackTrace.current.toString(),
+            lineNo: 141);
+      }
+      if (res.statusCode == 201 || res.statusCode == 500) {
         sentSuccessInServer = true;
         if (res.statusCode == 201) {
           final Database db = await initializeDB(context);
@@ -400,7 +403,7 @@ Future<void> updateDGLMAPPINGOnServer(BuildContext? context,
               where: "ID = ? AND AcctCode = ?",
               whereArgs: [map["ID"], map["AcctCode"]]);
           print(x.toString());
-        }else{
+        } else {
           writeToLogFile(
               text: '500 error \nMap : $map',
               fileName: StackTrace.current.toString(),
@@ -410,11 +413,13 @@ Future<void> updateDGLMAPPINGOnServer(BuildContext? context,
       print(res.body);
     } catch (e) {
       writeToLogFile(
-          text: '${e.toString()}\nMap : $map', fileName: StackTrace.current.toString(), lineNo: 141);
-  sentSuccessInServer = true;
-  }
+          text: '${e.toString()}\nMap : $map',
+          fileName: StackTrace.current.toString(),
+          lineNo: 141);
+      sentSuccessInServer = true;
+    }
 
-  i++;
-  print("INDEX = " + i.toString());
+    i++;
+    print("INDEX = " + i.toString());
   } while (i < list.length && sentSuccessInServer == true);
 }

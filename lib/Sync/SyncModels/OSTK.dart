@@ -75,8 +75,7 @@ class OSTK {
     this.hasUpdated = false,
   });
 
-  factory OSTK.fromJson(Map<String, dynamic> json) =>
-      OSTK(
+  factory OSTK.fromJson(Map<String, dynamic> json) => OSTK(
         ID: int.tryParse(json['ID'].toString()) ?? 0,
         TransId: json['TransId'],
         EmpCode1: json['EmpCode1'],
@@ -111,8 +110,7 @@ class OSTK {
             : json['has_updated'] == 1,
       );
 
-  Map<String, dynamic> toJson() =>
-      {
+  Map<String, dynamic> toJson() => {
         'ID': ID,
         'TransId': TransId,
         "DocNum": DocNum,
@@ -152,7 +150,7 @@ String oSTKToJson(List<OSTK> data) =>
 
 Future<List<OSTK>> dataSyncOSTK() async {
   var res =
-  await http.get(headers: header, Uri.parse(prefix + "OSTK" + postfix));
+      await http.get(headers: header, Uri.parse(prefix + "OSTK" + postfix));
   print(res.body);
   return oSTKFromJson(res.body);
 }
@@ -216,7 +214,7 @@ Future<void> insertOSTK(Database db, {List? list}) async {
   stopwatch.start();
   for (var i = 0; i < customers.length; i += batchSize) {
     var end =
-    (i + batchSize < customers.length) ? i + batchSize : customers.length;
+        (i + batchSize < customers.length) ? i + batchSize : customers.length;
     var batchRecords = customers.sublist(i, end);
     await db.transaction((txn) async {
       var batch = txn.batch();
@@ -256,7 +254,8 @@ Future<void> insertOSTK(Database db, {List? list}) async {
       for (var element in batchRecords) {
         try {
           batch.update("OSTK", element,
-              where: "TransId = ? AND ifnull(has_created,0) <> ? AND ifnull(has_updated,0) <> ?",
+              where:
+                  "TransId = ? AND ifnull(has_created,0) <> ? AND ifnull(has_updated,0) <> ?",
               whereArgs: [element["TransId"], 1, 1]);
         } catch (e) {
           writeToLogFile(
@@ -314,7 +313,7 @@ WHERE T1.TransId IS NULL;
 Future<List<OSTK>> retrieveOSTK(BuildContext context, {String? orderBy}) async {
   final Database db = await initializeDB(context);
   final List<Map<String, Object?>> queryResult =
-  await db.query('OSTK', orderBy: orderBy);
+      await db.query('OSTK', orderBy: orderBy);
   return queryResult.map((e) => OSTK.fromJson(e)).toList();
 }
 
@@ -328,7 +327,7 @@ Future<List<OSTK>> retrieveOSTKByBranch(BuildContext context,
   List<String> list = [];
   String str = "CreatedBy = ?";
   List<OUSRModel> ousrModel =
-  await retrieveOUSRById(context, "BranchId = ?", [userModel.BranchId]);
+      await retrieveOUSRById(context, "BranchId = ?", [userModel.BranchId]);
 
   for (int i = 0; i < ousrModel.length; i++) {
     list.add(ousrModel[i].UserCode);
@@ -341,20 +340,21 @@ Future<List<OSTK>> retrieveOSTKByBranch(BuildContext context,
   }
   final Database db = await initializeDB(context);
   final List<Map<String, Object?>> queryResult =
-  await db.query("OSTK", where: str, whereArgs: list, orderBy: orderBy);
+      await db.query("OSTK", where: str, whereArgs: list, orderBy: orderBy);
 
   return queryResult.map((e) => OSTK.fromJson(e)).toList();
 }
 
-Future<void> updateOSTK(int id, Map<String, dynamic> values,
-    BuildContext context) async {
+Future<void> updateOSTK(
+    int id, Map<String, dynamic> values, BuildContext context) async {
   final db = await initializeDB(context);
   try {
     db.transaction((db) async {
       await db.update('OSTK', values, where: 'ID = ?', whereArgs: [id]);
     });
   } catch (e) {
-    writeToLogFile(text: e.toString(),
+    writeToLogFile(
+        text: e.toString(),
         fileName: StackTrace.current.toString(),
         lineNo: 141);
     getErrorSnackBar('Sync Error ' + e.toString());
@@ -369,7 +369,7 @@ Future<List<OSTK>> retrieveOSTKById(BuildContext? context, String str, List l,
     {String? orderBy}) async {
   final Database db = await initializeDB(context);
   final List<Map<String, Object?>> queryResult =
-  await db.query('OSTK', where: str, whereArgs: l, orderBy: orderBy);
+      await db.query('OSTK', where: str, whereArgs: l, orderBy: orderBy);
   return queryResult.map((e) => OSTK.fromJson(e)).toList();
 }
 
@@ -393,38 +393,40 @@ Future<void> insertOSTKToServer(BuildContext? context,
     if (list.isEmpty) {
       return;
     }
-    do {Map<String, dynamic> map = list[i].toJson();
+    do {
+      Map<String, dynamic> map = list[i].toJson();
       sentSuccessInServer = false;
       try {
         map.remove('ID');
-        String queryParams='TransId=${list[i].TransId}';
-        var res = await http.post(Uri.parse(prefix + "OSTK/Add?$queryParams"),
-            headers: header, body: jsonEncode(map))
+        String queryParams = 'TransId=${list[i].TransId}';
+        var res = await http
+            .post(Uri.parse(prefix + "OSTK/Add?$queryParams"),
+                headers: header, body: jsonEncode(map))
             .timeout(Duration(seconds: 30), onTimeout: () {
           writeToLogFile(
-            text: '500 error \nMap : $map', fileName: StackTrace.current.toString(), lineNo: 141);return http.Response('Error', 500);
+              text: '500 error \nMap : $map',
+              fileName: StackTrace.current.toString(),
+              lineNo: 141);
+          return http.Response('Error', 500);
         });
         response = await res.body;
         print("eeaaae status");
         print(await res.statusCode);
-        if(res.statusCode != 201)
-        {
+        if (res.statusCode != 201) {
           await writeToLogFile(
-              text: '${res.statusCode} error \nMap : $map\nResponse : ${res.body}',
+              text:
+                  '${res.statusCode} error \nMap : $map\nResponse : ${res.body}',
               fileName: StackTrace.current.toString(),
               lineNo: 141);
         }
-        if(res.statusCode ==409)
-        {
+        if (res.statusCode == 409) {
           ///Already added in server
           final Database db = await initializeDB(context);
-          OSTK model=OSTK.fromJson(jsonDecode(res.body));
+          OSTK model = OSTK.fromJson(jsonDecode(res.body));
           var x = await db.update("OSTK", model.toJson(),
               where: "TransId = ?", whereArgs: [model.TransId]);
           print(x.toString());
-        }
-        else
-        if (res.statusCode == 201 || res.statusCode == 500) {
+        } else if (res.statusCode == 201 || res.statusCode == 500) {
           sentSuccessInServer = true;
           if (res.statusCode == 201) {
             map['ID'] = jsonDecode(res.body)['ID'];
@@ -435,7 +437,7 @@ Future<void> insertOSTKToServer(BuildContext? context,
             var x = await db.update("OSTK", map,
                 where: "TransId = ?", whereArgs: [map["TransId"]]);
             print(x.toString());
-          }else{
+          } else {
             writeToLogFile(
                 text: '500 error \nMap : $map',
                 fileName: StackTrace.current.toString(),
@@ -445,14 +447,15 @@ Future<void> insertOSTKToServer(BuildContext? context,
         print(res.body);
       } catch (e) {
         writeToLogFile(
-            text: '${e.toString()}\nMap : $map', fileName: StackTrace.current.toString(), lineNo: 141);
-  sentSuccessInServer = true;
+            text: '${e.toString()}\nMap : $map',
+            fileName: StackTrace.current.toString(),
+            lineNo: 141);
+        sentSuccessInServer = true;
+      }
+      i++;
+      print("INDEX = " + i.toString());
+    } while (i < list.length && sentSuccessInServer == true);
   }
-  i++;
-  print("INDEX = " + i.toString());
-  } while (i < list.length && sentSuccessInServer == true);
-}
-
 }
 
 Future<void> updateOSTKOnServer(BuildContext? context,
@@ -467,7 +470,8 @@ Future<void> updateOSTKOnServer(BuildContext? context,
   if (list.isEmpty) {
     return;
   }
-  do {Map<String, dynamic> map = list[i].toJson();
+  do {
+    Map<String, dynamic> map = list[i].toJson();
     sentSuccessInServer = false;
     try {
       if (list.isEmpty) {
@@ -476,20 +480,23 @@ Future<void> updateOSTKOnServer(BuildContext? context,
       Map<String, dynamic> map = list[i].toJson();
       var res = await http
           .put(Uri.parse(prefix + 'OSTK/Update'),
-          headers: header, body: jsonEncode(map))
+              headers: header, body: jsonEncode(map))
           .timeout(Duration(seconds: 30), onTimeout: () {
         writeToLogFile(
-            text: '500 error \nMap : $map', fileName: StackTrace.current.toString(), lineNo: 141);return http.Response('Error', 500);
+            text: '500 error \nMap : $map',
+            fileName: StackTrace.current.toString(),
+            lineNo: 141);
+        return http.Response('Error', 500);
       });
       print(await res.statusCode);
-      if(res.statusCode != 201)
-        {
-          await writeToLogFile(
-              text: '${res.statusCode} error \nMap : $map\nResponse : ${res.body}',
-              fileName: StackTrace.current.toString(),
-              lineNo: 141);
-        }
-        if (res.statusCode == 201 || res.statusCode == 500) {
+      if (res.statusCode != 201) {
+        await writeToLogFile(
+            text:
+                '${res.statusCode} error \nMap : $map\nResponse : ${res.body}',
+            fileName: StackTrace.current.toString(),
+            lineNo: 141);
+      }
+      if (res.statusCode == 201 || res.statusCode == 500) {
         sentSuccessInServer = true;
         if (res.statusCode == 201) {
           final Database db = await initializeDB(context);
@@ -498,7 +505,7 @@ Future<void> updateOSTKOnServer(BuildContext? context,
               where: "TransId = ? AND RowId = ?",
               whereArgs: [map["TransId"], map["RowId"]]);
           print(x.toString());
-        }else{
+        } else {
           writeToLogFile(
               text: '500 error \nMap : $map',
               fileName: StackTrace.current.toString(),
@@ -508,11 +515,13 @@ Future<void> updateOSTKOnServer(BuildContext? context,
       print(res.body);
     } catch (e) {
       writeToLogFile(
-          text: '${e.toString()}\nMap : $map', fileName: StackTrace.current.toString(), lineNo: 141);
-  sentSuccessInServer = true;
-  }
+          text: '${e.toString()}\nMap : $map',
+          fileName: StackTrace.current.toString(),
+          lineNo: 141);
+      sentSuccessInServer = true;
+    }
 
-  i++;
-  print("INDEX = " + i.toString());
+    i++;
+    print("INDEX = " + i.toString());
   } while (i < list.length && sentSuccessInServer == true);
 }

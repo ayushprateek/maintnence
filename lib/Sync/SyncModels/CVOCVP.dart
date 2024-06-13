@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:maintenance/Component/LogFileFunctions.dart';
 import 'package:maintenance/Component/SnackbarComponent.dart';
@@ -77,8 +76,7 @@ class CVOCVP {
   String? UpdatedBy;
   String? ApprovalStatus;
 
-  factory CVOCVP.fromJson(Map<String, dynamic> json) =>
-      CVOCVP(
+  factory CVOCVP.fromJson(Map<String, dynamic> json) => CVOCVP(
         ID: int.tryParse(json["ID"].toString()) ?? 0,
         DocEntry: int.tryParse(json["DocEntry"].toString()) ?? 0,
         DocNum: json["DocNum"] ?? "",
@@ -109,8 +107,7 @@ class CVOCVP {
         UpdatedBy: json['UpdatedBy'] ?? '',
       );
 
-  Map<String, dynamic> toJson() =>
-      {
+  Map<String, dynamic> toJson() => {
         "ID": ID,
         "PostingAddress": PostingAddress,
         "DocNum": DocNum,
@@ -138,7 +135,7 @@ class CVOCVP {
 
 Future<List<CVOCVP>> dataSyncCVOCVP() async {
   var res =
-  await http.get(headers: header, Uri.parse(prefix + "CVOCVP" + postfix));
+      await http.get(headers: header, Uri.parse(prefix + "CVOCVP" + postfix));
   print(res.body);
   return CVOCVPFromJson(res.body);
 }
@@ -161,19 +158,20 @@ Future<List<CVOCVP>> retrieveCVOCVPForSearch(BuildContext context,
     {String? orderBy}) async {
   final Database db = await initializeDB(context);
   final List<Map<String, Object?>> queryResult =
-  await db.query('CVOCVP', orderBy: orderBy);
+      await db.query('CVOCVP', orderBy: orderBy);
   return queryResult.map((e) => CVOCVP.fromJson(e)).toList();
 }
 
-Future<void> updateCVOCVP(int id, Map<String, dynamic> values,
-    BuildContext context) async {
+Future<void> updateCVOCVP(
+    int id, Map<String, dynamic> values, BuildContext context) async {
   final db = await initializeDB(context);
   try {
     db.transaction((db) async {
       await db.update("CVOCVP", values, where: 'ID = ?', whereArgs: [id]);
     });
   } catch (e) {
-    writeToLogFile(text: e.toString(),
+    writeToLogFile(
+        text: e.toString(),
         fileName: StackTrace.current.toString(),
         lineNo: 141);
     getErrorSnackBar("Sync Error " + e.toString());
@@ -245,7 +243,7 @@ Future<void> insertCVOCVP(Database db, {List? list}) async {
   stopwatch.start();
   for (var i = 0; i < customers.length; i += batchSize) {
     var end =
-    (i + batchSize < customers.length) ? i + batchSize : customers.length;
+        (i + batchSize < customers.length) ? i + batchSize : customers.length;
     var batchRecords = customers.sublist(i, end);
     await db.transaction((txn) async {
       var batch = txn.batch();
@@ -286,8 +284,8 @@ Future<void> insertCVOCVP(Database db, {List? list}) async {
         try {
           batch.update("CVOCVP", element,
               where:
-              "TransId = ? AND ifnull(has_created,0) <> ? AND ifnull(has_updated,0) <> ?",
-              whereArgs: [ element["TransId"], 1, 1]);
+                  "TransId = ? AND ifnull(has_created,0) <> ? AND ifnull(has_updated,0) <> ?",
+              whereArgs: [element["TransId"], 1, 1]);
         } catch (e) {
           writeToLogFile(
               text: e.toString(),
@@ -341,7 +339,6 @@ WHERE T1.TransId IS NULL;
   // stopwatch.stop();
 }
 
-
 Future<List<CVOCVP>> retrieveCVOCVPByBranch(BuildContext context,
     {String? orderBy}) async {
   // 1. Find BranchId using CreatedBy from OUSR table. (done)
@@ -352,7 +349,7 @@ Future<List<CVOCVP>> retrieveCVOCVPByBranch(BuildContext context,
   List<String> list = [];
   String str = "CreatedBy = ?";
   List<OUSRModel> ousrModel =
-  await retrieveOUSRById(context, "BranchId = ?", [userModel.BranchId]);
+      await retrieveOUSRById(context, "BranchId = ?", [userModel.BranchId]);
 
   for (int i = 0; i < ousrModel.length; i++) {
     list.add(ousrModel[i].UserCode);
@@ -365,27 +362,26 @@ Future<List<CVOCVP>> retrieveCVOCVPByBranch(BuildContext context,
   }
   final Database db = await initializeDB(context);
   final List<Map<String, Object?>> queryResult =
-  await db.query("CVOCVP", where: str, whereArgs: list, orderBy: orderBy);
+      await db.query("CVOCVP", where: str, whereArgs: list, orderBy: orderBy);
 
   return queryResult.map((e) => CVOCVP.fromJson(e)).toList();
 }
 
 //SEND DATA TO SERVER
 //--------------------------
-Future<List<CVOCVP>> retrieveCVOCVPById(BuildContext? context, String str,
-    List l,
+Future<List<CVOCVP>> retrieveCVOCVPById(
+    BuildContext? context, String str, List l,
     {String? orderBy}) async {
   final Database db = await initializeDB(context);
   final List<Map<String, Object?>> queryResult =
-  await db.query('CVOCVP', where: str, whereArgs: l, orderBy: orderBy);
+      await db.query('CVOCVP', where: str, whereArgs: l, orderBy: orderBy);
   return queryResult.map((e) => CVOCVP.fromJson(e)).toList();
 }
 
 Future<CVOCVP?> retrieveLatestVisitPlan() async {
   final Database db = await initializeDB(null);
   final List<Map<String, Object?>> queryResult = await db.rawQuery(
-      "SELECT * FROM CVOCVP WHERE CreatedBy='${userModel
-          .UserCode}'  ORDER BY CreateDate DESC  LIMIT 1");
+      "SELECT * FROM CVOCVP WHERE CreatedBy='${userModel.UserCode}'  ORDER BY CreateDate DESC  LIMIT 1");
   List<CVOCVP> list = queryResult.map((e) => CVOCVP.fromJson(e)).toList();
   if (list.isNotEmpty) {
     return list[0];
@@ -411,35 +407,34 @@ Future<void> insertCVOCVPToServer(BuildContext? context,
     if (list.isEmpty) {
       return;
     }
-    do {Map<String, dynamic> map = list[i].toJson();
+    do {
+      Map<String, dynamic> map = list[i].toJson();
       sentSuccessInServer = false;
       try {
         map.remove('ID');
-        String queryParams='TransId=${list[i].TransId}';
-        var res = await http.post(Uri.parse(prefix + "CVOCVP/Add?$queryParams"),
-            headers: header, body: jsonEncode(map))
+        String queryParams = 'TransId=${list[i].TransId}';
+        var res = await http
+            .post(Uri.parse(prefix + "CVOCVP/Add?$queryParams"),
+                headers: header, body: jsonEncode(map))
             .timeout(Duration(seconds: 30), onTimeout: () {
           return http.Response("Error", 500);
         });
         response = await res.body;
-        if(res.statusCode != 201)
-        {
+        if (res.statusCode != 201) {
           await writeToLogFile(
-              text: '${res.statusCode} error \nMap : $map\nResponse : ${res.body}',
+              text:
+                  '${res.statusCode} error \nMap : $map\nResponse : ${res.body}',
               fileName: StackTrace.current.toString(),
               lineNo: 141);
         }
-        if(res.statusCode ==409)
-        {
+        if (res.statusCode == 409) {
           ///Already added in server
           final Database db = await initializeDB(context);
-          CVOCVP model=CVOCVP.fromJson(jsonDecode(res.body));
+          CVOCVP model = CVOCVP.fromJson(jsonDecode(res.body));
           var x = await db.update("CVOCVP", model.toJson(),
               where: "TransId = ?", whereArgs: [model.TransId]);
           print(x.toString());
-        }
-        else
-        if (res.statusCode == 201 || res.statusCode == 500) {
+        } else if (res.statusCode == 201 || res.statusCode == 500) {
           sentSuccessInServer = true;
           if (res.statusCode == 201) {
             map['ID'] = jsonDecode(res.body)['ID'];
@@ -449,7 +444,7 @@ Future<void> insertCVOCVPToServer(BuildContext? context,
             var x = await db.update("CVOCVP", map,
                 where: "TransId = ?", whereArgs: [map["TransId"]]);
             print(x.toString());
-          }else{
+          } else {
             writeToLogFile(
                 text: '500 error \nMap : $map',
                 fileName: StackTrace.current.toString(),
@@ -492,20 +487,23 @@ Future<void> updateCVOCVPOnServer(BuildContext? context,
       Map<String, dynamic> map = list[i].toJson();
       var res = await http
           .put(Uri.parse(prefix + 'CVOCVP/Update'),
-          headers: header, body: jsonEncode(map))
+              headers: header, body: jsonEncode(map))
           .timeout(Duration(seconds: 30), onTimeout: () {
         writeToLogFile(
-            text: '500 error \nMap : $map', fileName: StackTrace.current.toString(), lineNo: 141);return http.Response('Error', 500);
+            text: '500 error \nMap : $map',
+            fileName: StackTrace.current.toString(),
+            lineNo: 141);
+        return http.Response('Error', 500);
       });
       print(await res.statusCode);
-      if(res.statusCode != 201)
-        {
-          await writeToLogFile(
-              text: '${res.statusCode} error \nMap : $map\nResponse : ${res.body}',
-              fileName: StackTrace.current.toString(),
-              lineNo: 141);
-        }
-        if (res.statusCode == 201 || res.statusCode == 500) {
+      if (res.statusCode != 201) {
+        await writeToLogFile(
+            text:
+                '${res.statusCode} error \nMap : $map\nResponse : ${res.body}',
+            fileName: StackTrace.current.toString(),
+            lineNo: 141);
+      }
+      if (res.statusCode == 201 || res.statusCode == 500) {
         sentSuccessInServer = true;
         if (res.statusCode == 201) {
           final Database db = await initializeDB(context);
@@ -513,7 +511,7 @@ Future<void> updateCVOCVPOnServer(BuildContext? context,
           var x = await db.update("CVOCVP", map,
               where: "TransId = ?", whereArgs: [map["TransId"]]);
           print(x.toString());
-        }else{
+        } else {
           writeToLogFile(
               text: '500 error \nMap : $map',
               fileName: StackTrace.current.toString(),
@@ -523,11 +521,13 @@ Future<void> updateCVOCVPOnServer(BuildContext? context,
       print(res.body);
     } catch (e) {
       writeToLogFile(
-          text: '${e.toString()}\nMap : $map', fileName: StackTrace.current.toString(), lineNo: 141);
-  sentSuccessInServer = true;
-  }
+          text: '${e.toString()}\nMap : $map',
+          fileName: StackTrace.current.toString(),
+          lineNo: 141);
+      sentSuccessInServer = true;
+    }
 
-  i++;
-  print("INDEX = " + i.toString());
+    i++;
+    print("INDEX = " + i.toString());
   } while (i < list.length && sentSuccessInServer == true);
 }

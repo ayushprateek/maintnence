@@ -347,8 +347,10 @@ Future<void> insertSUITA2ToServer(BuildContext? context,
       sentSuccessInServer = false;
       try {
         map.remove('ID');
-        String queryParams='TransId=${list[i].TransId}&RowId=${list[i].RowId}';
-        var res = await http.post(Uri.parse(prefix + "SUITA2/Add?$queryParams"),
+        String queryParams =
+            'TransId=${list[i].TransId}&RowId=${list[i].RowId}';
+        var res = await http
+            .post(Uri.parse(prefix + "SUITA2/Add?$queryParams"),
                 headers: header, body: jsonEncode(map))
             .timeout(Duration(seconds: 30), onTimeout: () {
           return http.Response("Error", 500);
@@ -361,17 +363,15 @@ Future<void> insertSUITA2ToServer(BuildContext? context,
               fileName: StackTrace.current.toString(),
               lineNo: 141);
         }
-        if(res.statusCode ==409)
-        {
+        if (res.statusCode == 409) {
           ///Already added in server
           final Database db = await initializeDB(context);
-          SUITA2 model=SUITA2.fromJson(jsonDecode(res.body));
+          SUITA2 model = SUITA2.fromJson(jsonDecode(res.body));
           var x = await db.update("SUITA2", model.toJson(),
-              where: "TransId = ? AND RowId = ?", whereArgs: [model.TransId,model.RowId]);
+              where: "TransId = ? AND RowId = ?",
+              whereArgs: [model.TransId, model.RowId]);
           print(x.toString());
-        }
-        else
-        if (res.statusCode == 201 || res.statusCode == 500) {
+        } else if (res.statusCode == 201 || res.statusCode == 500) {
           sentSuccessInServer = true;
           if (res.statusCode == 201) {
             map['ID'] = jsonDecode(res.body)['ID'];

@@ -299,10 +299,15 @@ Future<List<SUOATP>> retrieveSUOATPById(
     BuildContext? context, String str, List l,
     {String? orderBy}) async {
   final Database db = await initializeDB(context);
-  final List<Map<String, Object?>> queryResult =
-      await db.query('SUOATP', where: str, whereArgs: l, orderBy: orderBy,);
+  final List<Map<String, Object?>> queryResult = await db.query(
+    'SUOATP',
+    where: str,
+    whereArgs: l,
+    orderBy: orderBy,
+  );
   return queryResult.map((e) => SUOATP.fromJson(e)).toList();
 }
+
 Future<List<SUOATP>> retrieveSUOATPForSearch({required String query}) async {
   final Database db = await initializeDB(null);
   final List<Map<String, Object?>> queryResult = await db.rawQuery(
