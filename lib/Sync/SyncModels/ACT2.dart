@@ -339,7 +339,9 @@ Future<void> insertACT2ToServer(BuildContext? context,
           ///Already added in server
           final Database db = await initializeDB(context);
           ACT2Model model = ACT2Model.fromJson(jsonDecode(res.body));
-          var x = await db.update("ACT2", model.toJson(),
+          map["ID"] = model.ID;
+          map["has_created"] = 0;
+          var x = await db.update("ACT2", map,
               where: "TransId = ? AND RowId = ?",
               whereArgs: [model.TransId, model.RowId]);
           print(x.toString());

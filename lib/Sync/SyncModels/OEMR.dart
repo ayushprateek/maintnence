@@ -192,28 +192,28 @@ Future<List<OEMRModel>> retrieveOEMRById(
   return queryResult.map((e) => OEMRModel.fromJson(e)).toList();
 }
 
-Future<void> insertOEMRToServer(BuildContext context) async {
-  retrieveOEMRById(context, DataSync.getInsertToServerStr(),
-          DataSync.getInsertToServerList())
-      .then((snapshot) {
-    print(snapshot);
-    snapshot.forEach((data) async {
-      var res = await http.post(Uri.parse(prefix + "OEMR/Add"),
-          headers: header, body: jsonEncode(data.toJson()));
-      print(res.body);
-    });
-  });
-}
-
-Future<void> updateOEMROnServer(BuildContext? context) async {
-  retrieveOEMRById(context, DataSync.getUpdateOnServerStr(),
-          DataSync.getUpdateOnServerList())
-      .then((snapshot) {
-    print(snapshot);
-    snapshot.forEach((data) async {
-      var res = await http.put(Uri.parse(prefix + 'OEMR/Update'),
-          headers: header, body: jsonEncode(data.toJson()));
-      print(res.body);
-    });
-  });
-}
+// Future<void> insertOEMRToServer(BuildContext context) async {
+//   retrieveOEMRById(context, DataSync.getInsertToServerStr(),
+//           DataSync.getInsertToServerList())
+//       .then((snapshot) {
+//     print(snapshot);
+//     snapshot.forEach((data) async {
+//       var res = await http.post(Uri.parse(prefix + "OEMR/Add"),
+//           headers: header, body: jsonEncode(data.toJson()));
+//       print(res.body);
+//     });
+//   });
+// }
+//
+// Future<void> updateOEMROnServer(BuildContext? context) async {
+//   retrieveOEMRById(context, DataSync.getUpdateOnServerStr(),
+//           DataSync.getUpdateOnServerList())
+//       .then((snapshot) {
+//     print(snapshot);
+//     snapshot.forEach((data) async {
+//       var res = await http.put(Uri.parse(prefix + 'OEMR/Update'),
+//           headers: header, body: jsonEncode(data.toJson()));
+//       print(res.body);
+//     });
+//   });
+// }

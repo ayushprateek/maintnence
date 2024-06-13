@@ -450,7 +450,9 @@ Future<void> insertORCTToServer(BuildContext? context,
           ///Already added in server
           final Database db = await initializeDB(context);
           ORCT model = ORCT.fromJson(jsonDecode(res.body));
-          var x = await db.update("ORCT", model.toJson(),
+          map["ID"] = model.ID;
+          map["has_created"] = 0;
+          var x = await db.update("ORCT", map,
               where: "TransId = ?", whereArgs: [model.TransId]);
           print(x.toString());
         } else if (res.statusCode == 201 || res.statusCode == 500) {

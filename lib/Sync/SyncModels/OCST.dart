@@ -309,28 +309,28 @@ Future<List<OCSTModel>> retrieveOCSTById(
   return queryResult.map((e) => OCSTModel.fromJson(e)).toList();
 }
 
-Future<void> insertOCSTToServer(BuildContext context) async {
-  retrieveOCSTById(context, DataSync.getInsertToServerStr(),
-          DataSync.getInsertToServerList())
-      .then((snapshot) {
-    print(snapshot);
-    snapshot.forEach((data) async {
-      var res = await http.post(Uri.parse(prefix + "OCST/Add"),
-          headers: header, body: jsonEncode(data.toJson()));
-      print(res.body);
-    });
-  });
-}
-
-Future<void> updateOCSTOnServer(BuildContext? context) async {
-  retrieveOCSTById(context, DataSync.getUpdateOnServerStr(),
-          DataSync.getUpdateOnServerList())
-      .then((snapshot) {
-    print(snapshot);
-    snapshot.forEach((data) async {
-      var res = await http.put(Uri.parse(prefix + 'OCST/Update'),
-          headers: header, body: jsonEncode(data.toJson()));
-      print(res.body);
-    });
-  });
-}
+// Future<void> insertOCSTToServer(BuildContext context) async {
+//   retrieveOCSTById(context, DataSync.getInsertToServerStr(),
+//           DataSync.getInsertToServerList())
+//       .then((snapshot) {
+//     print(snapshot);
+//     snapshot.forEach((data) async {
+//       var res = await http.post(Uri.parse(prefix + "OCST/Add"),
+//           headers: header, body: jsonEncode(data.toJson()));
+//       print(res.body);
+//     });
+//   });
+// }
+//
+// Future<void> updateOCSTOnServer(BuildContext? context) async {
+//   retrieveOCSTById(context, DataSync.getUpdateOnServerStr(),
+//           DataSync.getUpdateOnServerList())
+//       .then((snapshot) {
+//     print(snapshot);
+//     snapshot.forEach((data) async {
+//       var res = await http.put(Uri.parse(prefix + 'OCST/Update'),
+//           headers: header, body: jsonEncode(data.toJson()));
+//       print(res.body);
+//     });
+//   });
+// }

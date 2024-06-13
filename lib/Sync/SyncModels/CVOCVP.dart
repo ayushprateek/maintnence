@@ -431,7 +431,9 @@ Future<void> insertCVOCVPToServer(BuildContext? context,
           ///Already added in server
           final Database db = await initializeDB(context);
           CVOCVP model = CVOCVP.fromJson(jsonDecode(res.body));
-          var x = await db.update("CVOCVP", model.toJson(),
+          map["ID"] = model.ID;
+          map["has_created"] = 0;
+          var x = await db.update("CVOCVP", map,
               where: "TransId = ?", whereArgs: [model.TransId]);
           print(x.toString());
         } else if (res.statusCode == 201 || res.statusCode == 500) {

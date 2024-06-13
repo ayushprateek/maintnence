@@ -296,28 +296,28 @@ Future<List<OUOMModel>> retrieveOUOMById(
   return queryResult.map((e) => OUOMModel.fromJson(e)).toList();
 }
 
-Future<void> insertOUOMToServer(BuildContext context) async {
-  retrieveOUOMById(context, DataSync.getInsertToServerStr(),
-          DataSync.getInsertToServerList())
-      .then((snapshot) {
-    print(snapshot);
-    snapshot.forEach((data) async {
-      var res = await http.post(Uri.parse(prefix + "OUOM/Add"),
-          headers: header, body: jsonEncode(data.toJson()));
-      print(res.body);
-    });
-  });
-}
-
-Future<void> updateOUOMOnServer(BuildContext? context) async {
-  retrieveOUOMById(context, DataSync.getUpdateOnServerStr(),
-          DataSync.getUpdateOnServerList())
-      .then((snapshot) {
-    print(snapshot);
-    snapshot.forEach((data) async {
-      var res = await http.put(Uri.parse(prefix + 'OUOM/Update'),
-          headers: header, body: jsonEncode(data.toJson()));
-      print(res.body);
-    });
-  });
-}
+// Future<void> insertOUOMToServer(BuildContext context) async {
+//   retrieveOUOMById(context, DataSync.getInsertToServerStr(),
+//           DataSync.getInsertToServerList())
+//       .then((snapshot) {
+//     print(snapshot);
+//     snapshot.forEach((data) async {
+//       var res = await http.post(Uri.parse(prefix + "OUOM/Add"),
+//           headers: header, body: jsonEncode(data.toJson()));
+//       print(res.body);
+//     });
+//   });
+// }
+//
+// Future<void> updateOUOMOnServer(BuildContext? context) async {
+//   retrieveOUOMById(context, DataSync.getUpdateOnServerStr(),
+//           DataSync.getUpdateOnServerList())
+//       .then((snapshot) {
+//     print(snapshot);
+//     snapshot.forEach((data) async {
+//       var res = await http.put(Uri.parse(prefix + 'OUOM/Update'),
+//           headers: header, body: jsonEncode(data.toJson()));
+//       print(res.body);
+//     });
+//   });
+// }

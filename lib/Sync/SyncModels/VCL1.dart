@@ -304,28 +304,28 @@ Future<List<VCL1Model>> retrieveVCL1ById(
   return queryResult.map((e) => VCL1Model.fromJson(e)).toList();
 }
 
-Future<void> insertVCL1ToServer(BuildContext context) async {
-  retrieveVCL1ById(context, DataSync.getInsertToServerStr(),
-          DataSync.getInsertToServerList())
-      .then((snapshot) {
-    print(snapshot);
-    snapshot.forEach((data) async {
-      var res = await http.post(Uri.parse(prefix + "VCL1/Add"),
-          headers: header, body: jsonEncode(data.toJson()));
-      print(res.body);
-    });
-  });
-}
-
-Future<void> updateVCL1OnServer(BuildContext? context) async {
-  retrieveVCL1ById(context, DataSync.getUpdateOnServerStr(),
-          DataSync.getUpdateOnServerList())
-      .then((snapshot) {
-    print(snapshot);
-    snapshot.forEach((data) async {
-      var res = await http.put(Uri.parse(prefix + 'VCL1/Update'),
-          headers: header, body: jsonEncode(data.toJson()));
-      print(res.body);
-    });
-  });
-}
+// Future<void> insertVCL1ToServer(BuildContext context) async {
+//   retrieveVCL1ById(context, DataSync.getInsertToServerStr(),
+//           DataSync.getInsertToServerList())
+//       .then((snapshot) {
+//     print(snapshot);
+//     snapshot.forEach((data) async {
+//       var res = await http.post(Uri.parse(prefix + "VCL1/Add"),
+//           headers: header, body: jsonEncode(data.toJson()));
+//       print(res.body);
+//     });
+//   });
+// }
+//
+// Future<void> updateVCL1OnServer(BuildContext? context) async {
+//   retrieveVCL1ById(context, DataSync.getUpdateOnServerStr(),
+//           DataSync.getUpdateOnServerList())
+//       .then((snapshot) {
+//     print(snapshot);
+//     snapshot.forEach((data) async {
+//       var res = await http.put(Uri.parse(prefix + 'VCL1/Update'),
+//           headers: header, body: jsonEncode(data.toJson()));
+//       print(res.body);
+//     });
+//   });
+// }

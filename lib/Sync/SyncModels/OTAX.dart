@@ -320,24 +320,24 @@ Future<List<OTAXModel>> retrieveOTAXById(
   return queryResult.map((e) => OTAXModel.fromJson(e)).toList();
 }
 
-Future<void> insertOTAXToServer(BuildContext context) async {
-  retrieveOTAXById(context, DataSync.getInsertToServerStr(),
-          DataSync.getInsertToServerList())
-      .then((snapshot) {
-    snapshot.forEach((data) async {
-      var res = await http.post(Uri.parse(prefix + "OTAX/Add"),
-          headers: header, body: jsonEncode(data.toJson()));
-    });
-  });
-}
-
-Future<void> updateOTAXOnServer(BuildContext? context) async {
-  retrieveOTAXById(context, DataSync.getUpdateOnServerStr(),
-          DataSync.getUpdateOnServerList())
-      .then((snapshot) {
-    snapshot.forEach((data) async {
-      var res = await http.put(Uri.parse(prefix + 'OTAX/Update'),
-          headers: header, body: jsonEncode(data.toJson()));
-    });
-  });
-}
+// Future<void> insertOTAXToServer(BuildContext context) async {
+//   retrieveOTAXById(context, DataSync.getInsertToServerStr(),
+//           DataSync.getInsertToServerList())
+//       .then((snapshot) {
+//     snapshot.forEach((data) async {
+//       var res = await http.post(Uri.parse(prefix + "OTAX/Add"),
+//           headers: header, body: jsonEncode(data.toJson()));
+//     });
+//   });
+// }
+//
+// Future<void> updateOTAXOnServer(BuildContext? context) async {
+//   retrieveOTAXById(context, DataSync.getUpdateOnServerStr(),
+//           DataSync.getUpdateOnServerList())
+//       .then((snapshot) {
+//     snapshot.forEach((data) async {
+//       var res = await http.put(Uri.parse(prefix + 'OTAX/Update'),
+//           headers: header, body: jsonEncode(data.toJson()));
+//     });
+//   });
+// }

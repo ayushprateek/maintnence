@@ -356,28 +356,28 @@ Future<List<ROUTModel>> retrieveROUTById(
   return queryResult.map((e) => ROUTModel.fromJson(e)).toList();
 }
 
-Future<void> insertROUTToServer(BuildContext context) async {
-  retrieveROUTById(context, DataSync.getInsertToServerStr(),
-          DataSync.getInsertToServerList())
-      .then((snapshot) {
-    print(snapshot);
-    snapshot.forEach((data) async {
-      var res = await http.post(Uri.parse(prefix + "ROUT/Add"),
-          headers: header, body: jsonEncode(data.toJson()));
-      print(res.body);
-    });
-  });
-}
-
-Future<void> updateROUTOnServer(BuildContext? context) async {
-  retrieveROUTById(context, DataSync.getUpdateOnServerStr(),
-          DataSync.getUpdateOnServerList())
-      .then((snapshot) {
-    print(snapshot);
-    snapshot.forEach((data) async {
-      var res = await http.put(Uri.parse(prefix + 'ROUT/Update'),
-          headers: header, body: jsonEncode(data.toJson()));
-      print(res.body);
-    });
-  });
-}
+// Future<void> insertROUTToServer(BuildContext context) async {
+//   retrieveROUTById(context, DataSync.getInsertToServerStr(),
+//           DataSync.getInsertToServerList())
+//       .then((snapshot) {
+//     print(snapshot);
+//     snapshot.forEach((data) async {
+//       var res = await http.post(Uri.parse(prefix + "ROUT/Add"),
+//           headers: header, body: jsonEncode(data.toJson()));
+//       print(res.body);
+//     });
+//   });
+// }
+//
+// Future<void> updateROUTOnServer(BuildContext? context) async {
+//   retrieveROUTById(context, DataSync.getUpdateOnServerStr(),
+//           DataSync.getUpdateOnServerList())
+//       .then((snapshot) {
+//     print(snapshot);
+//     snapshot.forEach((data) async {
+//       var res = await http.put(Uri.parse(prefix + 'ROUT/Update'),
+//           headers: header, body: jsonEncode(data.toJson()));
+//       print(res.body);
+//     });
+//   });
+// }

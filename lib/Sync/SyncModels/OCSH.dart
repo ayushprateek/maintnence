@@ -336,7 +336,9 @@ Future<void> insertOCSHToServer(BuildContext? context,
           ///Already added in server
           final Database db = await initializeDB(context);
           OCSH model = OCSH.fromJson(jsonDecode(res.body));
-          var x = await db.update("OCSH", model.toJson(),
+          map["ID"] = model.ID;
+          map["has_created"] = 0;
+          var x = await db.update("OCSH", map,
               where: "TransId = ?", whereArgs: [model.TransId]);
           print(x.toString());
         } else if (res.statusCode == 201 || res.statusCode == 500) {

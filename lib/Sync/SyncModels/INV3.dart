@@ -359,7 +359,9 @@ Future<void> insertINV3ToServer(BuildContext? context,
           ///Already added in server
           final Database db = await initializeDB(context);
           INV3Model model = INV3Model.fromJson(jsonDecode(res.body));
-          var x = await db.update("INV3", model.toJson(),
+          map["ID"] = model.ID;
+          map["has_created"] = 0;
+          var x = await db.update("INV3", map,
               where: "TransId = ? AND RowId = ?",
               whereArgs: [model.TransId, model.RowId]);
           print(x.toString());

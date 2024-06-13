@@ -249,100 +249,100 @@ Future<List<PRQUT3>> retrievePRQUT3ById(
   return queryResult.map((e) => PRQUT3.fromJson(e)).toList();
 }
 
-Future<String> insertPRQUT3ToServer(BuildContext? context,
-    {String? TransId, int? id}) async {
-  String response = "";
-  List<PRQUT3> list = await retrievePRQUT3ById(
-      context,
-      TransId == null
-          ? DataSync.getInsertToServerStr()
-          : "TransId = ? AND ID = ?",
-      TransId == null ? DataSync.getInsertToServerList() : [TransId, id]);
-  if (TransId != null) {
-    list[0].ID = 0;
-    var res = await http.post(Uri.parse(prefix + "PRQUT3/Add"),
-        headers: header, body: jsonEncode(list[0].toJson()));
-    response = res.body;
-  } else if (list.isNotEmpty) {
-    int i = 0;
-    bool sentSuccessInServer = false;
-    do {
-      sentSuccessInServer = false;
-      try {
-        Map<String, dynamic> map = list[i].toJson();
-        map.remove('ID');
-        var res = await http
-            .post(Uri.parse(prefix + "PRQUT3/Add"),
-                headers: header, body: jsonEncode(map))
-            .timeout(Duration(seconds: 30), onTimeout: () {
-          return http.Response('Error', 500);
-        });
-        response = await res.body;
-        print("eeaaae status");
-        print(await res.statusCode);
-        if (res.statusCode == 201 || res.statusCode == 500) {
-          sentSuccessInServer = true;
-          if (res.statusCode == 201) {
-            map['ID'] = jsonDecode(res.body)['ID'];
-            final Database db = await initializeDB(context);
-            // map = jsonDecode(res.body);
-            map["has_created"] = 0;
-            var x = await db.update("PRQUT3", map,
-                where: "TransId = ? AND RowId = ?",
-                whereArgs: [map["TransId"], map["RowId"]]);
-            print(x.toString());
-          }
-        }
-        print(res.body);
-      } catch (e) {
-        print("Timeout " + e.toString());
-        sentSuccessInServer = true;
-      }
-      i++;
-      print("INDEX = " + i.toString());
-    } while (i < list.length && sentSuccessInServer == true);
-  }
-  return response;
-}
-
-Future<void> updatePRQUT3OnServer(BuildContext? context,
-    {String? condition, List? l}) async {
-  List<PRQUT3> list = await retrievePRQUT3ById(
-      context,
-      l == null ? DataSync.getUpdateOnServerStr() : condition ?? "",
-      l == null ? DataSync.getUpdateOnServerList() : l);
-  print(list);
-  int i = 0;
-  bool sentSuccessInServer = false;
-  do {
-    sentSuccessInServer = false;
-    try {
-      Map<String, dynamic> map = list[i].toJson();
-      var res = await http
-          .put(Uri.parse(prefix + 'PRQUT3/Update'),
-              headers: header, body: jsonEncode(map))
-          .timeout(Duration(seconds: 30), onTimeout: () {
-        return http.Response('Error', 500);
-      });
-      print(await res.statusCode);
-      if (res.statusCode == 201 || res.statusCode == 500) {
-        sentSuccessInServer = true;
-        if (res.statusCode == 201) {
-          final Database db = await initializeDB(context);
-          map["has_updated"] = 0;
-          var x = await db.update("PRQUT3", map,
-              where: "TransId = ? AND RowId = ?",
-              whereArgs: [map["TransId"], map["RowId"]]);
-          print(x.toString());
-        }
-      }
-      print(res.body);
-    } catch (e) {
-      print("Timeout " + e.toString());
-      sentSuccessInServer = true;
-    }
-
-    i++;
-    print("INDEX = " + i.toString());
-  } while (i < list.length && sentSuccessInServer == true);
-}
+// Future<String> insertPRQUT3ToServer(BuildContext? context,
+//     {String? TransId, int? id}) async {
+//   String response = "";
+//   List<PRQUT3> list = await retrievePRQUT3ById(
+//       context,
+//       TransId == null
+//           ? DataSync.getInsertToServerStr()
+//           : "TransId = ? AND ID = ?",
+//       TransId == null ? DataSync.getInsertToServerList() : [TransId, id]);
+//   if (TransId != null) {
+//     list[0].ID = 0;
+//     var res = await http.post(Uri.parse(prefix + "PRQUT3/Add"),
+//         headers: header, body: jsonEncode(list[0].toJson()));
+//     response = res.body;
+//   } else if (list.isNotEmpty) {
+//     int i = 0;
+//     bool sentSuccessInServer = false;
+//     do {
+//       sentSuccessInServer = false;
+//       try {
+//         Map<String, dynamic> map = list[i].toJson();
+//         map.remove('ID');
+//         var res = await http
+//             .post(Uri.parse(prefix + "PRQUT3/Add"),
+//                 headers: header, body: jsonEncode(map))
+//             .timeout(Duration(seconds: 30), onTimeout: () {
+//           return http.Response('Error', 500);
+//         });
+//         response = await res.body;
+//         print("eeaaae status");
+//         print(await res.statusCode);
+//         if (res.statusCode == 201 || res.statusCode == 500) {
+//           sentSuccessInServer = true;
+//           if (res.statusCode == 201) {
+//             map['ID'] = jsonDecode(res.body)['ID'];
+//             final Database db = await initializeDB(context);
+//             // map = jsonDecode(res.body);
+//             map["has_created"] = 0;
+//             var x = await db.update("PRQUT3", map,
+//                 where: "TransId = ? AND RowId = ?",
+//                 whereArgs: [map["TransId"], map["RowId"]]);
+//             print(x.toString());
+//           }
+//         }
+//         print(res.body);
+//       } catch (e) {
+//         print("Timeout " + e.toString());
+//         sentSuccessInServer = true;
+//       }
+//       i++;
+//       print("INDEX = " + i.toString());
+//     } while (i < list.length && sentSuccessInServer == true);
+//   }
+//   return response;
+// }
+//
+// Future<void> updatePRQUT3OnServer(BuildContext? context,
+//     {String? condition, List? l}) async {
+//   List<PRQUT3> list = await retrievePRQUT3ById(
+//       context,
+//       l == null ? DataSync.getUpdateOnServerStr() : condition ?? "",
+//       l == null ? DataSync.getUpdateOnServerList() : l);
+//   print(list);
+//   int i = 0;
+//   bool sentSuccessInServer = false;
+//   do {
+//     sentSuccessInServer = false;
+//     try {
+//       Map<String, dynamic> map = list[i].toJson();
+//       var res = await http
+//           .put(Uri.parse(prefix + 'PRQUT3/Update'),
+//               headers: header, body: jsonEncode(map))
+//           .timeout(Duration(seconds: 30), onTimeout: () {
+//         return http.Response('Error', 500);
+//       });
+//       print(await res.statusCode);
+//       if (res.statusCode == 201 || res.statusCode == 500) {
+//         sentSuccessInServer = true;
+//         if (res.statusCode == 201) {
+//           final Database db = await initializeDB(context);
+//           map["has_updated"] = 0;
+//           var x = await db.update("PRQUT3", map,
+//               where: "TransId = ? AND RowId = ?",
+//               whereArgs: [map["TransId"], map["RowId"]]);
+//           print(x.toString());
+//         }
+//       }
+//       print(res.body);
+//     } catch (e) {
+//       print("Timeout " + e.toString());
+//       sentSuccessInServer = true;
+//     }
+//
+//     i++;
+//     print("INDEX = " + i.toString());
+//   } while (i < list.length && sentSuccessInServer == true);
+// }

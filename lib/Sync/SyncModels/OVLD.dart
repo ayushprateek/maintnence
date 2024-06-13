@@ -386,149 +386,151 @@ Future<List<OVLDModel>> retrieveOVLDById(
   return queryResult.map((e) => OVLDModel.fromJson(e)).toList();
 }
 
-Future<void> insertOVLDToServer(BuildContext? context,
-    {String? TransId, int? ID}) async {
-  String response = "";
-  List<OVLDModel> list = await retrieveOVLDById(
-      context,
-      TransId == null
-          ? DataSync.getInsertToServerStr()
-          : "TransId = ? AND ID = ?",
-      TransId == null ? DataSync.getInsertToServerList() : [TransId, ID]);
-  if (TransId != null) {
-    //only single entry
-    list[0].ID = 0;
-    var res = await http.post(Uri.parse(prefix + "OVLD/Add"),
-        headers: header, body: jsonEncode(list[0].toJson()));
-    print(res.body);
-    response = res.body;
-  } else if (list.isNotEmpty) {
-    int i = 0;
-    bool sentSuccessInServer = false;
-    if (list.isEmpty) {
-      return;
-    }
-    do {
-      Map<String, dynamic> map = list[i].toJson();
-      sentSuccessInServer = false;
-      try {
-        map.remove('ID');
-        String queryParams = 'TransId=${list[i].TransId}';
-        var res = await http
-            .post(Uri.parse(prefix + "OVLD/Add?$queryParams"),
-                headers: header, body: jsonEncode(map))
-            .timeout(Duration(seconds: 30), onTimeout: () {
-          return http.Response("Error", 500);
-        });
-        response = await res.body;
-        if (res.statusCode != 201) {
-          await writeToLogFile(
-              text:
-                  '${res.statusCode} error \nMap : $map\nResponse : ${res.body}',
-              fileName: StackTrace.current.toString(),
-              lineNo: 141);
-        }
-        if (res.statusCode == 409) {
-          ///Already added in server
-          final Database db = await initializeDB(context);
-          OVLDModel model = OVLDModel.fromJson(jsonDecode(res.body));
-          var x = await db.update("OVLD", model.toJson(),
-              where: "TransId = ?", whereArgs: [model.TransId]);
-          print(x.toString());
-        } else if (res.statusCode == 201 || res.statusCode == 500) {
-          sentSuccessInServer = true;
-          if (res.statusCode == 201) {
-            map['ID'] = jsonDecode(res.body)['ID'];
-            map['PermanentTransId'] = jsonDecode(res.body)['PermanentTransId'];
-            final Database db = await initializeDB(context);
-            map["has_created"] = 0;
-            var x = await db.update("OVLD", map,
-                where: "TransId = ??", whereArgs: [map["TransId"]]);
-            print(x.toString());
-          } else {
-            writeToLogFile(
-                text: '500 error \nMap : $map',
-                fileName: StackTrace.current.toString(),
-                lineNo: 141);
-          }
-        }
-        print(res.body);
-      } catch (e) {
-        writeToLogFile(
-            text: '${e.toString()}\nMap : $map',
-            fileName: StackTrace.current.toString(),
-            lineNo: 141);
-        sentSuccessInServer = true;
-      }
-      i++;
-      print("INDEX = " + i.toString());
-    } while (i < list.length && sentSuccessInServer == true);
-  }
-}
-
-Future<void> updateOVLDOnServer(BuildContext? context,
-    {String? condition, List? l}) async {
-  List<OVLDModel> list = await retrieveOVLDById(
-      context,
-      l == null ? DataSync.getUpdateOnServerStr() : condition ?? "",
-      l == null ? DataSync.getUpdateOnServerList() : l);
-  print(list);
-  int i = 0;
-  bool sentSuccessInServer = false;
-  if (list.isEmpty) {
-    return;
-  }
-  do {
-    Map<String, dynamic> map = list[i].toJson();
-    sentSuccessInServer = false;
-    try {
-      if (list.isEmpty) {
-        return;
-      }
-      Map<String, dynamic> map = list[i].toJson();
-      var res = await http
-          .put(Uri.parse(prefix + 'OVLD/Update'),
-              headers: header, body: jsonEncode(map))
-          .timeout(Duration(seconds: 30), onTimeout: () {
-        writeToLogFile(
-            text: '500 error \nMap : $map',
-            fileName: StackTrace.current.toString(),
-            lineNo: 141);
-        return http.Response('Error', 500);
-      });
-      print(await res.statusCode);
-      if (res.statusCode != 201) {
-        await writeToLogFile(
-            text:
-                '${res.statusCode} error \nMap : $map\nResponse : ${res.body}',
-            fileName: StackTrace.current.toString(),
-            lineNo: 141);
-      }
-      if (res.statusCode == 201 || res.statusCode == 500) {
-        sentSuccessInServer = true;
-        if (res.statusCode == 201) {
-          final Database db = await initializeDB(context);
-          map["has_updated"] = 0;
-          var x = await db.update("OVLD", map,
-              where: "TransId = ?", whereArgs: [map["TransId"]]);
-          print(x.toString());
-        } else {
-          writeToLogFile(
-              text: '500 error \nMap : $map',
-              fileName: StackTrace.current.toString(),
-              lineNo: 141);
-        }
-      }
-      print(res.body);
-    } catch (e) {
-      writeToLogFile(
-          text: '${e.toString()}\nMap : $map',
-          fileName: StackTrace.current.toString(),
-          lineNo: 141);
-      sentSuccessInServer = true;
-    }
-
-    i++;
-    print("INDEX = " + i.toString());
-  } while (i < list.length && sentSuccessInServer == true);
-}
+// Future<void> insertOVLDToServer(BuildContext? context,
+//     {String? TransId, int? ID}) async {
+//   String response = "";
+//   List<OVLDModel> list = await retrieveOVLDById(
+//       context,
+//       TransId == null
+//           ? DataSync.getInsertToServerStr()
+//           : "TransId = ? AND ID = ?",
+//       TransId == null ? DataSync.getInsertToServerList() : [TransId, ID]);
+//   if (TransId != null) {
+//     //only single entry
+//     list[0].ID = 0;
+//     var res = await http.post(Uri.parse(prefix + "OVLD/Add"),
+//         headers: header, body: jsonEncode(list[0].toJson()));
+//     print(res.body);
+//     response = res.body;
+//   } else if (list.isNotEmpty) {
+//     int i = 0;
+//     bool sentSuccessInServer = false;
+//     if (list.isEmpty) {
+//       return;
+//     }
+//     do {
+//       Map<String, dynamic> map = list[i].toJson();
+//       sentSuccessInServer = false;
+//       try {
+//         map.remove('ID');
+//         String queryParams = 'TransId=${list[i].TransId}';
+//         var res = await http
+//             .post(Uri.parse(prefix + "OVLD/Add?$queryParams"),
+//                 headers: header, body: jsonEncode(map))
+//             .timeout(Duration(seconds: 30), onTimeout: () {
+//           return http.Response("Error", 500);
+//         });
+//         response = await res.body;
+//         if (res.statusCode != 201) {
+//           await writeToLogFile(
+//               text:
+//                   '${res.statusCode} error \nMap : $map\nResponse : ${res.body}',
+//               fileName: StackTrace.current.toString(),
+//               lineNo: 141);
+//         }
+//         if (res.statusCode == 409) {
+//           ///Already added in server
+//           final Database db = await initializeDB(context);
+//           OVLDModel model = OVLDModel.fromJson(jsonDecode(res.body));
+//           map["ID"] = model.ID;
+//           map["has_created"] = 0;
+//           var x = await db.update("OVLD", map,
+//               where: "TransId = ?", whereArgs: [model.TransId]);
+//           print(x.toString());
+//         } else if (res.statusCode == 201 || res.statusCode == 500) {
+//           sentSuccessInServer = true;
+//           if (res.statusCode == 201) {
+//             map['ID'] = jsonDecode(res.body)['ID'];
+//             map['PermanentTransId'] = jsonDecode(res.body)['PermanentTransId'];
+//             final Database db = await initializeDB(context);
+//             map["has_created"] = 0;
+//             var x = await db.update("OVLD", map,
+//                 where: "TransId = ??", whereArgs: [map["TransId"]]);
+//             print(x.toString());
+//           } else {
+//             writeToLogFile(
+//                 text: '500 error \nMap : $map',
+//                 fileName: StackTrace.current.toString(),
+//                 lineNo: 141);
+//           }
+//         }
+//         print(res.body);
+//       } catch (e) {
+//         writeToLogFile(
+//             text: '${e.toString()}\nMap : $map',
+//             fileName: StackTrace.current.toString(),
+//             lineNo: 141);
+//         sentSuccessInServer = true;
+//       }
+//       i++;
+//       print("INDEX = " + i.toString());
+//     } while (i < list.length && sentSuccessInServer == true);
+//   }
+// }
+//
+// Future<void> updateOVLDOnServer(BuildContext? context,
+//     {String? condition, List? l}) async {
+//   List<OVLDModel> list = await retrieveOVLDById(
+//       context,
+//       l == null ? DataSync.getUpdateOnServerStr() : condition ?? "",
+//       l == null ? DataSync.getUpdateOnServerList() : l);
+//   print(list);
+//   int i = 0;
+//   bool sentSuccessInServer = false;
+//   if (list.isEmpty) {
+//     return;
+//   }
+//   do {
+//     Map<String, dynamic> map = list[i].toJson();
+//     sentSuccessInServer = false;
+//     try {
+//       if (list.isEmpty) {
+//         return;
+//       }
+//       Map<String, dynamic> map = list[i].toJson();
+//       var res = await http
+//           .put(Uri.parse(prefix + 'OVLD/Update'),
+//               headers: header, body: jsonEncode(map))
+//           .timeout(Duration(seconds: 30), onTimeout: () {
+//         writeToLogFile(
+//             text: '500 error \nMap : $map',
+//             fileName: StackTrace.current.toString(),
+//             lineNo: 141);
+//         return http.Response('Error', 500);
+//       });
+//       print(await res.statusCode);
+//       if (res.statusCode != 201) {
+//         await writeToLogFile(
+//             text:
+//                 '${res.statusCode} error \nMap : $map\nResponse : ${res.body}',
+//             fileName: StackTrace.current.toString(),
+//             lineNo: 141);
+//       }
+//       if (res.statusCode == 201 || res.statusCode == 500) {
+//         sentSuccessInServer = true;
+//         if (res.statusCode == 201) {
+//           final Database db = await initializeDB(context);
+//           map["has_updated"] = 0;
+//           var x = await db.update("OVLD", map,
+//               where: "TransId = ?", whereArgs: [map["TransId"]]);
+//           print(x.toString());
+//         } else {
+//           writeToLogFile(
+//               text: '500 error \nMap : $map',
+//               fileName: StackTrace.current.toString(),
+//               lineNo: 141);
+//         }
+//       }
+//       print(res.body);
+//     } catch (e) {
+//       writeToLogFile(
+//           text: '${e.toString()}\nMap : $map',
+//           fileName: StackTrace.current.toString(),
+//           lineNo: 141);
+//       sentSuccessInServer = true;
+//     }
+//
+//     i++;
+//     print("INDEX = " + i.toString());
+//   } while (i < list.length && sentSuccessInServer == true);
+// }

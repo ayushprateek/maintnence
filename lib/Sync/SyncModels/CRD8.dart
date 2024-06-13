@@ -259,7 +259,9 @@ Future<void> insertCRD8ToServer(BuildContext? context,
           ///Already added in server
           final Database db = await initializeDB(context);
           CRD8Model model = CRD8Model.fromJson(jsonDecode(res.body));
-          var x = await db.update("CRD8", model.toJson(),
+          map["ID"] = model.BPLID;
+          map["has_created"] = 0;
+          var x = await db.update("CRD8", map,
               where: "Code = ? AND BPLID = ?",
               whereArgs: [model.Code, model.BPLID]);
           print(x.toString());

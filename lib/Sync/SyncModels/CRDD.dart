@@ -267,7 +267,9 @@ Future<void> insertCRDDToServer(BuildContext? context,
           ///Already added in server
           final Database db = await initializeDB(context);
           CRDDModel model = CRDDModel.fromJson(jsonDecode(res.body));
-          var x = await db.update("CRDD", model.toJson(),
+          map["ID"] = model.ID;
+          map["has_created"] = 0;
+          var x = await db.update("CRDD", map,
               where: "Code = ? AND RowId = ?",
               whereArgs: [model.Code, model.RowId]);
           print(x.toString());

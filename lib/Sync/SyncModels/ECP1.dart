@@ -376,7 +376,9 @@ Future<void> insertECP1ToServer(BuildContext? context,
           ///Already added in server
           final Database db = await initializeDB(context);
           ECP1 model = ECP1.fromJson(jsonDecode(res.body));
-          var x = await db.update("ECP1", model.toJson(),
+          map["ID"] = model.ID;
+          map["has_created"] = 0;
+          var x = await db.update("ECP1", map,
               where: "TransId = ? AND RowId = ?",
               whereArgs: [model.TransId, model.RowId]);
           print(x.toString());

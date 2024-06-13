@@ -495,7 +495,9 @@ Future<void> updateINV1OnServer(BuildContext? context,
         ///Already added in server
         final Database db = await initializeDB(context);
         INV1Model model = INV1Model.fromJson(jsonDecode(res.body));
-        var x = await db.update("INV1", model.toJson(),
+        map["ID"] = model.ID;
+        map["has_created"] = 0;
+        var x = await db.update("INV1", map,
             where: "TransId = ? AND RowId = ?",
             whereArgs: [model.TransId, model.RowId]);
         print(x.toString());

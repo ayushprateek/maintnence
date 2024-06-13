@@ -354,8 +354,11 @@ Future<void> insertSUITA1ToServer(BuildContext? context,
         if (res.statusCode == 409) {
           ///Already added in server
           final Database db = await initializeDB(context);
+
           SUITA1 model = SUITA1.fromJson(jsonDecode(res.body));
-          var x = await db.update("SUITA1", model.toJson(),
+          map["ID"] = model.ID;
+          map["has_created"] = 0;
+          var x = await db.update("SUITA1", map,
               where: "TransId = ? AND RowId = ?",
               whereArgs: [model.TransId, model.RowId]);
           print(x.toString());

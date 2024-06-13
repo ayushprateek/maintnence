@@ -509,7 +509,9 @@ Future<void> insertODSCToServer(BuildContext? context,
           ///Already added in server
           final Database db = await initializeDB(context);
           ODSCModel model = ODSCModel.fromJson(jsonDecode(res.body));
-          var x = await db.update("ODSC", model.toJson(),
+          map["ID"] = model.ID;
+          map["has_created"] = 0;
+          var x = await db.update("ODSC", map,
               where: "TransId = ?", whereArgs: [model.TransId]);
           print(x.toString());
         } else if (res.statusCode == 201 || res.statusCode == 500) {

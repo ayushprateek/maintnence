@@ -260,6 +260,17 @@ Future<String> insertMNVCL1ToServer(BuildContext? context,
         response = await res.body;
         print("eeaaae status");
         print(await res.statusCode);
+        if (res.statusCode == 409) {
+          ///Already added in server
+          final Database db = await initializeDB(context);
+          MNVCL1 model = MNVCL1.fromJson(jsonDecode(res.body));
+          map["ID"] = model.ID;
+          map["has_created"] = 0;
+          var x = await db.update("MNVCL1", map,
+              where: "Code = ? AND RowId = ?",
+              whereArgs: [model.Code,model.RowId]);
+          print(x.toString());
+        } else
         if (res.statusCode == 201 || res.statusCode == 500) {
           sentSuccessInServer = true;
           if (res.statusCode == 201) {

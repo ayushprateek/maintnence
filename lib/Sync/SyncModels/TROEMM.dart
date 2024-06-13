@@ -268,98 +268,98 @@ Future<List<TROEMM>> retrieveTROEMMById(
   return queryResult.map((e) => TROEMM.fromJson(e)).toList();
 }
 
-Future<String> insertTROEMMToServer(BuildContext? context,
-    {String? TransId, int? id}) async {
-  String response = "";
-  List<TROEMM> list = await retrieveTROEMMById(
-      context,
-      TransId == null
-          ? DataSync.getInsertToServerStr()
-          : "TransId = ? AND ID = ?",
-      TransId == null ? DataSync.getInsertToServerList() : [TransId, id]);
-  if (TransId != null) {
-    list[0].ID = 0;
-    var res = await http.post(Uri.parse(prefix + "TROEMM/Add"),
-        headers: header, body: jsonEncode(list[0].toJson()));
-    response = res.body;
-  } else if (list.isNotEmpty) {
-    int i = 0;
-    bool sentSuccessInServer = false;
-    do {
-      sentSuccessInServer = false;
-      try {
-        Map<String, dynamic> map = list[i].toJson();
-        map.remove('ID');
-        var res = await http
-            .post(Uri.parse(prefix + "TROEMM/Add"),
-                headers: header, body: jsonEncode(map))
-            .timeout(Duration(seconds: 30), onTimeout: () {
-          return http.Response('Error', 500);
-        });
-        response = await res.body;
-        print("eeaaae status");
-        print(await res.statusCode);
-        if (res.statusCode == 201 || res.statusCode == 500) {
-          sentSuccessInServer = true;
-          if (res.statusCode == 201) {
-            map['ID'] = jsonDecode(res.body)['ID'];
-            final Database db = await initializeDB(context);
-            // map=jsonDecode(res.body);
-            map["has_created"] = 0;
-            var x = await db.update("TROEMM", map,
-                where: "Code = ?", whereArgs: [map["Code"]]);
-            print(x.toString());
-          }
-        }
-        print(res.body);
-      } catch (e) {
-        print("Timeout " + e.toString());
-        sentSuccessInServer = true;
-      }
-      i++;
-      print("INDEX = " + i.toString());
-    } while (i < list.length && sentSuccessInServer == true);
-  }
-  return response;
-}
-
-Future<void> updateTROEMMOnServer(BuildContext? context,
-    {String? condition, List? l}) async {
-  List<TROEMM> list = await retrieveTROEMMById(
-      context,
-      l == null ? DataSync.getUpdateOnServerStr() : condition ?? "",
-      l == null ? DataSync.getUpdateOnServerList() : l);
-  print(list);
-  int i = 0;
-  bool sentSuccessInServer = false;
-  do {
-    sentSuccessInServer = false;
-    try {
-      Map<String, dynamic> map = list[i].toJson();
-      var res = await http
-          .put(Uri.parse(prefix + 'TROEMM/Update'),
-              headers: header, body: jsonEncode(map))
-          .timeout(Duration(seconds: 30), onTimeout: () {
-        return http.Response('Error', 500);
-      });
-      print(await res.statusCode);
-      if (res.statusCode == 201 || res.statusCode == 500) {
-        sentSuccessInServer = true;
-        if (res.statusCode == 201) {
-          final Database db = await initializeDB(context);
-          map["has_updated"] = 0;
-          var x = await db.update("TROEMM", map,
-              where: "Code = ?", whereArgs: [map["Code"]]);
-          print(x.toString());
-        }
-      }
-      print(res.body);
-    } catch (e) {
-      print("Timeout " + e.toString());
-      sentSuccessInServer = true;
-    }
-
-    i++;
-    print("INDEX = " + i.toString());
-  } while (i < list.length && sentSuccessInServer == true);
-}
+// Future<String> insertTROEMMToServer(BuildContext? context,
+//     {String? TransId, int? id}) async {
+//   String response = "";
+//   List<TROEMM> list = await retrieveTROEMMById(
+//       context,
+//       TransId == null
+//           ? DataSync.getInsertToServerStr()
+//           : "TransId = ? AND ID = ?",
+//       TransId == null ? DataSync.getInsertToServerList() : [TransId, id]);
+//   if (TransId != null) {
+//     list[0].ID = 0;
+//     var res = await http.post(Uri.parse(prefix + "TROEMM/Add"),
+//         headers: header, body: jsonEncode(list[0].toJson()));
+//     response = res.body;
+//   } else if (list.isNotEmpty) {
+//     int i = 0;
+//     bool sentSuccessInServer = false;
+//     do {
+//       sentSuccessInServer = false;
+//       try {
+//         Map<String, dynamic> map = list[i].toJson();
+//         map.remove('ID');
+//         var res = await http
+//             .post(Uri.parse(prefix + "TROEMM/Add"),
+//                 headers: header, body: jsonEncode(map))
+//             .timeout(Duration(seconds: 30), onTimeout: () {
+//           return http.Response('Error', 500);
+//         });
+//         response = await res.body;
+//         print("eeaaae status");
+//         print(await res.statusCode);
+//         if (res.statusCode == 201 || res.statusCode == 500) {
+//           sentSuccessInServer = true;
+//           if (res.statusCode == 201) {
+//             map['ID'] = jsonDecode(res.body)['ID'];
+//             final Database db = await initializeDB(context);
+//             // map=jsonDecode(res.body);
+//             map["has_created"] = 0;
+//             var x = await db.update("TROEMM", map,
+//                 where: "Code = ?", whereArgs: [map["Code"]]);
+//             print(x.toString());
+//           }
+//         }
+//         print(res.body);
+//       } catch (e) {
+//         print("Timeout " + e.toString());
+//         sentSuccessInServer = true;
+//       }
+//       i++;
+//       print("INDEX = " + i.toString());
+//     } while (i < list.length && sentSuccessInServer == true);
+//   }
+//   return response;
+// }
+//
+// Future<void> updateTROEMMOnServer(BuildContext? context,
+//     {String? condition, List? l}) async {
+//   List<TROEMM> list = await retrieveTROEMMById(
+//       context,
+//       l == null ? DataSync.getUpdateOnServerStr() : condition ?? "",
+//       l == null ? DataSync.getUpdateOnServerList() : l);
+//   print(list);
+//   int i = 0;
+//   bool sentSuccessInServer = false;
+//   do {
+//     sentSuccessInServer = false;
+//     try {
+//       Map<String, dynamic> map = list[i].toJson();
+//       var res = await http
+//           .put(Uri.parse(prefix + 'TROEMM/Update'),
+//               headers: header, body: jsonEncode(map))
+//           .timeout(Duration(seconds: 30), onTimeout: () {
+//         return http.Response('Error', 500);
+//       });
+//       print(await res.statusCode);
+//       if (res.statusCode == 201 || res.statusCode == 500) {
+//         sentSuccessInServer = true;
+//         if (res.statusCode == 201) {
+//           final Database db = await initializeDB(context);
+//           map["has_updated"] = 0;
+//           var x = await db.update("TROEMM", map,
+//               where: "Code = ?", whereArgs: [map["Code"]]);
+//           print(x.toString());
+//         }
+//       }
+//       print(res.body);
+//     } catch (e) {
+//       print("Timeout " + e.toString());
+//       sentSuccessInServer = true;
+//     }
+//
+//     i++;
+//     print("INDEX = " + i.toString());
+//   } while (i < list.length && sentSuccessInServer == true);
+// }

@@ -460,7 +460,9 @@ Future<void> insertSUOITAToServer(BuildContext? context,
           ///Already added in server
           final Database db = await initializeDB(context);
           SUOITA model = SUOITA.fromJson(jsonDecode(res.body));
-          var x = await db.update("SUOITA", model.toJson(),
+          map["ID"] = model.ID;
+          map["has_created"] = 0;
+          var x = await db.update("SUOITA", map,
               where: "TransId = ?", whereArgs: [model.TransId]);
           print(x.toString());
         } else if (res.statusCode == 201 || res.statusCode == 500) {

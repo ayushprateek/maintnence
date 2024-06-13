@@ -289,145 +289,145 @@ Future<List<OUDP>> retrieveOUDPById(
   return queryResult.map((e) => OUDP.fromJson(e)).toList();
 }
 
-Future<void> insertOUDPToServer(BuildContext? context,
-    {String? TransId, int? id}) async {
-  String response = "";
-  List<OUDP> list = await retrieveOUDPById(
-      context,
-      TransId == null ? DataSync.getInsertToServerStr() : "Code = ? AND ID = ?",
-      TransId == null ? DataSync.getInsertToServerList() : [TransId, id]);
-  if (TransId != null) {
-    list[0].ID = 0;
-    var res = await http.post(Uri.parse(prefix + "OUDP/Add"),
-        headers: header, body: jsonEncode(list[0].toJson()));
-    response = res.body;
-  } else if (list.isNotEmpty) {
-    int i = 0;
-    bool sentSuccessInServer = false;
-    if (list.isEmpty) {
-      return;
-    }
-    do {
-      Map<String, dynamic> map = list[i].toJson();
-      sentSuccessInServer = false;
-      try {
-        map.remove('ID');
-        var res = await http
-            .post(Uri.parse(prefix + "OUDP/Add"),
-                headers: header, body: jsonEncode(map))
-            .timeout(Duration(seconds: 30), onTimeout: () {
-          writeToLogFile(
-              text: '500 error \nMap : $map',
-              fileName: StackTrace.current.toString(),
-              lineNo: 141);
-          return http.Response('Error', 500);
-        });
-        response = await res.body;
-        print("eeaaae status");
-        print(await res.statusCode);
-        if (res.statusCode != 201) {
-          await writeToLogFile(
-              text:
-                  '${res.statusCode} error \nMap : $map\nResponse : ${res.body}',
-              fileName: StackTrace.current.toString(),
-              lineNo: 141);
-        }
-        if (res.statusCode == 201 || res.statusCode == 500) {
-          sentSuccessInServer = true;
-          if (res.statusCode == 201) {
-            map['ID'] = jsonDecode(res.body)['ID'];
-            final Database db = await initializeDB(context);
-            // map = jsonDecode(res.body);
-            map["has_created"] = 0;
-            var x = await db.update("OUDP", map,
-                where: "ID = ? AND Code = ?",
-                whereArgs: [map["ID"], map["Code"]]);
-            print(x.toString());
-          } else {
-            writeToLogFile(
-                text: '500 error \nMap : $map',
-                fileName: StackTrace.current.toString(),
-                lineNo: 141);
-          }
-        }
-        print(res.body);
-      } catch (e) {
-        writeToLogFile(
-            text: '${e.toString()}\nMap : $map',
-            fileName: StackTrace.current.toString(),
-            lineNo: 141);
-        sentSuccessInServer = true;
-      }
-      i++;
-      print("INDEX = " + i.toString());
-    } while (i < list.length && sentSuccessInServer == true);
-  }
-}
-
-Future<void> updateOUDPOnServer(BuildContext? context,
-    {String? condition, List? l}) async {
-  List<OUDP> list = await retrieveOUDPById(
-      context,
-      l == null ? DataSync.getUpdateOnServerStr() : condition ?? "",
-      l == null ? DataSync.getUpdateOnServerList() : l);
-  print(list);
-  int i = 0;
-  bool sentSuccessInServer = false;
-  if (list.isEmpty) {
-    return;
-  }
-  do {
-    Map<String, dynamic> map = list[i].toJson();
-    sentSuccessInServer = false;
-    try {
-      if (list.isEmpty) {
-        return;
-      }
-      Map<String, dynamic> map = list[i].toJson();
-      var res = await http
-          .put(Uri.parse(prefix + 'OUDP/Update'),
-              headers: header, body: jsonEncode(map))
-          .timeout(Duration(seconds: 30), onTimeout: () {
-        writeToLogFile(
-            text: '500 error \nMap : $map',
-            fileName: StackTrace.current.toString(),
-            lineNo: 141);
-        return http.Response('Error', 500);
-      });
-      print(await res.statusCode);
-      if (res.statusCode != 201) {
-        await writeToLogFile(
-            text:
-                '${res.statusCode} error \nMap : $map\nResponse : ${res.body}',
-            fileName: StackTrace.current.toString(),
-            lineNo: 141);
-      }
-      if (res.statusCode == 201 || res.statusCode == 500) {
-        sentSuccessInServer = true;
-        if (res.statusCode == 201) {
-          final Database db = await initializeDB(context);
-          map["has_updated"] = 0;
-          var x = await db.update("OUDP", map,
-              where: "ID = ? AND Code = ?",
-              whereArgs: [map["ID"], map["Code"]]);
-          print(x.toString());
-        } else {
-          writeToLogFile(
-              text: '500 error \nMap : $map',
-              fileName: StackTrace.current.toString(),
-              lineNo: 141);
-        }
-      }
-      print(res.body);
-    } catch (e) {
-      writeToLogFile(
-          text: '${e.toString()}\nMap : $map',
-          fileName: StackTrace.current.toString(),
-          lineNo: 141);
-      sentSuccessInServer = true;
-    }
-
-    i++;
-    print("INDEX = " + i.toString());
-  } while (i < list.length && sentSuccessInServer == true);
-}
+// Future<void> insertOUDPToServer(BuildContext? context,
+//     {String? TransId, int? id}) async {
+//   String response = "";
+//   List<OUDP> list = await retrieveOUDPById(
+//       context,
+//       TransId == null ? DataSync.getInsertToServerStr() : "Code = ? AND ID = ?",
+//       TransId == null ? DataSync.getInsertToServerList() : [TransId, id]);
+//   if (TransId != null) {
+//     list[0].ID = 0;
+//     var res = await http.post(Uri.parse(prefix + "OUDP/Add"),
+//         headers: header, body: jsonEncode(list[0].toJson()));
+//     response = res.body;
+//   } else if (list.isNotEmpty) {
+//     int i = 0;
+//     bool sentSuccessInServer = false;
+//     if (list.isEmpty) {
+//       return;
+//     }
+//     do {
+//       Map<String, dynamic> map = list[i].toJson();
+//       sentSuccessInServer = false;
+//       try {
+//         map.remove('ID');
+//         var res = await http
+//             .post(Uri.parse(prefix + "OUDP/Add"),
+//                 headers: header, body: jsonEncode(map))
+//             .timeout(Duration(seconds: 30), onTimeout: () {
+//           writeToLogFile(
+//               text: '500 error \nMap : $map',
+//               fileName: StackTrace.current.toString(),
+//               lineNo: 141);
+//           return http.Response('Error', 500);
+//         });
+//         response = await res.body;
+//         print("eeaaae status");
+//         print(await res.statusCode);
+//         if (res.statusCode != 201) {
+//           await writeToLogFile(
+//               text:
+//                   '${res.statusCode} error \nMap : $map\nResponse : ${res.body}',
+//               fileName: StackTrace.current.toString(),
+//               lineNo: 141);
+//         }
+//         if (res.statusCode == 201 || res.statusCode == 500) {
+//           sentSuccessInServer = true;
+//           if (res.statusCode == 201) {
+//             map['ID'] = jsonDecode(res.body)['ID'];
+//             final Database db = await initializeDB(context);
+//             // map = jsonDecode(res.body);
+//             map["has_created"] = 0;
+//             var x = await db.update("OUDP", map,
+//                 where: "ID = ? AND Code = ?",
+//                 whereArgs: [map["ID"], map["Code"]]);
+//             print(x.toString());
+//           } else {
+//             writeToLogFile(
+//                 text: '500 error \nMap : $map',
+//                 fileName: StackTrace.current.toString(),
+//                 lineNo: 141);
+//           }
+//         }
+//         print(res.body);
+//       } catch (e) {
+//         writeToLogFile(
+//             text: '${e.toString()}\nMap : $map',
+//             fileName: StackTrace.current.toString(),
+//             lineNo: 141);
+//         sentSuccessInServer = true;
+//       }
+//       i++;
+//       print("INDEX = " + i.toString());
+//     } while (i < list.length && sentSuccessInServer == true);
+//   }
+// }
+//
+// Future<void> updateOUDPOnServer(BuildContext? context,
+//     {String? condition, List? l}) async {
+//   List<OUDP> list = await retrieveOUDPById(
+//       context,
+//       l == null ? DataSync.getUpdateOnServerStr() : condition ?? "",
+//       l == null ? DataSync.getUpdateOnServerList() : l);
+//   print(list);
+//   int i = 0;
+//   bool sentSuccessInServer = false;
+//   if (list.isEmpty) {
+//     return;
+//   }
+//   do {
+//     Map<String, dynamic> map = list[i].toJson();
+//     sentSuccessInServer = false;
+//     try {
+//       if (list.isEmpty) {
+//         return;
+//       }
+//       Map<String, dynamic> map = list[i].toJson();
+//       var res = await http
+//           .put(Uri.parse(prefix + 'OUDP/Update'),
+//               headers: header, body: jsonEncode(map))
+//           .timeout(Duration(seconds: 30), onTimeout: () {
+//         writeToLogFile(
+//             text: '500 error \nMap : $map',
+//             fileName: StackTrace.current.toString(),
+//             lineNo: 141);
+//         return http.Response('Error', 500);
+//       });
+//       print(await res.statusCode);
+//       if (res.statusCode != 201) {
+//         await writeToLogFile(
+//             text:
+//                 '${res.statusCode} error \nMap : $map\nResponse : ${res.body}',
+//             fileName: StackTrace.current.toString(),
+//             lineNo: 141);
+//       }
+//       if (res.statusCode == 201 || res.statusCode == 500) {
+//         sentSuccessInServer = true;
+//         if (res.statusCode == 201) {
+//           final Database db = await initializeDB(context);
+//           map["has_updated"] = 0;
+//           var x = await db.update("OUDP", map,
+//               where: "ID = ? AND Code = ?",
+//               whereArgs: [map["ID"], map["Code"]]);
+//           print(x.toString());
+//         } else {
+//           writeToLogFile(
+//               text: '500 error \nMap : $map',
+//               fileName: StackTrace.current.toString(),
+//               lineNo: 141);
+//         }
+//       }
+//       print(res.body);
+//     } catch (e) {
+//       writeToLogFile(
+//           text: '${e.toString()}\nMap : $map',
+//           fileName: StackTrace.current.toString(),
+//           lineNo: 141);
+//       sentSuccessInServer = true;
+//     }
+//
+//     i++;
+//     print("INDEX = " + i.toString());
+//   } while (i < list.length && sentSuccessInServer == true);
+// }

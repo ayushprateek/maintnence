@@ -360,6 +360,17 @@ Future<String> insertMNJCD4ToServer(BuildContext? context,
         response = await res.body;
         print("eeaaae status");
         print(await res.statusCode);
+        if (res.statusCode == 409) {
+          ///Already added in server
+          final Database db = await initializeDB(context);
+          MNJCD4 model = MNJCD4.fromJson(jsonDecode(res.body));
+          map["ID"] = model.ID;
+          map["has_created"] = 0;
+          var x = await db.update("MNJCD4", map,
+              where: "TransId = ? AND RowId = ?",
+              whereArgs: [model.TransId, model.RowId]);
+          print(x.toString());
+        } else
         if (res.statusCode == 201 || res.statusCode == 500) {
           sentSuccessInServer = true;
           if (res.statusCode == 201) {

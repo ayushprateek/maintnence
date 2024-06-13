@@ -321,7 +321,9 @@ Future<void> insertDGLMAPPINGToServer(BuildContext? context,
           ///Already added in server
           final Database db = await initializeDB(context);
           DGLMAPPING model = DGLMAPPING.fromJson(jsonDecode(res.body));
-          var x = await db.update("DGLMAPPING", model.toJson(),
+          map["ID"] = model.ID;
+          map["has_created"] = 0;
+          var x = await db.update("DGLMAPPING", map,
               where: "AcctCode = ?", whereArgs: [model.AcctCode]);
           print(x.toString());
         } else if (res.statusCode == 201 || res.statusCode == 500) {

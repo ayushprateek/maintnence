@@ -1,12 +1,12 @@
-import 'package:maintenance/Component/LogFileFunctions.dart';
 import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:maintenance/Component/LogFileFunctions.dart';
 import 'package:maintenance/Component/SnackbarComponent.dart';
 import 'package:maintenance/DatabaseInitialization.dart';
 import 'package:maintenance/Sync/CustomURL.dart';
 import 'package:maintenance/Sync/DataSync.dart';
-import 'dart:convert';
 import 'package:sqflite/sqlite_api.dart';
 
 class PRPDN1 {
@@ -362,7 +362,17 @@ Future<String> insertPRPDN1ToServer(BuildContext? context,
         response = await res.body;
         print("eeaaae status");
         print(await res.statusCode);
-        if (res.statusCode == 201 || res.statusCode == 500) {
+        if (res.statusCode == 409) {
+          ///Already added in server
+          final Database db = await initializeDB(context);
+          PRPDN1 model = PRPDN1.fromJson(jsonDecode(res.body));
+          map["ID"] = model.ID;
+          map["has_created"] = 0;
+          var x = await db.update("PRPDN1", map,
+              where: "TransId = ? AND RowId = ?",
+              whereArgs: [model.TransId, model.RowId]);
+          print(x.toString());
+        } else if (res.statusCode == 201 || res.statusCode == 500) {
           sentSuccessInServer = true;
           if (res.statusCode == 201) {
             map['ID'] = jsonDecode(res.body)['ID'];

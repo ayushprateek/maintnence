@@ -378,7 +378,9 @@ Future<void> insertDSC2ToServer(BuildContext? context,
           ///Already added in server
           final Database db = await initializeDB(context);
           DSC2Model model = DSC2Model.fromJson(jsonDecode(res.body));
-          var x = await db.update("DSC2", model.toJson(),
+          map["ID"] = model.ID;
+          map["has_created"] = 0;
+          var x = await db.update("DSC2", map,
               where: "TransId = ? AND RowId = ?",
               whereArgs: [model.TransId, model.RowId]);
           print(x.toString());

@@ -385,7 +385,9 @@ Future<void> insertQUT2ToServer(BuildContext? context,
           ///Already added in server
           final Database db = await initializeDB(context);
           QUT2Model model = QUT2Model.fromJson(jsonDecode(res.body));
-          var x = await db.update("QUT2", model.toJson(),
+          map["ID"] = model.ID;
+          map["has_created"] = 0;
+          var x = await db.update("QUT2", map,
               where: "TransId = ? AND RowId = ?",
               whereArgs: [model.TransId, model.RowId]);
           print(x.toString());

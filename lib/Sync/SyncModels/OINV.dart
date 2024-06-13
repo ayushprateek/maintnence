@@ -546,6 +546,8 @@ Future<void> insertOINVToServer(BuildContext? context,
           ///Already added in server
           final Database db = await initializeDB(context);
           OINVModel oinvModel = OINVModel.fromJson(jsonDecode(res.body));
+          map["ID"] = oinvModel.ID;
+          map["has_created"] = 0;
           var x = await db.update("OINV", oinvModel.toJson(),
               where: "TransId = ?", whereArgs: [oinvModel.TransId]);
           print(x.toString());

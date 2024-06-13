@@ -323,7 +323,9 @@ Future<void> insertBPMGToServer(BuildContext? context,
           ///Already added in server
           final Database db = await initializeDB(context);
           BPMG model = BPMG.fromJson(jsonDecode(res.body));
-          var x = await db.update("BPMG", model.toJson(),
+          map["ID"] = model.ID;
+          map["has_created"] = 0;
+          var x = await db.update("BPMG",map,
               where: "Code = ?", whereArgs: [model.Code]);
           print(x.toString());
         } else if (res.statusCode == 201 || res.statusCode == 500) {

@@ -254,7 +254,9 @@ Future<String> insertCVMTP1ToServer(BuildContext? context,
           ///Already added in server
           final Database db = await initializeDB(context);
           CVMTP1 model = CVMTP1.fromJson(jsonDecode(res.body));
-          var x = await db.update("CVMTP1", model.toJson(),
+          map["ID"] = model.ID;
+          map["has_created"] = 0;
+          var x = await db.update("CVMTP1", map,
               where: "Code = ? AND RowId = ?",
               whereArgs: [model.Code, model.RowId]);
           print(x.toString());

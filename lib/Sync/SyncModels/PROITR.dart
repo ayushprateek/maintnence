@@ -364,6 +364,17 @@ Future<String> insertPROITRToServer(BuildContext? context,
         response = await res.body;
         print("eeaaae status");
         print(await res.statusCode);
+        if (res.statusCode == 409) {
+          ///Already added in server
+          final Database db = await initializeDB(context);
+          PROITR model = PROITR.fromJson(jsonDecode(res.body));
+          map["ID"] = model.ID;
+          map["has_created"] = 0;
+          var x = await db.update("PROITR", map,
+              where: "TransId = ?",
+              whereArgs: [model.TransId]);
+          print(x.toString());
+        } else
         if (res.statusCode == 201 || res.statusCode == 500) {
           sentSuccessInServer = true;
           if (res.statusCode == 201) {

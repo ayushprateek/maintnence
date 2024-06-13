@@ -403,7 +403,9 @@ Future<void> insertRTP1ToServer(BuildContext? context,
           ///Already added in server
           final Database db = await initializeDB(context);
           RTP1Model model = RTP1Model.fromJson(jsonDecode(res.body));
-          var x = await db.update("RTP1", model.toJson(),
+          map["ID"] = model.ID;
+          map["has_created"] = 0;
+          var x = await db.update("RTP1", map,
               where: "TransId = ? AND RowId = ?",
               whereArgs: [model.TransId, model.RowId]);
           print(x.toString());
