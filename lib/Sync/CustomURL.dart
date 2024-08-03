@@ -20,7 +20,7 @@ String googleAPiKey =
 // String googleAPiKey = "AIzaSyDClvq3oYi0iJzwGzxj1vBPncXrIKQ7SKg"; //LIVE API KEY
 
 String prefix = "http://103.146.242.248:6006/"; //DEVELOPMENT
-//http://103.191.130.12:6001/ DEVELOPMENT WEBSITE
+//http://103.146.242.248:6005/ DEVELOPMENT WEBSITE
 
 
 
