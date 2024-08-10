@@ -104,7 +104,7 @@ class Transaction1 {
     this.mnjcd1,
     this.mnjcd2,
     this.mnjcd3,
-    this.mnjcd4,
+    // this.mnjcd4,
     this.mnojcd,
     this.opcna1,
     this.opcna2,
@@ -194,7 +194,7 @@ class Transaction1 {
   List<MNJCD1>? mnjcd1;
   List<MNJCD2>? mnjcd2;
   List<MNJCD3>? mnjcd3;
-  List<MNJCD4>? mnjcd4;
+  // List<MNJCD4>? mnjcd4;
   List<MNOJCD>? mnojcd;
   List<OPCNA1>? opcna1;
   List<OPCNA2>? opcna2;
@@ -333,8 +333,8 @@ class Transaction1 {
             List<MNJCD2>.from(json["MNJCD2"].map((x) => MNJCD2.fromJson(x))),
         mnjcd3:
             List<MNJCD3>.from(json["MNJCD3"].map((x) => MNJCD3.fromJson(x))),
-        mnjcd4:
-            List<MNJCD4>.from(json["MNJCD4"].map((x) => MNJCD4.fromJson(x))),
+        // mnjcd4:
+        //     List<MNJCD4>.from(json["MNJCD4"].map((x) => MNJCD4.fromJson(x))),
         mnojcd:
             List<MNOJCD>.from(json["MNOJCD"].map((x) => MNOJCD.fromJson(x))),
         opcna1:
@@ -453,7 +453,7 @@ class Transaction1 {
         "MNJCD1": List<dynamic>.from(mnjcd1 ?? [].map((x) => x.toJson())),
         "MNJCD2": List<dynamic>.from(mnjcd2 ?? [].map((x) => x.toJson())),
         "MNJCD3": List<dynamic>.from(mnjcd3 ?? [].map((x) => x.toJson())),
-        "MNJCD4": List<dynamic>.from(mnjcd4 ?? [].map((x) => x.toJson())),
+        // "MNJCD4": List<dynamic>.from(mnjcd4 ?? [].map((x) => x.toJson())),
         "MNOJCD": List<dynamic>.from(mnojcd ?? [].map((x) => x.toJson())),
         "OPCNA1": List<dynamic>.from(opcna1 ?? [].map((x) => x.toJson())),
         "OPCNA2": List<dynamic>.from(opcna2 ?? [].map((x) => x.toJson())),
@@ -581,7 +581,7 @@ class Transaction1 {
     await insertMNJCD1(db, list: transactions.mnjcd1);
     await insertMNJCD2(db, list: transactions.mnjcd2);
     await insertMNJCD3(db, list: transactions.mnjcd3);
-    await insertMNJCD4(db, list: transactions.mnjcd4);
+    // await insertMNJCD4(db, list: transactions.mnjcd4);
     await insertMNOJCD(db, list: transactions.mnojcd);
     await insertOPCNA1(db, list: transactions.opcna1);
     await insertOPCNA2(db, list: transactions.opcna2);

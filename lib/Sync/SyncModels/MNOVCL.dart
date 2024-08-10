@@ -1,20 +1,16 @@
-import 'package:maintenance/Component/LogFileFunctions.dart';
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:maintenance/Component/LogFileFunctions.dart';
 import 'package:maintenance/Component/SnackbarComponent.dart';
 import 'package:maintenance/DatabaseInitialization.dart';
 import 'package:maintenance/Sync/CustomURL.dart';
 import 'package:maintenance/Sync/DataSync.dart';
-import 'dart:convert';
 import 'package:sqflite/sqlite_api.dart';
 
 class MNOVCL {
   int? ID;
   String? Code;
-  String? ObjectCode;
-  String? EquipmentGroupCode;
-  String? EquipmentGroupName;
   DateTime? FromDate;
   DateTime? ToDate;
   DateTime? InstalledDate;
@@ -27,14 +23,12 @@ class MNOVCL {
   String? Remarks;
   DateTime? CreateDate;
   DateTime? UpdateDate;
-  String? LastReading;
+  int? hasCreated;
+  int? hasUpdated;
 
   MNOVCL({
     this.ID,
     this.Code,
-    this.ObjectCode,
-    this.EquipmentGroupCode,
-    this.EquipmentGroupName,
     this.FromDate,
     this.ToDate,
     this.InstalledDate,
@@ -47,37 +41,33 @@ class MNOVCL {
     this.Remarks,
     this.CreateDate,
     this.UpdateDate,
-    this.LastReading,
+    this.hasCreated,
+    this.hasUpdated,
   });
 
   factory MNOVCL.fromJson(Map<String, dynamic> json) => MNOVCL(
         ID: int.tryParse(json['ID'].toString()) ?? 0,
-        Code: json['Code']?.toString() ?? '',
-        ObjectCode: json['ObjectCode']?.toString() ?? '',
-        EquipmentGroupCode: json['EquipmentGroupCode']?.toString() ?? '',
-        EquipmentGroupName: json['EquipmentGroupName']?.toString() ?? '',
+        Code: json['Code'],
         FromDate: DateTime.tryParse(json['FromDate'].toString()),
         ToDate: DateTime.tryParse(json['ToDate'].toString()),
         InstalledDate: DateTime.tryParse(json['InstalledDate'].toString()),
-        InstalledByCode: json['InstalledByCode']?.toString() ?? '',
-        InstalledByName: json['InstalledByName']?.toString() ?? '',
+        InstalledByCode: json['InstalledByCode'],
+        InstalledByName: json['InstalledByName'],
         WarrantyFromDate:
             DateTime.tryParse(json['WarrantyFromDate'].toString()),
         WarrantyToDate: DateTime.tryParse(json['WarrantyToDate'].toString()),
-        WarrantyByCode: json['WarrantyByCode']?.toString() ?? '',
-        WarrantyByName: json['WarrantyByName']?.toString() ?? '',
-        Remarks: json['Remarks']?.toString() ?? '',
+        WarrantyByCode: json['WarrantyByCode'],
+        WarrantyByName: json['WarrantyByName'],
+        Remarks: json['Remarks'],
         CreateDate: DateTime.tryParse(json['CreateDate'].toString()),
         UpdateDate: DateTime.tryParse(json['UpdateDate'].toString()),
-        LastReading: json['LastReading']?.toString() ?? '',
+        hasCreated: int.tryParse(json['has_created'].toString()) ?? 0,
+        hasUpdated: int.tryParse(json['has_updated'].toString()) ?? 0,
       );
 
   Map<String, dynamic> toJson() => {
         'ID': ID,
         'Code': Code,
-        'ObjectCode': ObjectCode,
-        'EquipmentGroupCode': EquipmentGroupCode,
-        'EquipmentGroupName': EquipmentGroupName,
         'FromDate': FromDate?.toIso8601String(),
         'ToDate': ToDate?.toIso8601String(),
         'InstalledDate': InstalledDate?.toIso8601String(),
@@ -90,21 +80,22 @@ class MNOVCL {
         'Remarks': Remarks,
         'CreateDate': CreateDate?.toIso8601String(),
         'UpdateDate': UpdateDate?.toIso8601String(),
-        'LastReading': LastReading,
+        'has_created': hasCreated,
+        'has_updated': hasUpdated,
       };
 }
 
-List<MNOVCL> mNOVCLFromJson(String str) =>
+List<MNOVCL> mNOVLCFromJson(String str) =>
     List<MNOVCL>.from(json.decode(str).map((x) => MNOVCL.fromJson(x)));
 
-String mNOVCLToJson(List<MNOVCL> data) =>
+String mNOVLCToJson(List<MNOVCL> data) =>
     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 Future<List<MNOVCL>> dataSyncMNOVCL() async {
   var res =
       await http.get(headers: header, Uri.parse(prefix + "MNOVCL" + postfix));
   print(res.body);
-  return mNOVCLFromJson(res.body);
+  return mNOVLCFromJson(res.body);
 }
 
 Future<void> insertMNOVCL(Database db, {List? list}) async {
@@ -184,7 +175,6 @@ Future<void> insertMNOVCL(Database db, {List? list}) async {
   print('Time taken for MNOVCL update: ${stopwatch.elapsedMilliseconds}ms');
   stopwatch.reset();
   stopwatch.start();
-  // var v = await db.rawQuery("Select * from MNOVCL_Temp where TransId not in (Select TransId from MNOVCL)");
   var v = await db.rawQuery('''
     SELECT T0.*
 FROM MNOVCL_Temp T0
@@ -257,7 +247,7 @@ Future<String> insertMNOVCLToServer(BuildContext? context,
       context,
       TransId == null
           ? DataSync.getInsertToServerStr()
-          : "TransId = ? AND ID = ?",
+          : "Code = ?",
       TransId == null ? DataSync.getInsertToServerList() : [TransId, id]);
   if (TransId != null) {
     list[0].ID = 0;
@@ -281,26 +271,16 @@ Future<String> insertMNOVCLToServer(BuildContext? context,
         response = await res.body;
         print("eeaaae status");
         print(await res.statusCode);
-        if (res.statusCode == 409) {
-          ///Already added in server
-          final Database db = await initializeDB(context);
-          MNOVCL model = MNOVCL.fromJson(jsonDecode(res.body));
-          map["ID"] = model.ID;
-          map["has_created"] = 0;
-          var x = await db.update("MNOVCL", map,
-              where: "Code = ?",
-              whereArgs: [model.Code]);
-          print(x.toString());
-        } else
         if (res.statusCode == 201 || res.statusCode == 500) {
           sentSuccessInServer = true;
           if (res.statusCode == 201) {
             map['ID'] = jsonDecode(res.body)['ID'];
             final Database db = await initializeDB(context);
-            // map=jsonDecode(res.body);
+            map = jsonDecode(res.body);
             map["has_created"] = 0;
             var x = await db.update("MNOVCL", map,
-                where: "Code = ?", whereArgs: [map["Code"]]);
+                where: "Code = ?",
+                whereArgs: [map["Code"]]);
             print(x.toString());
           }
         }
@@ -309,7 +289,7 @@ Future<String> insertMNOVCLToServer(BuildContext? context,
         print("Timeout " + e.toString());
         sentSuccessInServer = true;
       }
-      i++;
+      print('i++;');
       print("INDEX = " + i.toString());
     } while (i < list.length && sentSuccessInServer == true);
   }
@@ -342,7 +322,8 @@ Future<void> updateMNOVCLOnServer(BuildContext? context,
           final Database db = await initializeDB(context);
           map["has_updated"] = 0;
           var x = await db.update("MNOVCL", map,
-              where: "Code = ?", whereArgs: [map["Code"]]);
+              where: "Code = ?",
+              whereArgs: [map["Code"]]);
           print(x.toString());
         }
       }

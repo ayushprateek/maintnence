@@ -182,7 +182,7 @@ class _ItemDetailsState extends State<ItemDetails> {
                                                       getPoppinsTextSpanHeading(
                                                           text: 'Quantity'),
                                                       getPoppinsTextSpanDetails(
-                                                          text: mnjcd1.Qunatity?.toStringAsFixed(2)),
+                                                          text: mnjcd1.Quantity?.toStringAsFixed(2)),
                                                     ],
                                                   ),
                                                 ),

@@ -225,7 +225,7 @@ class _EditJobCardItemState extends State<EditJobCardItem> {
                                   EditJobCardItem.itemName.toString() ?? '',
                               UOM: EditJobCardItem.uomCode.toString() ?? '',
                               IsFromStock: EditJobCardItem.fromStock,
-                              Qunatity: double.tryParse(
+                              Quantity: double.tryParse(
                                       EditJobCardItem.quantity.toString()) ??
                                   0.0,
                               SupplierCode:
