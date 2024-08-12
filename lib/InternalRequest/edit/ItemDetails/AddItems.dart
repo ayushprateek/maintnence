@@ -5,9 +5,9 @@ import 'package:maintenance/Component/CustomColor.dart';
 import 'package:maintenance/Component/CustomFont.dart';
 import 'package:maintenance/Component/GetTextField.dart';
 import 'package:maintenance/Component/SnackbarComponent.dart';
-import 'package:maintenance/InternalRequest/GeneralData.dart';
-import 'package:maintenance/InternalRequest/ItemDetails/EditItems.dart';
-import 'package:maintenance/InternalRequest/ItemDetails/ItemDetails.dart';
+import 'package:maintenance/InternalRequest/edit/GeneralData.dart';
+import 'package:maintenance/InternalRequest/edit/ItemDetails/EditItems.dart';
+import 'package:maintenance/InternalRequest/edit/ItemDetails/ItemDetails.dart';
 import 'package:maintenance/Sync/SyncModels/OITM.dart';
 
 class AddItems extends StatefulWidget {
@@ -223,7 +223,7 @@ class _AddItemsState extends State<AddItems> {
                                         snapshot.data![index].ItemName +
                                             " is already added");
                                   } else {
-                                    ClearInternalRequestDocument.clearEditItems();
+                                    ClearCreateInternalRequestDocument.clearEditItems();
                                     EditItems.transId = GeneralData.transId;
                                     EditItems.fromWhsCode = GeneralData.fromWhsCode;
                                     EditItems.toWhsCode = GeneralData.toWhsCode;

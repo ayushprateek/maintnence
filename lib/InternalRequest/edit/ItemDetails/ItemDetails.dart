@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:maintenance/Component/CustomColor.dart';
 import 'package:maintenance/Component/CustomFont.dart';
-import 'package:maintenance/InternalRequest/ItemDetails/AddItems.dart';
+import 'package:maintenance/InternalRequest/edit/ItemDetails/AddItems.dart';
 import 'package:maintenance/Sync/SyncModels/PRITR1.dart';
 
 class ItemDetails extends StatefulWidget {

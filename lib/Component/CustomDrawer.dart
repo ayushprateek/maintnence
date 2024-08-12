@@ -21,7 +21,7 @@ import 'package:maintenance/Component/SnackbarComponent.dart';
 import 'package:maintenance/DrangAndDropItem.dart';
 import 'package:maintenance/GoodsIssue/create/GoodsIssue.dart';
 import 'package:maintenance/GoodsReceiptNote/create/GoodsReceiptNote.dart';
-import 'package:maintenance/InternalRequest/InternalRequest.dart';
+import 'package:maintenance/InternalRequest/create/InternalRequest.dart';
 import 'package:maintenance/JobCard/create/JobCard.dart';
 import 'package:maintenance/Purchase/PurchaseRequest/create/PurchaseRequest.dart';
 import 'package:maintenance/Sync/DataSync.dart';

@@ -6,8 +6,8 @@ import 'package:maintenance/Component/GetTextField.dart';
 import 'package:maintenance/Component/IsNumeric.dart';
 import 'package:maintenance/Component/LogFileFunctions.dart';
 import 'package:maintenance/Component/SnackbarComponent.dart';
-import 'package:maintenance/InternalRequest/InternalRequest.dart';
-import 'package:maintenance/InternalRequest/ItemDetails/ItemDetails.dart';
+import 'package:maintenance/InternalRequest/edit/InternalRequest.dart';
+import 'package:maintenance/InternalRequest/edit/ItemDetails/ItemDetails.dart';
 import 'package:maintenance/Lookups/DepartmentLookup.dart';
 import 'package:maintenance/Lookups/EmployeeLookup.dart';
 import 'package:maintenance/Lookups/RoutLookup.dart';
@@ -341,7 +341,7 @@ class _EditCheckListState extends State<EditItems> {
                                 //todo: updating
                               }
 
-                            Get.offAll(() => InternalRequest(1));
+                            Get.offAll(() => EditInternalRequest(1));
 
                             getSuccessSnackBar("Check List Updated");
                           } else {
@@ -380,7 +380,7 @@ class _EditCheckListState extends State<EditItems> {
                             );
                             ItemDetails.items.add(mncld1);
 
-                            Get.offAll(() => InternalRequest(1));
+                            Get.offAll(() => EditInternalRequest(1));
                           }
                         }
                       },

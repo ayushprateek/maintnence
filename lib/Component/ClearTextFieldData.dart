@@ -24,50 +24,50 @@ import 'package:maintenance/GoodsIssue/create/ItemDetails/EditItems.dart'
     as goodsEditItems;
 import 'package:maintenance/GoodsIssue/create/ItemDetails/ItemDetails.dart'
     as goodsItemDetails;
-
+import 'package:maintenance/GoodsReceiptNote/create/Address/BillingAddress.dart'
+    as createGrnBillAddress;
+import 'package:maintenance/GoodsReceiptNote/create/Address/ShippingAddress.dart'
+    as createGrnShipAddress;
 //------------------------------CREATE GOODS RECEIPT NOTES------------
-import 'package:maintenance/GoodsReceiptNote/create/GeneralData.dart' as createGrnGenData;
+import 'package:maintenance/GoodsReceiptNote/create/GeneralData.dart'
+    as createGrnGenData;
 import 'package:maintenance/GoodsReceiptNote/create/GoodsReceiptNote.dart';
 import 'package:maintenance/GoodsReceiptNote/create/ItemDetails/ItemDetails.dart'
     as createGrnItemDetails;
-import 'package:maintenance/Purchase/PurchaseRequest/create/ItemDetails/EditItems.dart'
-as createGrnEditItems;
-import 'package:maintenance/GoodsReceiptNote/create/Address/BillingAddress.dart'
-as createGrnBillAddress;
-import 'package:maintenance/GoodsReceiptNote/create/Address/ShippingAddress.dart'
-as createGrnShipAddress;
-//------------------------------VIEW GOODS RECEIPT NOTES------------
-import 'package:maintenance/GoodsReceiptNote/view/GeneralData.dart' as viewGrnGenData;
-import 'package:maintenance/GoodsReceiptNote/view/ItemDetails/ItemDetails.dart'
-    as viewGrnItemDetails;
-
-import 'package:maintenance/GoodsReceiptNote/view/Address/BillingAddress.dart'
-as viewGrnBillAddress;
-import 'package:maintenance/GoodsReceiptNote/view/Address/ShippingAddress.dart'
-as viewGrnShipAddress;
-
+import 'package:maintenance/GoodsReceiptNote/edit/Address/BillingAddress.dart'
+    as editGrnBillAddress;
+import 'package:maintenance/GoodsReceiptNote/edit/Address/ShippingAddress.dart'
+    as editGrnShipAddress;
 //------------------------------EDIT GOODS RECEIPT NOTES------------
-import 'package:maintenance/GoodsReceiptNote/edit/GeneralData.dart' as editGrnGenData;
+import 'package:maintenance/GoodsReceiptNote/edit/GeneralData.dart'
+    as editGrnGenData;
+import 'package:maintenance/GoodsReceiptNote/edit/GoodsReceiptNote.dart';
 import 'package:maintenance/GoodsReceiptNote/edit/ItemDetails/ItemDetails.dart'
     as editGrnItemDetails;
-
-import 'package:maintenance/GoodsReceiptNote/edit/Address/BillingAddress.dart'
-as editGrnBillAddress;
-import 'package:maintenance/GoodsReceiptNote/edit/Address/ShippingAddress.dart'
-as editGrnShipAddress;
-import 'package:maintenance/Purchase/PurchaseRequest/edit/ItemDetails/EditItems.dart'
-as editGrnEditItems;
-
-import 'package:maintenance/GoodsReceiptNote/edit/GoodsReceiptNote.dart';
+import 'package:maintenance/GoodsReceiptNote/view/Address/BillingAddress.dart'
+    as viewGrnBillAddress;
+import 'package:maintenance/GoodsReceiptNote/view/Address/ShippingAddress.dart'
+    as viewGrnShipAddress;
+//------------------------------VIEW GOODS RECEIPT NOTES------------
+import 'package:maintenance/GoodsReceiptNote/view/GeneralData.dart'
+    as viewGrnGenData;
 import 'package:maintenance/GoodsReceiptNote/view/GoodsReceiptNote.dart';
-//------------------------------ INTERNAL REQUEST------------
-import 'package:maintenance/InternalRequest/GeneralData.dart'
-    as internalGenData;
-import 'package:maintenance/InternalRequest/InternalRequest.dart';
-import 'package:maintenance/InternalRequest/ItemDetails/EditItems.dart'
-    as internalEditItems;
-import 'package:maintenance/InternalRequest/ItemDetails/ItemDetails.dart'
-    as internalItemDetails;
+import 'package:maintenance/GoodsReceiptNote/view/ItemDetails/ItemDetails.dart'
+    as viewGrnItemDetails;
+//------------------------------ CREATE INTERNAL REQUEST------------
+import 'package:maintenance/InternalRequest/create/GeneralData.dart'
+    as createInternalGenData;
+import 'package:maintenance/InternalRequest/create/InternalRequest.dart';
+import 'package:maintenance/InternalRequest/create/ItemDetails/EditItems.dart'
+    as createInternalEditItems;
+import 'package:maintenance/InternalRequest/create/ItemDetails/ItemDetails.dart'
+    as createInternalItemDetails;
+import 'package:maintenance/InternalRequest/edit/InternalRequest.dart';
+import 'package:maintenance/InternalRequest/edit/ItemDetails/ItemDetails.dart'
+    as editInternalItemDetails;
+import 'package:maintenance/InternalRequest/view/InternalRequest.dart';
+import 'package:maintenance/InternalRequest/view/ItemDetails/ItemDetails.dart'
+    as viewInternalItemDetails;
 //---------------------------------CREATE JOB CARD IMPORTS
 import 'package:maintenance/JobCard/create/GeneralData.dart'
     as jcdCreateGenData;
@@ -89,7 +89,8 @@ import 'package:maintenance/JobCard/view/JobCard.dart';
 //------------------------------ CREATE PURCHASE REQUEST IMPORTS------------
 import 'package:maintenance/Purchase/PurchaseRequest/create/GeneralData.dart'
     as createPurchaseGenData;
-
+import 'package:maintenance/Purchase/PurchaseRequest/create/ItemDetails/EditItems.dart'
+    as createGrnEditItems;
 import 'package:maintenance/Purchase/PurchaseRequest/create/ItemDetails/EditItems.dart'
     as createPurchaseEditItems;
 import 'package:maintenance/Purchase/PurchaseRequest/create/ItemDetails/ItemDetails.dart'
@@ -98,6 +99,8 @@ import 'package:maintenance/Purchase/PurchaseRequest/create/PurchaseRequest.dart
 //------------------------------ EDIT PURCHASE REQUEST IMPORTS------------
 import 'package:maintenance/Purchase/PurchaseRequest/edit/GeneralData.dart'
     as editPurchaseGenData;
+import 'package:maintenance/Purchase/PurchaseRequest/edit/ItemDetails/EditItems.dart'
+    as editGrnEditItems;
 import 'package:maintenance/Purchase/PurchaseRequest/edit/PurchaseRequest.dart';
 //------------------------------ VIEW PURCHASE REQUEST IMPORTS------------
 import 'package:maintenance/Purchase/PurchaseRequest/view/GeneralData.dart'
@@ -1125,27 +1128,36 @@ class ClearGRNDocument {
     createGrnGenData.GeneralData.refNo = data.RefNo ?? '';
     createGrnGenData.GeneralData.contactPersonId =
         data.ContactPersonId?.toString() ?? '';
-    createGrnGenData.GeneralData.contactPersonName = data.ContactPersonName ?? '';
+    createGrnGenData.GeneralData.contactPersonName =
+        data.ContactPersonName ?? '';
     createGrnGenData.GeneralData.mobileNo = data.MobileNo ?? '';
-    createGrnGenData.GeneralData.postingDate = getFormattedDate(data.PostingDate);
-    createGrnGenData.GeneralData.validUntill = getFormattedDate(data.ValidUntill);
+    createGrnGenData.GeneralData.postingDate =
+        getFormattedDate(data.PostingDate);
+    createGrnGenData.GeneralData.validUntill =
+        getFormattedDate(data.ValidUntill);
     createGrnGenData.GeneralData.currency = data.Currency ?? '';
-    createGrnGenData.GeneralData.currRate = data.CurrRate?.toStringAsFixed(2) ?? '1';
+    createGrnGenData.GeneralData.currRate =
+        data.CurrRate?.toStringAsFixed(2) ?? '1';
     createGrnGenData.GeneralData.paymentTermCode = data.PaymentTermCode ?? '';
     createGrnGenData.GeneralData.paymentTermName = data.PaymentTermName ?? '';
     createGrnGenData.GeneralData.paymentTermDays =
         data.PaymentTermDays?.toString() ?? '';
-    createGrnGenData.GeneralData.approvalStatus = data.ApprovalStatus ?? 'Pending';
+    createGrnGenData.GeneralData.approvalStatus =
+        data.ApprovalStatus ?? 'Pending';
     createGrnGenData.GeneralData.docStatus = data.DocStatus ?? 'Open';
     createGrnGenData.GeneralData.rPTransId = data.RPTransId ?? '';
     createGrnGenData.GeneralData.dSTranId = data.DSTranId ?? '';
     createGrnGenData.GeneralData.cRTransId = data.CRTransId ?? '';
     createGrnGenData.GeneralData.baseTab = data.BaseTab ?? '';
-    createGrnGenData.GeneralData.totBDisc = data.TotBDisc?.toStringAsFixed(2) ?? '';
-    createGrnGenData.GeneralData.discPer = data.DiscPer?.toStringAsFixed(2) ?? '';
-    createGrnGenData.GeneralData.discVal = data.DiscVal?.toStringAsFixed(2) ?? '';
+    createGrnGenData.GeneralData.totBDisc =
+        data.TotBDisc?.toStringAsFixed(2) ?? '';
+    createGrnGenData.GeneralData.discPer =
+        data.DiscPer?.toStringAsFixed(2) ?? '';
+    createGrnGenData.GeneralData.discVal =
+        data.DiscVal?.toStringAsFixed(2) ?? '';
     createGrnGenData.GeneralData.taxVal = data.TaxVal?.toStringAsFixed(2) ?? '';
-    createGrnGenData.GeneralData.docTotal = data.DocTotal?.toStringAsFixed(2) ?? '';
+    createGrnGenData.GeneralData.docTotal =
+        data.DocTotal?.toStringAsFixed(2) ?? '';
     createGrnGenData.GeneralData.permanentTransId = data.PermanentTransId ?? '';
     createGrnGenData.GeneralData.docEntry = data.DocEntry?.toString() ?? '';
     createGrnGenData.GeneralData.docNum = data.DocNum ?? '';
@@ -1185,17 +1197,24 @@ class ClearGRNDocument {
     createGrnShipAddress.ShippingAddress.hasUpdated = prpdn2.hasUpdated;
     createGrnShipAddress.ShippingAddress.CityCode = prpdn2.CityCode.toString();
     createGrnShipAddress.ShippingAddress.Addres = prpdn2.Address.toString();
-    createGrnShipAddress.ShippingAddress.CountryName = prpdn2.CountryName.toString();
-    createGrnShipAddress.ShippingAddress.CountryCode = prpdn2.CountryCode.toString();
-    createGrnShipAddress.ShippingAddress.StateName = prpdn2.StateName.toString();
-    createGrnShipAddress.ShippingAddress.RouteCode = prpdn2.RouteCode.toString();
-    createGrnShipAddress.ShippingAddress.StateCode = prpdn2.StateCode.toString();
+    createGrnShipAddress.ShippingAddress.CountryName =
+        prpdn2.CountryName.toString();
+    createGrnShipAddress.ShippingAddress.CountryCode =
+        prpdn2.CountryCode.toString();
+    createGrnShipAddress.ShippingAddress.StateName =
+        prpdn2.StateName.toString();
+    createGrnShipAddress.ShippingAddress.RouteCode =
+        prpdn2.RouteCode.toString();
+    createGrnShipAddress.ShippingAddress.StateCode =
+        prpdn2.StateCode.toString();
     createGrnShipAddress.ShippingAddress.Latitude =
         double.tryParse(prpdn2.Latitude.toString()) ?? 0.0;
     createGrnShipAddress.ShippingAddress.Longitude =
         double.tryParse(prpdn2.Longitude.toString()) ?? 0.0;
-    createGrnShipAddress.ShippingAddress.RowId = int.parse(prpdn2.RowId.toString());
-    createGrnShipAddress.ShippingAddress.AddCode = prpdn2.AddressCode.toString();
+    createGrnShipAddress.ShippingAddress.RowId =
+        int.parse(prpdn2.RowId.toString());
+    createGrnShipAddress.ShippingAddress.AddCode =
+        prpdn2.AddressCode.toString();
   }
 
   static setBillingAddressTextFields({required PRPDN3 prpdn3}) {
@@ -1204,15 +1223,18 @@ class ClearGRNDocument {
     createGrnBillAddress.BillingAddress.hasUpdated = prpdn3.hasUpdated;
     createGrnBillAddress.BillingAddress.CityCode = prpdn3.CityCode.toString();
     createGrnBillAddress.BillingAddress.Addres = prpdn3.Address.toString();
-    createGrnBillAddress.BillingAddress.CountryName = prpdn3.CountryName.toString();
-    createGrnBillAddress.BillingAddress.CountryCode = prpdn3.CountryCode.toString();
+    createGrnBillAddress.BillingAddress.CountryName =
+        prpdn3.CountryName.toString();
+    createGrnBillAddress.BillingAddress.CountryCode =
+        prpdn3.CountryCode.toString();
     createGrnBillAddress.BillingAddress.StateName = prpdn3.StateName.toString();
     createGrnBillAddress.BillingAddress.StateCode = prpdn3.StateCode.toString();
     createGrnBillAddress.BillingAddress.Latitude =
         double.tryParse(prpdn3.Latitude.toString()) ?? 0.0;
     createGrnBillAddress.BillingAddress.Longitude =
         double.tryParse(prpdn3.Longitude.toString()) ?? 0.0;
-    createGrnBillAddress.BillingAddress.RowId = int.parse(prpdn3.RowId.toString());
+    createGrnBillAddress.BillingAddress.RowId =
+        int.parse(prpdn3.RowId.toString());
     createGrnBillAddress.BillingAddress.AddCode = prpdn3.AddressCode.toString();
   }
 
@@ -1309,27 +1331,36 @@ class ClearCreateGRNDocument {
     createGrnGenData.GeneralData.refNo = data.RefNo ?? '';
     createGrnGenData.GeneralData.contactPersonId =
         data.ContactPersonId?.toString() ?? '';
-    createGrnGenData.GeneralData.contactPersonName = data.ContactPersonName ?? '';
+    createGrnGenData.GeneralData.contactPersonName =
+        data.ContactPersonName ?? '';
     createGrnGenData.GeneralData.mobileNo = data.MobileNo ?? '';
-    createGrnGenData.GeneralData.postingDate = getFormattedDate(data.PostingDate);
-    createGrnGenData.GeneralData.validUntill = getFormattedDate(data.ValidUntill);
+    createGrnGenData.GeneralData.postingDate =
+        getFormattedDate(data.PostingDate);
+    createGrnGenData.GeneralData.validUntill =
+        getFormattedDate(data.ValidUntill);
     createGrnGenData.GeneralData.currency = data.Currency ?? '';
-    createGrnGenData.GeneralData.currRate = data.CurrRate?.toStringAsFixed(2) ?? '1';
+    createGrnGenData.GeneralData.currRate =
+        data.CurrRate?.toStringAsFixed(2) ?? '1';
     createGrnGenData.GeneralData.paymentTermCode = data.PaymentTermCode ?? '';
     createGrnGenData.GeneralData.paymentTermName = data.PaymentTermName ?? '';
     createGrnGenData.GeneralData.paymentTermDays =
         data.PaymentTermDays?.toString() ?? '';
-    createGrnGenData.GeneralData.approvalStatus = data.ApprovalStatus ?? 'Pending';
+    createGrnGenData.GeneralData.approvalStatus =
+        data.ApprovalStatus ?? 'Pending';
     createGrnGenData.GeneralData.docStatus = data.DocStatus ?? 'Open';
     createGrnGenData.GeneralData.rPTransId = data.RPTransId ?? '';
     createGrnGenData.GeneralData.dSTranId = data.DSTranId ?? '';
     createGrnGenData.GeneralData.cRTransId = data.CRTransId ?? '';
     createGrnGenData.GeneralData.baseTab = data.BaseTab ?? '';
-    createGrnGenData.GeneralData.totBDisc = data.TotBDisc?.toStringAsFixed(2) ?? '';
-    createGrnGenData.GeneralData.discPer = data.DiscPer?.toStringAsFixed(2) ?? '';
-    createGrnGenData.GeneralData.discVal = data.DiscVal?.toStringAsFixed(2) ?? '';
+    createGrnGenData.GeneralData.totBDisc =
+        data.TotBDisc?.toStringAsFixed(2) ?? '';
+    createGrnGenData.GeneralData.discPer =
+        data.DiscPer?.toStringAsFixed(2) ?? '';
+    createGrnGenData.GeneralData.discVal =
+        data.DiscVal?.toStringAsFixed(2) ?? '';
     createGrnGenData.GeneralData.taxVal = data.TaxVal?.toStringAsFixed(2) ?? '';
-    createGrnGenData.GeneralData.docTotal = data.DocTotal?.toStringAsFixed(2) ?? '';
+    createGrnGenData.GeneralData.docTotal =
+        data.DocTotal?.toStringAsFixed(2) ?? '';
     createGrnGenData.GeneralData.permanentTransId = data.PermanentTransId ?? '';
     createGrnGenData.GeneralData.docEntry = data.DocEntry?.toString() ?? '';
     createGrnGenData.GeneralData.docNum = data.DocNum ?? '';
@@ -1369,17 +1400,24 @@ class ClearCreateGRNDocument {
     createGrnShipAddress.ShippingAddress.hasUpdated = prpdn2.hasUpdated;
     createGrnShipAddress.ShippingAddress.CityCode = prpdn2.CityCode.toString();
     createGrnShipAddress.ShippingAddress.Addres = prpdn2.Address.toString();
-    createGrnShipAddress.ShippingAddress.CountryName = prpdn2.CountryName.toString();
-    createGrnShipAddress.ShippingAddress.CountryCode = prpdn2.CountryCode.toString();
-    createGrnShipAddress.ShippingAddress.StateName = prpdn2.StateName.toString();
-    createGrnShipAddress.ShippingAddress.RouteCode = prpdn2.RouteCode.toString();
-    createGrnShipAddress.ShippingAddress.StateCode = prpdn2.StateCode.toString();
+    createGrnShipAddress.ShippingAddress.CountryName =
+        prpdn2.CountryName.toString();
+    createGrnShipAddress.ShippingAddress.CountryCode =
+        prpdn2.CountryCode.toString();
+    createGrnShipAddress.ShippingAddress.StateName =
+        prpdn2.StateName.toString();
+    createGrnShipAddress.ShippingAddress.RouteCode =
+        prpdn2.RouteCode.toString();
+    createGrnShipAddress.ShippingAddress.StateCode =
+        prpdn2.StateCode.toString();
     createGrnShipAddress.ShippingAddress.Latitude =
         double.tryParse(prpdn2.Latitude.toString()) ?? 0.0;
     createGrnShipAddress.ShippingAddress.Longitude =
         double.tryParse(prpdn2.Longitude.toString()) ?? 0.0;
-    createGrnShipAddress.ShippingAddress.RowId = int.parse(prpdn2.RowId.toString());
-    createGrnShipAddress.ShippingAddress.AddCode = prpdn2.AddressCode.toString();
+    createGrnShipAddress.ShippingAddress.RowId =
+        int.parse(prpdn2.RowId.toString());
+    createGrnShipAddress.ShippingAddress.AddCode =
+        prpdn2.AddressCode.toString();
   }
 
   static setBillingAddressTextFields({required PRPDN3 prpdn3}) {
@@ -1388,15 +1426,18 @@ class ClearCreateGRNDocument {
     createGrnBillAddress.BillingAddress.hasUpdated = prpdn3.hasUpdated;
     createGrnBillAddress.BillingAddress.CityCode = prpdn3.CityCode.toString();
     createGrnBillAddress.BillingAddress.Addres = prpdn3.Address.toString();
-    createGrnBillAddress.BillingAddress.CountryName = prpdn3.CountryName.toString();
-    createGrnBillAddress.BillingAddress.CountryCode = prpdn3.CountryCode.toString();
+    createGrnBillAddress.BillingAddress.CountryName =
+        prpdn3.CountryName.toString();
+    createGrnBillAddress.BillingAddress.CountryCode =
+        prpdn3.CountryCode.toString();
     createGrnBillAddress.BillingAddress.StateName = prpdn3.StateName.toString();
     createGrnBillAddress.BillingAddress.StateCode = prpdn3.StateCode.toString();
     createGrnBillAddress.BillingAddress.Latitude =
         double.tryParse(prpdn3.Latitude.toString()) ?? 0.0;
     createGrnBillAddress.BillingAddress.Longitude =
         double.tryParse(prpdn3.Longitude.toString()) ?? 0.0;
-    createGrnBillAddress.BillingAddress.RowId = int.parse(prpdn3.RowId.toString());
+    createGrnBillAddress.BillingAddress.RowId =
+        int.parse(prpdn3.RowId.toString());
     createGrnBillAddress.BillingAddress.AddCode = prpdn3.AddressCode.toString();
   }
 
@@ -1430,6 +1471,7 @@ class ClearCreateGRNDocument {
     createGrnEditItems.EditItems.isUpdating = false;
   }
 }
+
 class ClearEditGRNDocument {
   static clearGeneralDataTextFields() {
     editGrnGenData.GeneralData.iD = '';
@@ -1497,22 +1539,26 @@ class ClearEditGRNDocument {
     editGrnGenData.GeneralData.postingDate = getFormattedDate(data.PostingDate);
     editGrnGenData.GeneralData.validUntill = getFormattedDate(data.ValidUntill);
     editGrnGenData.GeneralData.currency = data.Currency ?? '';
-    editGrnGenData.GeneralData.currRate = data.CurrRate?.toStringAsFixed(2) ?? '1';
+    editGrnGenData.GeneralData.currRate =
+        data.CurrRate?.toStringAsFixed(2) ?? '1';
     editGrnGenData.GeneralData.paymentTermCode = data.PaymentTermCode ?? '';
     editGrnGenData.GeneralData.paymentTermName = data.PaymentTermName ?? '';
     editGrnGenData.GeneralData.paymentTermDays =
         data.PaymentTermDays?.toString() ?? '';
-    editGrnGenData.GeneralData.approvalStatus = data.ApprovalStatus ?? 'Pending';
+    editGrnGenData.GeneralData.approvalStatus =
+        data.ApprovalStatus ?? 'Pending';
     editGrnGenData.GeneralData.docStatus = data.DocStatus ?? 'Open';
     editGrnGenData.GeneralData.rPTransId = data.RPTransId ?? '';
     editGrnGenData.GeneralData.dSTranId = data.DSTranId ?? '';
     editGrnGenData.GeneralData.cRTransId = data.CRTransId ?? '';
     editGrnGenData.GeneralData.baseTab = data.BaseTab ?? '';
-    editGrnGenData.GeneralData.totBDisc = data.TotBDisc?.toStringAsFixed(2) ?? '';
+    editGrnGenData.GeneralData.totBDisc =
+        data.TotBDisc?.toStringAsFixed(2) ?? '';
     editGrnGenData.GeneralData.discPer = data.DiscPer?.toStringAsFixed(2) ?? '';
     editGrnGenData.GeneralData.discVal = data.DiscVal?.toStringAsFixed(2) ?? '';
     editGrnGenData.GeneralData.taxVal = data.TaxVal?.toStringAsFixed(2) ?? '';
-    editGrnGenData.GeneralData.docTotal = data.DocTotal?.toStringAsFixed(2) ?? '';
+    editGrnGenData.GeneralData.docTotal =
+        data.DocTotal?.toStringAsFixed(2) ?? '';
     editGrnGenData.GeneralData.permanentTransId = data.PermanentTransId ?? '';
     editGrnGenData.GeneralData.docEntry = data.DocEntry?.toString() ?? '';
     editGrnGenData.GeneralData.docNum = data.DocNum ?? '';
@@ -1552,8 +1598,10 @@ class ClearEditGRNDocument {
     editGrnShipAddress.ShippingAddress.hasUpdated = prpdn2.hasUpdated;
     editGrnShipAddress.ShippingAddress.CityCode = prpdn2.CityCode.toString();
     editGrnShipAddress.ShippingAddress.Addres = prpdn2.Address.toString();
-    editGrnShipAddress.ShippingAddress.CountryName = prpdn2.CountryName.toString();
-    editGrnShipAddress.ShippingAddress.CountryCode = prpdn2.CountryCode.toString();
+    editGrnShipAddress.ShippingAddress.CountryName =
+        prpdn2.CountryName.toString();
+    editGrnShipAddress.ShippingAddress.CountryCode =
+        prpdn2.CountryCode.toString();
     editGrnShipAddress.ShippingAddress.StateName = prpdn2.StateName.toString();
     editGrnShipAddress.ShippingAddress.RouteCode = prpdn2.RouteCode.toString();
     editGrnShipAddress.ShippingAddress.StateCode = prpdn2.StateCode.toString();
@@ -1561,7 +1609,8 @@ class ClearEditGRNDocument {
         double.tryParse(prpdn2.Latitude.toString()) ?? 0.0;
     editGrnShipAddress.ShippingAddress.Longitude =
         double.tryParse(prpdn2.Longitude.toString()) ?? 0.0;
-    editGrnShipAddress.ShippingAddress.RowId = int.parse(prpdn2.RowId.toString());
+    editGrnShipAddress.ShippingAddress.RowId =
+        int.parse(prpdn2.RowId.toString());
     editGrnShipAddress.ShippingAddress.AddCode = prpdn2.AddressCode.toString();
   }
 
@@ -1571,15 +1620,18 @@ class ClearEditGRNDocument {
     editGrnBillAddress.BillingAddress.hasUpdated = prpdn3.hasUpdated;
     editGrnBillAddress.BillingAddress.CityCode = prpdn3.CityCode.toString();
     editGrnBillAddress.BillingAddress.Addres = prpdn3.Address.toString();
-    editGrnBillAddress.BillingAddress.CountryName = prpdn3.CountryName.toString();
-    editGrnBillAddress.BillingAddress.CountryCode = prpdn3.CountryCode.toString();
+    editGrnBillAddress.BillingAddress.CountryName =
+        prpdn3.CountryName.toString();
+    editGrnBillAddress.BillingAddress.CountryCode =
+        prpdn3.CountryCode.toString();
     editGrnBillAddress.BillingAddress.StateName = prpdn3.StateName.toString();
     editGrnBillAddress.BillingAddress.StateCode = prpdn3.StateCode.toString();
     editGrnBillAddress.BillingAddress.Latitude =
         double.tryParse(prpdn3.Latitude.toString()) ?? 0.0;
     editGrnBillAddress.BillingAddress.Longitude =
         double.tryParse(prpdn3.Longitude.toString()) ?? 0.0;
-    editGrnBillAddress.BillingAddress.RowId = int.parse(prpdn3.RowId.toString());
+    editGrnBillAddress.BillingAddress.RowId =
+        int.parse(prpdn3.RowId.toString());
     editGrnBillAddress.BillingAddress.AddCode = prpdn3.AddressCode.toString();
   }
 
@@ -1613,6 +1665,7 @@ class ClearEditGRNDocument {
     editGrnEditItems.EditItems.isUpdating = false;
   }
 }
+
 class ClearViewGRNDocument {
   static clearGeneralDataTextFields() {
     viewGrnGenData.GeneralData.iD = '';
@@ -1680,22 +1733,26 @@ class ClearViewGRNDocument {
     viewGrnGenData.GeneralData.postingDate = getFormattedDate(data.PostingDate);
     viewGrnGenData.GeneralData.validUntill = getFormattedDate(data.ValidUntill);
     viewGrnGenData.GeneralData.currency = data.Currency ?? '';
-    viewGrnGenData.GeneralData.currRate = data.CurrRate?.toStringAsFixed(2) ?? '1';
+    viewGrnGenData.GeneralData.currRate =
+        data.CurrRate?.toStringAsFixed(2) ?? '1';
     viewGrnGenData.GeneralData.paymentTermCode = data.PaymentTermCode ?? '';
     viewGrnGenData.GeneralData.paymentTermName = data.PaymentTermName ?? '';
     viewGrnGenData.GeneralData.paymentTermDays =
         data.PaymentTermDays?.toString() ?? '';
-    viewGrnGenData.GeneralData.approvalStatus = data.ApprovalStatus ?? 'Pending';
+    viewGrnGenData.GeneralData.approvalStatus =
+        data.ApprovalStatus ?? 'Pending';
     viewGrnGenData.GeneralData.docStatus = data.DocStatus ?? 'Open';
     viewGrnGenData.GeneralData.rPTransId = data.RPTransId ?? '';
     viewGrnGenData.GeneralData.dSTranId = data.DSTranId ?? '';
     viewGrnGenData.GeneralData.cRTransId = data.CRTransId ?? '';
     viewGrnGenData.GeneralData.baseTab = data.BaseTab ?? '';
-    viewGrnGenData.GeneralData.totBDisc = data.TotBDisc?.toStringAsFixed(2) ?? '';
+    viewGrnGenData.GeneralData.totBDisc =
+        data.TotBDisc?.toStringAsFixed(2) ?? '';
     viewGrnGenData.GeneralData.discPer = data.DiscPer?.toStringAsFixed(2) ?? '';
     viewGrnGenData.GeneralData.discVal = data.DiscVal?.toStringAsFixed(2) ?? '';
     viewGrnGenData.GeneralData.taxVal = data.TaxVal?.toStringAsFixed(2) ?? '';
-    viewGrnGenData.GeneralData.docTotal = data.DocTotal?.toStringAsFixed(2) ?? '';
+    viewGrnGenData.GeneralData.docTotal =
+        data.DocTotal?.toStringAsFixed(2) ?? '';
     viewGrnGenData.GeneralData.permanentTransId = data.PermanentTransId ?? '';
     viewGrnGenData.GeneralData.docEntry = data.DocEntry?.toString() ?? '';
     viewGrnGenData.GeneralData.docNum = data.DocNum ?? '';
@@ -1735,8 +1792,10 @@ class ClearViewGRNDocument {
     viewGrnShipAddress.ShippingAddress.hasUpdated = prpdn2.hasUpdated;
     viewGrnShipAddress.ShippingAddress.CityCode = prpdn2.CityCode.toString();
     viewGrnShipAddress.ShippingAddress.Addres = prpdn2.Address.toString();
-    viewGrnShipAddress.ShippingAddress.CountryName = prpdn2.CountryName.toString();
-    viewGrnShipAddress.ShippingAddress.CountryCode = prpdn2.CountryCode.toString();
+    viewGrnShipAddress.ShippingAddress.CountryName =
+        prpdn2.CountryName.toString();
+    viewGrnShipAddress.ShippingAddress.CountryCode =
+        prpdn2.CountryCode.toString();
     viewGrnShipAddress.ShippingAddress.StateName = prpdn2.StateName.toString();
     viewGrnShipAddress.ShippingAddress.RouteCode = prpdn2.RouteCode.toString();
     viewGrnShipAddress.ShippingAddress.StateCode = prpdn2.StateCode.toString();
@@ -1744,7 +1803,8 @@ class ClearViewGRNDocument {
         double.tryParse(prpdn2.Latitude.toString()) ?? 0.0;
     viewGrnShipAddress.ShippingAddress.Longitude =
         double.tryParse(prpdn2.Longitude.toString()) ?? 0.0;
-    viewGrnShipAddress.ShippingAddress.RowId = int.parse(prpdn2.RowId.toString());
+    viewGrnShipAddress.ShippingAddress.RowId =
+        int.parse(prpdn2.RowId.toString());
     viewGrnShipAddress.ShippingAddress.AddCode = prpdn2.AddressCode.toString();
   }
 
@@ -1754,18 +1814,20 @@ class ClearViewGRNDocument {
     viewGrnBillAddress.BillingAddress.hasUpdated = prpdn3.hasUpdated;
     viewGrnBillAddress.BillingAddress.CityCode = prpdn3.CityCode.toString();
     viewGrnBillAddress.BillingAddress.Addres = prpdn3.Address.toString();
-    viewGrnBillAddress.BillingAddress.CountryName = prpdn3.CountryName.toString();
-    viewGrnBillAddress.BillingAddress.CountryCode = prpdn3.CountryCode.toString();
+    viewGrnBillAddress.BillingAddress.CountryName =
+        prpdn3.CountryName.toString();
+    viewGrnBillAddress.BillingAddress.CountryCode =
+        prpdn3.CountryCode.toString();
     viewGrnBillAddress.BillingAddress.StateName = prpdn3.StateName.toString();
     viewGrnBillAddress.BillingAddress.StateCode = prpdn3.StateCode.toString();
     viewGrnBillAddress.BillingAddress.Latitude =
         double.tryParse(prpdn3.Latitude.toString()) ?? 0.0;
     viewGrnBillAddress.BillingAddress.Longitude =
         double.tryParse(prpdn3.Longitude.toString()) ?? 0.0;
-    viewGrnBillAddress.BillingAddress.RowId = int.parse(prpdn3.RowId.toString());
+    viewGrnBillAddress.BillingAddress.RowId =
+        int.parse(prpdn3.RowId.toString());
     viewGrnBillAddress.BillingAddress.AddCode = prpdn3.AddressCode.toString();
   }
-
 }
 
 goToNewGRNDocument() async {
@@ -1794,176 +1856,417 @@ goToNewGRNDocument() async {
   });
 }
 
-navigateToGoodsReceiptNoteDocument({required String TransId,
-required bool isView}) async {
-  if(isView)
-    {
-      List<PROPDN> list = await retrievePROPDNById(null, 'TransId = ?', [TransId]);
-      if (list.isNotEmpty) {
-        ClearViewGRNDocument.setGeneralDataTextFields(data: list[0]);
-      }
-      List<PRPDN2> PRPDN2List =
-      await retrievePRPDN2ById(null, 'TransId = ?', [TransId]);
-      if (PRPDN2List.isNotEmpty) {
-        ClearViewGRNDocument.setShippingAddressTextFields(prpdn2: PRPDN2List[0]);
-      }
-      List<PRPDN3> PRPDN3List =
-      await retrievePRPDN3ById(null, 'TransId = ?', [TransId]);
-      if (PRPDN3List.isNotEmpty) {
-        ClearViewGRNDocument.setBillingAddressTextFields(prpdn3: PRPDN3List[0]);
-      }
-      viewGrnItemDetails.ItemDetails.items =
-      await retrievePRPDN1ById(null, 'TransId = ?', [TransId]);
-
-      Get.offAll(() => ViewGoodsRecepitNote(0));
+navigateToGoodsReceiptNoteDocument(
+    {required String TransId, required bool isView}) async {
+  if (isView) {
+    List<PROPDN> list =
+        await retrievePROPDNById(null, 'TransId = ?', [TransId]);
+    if (list.isNotEmpty) {
+      ClearViewGRNDocument.setGeneralDataTextFields(data: list[0]);
     }
-  else
-    {
-      List<PROPDN> list = await retrievePROPDNById(null, 'TransId = ?', [TransId]);
-      if (list.isNotEmpty) {
-        ClearEditGRNDocument.setGeneralDataTextFields(data: list[0]);
-      }
-      List<PRPDN2> PRPDN2List =
-      await retrievePRPDN2ById(null, 'TransId = ?', [TransId]);
-      if (PRPDN2List.isNotEmpty) {
-        ClearEditGRNDocument.setShippingAddressTextFields(prpdn2: PRPDN2List[0]);
-      }
-      List<PRPDN3> PRPDN3List =
-      await retrievePRPDN3ById(null, 'TransId = ?', [TransId]);
-      if (PRPDN3List.isNotEmpty) {
-        ClearEditGRNDocument.setBillingAddressTextFields(prpdn3: PRPDN3List[0]);
-      }
-      editGrnItemDetails.ItemDetails.items =
-      await retrievePRPDN1ById(null, 'TransId = ?', [TransId]);
-
-      Get.offAll(() => EditGoodsRecepitNote(0));
+    List<PRPDN2> PRPDN2List =
+        await retrievePRPDN2ById(null, 'TransId = ?', [TransId]);
+    if (PRPDN2List.isNotEmpty) {
+      ClearViewGRNDocument.setShippingAddressTextFields(prpdn2: PRPDN2List[0]);
     }
+    List<PRPDN3> PRPDN3List =
+        await retrievePRPDN3ById(null, 'TransId = ?', [TransId]);
+    if (PRPDN3List.isNotEmpty) {
+      ClearViewGRNDocument.setBillingAddressTextFields(prpdn3: PRPDN3List[0]);
+    }
+    viewGrnItemDetails.ItemDetails.items =
+        await retrievePRPDN1ById(null, 'TransId = ?', [TransId]);
 
+    Get.offAll(() => ViewGoodsRecepitNote(0));
+  } else {
+    List<PROPDN> list =
+        await retrievePROPDNById(null, 'TransId = ?', [TransId]);
+    if (list.isNotEmpty) {
+      ClearEditGRNDocument.setGeneralDataTextFields(data: list[0]);
+    }
+    List<PRPDN2> PRPDN2List =
+        await retrievePRPDN2ById(null, 'TransId = ?', [TransId]);
+    if (PRPDN2List.isNotEmpty) {
+      ClearEditGRNDocument.setShippingAddressTextFields(prpdn2: PRPDN2List[0]);
+    }
+    List<PRPDN3> PRPDN3List =
+        await retrievePRPDN3ById(null, 'TransId = ?', [TransId]);
+    if (PRPDN3List.isNotEmpty) {
+      ClearEditGRNDocument.setBillingAddressTextFields(prpdn3: PRPDN3List[0]);
+    }
+    editGrnItemDetails.ItemDetails.items =
+        await retrievePRPDN1ById(null, 'TransId = ?', [TransId]);
+
+    Get.offAll(() => EditGoodsRecepitNote(0));
+  }
 }
 
-class ClearInternalRequestDocument {
+class ClearCreateInternalRequestDocument {
   static clearGeneralDataTextFields() {
-    internalGenData.GeneralData.iD = '';
-    internalGenData.GeneralData.transId = '';
-    internalGenData.GeneralData.requestedCode = userModel.EmpCode;
-    internalGenData.GeneralData.requestedName = userModel.EmpName;
-    internalGenData.GeneralData.refNo = '';
-    internalGenData.GeneralData.mobileNo = userModel.MobileNo;
-    internalGenData.GeneralData.postingDate = getFormattedDate(DateTime.now());
-    internalGenData.GeneralData.validUntill =
+    createInternalGenData.GeneralData.iD = '';
+    createInternalGenData.GeneralData.transId = '';
+    createInternalGenData.GeneralData.requestedCode = userModel.EmpCode;
+    createInternalGenData.GeneralData.requestedName = userModel.EmpName;
+    createInternalGenData.GeneralData.refNo = '';
+    createInternalGenData.GeneralData.mobileNo = userModel.MobileNo;
+    createInternalGenData.GeneralData.postingDate =
+        getFormattedDate(DateTime.now());
+    createInternalGenData.GeneralData.validUntill =
         getFormattedDate(DateTime.now().add(Duration(days: 7)));
-    internalGenData.GeneralData.currency = userModel.Currency;
-    internalGenData.GeneralData.currRate = userModel.Rate;
-    internalGenData.GeneralData.approvalStatus = 'Pending';
-    internalGenData.GeneralData.docStatus = 'Open';
-    internalGenData.GeneralData.permanentTransId = '';
-    internalGenData.GeneralData.docEntry = '';
-    internalGenData.GeneralData.docNum = '';
-    internalGenData.GeneralData.createdBy = '';
+    createInternalGenData.GeneralData.currency = userModel.Currency;
+    createInternalGenData.GeneralData.currRate = userModel.Rate;
+    createInternalGenData.GeneralData.approvalStatus = 'Pending';
+    createInternalGenData.GeneralData.docStatus = 'Open';
+    createInternalGenData.GeneralData.permanentTransId = '';
+    createInternalGenData.GeneralData.docEntry = '';
+    createInternalGenData.GeneralData.docNum = '';
+    createInternalGenData.GeneralData.createdBy = '';
 
-    internalGenData.GeneralData.approvedBy = '';
-    internalGenData.GeneralData.error = '';
-    internalGenData.GeneralData.isPosted = false;
-    internalGenData.GeneralData.draftKey = '';
-    internalGenData.GeneralData.latitude = '';
-    internalGenData.GeneralData.longitude = '';
-    internalGenData.GeneralData.objectCode = '';
-    internalGenData.GeneralData.fromWhsCode = '';
-    internalGenData.GeneralData.toWhsCode = '';
-    internalGenData.GeneralData.remarks = '';
-    internalGenData.GeneralData.branchId = '';
-    internalGenData.GeneralData.updatedBy = '';
-    internalGenData.GeneralData.postingAddress = '';
-    internalGenData.GeneralData.tripTransId = '';
-    internalGenData.GeneralData.deptCode = '';
-    internalGenData.GeneralData.deptName = '';
-    internalGenData.GeneralData.isSelected = false;
-    internalGenData.GeneralData.hasCreated = false;
-    internalGenData.GeneralData.hasUpdated = false;
+    createInternalGenData.GeneralData.approvedBy = '';
+    createInternalGenData.GeneralData.error = '';
+    createInternalGenData.GeneralData.isPosted = false;
+    createInternalGenData.GeneralData.draftKey = '';
+    createInternalGenData.GeneralData.latitude = '';
+    createInternalGenData.GeneralData.longitude = '';
+    createInternalGenData.GeneralData.objectCode = '';
+    createInternalGenData.GeneralData.fromWhsCode = '';
+    createInternalGenData.GeneralData.toWhsCode = '';
+    createInternalGenData.GeneralData.remarks = '';
+    createInternalGenData.GeneralData.branchId = '';
+    createInternalGenData.GeneralData.updatedBy = '';
+    createInternalGenData.GeneralData.postingAddress = '';
+    createInternalGenData.GeneralData.tripTransId = '';
+    createInternalGenData.GeneralData.deptCode = '';
+    createInternalGenData.GeneralData.deptName = '';
+    createInternalGenData.GeneralData.isSelected = false;
+    createInternalGenData.GeneralData.hasCreated = false;
+    createInternalGenData.GeneralData.hasUpdated = false;
   }
 
   static setGeneralDataTextFields({required PROITR data}) {
-    internalGenData.GeneralData.iD = data.ID?.toString() ?? '';
-    internalGenData.GeneralData.transId = data.TransId ?? '';
-    internalGenData.GeneralData.requestedCode = data.RequestedCode;
-    internalGenData.GeneralData.requestedName = data.RequestedName;
-    internalGenData.GeneralData.refNo = data.RefNo ?? '';
-    internalGenData.GeneralData.mobileNo = data.MobileNo ?? '';
-    internalGenData.GeneralData.postingDate =
+    createInternalGenData.GeneralData.iD = data.ID?.toString() ?? '';
+    createInternalGenData.GeneralData.transId = data.TransId ?? '';
+    createInternalGenData.GeneralData.requestedCode = data.RequestedCode;
+    createInternalGenData.GeneralData.requestedName = data.RequestedName;
+    createInternalGenData.GeneralData.refNo = data.RefNo ?? '';
+    createInternalGenData.GeneralData.mobileNo = data.MobileNo ?? '';
+    createInternalGenData.GeneralData.postingDate =
         getFormattedDate(data.PostingDate);
-    internalGenData.GeneralData.validUntill =
+    createInternalGenData.GeneralData.validUntill =
         getFormattedDate(data.ValidUntill);
-    internalGenData.GeneralData.currency = data.Currency;
-    internalGenData.GeneralData.currRate = data.CurrRate?.toString() ?? '1';
-    internalGenData.GeneralData.approvalStatus =
+    createInternalGenData.GeneralData.currency = data.Currency;
+    createInternalGenData.GeneralData.currRate =
+        data.CurrRate?.toString() ?? '1';
+    createInternalGenData.GeneralData.approvalStatus =
         data.ApprovalStatus ?? 'Pending';
-    internalGenData.GeneralData.docStatus = data.DocStatus ?? 'Open';
-    internalGenData.GeneralData.permanentTransId = data.PermanentTransId ?? '';
-    internalGenData.GeneralData.docEntry = data.DocEntry?.toString() ?? '';
-    internalGenData.GeneralData.docNum = data.DocNum ?? '';
-    internalGenData.GeneralData.createdBy = data.CreatedBy ?? '';
+    createInternalGenData.GeneralData.docStatus = data.DocStatus ?? 'Open';
+    createInternalGenData.GeneralData.permanentTransId =
+        data.PermanentTransId ?? '';
+    createInternalGenData.GeneralData.docEntry =
+        data.DocEntry?.toString() ?? '';
+    createInternalGenData.GeneralData.docNum = data.DocNum ?? '';
+    createInternalGenData.GeneralData.createdBy = data.CreatedBy ?? '';
 
-    internalGenData.GeneralData.approvedBy = data.ApprovedBy ?? '';
-    internalGenData.GeneralData.error = data.Error ?? '';
-    internalGenData.GeneralData.isPosted = data.IsPosted ?? false;
-    internalGenData.GeneralData.draftKey = data.DraftKey ?? '';
-    internalGenData.GeneralData.latitude = data.Latitude ?? '';
-    internalGenData.GeneralData.longitude = data.Longitude ?? '';
-    internalGenData.GeneralData.objectCode = data.ObjectCode ?? '';
-    internalGenData.GeneralData.fromWhsCode = data.FromWhsCode ?? '';
-    internalGenData.GeneralData.toWhsCode = data.ToWhsCode ?? '';
-    internalGenData.GeneralData.remarks = data.Remarks ?? '';
-    internalGenData.GeneralData.branchId = data.BranchId ?? '';
-    internalGenData.GeneralData.updatedBy = data.UpdatedBy ?? '';
-    internalGenData.GeneralData.postingAddress = data.PostingAddress ?? '';
-    internalGenData.GeneralData.tripTransId = data.TripTransId ?? '';
-    internalGenData.GeneralData.deptCode = data.DeptCode ?? '';
-    internalGenData.GeneralData.deptName = data.DeptName ?? '';
-    internalGenData.GeneralData.isSelected = true;
-    internalGenData.GeneralData.hasCreated = data.hasCreated;
-    internalGenData.GeneralData.hasUpdated = data.hasUpdated;
+    createInternalGenData.GeneralData.approvedBy = data.ApprovedBy ?? '';
+    createInternalGenData.GeneralData.error = data.Error ?? '';
+    createInternalGenData.GeneralData.isPosted = data.IsPosted ?? false;
+    createInternalGenData.GeneralData.draftKey = data.DraftKey ?? '';
+    createInternalGenData.GeneralData.latitude = data.Latitude ?? '';
+    createInternalGenData.GeneralData.longitude = data.Longitude ?? '';
+    createInternalGenData.GeneralData.objectCode = data.ObjectCode ?? '';
+    createInternalGenData.GeneralData.fromWhsCode = data.FromWhsCode ?? '';
+    createInternalGenData.GeneralData.toWhsCode = data.ToWhsCode ?? '';
+    createInternalGenData.GeneralData.remarks = data.Remarks ?? '';
+    createInternalGenData.GeneralData.branchId = data.BranchId ?? '';
+    createInternalGenData.GeneralData.updatedBy = data.UpdatedBy ?? '';
+    createInternalGenData.GeneralData.postingAddress =
+        data.PostingAddress ?? '';
+    createInternalGenData.GeneralData.tripTransId = data.TripTransId ?? '';
+    createInternalGenData.GeneralData.deptCode = data.DeptCode ?? '';
+    createInternalGenData.GeneralData.deptName = data.DeptName ?? '';
+    createInternalGenData.GeneralData.isSelected = true;
+    createInternalGenData.GeneralData.hasCreated = data.hasCreated;
+    createInternalGenData.GeneralData.hasUpdated = data.hasUpdated;
   }
 
   static clearEditItems() {
-    internalEditItems.EditItems.id = '';
-    internalEditItems.EditItems.tripTransId = '';
-    internalEditItems.EditItems.fromWhsCode = '';
+    createInternalEditItems.EditItems.id = '';
+    createInternalEditItems.EditItems.tripTransId = '';
+    createInternalEditItems.EditItems.fromWhsCode = '';
 
-    internalEditItems.EditItems.truckNo = '';
-    internalEditItems.EditItems.toWhsCode = '';
-    internalEditItems.EditItems.toWhsName = '';
-    internalEditItems.EditItems.driverCode = '';
-    internalEditItems.EditItems.driverName = '';
-    internalEditItems.EditItems.routeCode = '';
-    internalEditItems.EditItems.routeName = '';
-    internalEditItems.EditItems.transId = '';
-    internalEditItems.EditItems.rowId = '';
-    internalEditItems.EditItems.itemCode = '';
-    internalEditItems.EditItems.itemName = '';
-    internalEditItems.EditItems.consumptionQty = '';
-    internalEditItems.EditItems.uomCode = '';
-    internalEditItems.EditItems.uomName = '';
-    internalEditItems.EditItems.deptCode = '';
-    internalEditItems.EditItems.deptName = '';
-    internalEditItems.EditItems.price = '';
-    internalEditItems.EditItems.mtv = '';
-    internalEditItems.EditItems.taxCode = '';
-    internalEditItems.EditItems.taxRate = '';
-    internalEditItems.EditItems.lineDiscount = '';
-    internalEditItems.EditItems.lineTotal = '';
-    internalEditItems.EditItems.isUpdating = false;
+    createInternalEditItems.EditItems.truckNo = '';
+    createInternalEditItems.EditItems.toWhsCode = '';
+    createInternalEditItems.EditItems.toWhsName = '';
+    createInternalEditItems.EditItems.driverCode = '';
+    createInternalEditItems.EditItems.driverName = '';
+    createInternalEditItems.EditItems.routeCode = '';
+    createInternalEditItems.EditItems.routeName = '';
+    createInternalEditItems.EditItems.transId = '';
+    createInternalEditItems.EditItems.rowId = '';
+    createInternalEditItems.EditItems.itemCode = '';
+    createInternalEditItems.EditItems.itemName = '';
+    createInternalEditItems.EditItems.consumptionQty = '';
+    createInternalEditItems.EditItems.uomCode = '';
+    createInternalEditItems.EditItems.uomName = '';
+    createInternalEditItems.EditItems.deptCode = '';
+    createInternalEditItems.EditItems.deptName = '';
+    createInternalEditItems.EditItems.price = '';
+    createInternalEditItems.EditItems.mtv = '';
+    createInternalEditItems.EditItems.taxCode = '';
+    createInternalEditItems.EditItems.taxRate = '';
+    createInternalEditItems.EditItems.lineDiscount = '';
+    createInternalEditItems.EditItems.lineTotal = '';
+    createInternalEditItems.EditItems.isUpdating = false;
+  }
+}
+
+class ClearViewInternalRequestDocument {
+  static clearGeneralDataTextFields() {
+    createInternalGenData.GeneralData.iD = '';
+    createInternalGenData.GeneralData.transId = '';
+    createInternalGenData.GeneralData.requestedCode = userModel.EmpCode;
+    createInternalGenData.GeneralData.requestedName = userModel.EmpName;
+    createInternalGenData.GeneralData.refNo = '';
+    createInternalGenData.GeneralData.mobileNo = userModel.MobileNo;
+    createInternalGenData.GeneralData.postingDate =
+        getFormattedDate(DateTime.now());
+    createInternalGenData.GeneralData.validUntill =
+        getFormattedDate(DateTime.now().add(Duration(days: 7)));
+    createInternalGenData.GeneralData.currency = userModel.Currency;
+    createInternalGenData.GeneralData.currRate = userModel.Rate;
+    createInternalGenData.GeneralData.approvalStatus = 'Pending';
+    createInternalGenData.GeneralData.docStatus = 'Open';
+    createInternalGenData.GeneralData.permanentTransId = '';
+    createInternalGenData.GeneralData.docEntry = '';
+    createInternalGenData.GeneralData.docNum = '';
+    createInternalGenData.GeneralData.createdBy = '';
+
+    createInternalGenData.GeneralData.approvedBy = '';
+    createInternalGenData.GeneralData.error = '';
+    createInternalGenData.GeneralData.isPosted = false;
+    createInternalGenData.GeneralData.draftKey = '';
+    createInternalGenData.GeneralData.latitude = '';
+    createInternalGenData.GeneralData.longitude = '';
+    createInternalGenData.GeneralData.objectCode = '';
+    createInternalGenData.GeneralData.fromWhsCode = '';
+    createInternalGenData.GeneralData.toWhsCode = '';
+    createInternalGenData.GeneralData.remarks = '';
+    createInternalGenData.GeneralData.branchId = '';
+    createInternalGenData.GeneralData.updatedBy = '';
+    createInternalGenData.GeneralData.postingAddress = '';
+    createInternalGenData.GeneralData.tripTransId = '';
+    createInternalGenData.GeneralData.deptCode = '';
+    createInternalGenData.GeneralData.deptName = '';
+    createInternalGenData.GeneralData.isSelected = false;
+    createInternalGenData.GeneralData.hasCreated = false;
+    createInternalGenData.GeneralData.hasUpdated = false;
+  }
+
+  static setGeneralDataTextFields({required PROITR data}) {
+    createInternalGenData.GeneralData.iD = data.ID?.toString() ?? '';
+    createInternalGenData.GeneralData.transId = data.TransId ?? '';
+    createInternalGenData.GeneralData.requestedCode = data.RequestedCode;
+    createInternalGenData.GeneralData.requestedName = data.RequestedName;
+    createInternalGenData.GeneralData.refNo = data.RefNo ?? '';
+    createInternalGenData.GeneralData.mobileNo = data.MobileNo ?? '';
+    createInternalGenData.GeneralData.postingDate =
+        getFormattedDate(data.PostingDate);
+    createInternalGenData.GeneralData.validUntill =
+        getFormattedDate(data.ValidUntill);
+    createInternalGenData.GeneralData.currency = data.Currency;
+    createInternalGenData.GeneralData.currRate =
+        data.CurrRate?.toString() ?? '1';
+    createInternalGenData.GeneralData.approvalStatus =
+        data.ApprovalStatus ?? 'Pending';
+    createInternalGenData.GeneralData.docStatus = data.DocStatus ?? 'Open';
+    createInternalGenData.GeneralData.permanentTransId =
+        data.PermanentTransId ?? '';
+    createInternalGenData.GeneralData.docEntry =
+        data.DocEntry?.toString() ?? '';
+    createInternalGenData.GeneralData.docNum = data.DocNum ?? '';
+    createInternalGenData.GeneralData.createdBy = data.CreatedBy ?? '';
+
+    createInternalGenData.GeneralData.approvedBy = data.ApprovedBy ?? '';
+    createInternalGenData.GeneralData.error = data.Error ?? '';
+    createInternalGenData.GeneralData.isPosted = data.IsPosted ?? false;
+    createInternalGenData.GeneralData.draftKey = data.DraftKey ?? '';
+    createInternalGenData.GeneralData.latitude = data.Latitude ?? '';
+    createInternalGenData.GeneralData.longitude = data.Longitude ?? '';
+    createInternalGenData.GeneralData.objectCode = data.ObjectCode ?? '';
+    createInternalGenData.GeneralData.fromWhsCode = data.FromWhsCode ?? '';
+    createInternalGenData.GeneralData.toWhsCode = data.ToWhsCode ?? '';
+    createInternalGenData.GeneralData.remarks = data.Remarks ?? '';
+    createInternalGenData.GeneralData.branchId = data.BranchId ?? '';
+    createInternalGenData.GeneralData.updatedBy = data.UpdatedBy ?? '';
+    createInternalGenData.GeneralData.postingAddress =
+        data.PostingAddress ?? '';
+    createInternalGenData.GeneralData.tripTransId = data.TripTransId ?? '';
+    createInternalGenData.GeneralData.deptCode = data.DeptCode ?? '';
+    createInternalGenData.GeneralData.deptName = data.DeptName ?? '';
+    createInternalGenData.GeneralData.isSelected = true;
+    createInternalGenData.GeneralData.hasCreated = data.hasCreated;
+    createInternalGenData.GeneralData.hasUpdated = data.hasUpdated;
+  }
+
+  static clearEditItems() {
+    createInternalEditItems.EditItems.id = '';
+    createInternalEditItems.EditItems.tripTransId = '';
+    createInternalEditItems.EditItems.fromWhsCode = '';
+
+    createInternalEditItems.EditItems.truckNo = '';
+    createInternalEditItems.EditItems.toWhsCode = '';
+    createInternalEditItems.EditItems.toWhsName = '';
+    createInternalEditItems.EditItems.driverCode = '';
+    createInternalEditItems.EditItems.driverName = '';
+    createInternalEditItems.EditItems.routeCode = '';
+    createInternalEditItems.EditItems.routeName = '';
+    createInternalEditItems.EditItems.transId = '';
+    createInternalEditItems.EditItems.rowId = '';
+    createInternalEditItems.EditItems.itemCode = '';
+    createInternalEditItems.EditItems.itemName = '';
+    createInternalEditItems.EditItems.consumptionQty = '';
+    createInternalEditItems.EditItems.uomCode = '';
+    createInternalEditItems.EditItems.uomName = '';
+    createInternalEditItems.EditItems.deptCode = '';
+    createInternalEditItems.EditItems.deptName = '';
+    createInternalEditItems.EditItems.price = '';
+    createInternalEditItems.EditItems.mtv = '';
+    createInternalEditItems.EditItems.taxCode = '';
+    createInternalEditItems.EditItems.taxRate = '';
+    createInternalEditItems.EditItems.lineDiscount = '';
+    createInternalEditItems.EditItems.lineTotal = '';
+    createInternalEditItems.EditItems.isUpdating = false;
+  }
+}
+
+class ClearEditInternalRequestDocument {
+  static clearGeneralDataTextFields() {
+    createInternalGenData.GeneralData.iD = '';
+    createInternalGenData.GeneralData.transId = '';
+    createInternalGenData.GeneralData.requestedCode = userModel.EmpCode;
+    createInternalGenData.GeneralData.requestedName = userModel.EmpName;
+    createInternalGenData.GeneralData.refNo = '';
+    createInternalGenData.GeneralData.mobileNo = userModel.MobileNo;
+    createInternalGenData.GeneralData.postingDate =
+        getFormattedDate(DateTime.now());
+    createInternalGenData.GeneralData.validUntill =
+        getFormattedDate(DateTime.now().add(Duration(days: 7)));
+    createInternalGenData.GeneralData.currency = userModel.Currency;
+    createInternalGenData.GeneralData.currRate = userModel.Rate;
+    createInternalGenData.GeneralData.approvalStatus = 'Pending';
+    createInternalGenData.GeneralData.docStatus = 'Open';
+    createInternalGenData.GeneralData.permanentTransId = '';
+    createInternalGenData.GeneralData.docEntry = '';
+    createInternalGenData.GeneralData.docNum = '';
+    createInternalGenData.GeneralData.createdBy = '';
+
+    createInternalGenData.GeneralData.approvedBy = '';
+    createInternalGenData.GeneralData.error = '';
+    createInternalGenData.GeneralData.isPosted = false;
+    createInternalGenData.GeneralData.draftKey = '';
+    createInternalGenData.GeneralData.latitude = '';
+    createInternalGenData.GeneralData.longitude = '';
+    createInternalGenData.GeneralData.objectCode = '';
+    createInternalGenData.GeneralData.fromWhsCode = '';
+    createInternalGenData.GeneralData.toWhsCode = '';
+    createInternalGenData.GeneralData.remarks = '';
+    createInternalGenData.GeneralData.branchId = '';
+    createInternalGenData.GeneralData.updatedBy = '';
+    createInternalGenData.GeneralData.postingAddress = '';
+    createInternalGenData.GeneralData.tripTransId = '';
+    createInternalGenData.GeneralData.deptCode = '';
+    createInternalGenData.GeneralData.deptName = '';
+    createInternalGenData.GeneralData.isSelected = false;
+    createInternalGenData.GeneralData.hasCreated = false;
+    createInternalGenData.GeneralData.hasUpdated = false;
+  }
+
+  static setGeneralDataTextFields({required PROITR data}) {
+    createInternalGenData.GeneralData.iD = data.ID?.toString() ?? '';
+    createInternalGenData.GeneralData.transId = data.TransId ?? '';
+    createInternalGenData.GeneralData.requestedCode = data.RequestedCode;
+    createInternalGenData.GeneralData.requestedName = data.RequestedName;
+    createInternalGenData.GeneralData.refNo = data.RefNo ?? '';
+    createInternalGenData.GeneralData.mobileNo = data.MobileNo ?? '';
+    createInternalGenData.GeneralData.postingDate =
+        getFormattedDate(data.PostingDate);
+    createInternalGenData.GeneralData.validUntill =
+        getFormattedDate(data.ValidUntill);
+    createInternalGenData.GeneralData.currency = data.Currency;
+    createInternalGenData.GeneralData.currRate =
+        data.CurrRate?.toString() ?? '1';
+    createInternalGenData.GeneralData.approvalStatus =
+        data.ApprovalStatus ?? 'Pending';
+    createInternalGenData.GeneralData.docStatus = data.DocStatus ?? 'Open';
+    createInternalGenData.GeneralData.permanentTransId =
+        data.PermanentTransId ?? '';
+    createInternalGenData.GeneralData.docEntry =
+        data.DocEntry?.toString() ?? '';
+    createInternalGenData.GeneralData.docNum = data.DocNum ?? '';
+    createInternalGenData.GeneralData.createdBy = data.CreatedBy ?? '';
+
+    createInternalGenData.GeneralData.approvedBy = data.ApprovedBy ?? '';
+    createInternalGenData.GeneralData.error = data.Error ?? '';
+    createInternalGenData.GeneralData.isPosted = data.IsPosted ?? false;
+    createInternalGenData.GeneralData.draftKey = data.DraftKey ?? '';
+    createInternalGenData.GeneralData.latitude = data.Latitude ?? '';
+    createInternalGenData.GeneralData.longitude = data.Longitude ?? '';
+    createInternalGenData.GeneralData.objectCode = data.ObjectCode ?? '';
+    createInternalGenData.GeneralData.fromWhsCode = data.FromWhsCode ?? '';
+    createInternalGenData.GeneralData.toWhsCode = data.ToWhsCode ?? '';
+    createInternalGenData.GeneralData.remarks = data.Remarks ?? '';
+    createInternalGenData.GeneralData.branchId = data.BranchId ?? '';
+    createInternalGenData.GeneralData.updatedBy = data.UpdatedBy ?? '';
+    createInternalGenData.GeneralData.postingAddress =
+        data.PostingAddress ?? '';
+    createInternalGenData.GeneralData.tripTransId = data.TripTransId ?? '';
+    createInternalGenData.GeneralData.deptCode = data.DeptCode ?? '';
+    createInternalGenData.GeneralData.deptName = data.DeptName ?? '';
+    createInternalGenData.GeneralData.isSelected = true;
+    createInternalGenData.GeneralData.hasCreated = data.hasCreated;
+    createInternalGenData.GeneralData.hasUpdated = data.hasUpdated;
+  }
+
+  static clearEditItems() {
+    createInternalEditItems.EditItems.id = '';
+    createInternalEditItems.EditItems.tripTransId = '';
+    createInternalEditItems.EditItems.fromWhsCode = '';
+
+    createInternalEditItems.EditItems.truckNo = '';
+    createInternalEditItems.EditItems.toWhsCode = '';
+    createInternalEditItems.EditItems.toWhsName = '';
+    createInternalEditItems.EditItems.driverCode = '';
+    createInternalEditItems.EditItems.driverName = '';
+    createInternalEditItems.EditItems.routeCode = '';
+    createInternalEditItems.EditItems.routeName = '';
+    createInternalEditItems.EditItems.transId = '';
+    createInternalEditItems.EditItems.rowId = '';
+    createInternalEditItems.EditItems.itemCode = '';
+    createInternalEditItems.EditItems.itemName = '';
+    createInternalEditItems.EditItems.consumptionQty = '';
+    createInternalEditItems.EditItems.uomCode = '';
+    createInternalEditItems.EditItems.uomName = '';
+    createInternalEditItems.EditItems.deptCode = '';
+    createInternalEditItems.EditItems.deptName = '';
+    createInternalEditItems.EditItems.price = '';
+    createInternalEditItems.EditItems.mtv = '';
+    createInternalEditItems.EditItems.taxCode = '';
+    createInternalEditItems.EditItems.taxRate = '';
+    createInternalEditItems.EditItems.lineDiscount = '';
+    createInternalEditItems.EditItems.lineTotal = '';
+    createInternalEditItems.EditItems.isUpdating = false;
   }
 }
 
 goToNewInternalRequestDocument() async {
-  await ClearInternalRequestDocument.clearGeneralDataTextFields();
-  await ClearInternalRequestDocument.clearEditItems();
-  internalItemDetails.ItemDetails.items.clear();
+  await ClearCreateInternalRequestDocument.clearGeneralDataTextFields();
+  await ClearCreateInternalRequestDocument.clearEditItems();
+  createInternalItemDetails.ItemDetails.items.clear();
   getLastDocNum("PRST", null).then((snapshot) async {
     int DocNum = snapshot[0].DocNumber - 1;
     do {
       DocNum += 1;
-      internalGenData.GeneralData.transId =
+      createInternalGenData.GeneralData.transId =
           DateTime.now().millisecondsSinceEpoch.toString() +
               "U0" +
               userModel.ID.toString() +
@@ -1972,21 +2275,37 @@ goToNewInternalRequestDocument() async {
               "/" +
               DocNum.toString();
     } while (await isPROPRQTransIdAvailable(
-        null, internalGenData.GeneralData.transId ?? ""));
-    print(internalGenData.GeneralData.transId);
+        null, createInternalGenData.GeneralData.transId ?? ""));
+    print(createInternalGenData.GeneralData.transId);
     Get.offAll(() => InternalRequest(0));
   });
 }
 
-navigateToInternalRequestDocument({required String TransId}) async {
-  await ClearInternalRequestDocument.clearGeneralDataTextFields();
-  await ClearInternalRequestDocument.clearEditItems();
-  List<PROITR> list = await retrievePROITRById(null, 'TransId = ?', [TransId]);
-  if (list.isNotEmpty) {
-    ClearInternalRequestDocument.setGeneralDataTextFields(data: list[0]);
-  }
-  internalItemDetails.ItemDetails.items =
-      await retrievePRITR1ById(null, 'TransId = ?', [TransId]);
+navigateToInternalRequestDocument(
+    {required String TransId, required bool isView}) async {
+  if (isView) {
+    await ClearViewInternalRequestDocument.clearGeneralDataTextFields();
+    await ClearViewInternalRequestDocument.clearEditItems();
+    List<PROITR> list =
+        await retrievePROITRById(null, 'TransId = ?', [TransId]);
+    if (list.isNotEmpty) {
+      ClearViewInternalRequestDocument.setGeneralDataTextFields(data: list[0]);
+    }
+    viewInternalItemDetails.ItemDetails.items =
+        await retrievePRITR1ById(null, 'TransId = ?', [TransId]);
 
-  Get.offAll(() => InternalRequest(0));
+    Get.offAll(() => ViewInternalRequest(0));
+  } else {
+    await ClearEditInternalRequestDocument.clearGeneralDataTextFields();
+    await ClearEditInternalRequestDocument.clearEditItems();
+    List<PROITR> list =
+        await retrievePROITRById(null, 'TransId = ?', [TransId]);
+    if (list.isNotEmpty) {
+      ClearEditInternalRequestDocument.setGeneralDataTextFields(data: list[0]);
+    }
+    editInternalItemDetails.ItemDetails.items =
+        await retrievePRITR1ById(null, 'TransId = ?', [TransId]);
+
+    Get.offAll(() => EditInternalRequest(0));
+  }
 }
