@@ -3,9 +3,9 @@ import 'package:get/get.dart';
 import 'package:maintenance/Component/CustomColor.dart';
 import 'package:maintenance/Component/CustomFont.dart';
 import 'package:maintenance/Component/SnackbarComponent.dart';
-import 'package:maintenance/Purchase/PurchaseRequest/ItemDetails/AddItems.dart';
-import 'package:maintenance/Purchase/PurchaseRequest/ItemDetails/EditItems.dart';
-import 'package:maintenance/Purchase/PurchaseRequest/PurchaseRequest.dart';
+import 'package:maintenance/Purchase/PurchaseRequest/edit/ItemDetails/AddItems.dart';
+import 'package:maintenance/Purchase/PurchaseRequest/edit/ItemDetails/EditItems.dart';
+import 'package:maintenance/Purchase/PurchaseRequest/edit/PurchaseRequest.dart';
 import 'package:maintenance/Sync/SyncModels/PRPRQ1.dart';
 
 class ItemDetails extends StatefulWidget {

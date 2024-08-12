@@ -14,7 +14,7 @@ import 'package:maintenance/Sync/SyncModels/OUDP.dart';
 import 'package:maintenance/Sync/SyncModels/OWHS.dart';
 import 'package:maintenance/Sync/SyncModels/PROPRQ.dart';
 
-import '../../Lookups/WarehouseLookup.dart';
+import '../../../Lookups/WarehouseLookup.dart';
 
 class GeneralData extends StatefulWidget {
   const GeneralData({super.key});

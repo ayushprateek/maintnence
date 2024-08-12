@@ -6,9 +6,9 @@ import 'package:maintenance/Component/CustomFont.dart';
 import 'package:maintenance/Component/GetTextField.dart';
 import 'package:maintenance/Component/SnackbarComponent.dart';
 import 'package:maintenance/Sync/SyncModels/OITM.dart';
-import 'package:maintenance/Purchase/PurchaseRequest/ItemDetails/ItemDetails.dart';
-import 'package:maintenance/Purchase/PurchaseRequest/ItemDetails/EditItems.dart';
-import 'package:maintenance/Purchase/PurchaseRequest/GeneralData.dart';
+import 'package:maintenance/Purchase/PurchaseRequest/edit/ItemDetails/ItemDetails.dart';
+import 'package:maintenance/Purchase/PurchaseRequest/edit/ItemDetails/EditItems.dart';
+import 'package:maintenance/Purchase/PurchaseRequest/edit/GeneralData.dart';
 class AddItems extends StatefulWidget {
   @override
   _AddItemsState createState() => _AddItemsState();

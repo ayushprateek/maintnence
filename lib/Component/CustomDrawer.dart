@@ -23,7 +23,7 @@ import 'package:maintenance/GoodsIssue/create/GoodsIssue.dart';
 import 'package:maintenance/GoodsReceiptNote/GoodsReceiptNote.dart';
 import 'package:maintenance/InternalRequest/InternalRequest.dart';
 import 'package:maintenance/JobCard/create/JobCard.dart';
-import 'package:maintenance/Purchase/PurchaseRequest/PurchaseRequest.dart';
+import 'package:maintenance/Purchase/PurchaseRequest/create/PurchaseRequest.dart';
 import 'package:maintenance/Sync/DataSync.dart';
 import 'package:maintenance/Sync/SyncModels/ORTU.dart';
 import 'package:maintenance/zzzz.dart';

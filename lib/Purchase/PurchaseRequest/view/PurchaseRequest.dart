@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:maintenance/Component/BackPressedWarning.dart';
 import 'package:maintenance/Component/ClearTextFieldData.dart';
@@ -14,20 +13,19 @@ import 'package:maintenance/Component/ShowLoader.dart';
 import 'package:maintenance/Component/SnackbarComponent.dart';
 import 'package:maintenance/Dashboard.dart';
 import 'package:maintenance/DatabaseInitialization.dart';
-import 'package:maintenance/Purchase/PurchaseRequest/GeneralData.dart';
-import 'package:maintenance/Purchase/PurchaseRequest/ItemDetails/ItemDetails.dart';
-import 'package:maintenance/Purchase/PurchaseRequest/SearchPurchaseRequest.dart';
+import 'package:maintenance/Purchase/PurchaseRequest/view/GeneralData.dart';
+import 'package:maintenance/Purchase/PurchaseRequest/view/ItemDetails/ItemDetails.dart';
 import 'package:maintenance/Sync/DataSync.dart';
 import 'package:maintenance/Sync/SyncModels/PROPRQ.dart';
 import 'package:maintenance/Sync/SyncModels/PRPRQ1.dart';
 import 'package:maintenance/main.dart';
 import 'package:sqflite/sqlite_api.dart';
 
-class PurchaseRequest extends StatefulWidget {
+class ViewPurchaseRequest extends StatefulWidget {
   static bool saveButtonPressed = false;
   int index = 0;
 
-  PurchaseRequest(int index, {this.onBackPressed}) {
+  ViewPurchaseRequest(int index, {this.onBackPressed}) {
     this.index = index;
   }
 
@@ -37,7 +35,7 @@ class PurchaseRequest extends StatefulWidget {
   _JobCardState createState() => _JobCardState();
 }
 
-class _JobCardState extends State<PurchaseRequest> {
+class _JobCardState extends State<ViewPurchaseRequest> {
   List lists = [];
   int numOfAddress = 0;
   var future_address;
@@ -58,7 +56,7 @@ class _JobCardState extends State<PurchaseRequest> {
       Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(builder: (context) => Dashboard()),
-              (route) => false);
+          (route) => false);
     }
   }
 
@@ -120,70 +118,24 @@ class _JobCardState extends State<PurchaseRequest> {
                 ),
                 preferredSize: Size.fromHeight(50.0),
               ),
-              actions: [
-                IconButton(
-                  icon: Icon(
-                    Icons.search,
-                    color: Colors.white,
-                  ),
-                  onPressed: () {
-                    Get.to(()=>SearchPurchaseRequest());
-                    //showSearch(context: context, delegate: SearchJobCard());
-                    // Navigator.push(
-                    //     context,
-                    //     MaterialPageRoute(
-                    //         builder: ((context) => AdvanceSearch())));
-                  },
-                ),
-                IconButton(
-                  tooltip: "Add New Document",
-                  icon: Icon(
-                    Icons.add,
-                    color: Colors.black,
-                  ),
-
-                  onPressed: () async {
-                    if (GeneralData.deptName != '' ||
-                        ItemDetails.items.isNotEmpty) {
-                      showBackPressedWarning(
-                          text:
-                          'Your data is not saved. Are you sure you want to create new form?',
-                          onBackPressed: () async {
-                            goToNewPurchaseRequestDocument();
-                          });
-                    } else {
-                      goToNewPurchaseRequestDocument();
-                    }
-                  },
-                ),
-              ],
               title: getHeadingText(
-                  text: "Purchase Request", color: headColor, fontSize: 20)),
+                  text: "View Purchase Request",
+                  color: headColor,
+                  fontSize: 20)),
           body: TabBarView(
             children: [
               GeneralData(),
               ItemDetails(),
             ],
           ),
-          floatingActionButton: FloatingActionButton(
-            backgroundColor: barColor,
-            tooltip: "Save Data",
-            child: Text(
-              "Save",
-              style: TextStyle(color: Colors.white),
-            ),
-            onPressed: save,
-          ),
         ),
       ),
     );
   }
 
-
-
   save() async {
     //GeneralData.isSelected
-    PurchaseRequest.saveButtonPressed = false;
+    ViewPurchaseRequest.saveButtonPressed = false;
     if (DataSync.isSyncing()) {
       getErrorSnackBar(DataSync.syncingErrorMsg);
     } else if (isSelectedAndCancelled()) {
@@ -200,8 +152,8 @@ class _JobCardState extends State<PurchaseRequest> {
           const SnackBar(content: Text('Invalid General')),
         );
       } else {
-        if (!PurchaseRequest.saveButtonPressed) {
-          PurchaseRequest.saveButtonPressed = true;
+        if (!ViewPurchaseRequest.saveButtonPressed) {
+          ViewPurchaseRequest.saveButtonPressed = true;
           showLoader(context);
           Position pos = await getCurrentLocation();
           print(pos.latitude.toString());
@@ -340,6 +292,7 @@ class _JobCardState extends State<PurchaseRequest> {
     }
   }
 }
+
 bool isSelectedAndCancelled() {
   bool flag = GeneralData.isSelected && GeneralData.docStatus == "Cancelled";
   flag = flag || GeneralData.docStatus == "Close";
@@ -350,7 +303,7 @@ bool isSalesQuotationDocClosed() {
   return GeneralData.docStatus == null
       ? false
       : (GeneralData.docStatus!.toUpperCase().contains('CLOSE') ||
-      GeneralData.approvalStatus != 'Pending');
+          GeneralData.approvalStatus != 'Pending');
 }
 
 bool isSelectedButNotCancelled() {

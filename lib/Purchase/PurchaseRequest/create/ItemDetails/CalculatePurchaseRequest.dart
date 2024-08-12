@@ -1,7 +1,7 @@
 import 'package:maintenance/Component/CompanyDetails.dart';
 import 'package:maintenance/Component/IsNumeric.dart';
-import 'package:maintenance/Purchase/PurchaseRequest/GeneralData.dart';
-import 'package:maintenance/Purchase/PurchaseRequest/ItemDetails/ItemDetails.dart';
+import 'package:maintenance/Purchase/PurchaseRequest/create/GeneralData.dart';
+import 'package:maintenance/Purchase/PurchaseRequest/create/ItemDetails/ItemDetails.dart';
 import 'package:maintenance/Sync/SyncModels/PRPRQ1.dart';
 
 void calculatePurchaseRequest() {

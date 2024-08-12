@@ -14,8 +14,9 @@ import 'package:maintenance/Lookups/TaxLookup.dart';
 import 'package:maintenance/Lookups/TripLookup.dart';
 import 'package:maintenance/Lookups/UOMLookup.dart';
 import 'package:maintenance/Lookups/VehicleCodeLookup.dart';
-import 'package:maintenance/Purchase/PurchaseRequest/ItemDetails/ItemDetails.dart';
-import 'package:maintenance/Purchase/PurchaseRequest/PurchaseRequest.dart';
+import 'package:maintenance/Lookups/WarehouseLookup.dart';
+import 'package:maintenance/Purchase/PurchaseRequest/edit/ItemDetails/ItemDetails.dart';
+import 'package:maintenance/Purchase/PurchaseRequest/edit/PurchaseRequest.dart';
 import 'package:maintenance/Sync/SyncModels/OCRD.dart';
 import 'package:maintenance/Sync/SyncModels/OEMP.dart';
 import 'package:maintenance/Sync/SyncModels/OPOTRP.dart';
@@ -27,7 +28,7 @@ import 'package:maintenance/Sync/SyncModels/OWHS.dart';
 import 'package:maintenance/Sync/SyncModels/PRPRQ1.dart';
 import 'package:maintenance/Sync/SyncModels/ROUT.dart';
 
-import '../../../Lookups/WarehouseLookup.dart';
+
 
 class EditItems extends StatefulWidget {
   static String? id;
@@ -353,7 +354,7 @@ class _EditCheckListState extends State<EditItems> {
                                 //todo: updating
                               }
 
-                            Get.offAll(() => PurchaseRequest(1));
+                            Get.offAll(() => EditPurchaseRequest(1));
 
                             getSuccessSnackBar("Check List Updated");
                           } else {
@@ -393,7 +394,7 @@ class _EditCheckListState extends State<EditItems> {
                             );
                             ItemDetails.items.add(mncld1);
 
-                            Get.offAll(() => PurchaseRequest(1));
+                            Get.offAll(() => EditPurchaseRequest(1));
                           }
                         }
                       },
