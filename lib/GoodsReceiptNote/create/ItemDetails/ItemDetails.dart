@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:maintenance/Component/CustomColor.dart';
 import 'package:maintenance/Component/CustomFont.dart';
 import 'package:maintenance/Sync/SyncModels/PRPDN1.dart';
-import 'package:maintenance/GoodsReceiptNote/ItemDetails/AddItems.dart';
+import 'package:maintenance/GoodsReceiptNote/create/ItemDetails/AddItems.dart';
 class ItemDetails extends StatefulWidget {
   const ItemDetails({super.key});
   static List<PRPDN1> items=[];

@@ -5,9 +5,9 @@ import 'package:maintenance/Component/CustomColor.dart';
 import 'package:maintenance/Component/CustomFont.dart';
 import 'package:maintenance/Component/GetTextField.dart';
 import 'package:maintenance/Component/SnackbarComponent.dart';
-import 'package:maintenance/GoodsReceiptNote/GeneralData.dart';
-import 'package:maintenance/GoodsReceiptNote/ItemDetails/ItemDetails.dart';
-import 'package:maintenance/GoodsReceiptNote/ItemDetails/EditItems.dart';
+import 'package:maintenance/GoodsReceiptNote/edit/GeneralData.dart';
+import 'package:maintenance/GoodsReceiptNote/edit/ItemDetails/ItemDetails.dart';
+import 'package:maintenance/GoodsReceiptNote/edit/ItemDetails/EditItems.dart';
 import 'package:maintenance/Sync/SyncModels/OITM.dart';
 class AddItems extends StatefulWidget {
   @override

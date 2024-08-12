@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:maintenance/Component/BackPressedWarning.dart';
 import 'package:maintenance/Component/ClearTextFieldData.dart';
@@ -14,11 +13,10 @@ import 'package:maintenance/Component/ShowLoader.dart';
 import 'package:maintenance/Component/SnackbarComponent.dart';
 import 'package:maintenance/Dashboard.dart';
 import 'package:maintenance/DatabaseInitialization.dart';
-import 'package:maintenance/GoodsReceiptNote/Address/BillingAddress.dart';
-import 'package:maintenance/GoodsReceiptNote/Address/ShippingAddress.dart';
-import 'package:maintenance/GoodsReceiptNote/GeneralData.dart';
-import 'package:maintenance/GoodsReceiptNote/ItemDetails/ItemDetails.dart';
-import 'package:maintenance/GoodsReceiptNote/SearchGoodsReceiptNote.dart';
+import 'package:maintenance/GoodsReceiptNote/edit/Address/BillingAddress.dart';
+import 'package:maintenance/GoodsReceiptNote/edit/Address/ShippingAddress.dart';
+import 'package:maintenance/GoodsReceiptNote/edit/GeneralData.dart';
+import 'package:maintenance/GoodsReceiptNote/edit/ItemDetails/ItemDetails.dart';
 import 'package:maintenance/Sync/DataSync.dart';
 import 'package:maintenance/Sync/SyncModels/PROPDN.dart';
 import 'package:maintenance/Sync/SyncModels/PRPDN1.dart';
@@ -27,11 +25,11 @@ import 'package:maintenance/Sync/SyncModels/PRPDN3.dart';
 import 'package:maintenance/main.dart';
 import 'package:sqflite/sqflite.dart';
 
-class GoodsRecepitNote extends StatefulWidget {
+class EditGoodsRecepitNote extends StatefulWidget {
   static bool saveButtonPressed = false;
   int index = 0;
 
-  GoodsRecepitNote(int index, {this.onBackPressed}) {
+  EditGoodsRecepitNote(int index, {this.onBackPressed}) {
     this.index = index;
   }
 
@@ -41,7 +39,7 @@ class GoodsRecepitNote extends StatefulWidget {
   _JobCardState createState() => _JobCardState();
 }
 
-class _JobCardState extends State<GoodsRecepitNote> {
+class _JobCardState extends State<EditGoodsRecepitNote> {
   List lists = [];
   int numOfAddress = 0;
   var future_address;
@@ -62,7 +60,7 @@ class _JobCardState extends State<GoodsRecepitNote> {
       Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(builder: (context) => Dashboard()),
-              (route) => false);
+          (route) => false);
     }
   }
 
@@ -139,44 +137,10 @@ class _JobCardState extends State<GoodsRecepitNote> {
                 ),
                 preferredSize: Size.fromHeight(50.0),
               ),
-              actions: [
-                IconButton(
-                  icon: Icon(
-                    Icons.search,
-                    color: Colors.white,
-                  ),
-                  onPressed: () {
-                    Get.to(()=>SearchGoodsReceiptNote());
-                    //showSearch(context: context, delegate: SearchJobCard());
-                    // Navigator.push(
-                    //     context,
-                    //     MaterialPageRoute(
-                    //         builder: ((context) => AdvanceSearch())));
-                  },
-                ),
-                IconButton(
-                  tooltip: "Add New Document",
-                  icon: Icon(
-                    Icons.add,
-                    color: Colors.black,
-                  ),
-                  onPressed: () async {
-                    if (GeneralData.deptName != '' ||
-                        ItemDetails.items.isNotEmpty) {
-                      showBackPressedWarning(
-                          text:
-                          'Your data is not saved. Are you sure you want to create new form?',
-                          onBackPressed: () async {
-                            goToNewGRNDocument();
-                          });
-                    } else {
-                      goToNewGRNDocument();
-                    }
-                  },
-                ),
-              ],
               title: getHeadingText(
-                  text: "Goods Receipt Note", color: headColor, fontSize: 20)),
+                  text: "Edit Goods Receipt Note",
+                  color: headColor,
+                  fontSize: 20)),
           body: TabBarView(
             children: [
               GeneralData(),
@@ -201,7 +165,7 @@ class _JobCardState extends State<GoodsRecepitNote> {
 
   save() async {
     //GeneralData.isSelected
-    GoodsRecepitNote.saveButtonPressed = false;
+    EditGoodsRecepitNote.saveButtonPressed = false;
     if (DataSync.isSyncing()) {
       getErrorSnackBar(DataSync.syncingErrorMsg);
     } else if (isSelectedAndCancelled()) {
@@ -218,8 +182,8 @@ class _JobCardState extends State<GoodsRecepitNote> {
           const SnackBar(content: Text('Invalid General')),
         );
       } else {
-        if (!GoodsRecepitNote.saveButtonPressed) {
-          GoodsRecepitNote.saveButtonPressed = true;
+        if (!EditGoodsRecepitNote.saveButtonPressed) {
+          EditGoodsRecepitNote.saveButtonPressed = true;
           showLoader(context);
           Position pos = await getCurrentLocation();
           print(pos.latitude.toString());
@@ -328,8 +292,7 @@ class _JobCardState extends State<GoodsRecepitNote> {
                         whereArgs: [qut1model.TransId, qut1model.RowId]);
                   }
                 }
-              } 
-              else {
+              } else {
                 for (int i = 0; i < ItemDetails.items.length; i++) {
                   PRPDN1 qut1model = ItemDetails.items[i];
                   qut1model.ID = i;

@@ -4,11 +4,11 @@ import 'package:maintenance/Component/CustomColor.dart';
 import 'package:maintenance/Component/CustomFont.dart';
 import 'package:maintenance/Database/DatabaseHandler.dart';
 import 'package:maintenance/DatabaseInitialization.dart';
-import 'package:maintenance/GoodsReceiptNote/Address/BillingAddress.dart';
-import 'package:maintenance/GoodsReceiptNote/Address/ShippingAddress.dart';
-import 'package:maintenance/GoodsReceiptNote/GoodsReceiptNote.dart';
+import 'package:maintenance/GoodsReceiptNote/create/Address/BillingAddress.dart';
+import 'package:maintenance/GoodsReceiptNote/create/Address/ShippingAddress.dart';
+import 'package:maintenance/GoodsReceiptNote/create/GoodsReceiptNote.dart';
 import 'package:sqflite/sqlite_api.dart';
-import 'package:maintenance/GoodsReceiptNote/GeneralData.dart';
+import 'package:maintenance/GoodsReceiptNote/create/GeneralData.dart';
 class AddressLookup extends StatefulWidget {
   bool shippingAddress = false;
 

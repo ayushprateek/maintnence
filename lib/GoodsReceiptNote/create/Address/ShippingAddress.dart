@@ -3,9 +3,9 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:maintenance/Component/CustomColor.dart';
 import 'package:maintenance/Component/GetTextField.dart';
 import 'package:maintenance/Component/SnackbarComponent.dart';
-import 'package:maintenance/GoodsReceiptNote/Address/AddressLookup.dart';
-import 'package:maintenance/GoodsReceiptNote/GeneralData.dart';
-import 'package:maintenance/GoodsReceiptNote/GoodsReceiptNote.dart';
+import 'package:maintenance/GoodsReceiptNote/create/Address/AddressLookup.dart';
+import 'package:maintenance/GoodsReceiptNote/create/GeneralData.dart';
+import 'package:maintenance/GoodsReceiptNote/create/GoodsReceiptNote.dart';
 import 'package:maintenance/Sync/SyncModels/PRPDN2.dart';
 import 'package:maps_launcher/maps_launcher.dart';
 
