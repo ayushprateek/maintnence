@@ -6,25 +6,61 @@ import 'package:maintenance/CheckListDocument/create/CheckListDetails/CheckListD
 import 'package:maintenance/CheckListDocument/create/CheckListDetails/EditCheckList.dart'
     as editCheckList;
 import 'package:maintenance/CheckListDocument/create/CheckListDocument.dart';
-import 'package:maintenance/CheckListDocument/create/GeneralData.dart' as checkListDoc;
+import 'package:maintenance/CheckListDocument/create/GeneralData.dart'
+    as createCheckListDoc;
+import 'package:maintenance/CheckListDocument/edit/CheckListDocument.dart';
+import 'package:maintenance/CheckListDocument/edit/GeneralData.dart'
+    as editCheckListDoc;
+import 'package:maintenance/CheckListDocument/view/CheckListDocument.dart';
+import 'package:maintenance/CheckListDocument/view/GeneralData.dart'
+    as viewCheckListDoc;
 import 'package:maintenance/Component/GetFormattedDate.dart';
 import 'package:maintenance/Component/GetLastDocNum.dart';
 import 'package:maintenance/Component/IsAvailableTransId.dart';
+//------------------------------ GOODS ISSUE IMPORTS------------
+import 'package:maintenance/GoodsIssue/GeneralData.dart' as goodsGenData;
 import 'package:maintenance/GoodsIssue/GoodsIssue.dart';
+import 'package:maintenance/GoodsIssue/ItemDetails/EditItems.dart'
+    as goodsEditItems;
+import 'package:maintenance/GoodsIssue/ItemDetails/ItemDetails.dart'
+    as goodsItemDetails;
+import 'package:maintenance/GoodsReceiptNote/Address/BillingAddress.dart'
+    as grnBillAddress;
+import 'package:maintenance/GoodsReceiptNote/Address/ShippingAddress.dart'
+    as grnShipAddress;
+//------------------------------ GOODS RECEIPT NOTES------------
+import 'package:maintenance/GoodsReceiptNote/GeneralData.dart' as grnGenData;
 import 'package:maintenance/GoodsReceiptNote/GoodsReceiptNote.dart';
+import 'package:maintenance/GoodsReceiptNote/ItemDetails/ItemDetails.dart'
+    as grnItemDetails;
+//------------------------------ INTERNAL REQUEST------------
+import 'package:maintenance/InternalRequest/GeneralData.dart'
+    as internalGenData;
 import 'package:maintenance/InternalRequest/InternalRequest.dart';
-
+import 'package:maintenance/InternalRequest/ItemDetails/EditItems.dart'
+    as internalEditItems;
+import 'package:maintenance/InternalRequest/ItemDetails/ItemDetails.dart'
+    as internalItemDetails;
 //---------------------------------JOB CARD IMPORTS
 import 'package:maintenance/JobCard/GeneralData.dart' as jcdGenData;
 import 'package:maintenance/JobCard/ItemDetails/EditJobCardItem.dart'
     as editJCDItems;
-import 'package:maintenance/JobCard/ServiceDetails/EditService.dart'
-    as editJCDService;
 import 'package:maintenance/JobCard/ItemDetails/ItemDetails.dart'
     as jcdItemDetails;
+import 'package:maintenance/JobCard/JobCard.dart';
+import 'package:maintenance/JobCard/ServiceDetails/EditService.dart'
+    as editJCDService;
 import 'package:maintenance/JobCard/ServiceDetails/ServiceDetails.dart'
     as jcdServiceDetails;
-import 'package:maintenance/JobCard/JobCard.dart';
+//------------------------------ PURCHASE REQUEST IMPORTS------------
+import 'package:maintenance/Purchase/PurchaseRequest/GeneralData.dart'
+    as purchaseGenData;
+import 'package:maintenance/Purchase/PurchaseRequest/ItemDetails/EditItems.dart'
+    as grnEditItems;
+import 'package:maintenance/Purchase/PurchaseRequest/ItemDetails/EditItems.dart'
+    as purchaseEditItems;
+import 'package:maintenance/Purchase/PurchaseRequest/ItemDetails/ItemDetails.dart'
+    as purchaseItemDetails;
 import 'package:maintenance/Purchase/PurchaseRequest/PurchaseRequest.dart';
 import 'package:maintenance/Sync/SyncModels/MNCLD1.dart';
 import 'package:maintenance/Sync/SyncModels/MNJCD1.dart';
@@ -40,37 +76,6 @@ import 'package:maintenance/Sync/SyncModels/PRPDN2.dart';
 import 'package:maintenance/Sync/SyncModels/PRPDN3.dart';
 import 'package:maintenance/Sync/SyncModels/PRPRQ1.dart';
 import 'package:maintenance/main.dart';
-
-//------------------------------ GOODS ISSUE IMPORTS------------
-import 'package:maintenance/GoodsIssue/GeneralData.dart' as goodsGenData;
-import 'package:maintenance/GoodsIssue/ItemDetails/EditItems.dart'
-    as goodsEditItems;
-import 'package:maintenance/GoodsIssue/ItemDetails/ItemDetails.dart'
-    as goodsItemDetails;
-
-//------------------------------ PURCHASE REQUEST IMPORTS------------
-import 'package:maintenance/Purchase/PurchaseRequest/GeneralData.dart'
-    as purchaseGenData;
-import 'package:maintenance/Purchase/PurchaseRequest/ItemDetails/EditItems.dart'
-    as purchaseEditItems;
-import 'package:maintenance/Purchase/PurchaseRequest/ItemDetails/ItemDetails.dart'
-    as purchaseItemDetails;
-
-//------------------------------ GOODS RECEIPT NOTES------------
-import 'package:maintenance/GoodsReceiptNote/GeneralData.dart' as grnGenData;
-import 'package:maintenance/GoodsReceiptNote/Address/ShippingAddress.dart' as grnShipAddress;
-import 'package:maintenance/GoodsReceiptNote/Address/BillingAddress.dart' as grnBillAddress;
-import 'package:maintenance/Purchase/PurchaseRequest/ItemDetails/EditItems.dart' as grnEditItems;
-import 'package:maintenance/GoodsReceiptNote/ItemDetails/ItemDetails.dart'
-    as grnItemDetails;
-
-//------------------------------ INTERNAL REQUEST------------
-import 'package:maintenance/InternalRequest/GeneralData.dart'
-    as internalGenData;
-import 'package:maintenance/InternalRequest/ItemDetails/EditItems.dart'
-    as internalEditItems;
-import 'package:maintenance/InternalRequest/ItemDetails/ItemDetails.dart'
-    as internalItemDetails;
 
 class ClearCheckListDoc {
   static clearEditCheckList() {
@@ -97,88 +102,207 @@ class ClearCheckListDoc {
 
   static clearCheckListDocTextFields() {
     CheckListDocument.numOfTabs.value = 3;
-    checkListDoc.GeneralData.iD = '';
-    checkListDoc.GeneralData.permanentTransId = '';
-    checkListDoc.GeneralData.transId = '';
-    checkListDoc.GeneralData.docEntry = '';
-    checkListDoc.GeneralData.docNum = '';
-    checkListDoc.GeneralData.canceled = '';
-    checkListDoc.GeneralData.docStatus = 'Open';
-    checkListDoc.GeneralData.approvalStatus = 'Pending';
-    checkListDoc.GeneralData.checkListStatus = 'WIP';
-    checkListDoc.GeneralData.tyreMaintenance = 'No';
-    checkListDoc.GeneralData.objectCode = '';
-    checkListDoc.GeneralData.equipmentCode = '';
-    checkListDoc.GeneralData.equipmentName = '';
-    checkListDoc.GeneralData.checkListCode = '';
-    checkListDoc.GeneralData.checkListName = '';
-    checkListDoc.GeneralData.workCenterCode = '';
-    checkListDoc.GeneralData.workCenterName = '';
-    checkListDoc.GeneralData.openDate = getFormattedDate(DateTime.now());
-    checkListDoc.GeneralData.closeDate = getFormattedDate(DateTime.now());
-    checkListDoc.GeneralData.postingDate = getFormattedDate(DateTime.now());
-    checkListDoc.GeneralData.validUntill =
+    createCheckListDoc.GeneralData.iD = '';
+    createCheckListDoc.GeneralData.permanentTransId = '';
+    createCheckListDoc.GeneralData.transId = '';
+    createCheckListDoc.GeneralData.docEntry = '';
+    createCheckListDoc.GeneralData.docNum = '';
+    createCheckListDoc.GeneralData.canceled = '';
+    createCheckListDoc.GeneralData.docStatus = 'Open';
+    createCheckListDoc.GeneralData.approvalStatus = 'Pending';
+    createCheckListDoc.GeneralData.checkListStatus = 'WIP';
+    createCheckListDoc.GeneralData.tyreMaintenance = 'No';
+    createCheckListDoc.GeneralData.objectCode = '';
+    createCheckListDoc.GeneralData.equipmentCode = '';
+    createCheckListDoc.GeneralData.equipmentName = '';
+    createCheckListDoc.GeneralData.checkListCode = '';
+    createCheckListDoc.GeneralData.checkListName = '';
+    createCheckListDoc.GeneralData.workCenterCode = '';
+    createCheckListDoc.GeneralData.workCenterName = '';
+    createCheckListDoc.GeneralData.openDate = getFormattedDate(DateTime.now());
+    createCheckListDoc.GeneralData.closeDate = getFormattedDate(DateTime.now());
+    createCheckListDoc.GeneralData.postingDate =
+        getFormattedDate(DateTime.now());
+    createCheckListDoc.GeneralData.validUntill =
         getFormattedDate(DateTime.now().add(Duration(days: 7)));
-    checkListDoc.GeneralData.lastReadingDate = getFormattedDate(DateTime.now());
-    checkListDoc.GeneralData.lastReading = '';
-    checkListDoc.GeneralData.assignedUserCode = '';
-    checkListDoc.GeneralData.assignedUserName = '';
-    checkListDoc.GeneralData.mNJCTransId = '';
-    checkListDoc.GeneralData.remarks = '';
-    checkListDoc.GeneralData.createdBy = '';
-    checkListDoc.GeneralData.updatedBy = '';
-    checkListDoc.GeneralData.branchId = '';
-    checkListDoc.GeneralData.createDate = getFormattedDate(DateTime.now());
-    checkListDoc.GeneralData.updateDate = getFormattedDate(DateTime.now());
-    checkListDoc.GeneralData.currentReading = '';
-    checkListDoc.GeneralData.isConsumption = false;
-    checkListDoc.GeneralData.isRequest = false;
-    checkListDoc.GeneralData.isSelected = false;
-    checkListDoc.GeneralData.hasCreated = false;
-    checkListDoc.GeneralData.hasUpdated = false;
+    createCheckListDoc.GeneralData.lastReadingDate =
+        getFormattedDate(DateTime.now());
+    createCheckListDoc.GeneralData.lastReading = '';
+    createCheckListDoc.GeneralData.assignedUserCode = '';
+    createCheckListDoc.GeneralData.assignedUserName = '';
+    createCheckListDoc.GeneralData.mNJCTransId = '';
+    createCheckListDoc.GeneralData.remarks = '';
+    createCheckListDoc.GeneralData.createdBy = '';
+    createCheckListDoc.GeneralData.updatedBy = '';
+    createCheckListDoc.GeneralData.branchId = '';
+    createCheckListDoc.GeneralData.createDate =
+        getFormattedDate(DateTime.now());
+    createCheckListDoc.GeneralData.updateDate =
+        getFormattedDate(DateTime.now());
+    createCheckListDoc.GeneralData.currentReading = '';
+    createCheckListDoc.GeneralData.isConsumption = false;
+    createCheckListDoc.GeneralData.isRequest = false;
+    createCheckListDoc.GeneralData.isSelected = false;
+    createCheckListDoc.GeneralData.hasCreated = false;
+    createCheckListDoc.GeneralData.hasUpdated = false;
   }
 
-  static setCheckListDocTextFields({required MNOCLD mnocld}) {
+  static setCreateCheckListDocTextFields({required MNOCLD mnocld}) {
     CheckListDocument.numOfTabs.value = 3;
-    checkListDoc.GeneralData.iD = mnocld.ID?.toString()??'0';
-    checkListDoc.GeneralData.permanentTransId = mnocld.PermanentTransId??"";
-    checkListDoc.GeneralData.transId = mnocld.TransId??'';
-    checkListDoc.GeneralData.docEntry = mnocld.DocEntry?.toString()??'';
-    checkListDoc.GeneralData.docNum = mnocld.DocNum??'';
-    checkListDoc.GeneralData.canceled = mnocld.Canceled??'';
-    checkListDoc.GeneralData.docStatus = mnocld.DocStatus??'Open';
-    checkListDoc.GeneralData.approvalStatus = mnocld.ApprovalStatus??'Pending';
-    checkListDoc.GeneralData.checkListStatus = mnocld.CheckListStatus??'WIP';
-    checkListDoc.GeneralData.tyreMaintenance = 'No';
-    checkListDoc.GeneralData.objectCode = mnocld.ObjectCode??'';
-    checkListDoc.GeneralData.equipmentCode = mnocld.EquipmentCode??'';
-    checkListDoc.GeneralData.equipmentName = mnocld.EquipmentName??'';
-    checkListDoc.GeneralData.checkListCode = mnocld.CheckListCode??'';
-    checkListDoc.GeneralData.checkListName = mnocld.CheckListName??'';
-    checkListDoc.GeneralData.workCenterCode = mnocld.WorkCenterCode??'';
-    checkListDoc.GeneralData.workCenterName =mnocld.WorkCenterName?? '';
-    checkListDoc.GeneralData.openDate = getFormattedDate(mnocld.OpenDate);
-    checkListDoc.GeneralData.closeDate = getFormattedDate(mnocld.CloseDate);
-    checkListDoc.GeneralData.postingDate = getFormattedDate(mnocld.PostingDate);
-    checkListDoc.GeneralData.validUntill =
+    createCheckListDoc.GeneralData.iD = mnocld.ID?.toString() ?? '0';
+    createCheckListDoc.GeneralData.permanentTransId =
+        mnocld.PermanentTransId ?? "";
+    createCheckListDoc.GeneralData.transId = mnocld.TransId ?? '';
+    createCheckListDoc.GeneralData.docEntry = mnocld.DocEntry?.toString() ?? '';
+    createCheckListDoc.GeneralData.docNum = mnocld.DocNum ?? '';
+    createCheckListDoc.GeneralData.canceled = mnocld.Canceled ?? '';
+    createCheckListDoc.GeneralData.docStatus = mnocld.DocStatus ?? 'Open';
+    createCheckListDoc.GeneralData.approvalStatus =
+        mnocld.ApprovalStatus ?? 'Pending';
+    createCheckListDoc.GeneralData.checkListStatus =
+        mnocld.CheckListStatus ?? 'WIP';
+    createCheckListDoc.GeneralData.tyreMaintenance = 'No';
+    createCheckListDoc.GeneralData.objectCode = mnocld.ObjectCode ?? '';
+    createCheckListDoc.GeneralData.equipmentCode = mnocld.EquipmentCode ?? '';
+    createCheckListDoc.GeneralData.equipmentName = mnocld.EquipmentName ?? '';
+    createCheckListDoc.GeneralData.checkListCode = mnocld.CheckListCode ?? '';
+    createCheckListDoc.GeneralData.checkListName = mnocld.CheckListName ?? '';
+    createCheckListDoc.GeneralData.workCenterCode = mnocld.WorkCenterCode ?? '';
+    createCheckListDoc.GeneralData.workCenterName = mnocld.WorkCenterName ?? '';
+    createCheckListDoc.GeneralData.openDate = getFormattedDate(mnocld.OpenDate);
+    createCheckListDoc.GeneralData.closeDate =
+        getFormattedDate(mnocld.CloseDate);
+    createCheckListDoc.GeneralData.postingDate =
+        getFormattedDate(mnocld.PostingDate);
+    createCheckListDoc.GeneralData.validUntill =
         getFormattedDate(mnocld.ValidUntill);
-    checkListDoc.GeneralData.lastReadingDate = getFormattedDate(mnocld.LastReadingDate);
-    checkListDoc.GeneralData.lastReading = mnocld.LastReading??'';
-    checkListDoc.GeneralData.assignedUserCode = mnocld.AssignedUserCode??'';
-    checkListDoc.GeneralData.assignedUserName = mnocld.AssignedUserName??'';
-    checkListDoc.GeneralData.mNJCTransId = mnocld.MNJCTransId??'';
-    checkListDoc.GeneralData.remarks = mnocld.Remarks??'';
-    checkListDoc.GeneralData.createdBy = mnocld.CreatedBy??'';
-    checkListDoc.GeneralData.updatedBy = mnocld.UpdatedBy??'';
-    checkListDoc.GeneralData.branchId = mnocld.BranchId??'';
-    checkListDoc.GeneralData.createDate = getFormattedDate(mnocld.CreateDate);
-    checkListDoc.GeneralData.updateDate = getFormattedDate(mnocld.UpdateDate);
-    checkListDoc.GeneralData.currentReading = mnocld.CurrentReading??'';
-    checkListDoc.GeneralData.isConsumption = mnocld.IsConsumption??false;
-    checkListDoc.GeneralData.isRequest = mnocld.IsRequest??false;
-    checkListDoc.GeneralData.isSelected = true;
-    checkListDoc.GeneralData.hasCreated = mnocld.hasCreated;
-    checkListDoc.GeneralData.hasUpdated = mnocld.hasUpdated;
+    createCheckListDoc.GeneralData.lastReadingDate =
+        getFormattedDate(mnocld.LastReadingDate);
+    createCheckListDoc.GeneralData.lastReading = mnocld.LastReading ?? '';
+    createCheckListDoc.GeneralData.assignedUserCode =
+        mnocld.AssignedUserCode ?? '';
+    createCheckListDoc.GeneralData.assignedUserName =
+        mnocld.AssignedUserName ?? '';
+    createCheckListDoc.GeneralData.mNJCTransId = mnocld.MNJCTransId ?? '';
+    createCheckListDoc.GeneralData.remarks = mnocld.Remarks ?? '';
+    createCheckListDoc.GeneralData.createdBy = mnocld.CreatedBy ?? '';
+    createCheckListDoc.GeneralData.updatedBy = mnocld.UpdatedBy ?? '';
+    createCheckListDoc.GeneralData.branchId = mnocld.BranchId ?? '';
+    createCheckListDoc.GeneralData.createDate =
+        getFormattedDate(mnocld.CreateDate);
+    createCheckListDoc.GeneralData.updateDate =
+        getFormattedDate(mnocld.UpdateDate);
+    createCheckListDoc.GeneralData.currentReading = mnocld.CurrentReading ?? '';
+    createCheckListDoc.GeneralData.isConsumption =
+        mnocld.IsConsumption ?? false;
+    createCheckListDoc.GeneralData.isRequest = mnocld.IsRequest ?? false;
+    createCheckListDoc.GeneralData.isSelected = true;
+    createCheckListDoc.GeneralData.hasCreated = mnocld.hasCreated;
+    createCheckListDoc.GeneralData.hasUpdated = mnocld.hasUpdated;
+  }
+
+  static setViewCheckListDocTextFields({required MNOCLD mnocld}) {
+    CheckListDocument.numOfTabs.value = 3;
+    viewCheckListDoc.GeneralData.iD = mnocld.ID?.toString() ?? '0';
+    viewCheckListDoc.GeneralData.permanentTransId =
+        mnocld.PermanentTransId ?? "";
+    viewCheckListDoc.GeneralData.transId = mnocld.TransId ?? '';
+    viewCheckListDoc.GeneralData.docEntry = mnocld.DocEntry?.toString() ?? '';
+    viewCheckListDoc.GeneralData.docNum = mnocld.DocNum ?? '';
+    viewCheckListDoc.GeneralData.canceled = mnocld.Canceled ?? '';
+    viewCheckListDoc.GeneralData.docStatus = mnocld.DocStatus ?? 'Open';
+    viewCheckListDoc.GeneralData.approvalStatus =
+        mnocld.ApprovalStatus ?? 'Pending';
+    viewCheckListDoc.GeneralData.checkListStatus =
+        mnocld.CheckListStatus ?? 'WIP';
+    viewCheckListDoc.GeneralData.tyreMaintenance = 'No';
+    viewCheckListDoc.GeneralData.objectCode = mnocld.ObjectCode ?? '';
+    viewCheckListDoc.GeneralData.equipmentCode = mnocld.EquipmentCode ?? '';
+    viewCheckListDoc.GeneralData.equipmentName = mnocld.EquipmentName ?? '';
+    viewCheckListDoc.GeneralData.checkListCode = mnocld.CheckListCode ?? '';
+    viewCheckListDoc.GeneralData.checkListName = mnocld.CheckListName ?? '';
+    viewCheckListDoc.GeneralData.workCenterCode = mnocld.WorkCenterCode ?? '';
+    viewCheckListDoc.GeneralData.workCenterName = mnocld.WorkCenterName ?? '';
+    viewCheckListDoc.GeneralData.openDate = getFormattedDate(mnocld.OpenDate);
+    viewCheckListDoc.GeneralData.closeDate = getFormattedDate(mnocld.CloseDate);
+    viewCheckListDoc.GeneralData.postingDate =
+        getFormattedDate(mnocld.PostingDate);
+    viewCheckListDoc.GeneralData.validUntill =
+        getFormattedDate(mnocld.ValidUntill);
+    viewCheckListDoc.GeneralData.lastReadingDate =
+        getFormattedDate(mnocld.LastReadingDate);
+    viewCheckListDoc.GeneralData.lastReading = mnocld.LastReading ?? '';
+    viewCheckListDoc.GeneralData.assignedUserCode =
+        mnocld.AssignedUserCode ?? '';
+    viewCheckListDoc.GeneralData.assignedUserName =
+        mnocld.AssignedUserName ?? '';
+    viewCheckListDoc.GeneralData.mNJCTransId = mnocld.MNJCTransId ?? '';
+    viewCheckListDoc.GeneralData.remarks = mnocld.Remarks ?? '';
+    viewCheckListDoc.GeneralData.createdBy = mnocld.CreatedBy ?? '';
+    viewCheckListDoc.GeneralData.updatedBy = mnocld.UpdatedBy ?? '';
+    viewCheckListDoc.GeneralData.branchId = mnocld.BranchId ?? '';
+    viewCheckListDoc.GeneralData.createDate =
+        getFormattedDate(mnocld.CreateDate);
+    viewCheckListDoc.GeneralData.updateDate =
+        getFormattedDate(mnocld.UpdateDate);
+    viewCheckListDoc.GeneralData.currentReading = mnocld.CurrentReading ?? '';
+    viewCheckListDoc.GeneralData.isConsumption = mnocld.IsConsumption ?? false;
+    viewCheckListDoc.GeneralData.isRequest = mnocld.IsRequest ?? false;
+    viewCheckListDoc.GeneralData.isSelected = true;
+    viewCheckListDoc.GeneralData.hasCreated = mnocld.hasCreated;
+    viewCheckListDoc.GeneralData.hasUpdated = mnocld.hasUpdated;
+  }
+
+  static setEditCheckListDocTextFields({required MNOCLD mnocld}) {
+    CheckListDocument.numOfTabs.value = 3;
+    editCheckListDoc.GeneralData.iD = mnocld.ID?.toString() ?? '0';
+    editCheckListDoc.GeneralData.permanentTransId =
+        mnocld.PermanentTransId ?? "";
+    editCheckListDoc.GeneralData.transId = mnocld.TransId ?? '';
+    editCheckListDoc.GeneralData.docEntry = mnocld.DocEntry?.toString() ?? '';
+    editCheckListDoc.GeneralData.docNum = mnocld.DocNum ?? '';
+    editCheckListDoc.GeneralData.canceled = mnocld.Canceled ?? '';
+    editCheckListDoc.GeneralData.docStatus = mnocld.DocStatus ?? 'Open';
+    editCheckListDoc.GeneralData.approvalStatus =
+        mnocld.ApprovalStatus ?? 'Pending';
+    editCheckListDoc.GeneralData.checkListStatus =
+        mnocld.CheckListStatus ?? 'WIP';
+    editCheckListDoc.GeneralData.tyreMaintenance = 'No';
+    editCheckListDoc.GeneralData.objectCode = mnocld.ObjectCode ?? '';
+    editCheckListDoc.GeneralData.equipmentCode = mnocld.EquipmentCode ?? '';
+    editCheckListDoc.GeneralData.equipmentName = mnocld.EquipmentName ?? '';
+    editCheckListDoc.GeneralData.checkListCode = mnocld.CheckListCode ?? '';
+    editCheckListDoc.GeneralData.checkListName = mnocld.CheckListName ?? '';
+    editCheckListDoc.GeneralData.workCenterCode = mnocld.WorkCenterCode ?? '';
+    editCheckListDoc.GeneralData.workCenterName = mnocld.WorkCenterName ?? '';
+    editCheckListDoc.GeneralData.openDate = getFormattedDate(mnocld.OpenDate);
+    editCheckListDoc.GeneralData.closeDate = getFormattedDate(mnocld.CloseDate);
+    editCheckListDoc.GeneralData.postingDate =
+        getFormattedDate(mnocld.PostingDate);
+    editCheckListDoc.GeneralData.validUntill =
+        getFormattedDate(mnocld.ValidUntill);
+    editCheckListDoc.GeneralData.lastReadingDate =
+        getFormattedDate(mnocld.LastReadingDate);
+    editCheckListDoc.GeneralData.lastReading = mnocld.LastReading ?? '';
+    editCheckListDoc.GeneralData.assignedUserCode =
+        mnocld.AssignedUserCode ?? '';
+    editCheckListDoc.GeneralData.assignedUserName =
+        mnocld.AssignedUserName ?? '';
+    editCheckListDoc.GeneralData.mNJCTransId = mnocld.MNJCTransId ?? '';
+    editCheckListDoc.GeneralData.remarks = mnocld.Remarks ?? '';
+    editCheckListDoc.GeneralData.createdBy = mnocld.CreatedBy ?? '';
+    editCheckListDoc.GeneralData.updatedBy = mnocld.UpdatedBy ?? '';
+    editCheckListDoc.GeneralData.branchId = mnocld.BranchId ?? '';
+    editCheckListDoc.GeneralData.createDate =
+        getFormattedDate(mnocld.CreateDate);
+    editCheckListDoc.GeneralData.updateDate =
+        getFormattedDate(mnocld.UpdateDate);
+    editCheckListDoc.GeneralData.currentReading = mnocld.CurrentReading ?? '';
+    editCheckListDoc.GeneralData.isConsumption = mnocld.IsConsumption ?? false;
+    editCheckListDoc.GeneralData.isRequest = mnocld.IsRequest ?? false;
+    editCheckListDoc.GeneralData.isSelected = true;
+    editCheckListDoc.GeneralData.hasCreated = mnocld.hasCreated;
+    editCheckListDoc.GeneralData.hasUpdated = mnocld.hasUpdated;
   }
 
   static clearCheckListAttachments() {
@@ -202,7 +326,7 @@ goToNewCheckListDocument() async {
 
     do {
       DocNum += 1;
-      checkListDoc.GeneralData.transId =
+      createCheckListDoc.GeneralData.transId =
           DateTime.now().millisecondsSinceEpoch.toString() +
               "U0" +
               userModel.ID.toString() +
@@ -211,20 +335,32 @@ goToNewCheckListDocument() async {
               "/" +
               DocNum.toString();
     } while (await isMNCLTransIdAvailable(
-        null, checkListDoc.GeneralData.transId ?? ""));
-    print(checkListDoc.GeneralData.transId);
+        null, createCheckListDoc.GeneralData.transId ?? ""));
+    print(createCheckListDoc.GeneralData.transId);
 
     Get.offAll(() => CheckListDocument(0));
   });
 }
 
-navigateToCheckListDocument({required String TransId}) async {
-  List<MNOCLD> list = await retrieveMNOCLDById(null, 'TransId = ?', [TransId]);
-  if (list.isNotEmpty) {
-    ClearCheckListDoc.setCheckListDocTextFields(mnocld: list[0]);
+navigateToCheckListDocument(
+    {required String TransId, required bool isView}) async {
+  if (isView) {
+    List<MNOCLD> list =
+        await retrieveMNOCLDById(null, 'TransId = ?', [TransId]);
+    if (list.isNotEmpty) {
+      ClearCheckListDoc.setViewCheckListDocTextFields(mnocld: list[0]);
+    }
+    checkListDetails.CheckListDetails.items =
+        await retrieveMNCLD1ById(null, 'TransId = ?', [TransId]);
+    Get.offAll(() => ViewCheckListDocument(0));
+  } else {
+    List<MNOCLD> list =
+        await retrieveMNOCLDById(null, 'TransId = ?', [TransId]);
+    if (list.isNotEmpty) {
+      ClearCheckListDoc.setEditCheckListDocTextFields(mnocld: list[0]);
+    }
+    Get.offAll(() => EditCheckListDocument(0));
   }
-  checkListDetails.CheckListDetails.items=await retrieveMNCLD1ById(null, 'TransId = ?', [TransId]);
-  Get.offAll(()=>CheckListDocument(0));
 }
 
 class ClearJobCardDoc {
@@ -270,57 +406,54 @@ class ClearJobCardDoc {
     jcdGenData.GeneralData.warranty = 'Yes';
     jcdGenData.GeneralData.type = 'Preventive';
   }
-  static setGeneralData({
-    required MNOJCD mnojcd
-}) {
-    jcdGenData.GeneralData.iD = mnojcd.ID?.toString()??'';
-    jcdGenData.GeneralData.permanentTransId = mnojcd.PermanentTransId??'';
-    jcdGenData.GeneralData.transId = mnojcd.TransId??'';
-    jcdGenData.GeneralData.docEntry = mnojcd.DocEntry?.toString()??'';
-    jcdGenData.GeneralData.docNum =mnojcd.DocNum?.toString()?? '';
-    jcdGenData.GeneralData.canceled = mnojcd.Canceled??'';
-    jcdGenData.GeneralData.docStatus = mnojcd.DocStatus??'Open';
-    jcdGenData.GeneralData.approvalStatus = mnojcd.ApprovalStatus??'Pending';
+
+  static setGeneralData({required MNOJCD mnojcd}) {
+    jcdGenData.GeneralData.iD = mnojcd.ID?.toString() ?? '';
+    jcdGenData.GeneralData.permanentTransId = mnojcd.PermanentTransId ?? '';
+    jcdGenData.GeneralData.transId = mnojcd.TransId ?? '';
+    jcdGenData.GeneralData.docEntry = mnojcd.DocEntry?.toString() ?? '';
+    jcdGenData.GeneralData.docNum = mnojcd.DocNum?.toString() ?? '';
+    jcdGenData.GeneralData.canceled = mnojcd.Canceled ?? '';
+    jcdGenData.GeneralData.docStatus = mnojcd.DocStatus ?? 'Open';
+    jcdGenData.GeneralData.approvalStatus = mnojcd.ApprovalStatus ?? 'Pending';
     //todo: SET CHECK LIST STATUS
     jcdGenData.GeneralData.checkListStatus = 'WIP';
-    jcdGenData.GeneralData.objectCode = mnojcd.ObjectCode??'';
-    jcdGenData.GeneralData.equipmentCode = mnojcd.EquipmentCode??'';
-    jcdGenData.GeneralData.equipmentName = mnojcd.EquipmentName??'';
-    jcdGenData.GeneralData.checkListCode = mnojcd.CheckListCode??'';
-    jcdGenData.GeneralData.checkListName = mnojcd.CheckListName??'';
-    jcdGenData.GeneralData.workCenterCode = mnojcd.WorkCenterCode??'';
-    jcdGenData.GeneralData.workCenterName = mnojcd.WorkCenterName??'';
+    jcdGenData.GeneralData.objectCode = mnojcd.ObjectCode ?? '';
+    jcdGenData.GeneralData.equipmentCode = mnojcd.EquipmentCode ?? '';
+    jcdGenData.GeneralData.equipmentName = mnojcd.EquipmentName ?? '';
+    jcdGenData.GeneralData.checkListCode = mnojcd.CheckListCode ?? '';
+    jcdGenData.GeneralData.checkListName = mnojcd.CheckListName ?? '';
+    jcdGenData.GeneralData.workCenterCode = mnojcd.WorkCenterCode ?? '';
+    jcdGenData.GeneralData.workCenterName = mnojcd.WorkCenterName ?? '';
     jcdGenData.GeneralData.openDate = getFormattedDate(mnojcd.OpenDate);
     jcdGenData.GeneralData.closeDate = getFormattedDate(mnojcd.CloseDate);
     jcdGenData.GeneralData.postingDate = getFormattedDate(mnojcd.PostingDate);
-    jcdGenData.GeneralData.validUntill =
-        getFormattedDate(mnojcd.ValidUntill);
-    jcdGenData.GeneralData.lastReadingDate = getFormattedDate(mnojcd.LastReading);
+    jcdGenData.GeneralData.validUntill = getFormattedDate(mnojcd.ValidUntill);
+    jcdGenData.GeneralData.lastReadingDate =
+        getFormattedDate(mnojcd.LastReading);
     // jcdGenData.GeneralData.lastReading = mnojcd.LastReading??'';
-    jcdGenData.GeneralData.assignedUserCode = mnojcd.AssignedUserCode??'';
-    jcdGenData.GeneralData.assignedUserName = mnojcd.AssignedUserName??'';
+    jcdGenData.GeneralData.assignedUserCode = mnojcd.AssignedUserCode ?? '';
+    jcdGenData.GeneralData.assignedUserName = mnojcd.AssignedUserName ?? '';
     // jcdGenData.GeneralData.mNJCTransId = mnojcd.MNJ??'';
-    jcdGenData.GeneralData.remarks = mnojcd.Remarks??'';
-    jcdGenData.GeneralData.createdBy = mnojcd.CreatedBy??'';
-    jcdGenData.GeneralData.updatedBy = mnojcd.UpdatedBy??'';
-    jcdGenData.GeneralData.branchId = mnojcd.BranchId??'';
+    jcdGenData.GeneralData.remarks = mnojcd.Remarks ?? '';
+    jcdGenData.GeneralData.createdBy = mnojcd.CreatedBy ?? '';
+    jcdGenData.GeneralData.updatedBy = mnojcd.UpdatedBy ?? '';
+    jcdGenData.GeneralData.branchId = mnojcd.BranchId ?? '';
     jcdGenData.GeneralData.createDate = getFormattedDate(mnojcd.CreateDate);
     jcdGenData.GeneralData.updateDate = getFormattedDate(mnojcd.UpdateDate);
 
-    jcdGenData.GeneralData.isConsumption =mnojcd.IsConsumption?? false;
-    jcdGenData.GeneralData.isRequest = mnojcd.IsRequest??false;
+    jcdGenData.GeneralData.isConsumption = mnojcd.IsConsumption ?? false;
+    jcdGenData.GeneralData.isRequest = mnojcd.IsRequest ?? false;
     jcdGenData.GeneralData.isSelected = true;
     jcdGenData.GeneralData.hasCreated = mnojcd.hasCreated;
     jcdGenData.GeneralData.hasUpdated = mnojcd.hasUpdated;
-    jcdGenData.GeneralData.warranty = mnojcd.WarrentyApplicable==true?'Yes':'No';
-    jcdGenData.GeneralData.type = mnojcd.Type??'Preventive';
-    if(mnojcd.Type=='True')
-    {
-      jcdGenData.GeneralData.type='Preventive';
-    }
-    else if(mnojcd.Type=='False')
-    {
-      jcdGenData.GeneralData.type='Breakdown';
+    jcdGenData.GeneralData.warranty =
+        mnojcd.WarrentyApplicable == true ? 'Yes' : 'No';
+    jcdGenData.GeneralData.type = mnojcd.Type ?? 'Preventive';
+    if (mnojcd.Type == 'True') {
+      jcdGenData.GeneralData.type = 'Preventive';
+    } else if (mnojcd.Type == 'False') {
+      jcdGenData.GeneralData.type = 'Breakdown';
     }
   }
 
@@ -381,15 +514,18 @@ goToNewJobCardDocument() async {
     Get.offAll(() => JobCard(0));
   });
 }
+
 navigateToJobCardDocument({required String TransId}) async {
   List<MNOJCD> list = await retrieveMNOJCDById(null, 'TransId = ?', [TransId]);
   if (list.isNotEmpty) {
     ClearJobCardDoc.setGeneralData(mnojcd: list[0]);
   }
-  jcdItemDetails.ItemDetails.items=await retrieveMNJCD1ById(null, 'TransId = ?', [TransId]);
-  jcdServiceDetails.ServiceDetails.items=await retrieveMNJCD2ById(null, 'TransId = ?', [TransId]);
+  jcdItemDetails.ItemDetails.items =
+      await retrieveMNJCD1ById(null, 'TransId = ?', [TransId]);
+  jcdServiceDetails.ServiceDetails.items =
+      await retrieveMNJCD2ById(null, 'TransId = ?', [TransId]);
 
-  Get.offAll(()=>JobCard(0));
+  Get.offAll(() => JobCard(0));
 }
 
 class ClearGoodsIssueDocument {
@@ -536,47 +672,47 @@ class ClearPurchaseRequestDocument {
     purchaseGenData.GeneralData.isConsumption = false;
     purchaseGenData.GeneralData.isRequest = false;
   }
-  static setGeneralDataTextFields({
-    required PROPRQ data
-}) {
-    purchaseGenData.GeneralData.iD = data.ID?.toString()??'';
-    purchaseGenData.GeneralData.transId = data.TransId??'';
-    purchaseGenData.GeneralData.refNo = data.RefNo??'';
-    purchaseGenData.GeneralData.mobileNo = data.MobileNo??'';
-    purchaseGenData.GeneralData.postingDate = getFormattedDate(data.PostingDate);
+
+  static setGeneralDataTextFields({required PROPRQ data}) {
+    purchaseGenData.GeneralData.iD = data.ID?.toString() ?? '';
+    purchaseGenData.GeneralData.transId = data.TransId ?? '';
+    purchaseGenData.GeneralData.refNo = data.RefNo ?? '';
+    purchaseGenData.GeneralData.mobileNo = data.MobileNo ?? '';
+    purchaseGenData.GeneralData.postingDate =
+        getFormattedDate(data.PostingDate);
     purchaseGenData.GeneralData.validUntill =
         getFormattedDate(data.ValidUntill);
-    purchaseGenData.GeneralData.approvalStatus = data.ApprovalStatus??'Pending';
-    purchaseGenData.GeneralData.docStatus = data.DocStatus??'Open';
-    purchaseGenData.GeneralData.permanentTransId = data.PermanentTransId??'';
-    purchaseGenData.GeneralData.docEntry = data.DocEntry?.toString()??'';
-    purchaseGenData.GeneralData.docNum = data.DocNum??'';
-    purchaseGenData.GeneralData.createdBy = data.CreatedBy??'';
+    purchaseGenData.GeneralData.approvalStatus =
+        data.ApprovalStatus ?? 'Pending';
+    purchaseGenData.GeneralData.docStatus = data.DocStatus ?? 'Open';
+    purchaseGenData.GeneralData.permanentTransId = data.PermanentTransId ?? '';
+    purchaseGenData.GeneralData.docEntry = data.DocEntry?.toString() ?? '';
+    purchaseGenData.GeneralData.docNum = data.DocNum ?? '';
+    purchaseGenData.GeneralData.createdBy = data.CreatedBy ?? '';
     // purchaseGenData.GeneralData.createDate = getFormattedDate(data.CreateDate);
     // purchaseGenData.GeneralData.updateDate = data.TransId??'';
-    purchaseGenData.GeneralData.approvedBy = data.ApprovedBy??'';
-    purchaseGenData.GeneralData.error = data.Error??'';
+    purchaseGenData.GeneralData.approvedBy = data.ApprovedBy ?? '';
+    purchaseGenData.GeneralData.error = data.Error ?? '';
     purchaseGenData.GeneralData.isSelected = true;
     purchaseGenData.GeneralData.hasCreated = data.hasCreated;
     purchaseGenData.GeneralData.hasUpdated = data.hasUpdated;
-    purchaseGenData.GeneralData.isPosted = data.IsPosted??false;
-    purchaseGenData.GeneralData.draftKey = data.DraftKey??'';
-    purchaseGenData.GeneralData.latitude = data.Latitude??'';
-    purchaseGenData.GeneralData.longitude = data.Longitude??'';
-    purchaseGenData.GeneralData.objectCode = data.ObjectCode??'';
-    purchaseGenData.GeneralData.whsCode = data.WhsCode??'';
-    purchaseGenData.GeneralData.remarks = data.Remarks??'';
-    purchaseGenData.GeneralData.branchId = data.BranchId??'';
-    purchaseGenData.GeneralData.updatedBy = data.UpdatedBy??'';
-    purchaseGenData.GeneralData.postingAddress = data.PostingAddress??'';
-    purchaseGenData.GeneralData.tripTransId = data.TripTransId??'';
-    purchaseGenData.GeneralData.deptCode = data.DeptCode??'';
-    purchaseGenData.GeneralData.deptName = data.DeptName??'';
-    purchaseGenData.GeneralData.requestedCode = data.RequestedCode??'';
-    purchaseGenData.GeneralData.requestedName = data.RequestedName??'';
+    purchaseGenData.GeneralData.isPosted = data.IsPosted ?? false;
+    purchaseGenData.GeneralData.draftKey = data.DraftKey ?? '';
+    purchaseGenData.GeneralData.latitude = data.Latitude ?? '';
+    purchaseGenData.GeneralData.longitude = data.Longitude ?? '';
+    purchaseGenData.GeneralData.objectCode = data.ObjectCode ?? '';
+    purchaseGenData.GeneralData.whsCode = data.WhsCode ?? '';
+    purchaseGenData.GeneralData.remarks = data.Remarks ?? '';
+    purchaseGenData.GeneralData.branchId = data.BranchId ?? '';
+    purchaseGenData.GeneralData.updatedBy = data.UpdatedBy ?? '';
+    purchaseGenData.GeneralData.postingAddress = data.PostingAddress ?? '';
+    purchaseGenData.GeneralData.tripTransId = data.TripTransId ?? '';
+    purchaseGenData.GeneralData.deptCode = data.DeptCode ?? '';
+    purchaseGenData.GeneralData.deptName = data.DeptName ?? '';
+    purchaseGenData.GeneralData.requestedCode = data.RequestedCode ?? '';
+    purchaseGenData.GeneralData.requestedName = data.RequestedName ?? '';
 
-    purchaseGenData.GeneralData.isPosted = data.IsPosted??false;
-
+    purchaseGenData.GeneralData.isPosted = data.IsPosted ?? false;
   }
 
   static clearEditItems() {
@@ -643,9 +779,10 @@ navigateToPurchaseRequestDocument({required String TransId}) async {
   if (list.isNotEmpty) {
     ClearPurchaseRequestDocument.setGeneralDataTextFields(data: list[0]);
   }
-  purchaseItemDetails.ItemDetails.items=await retrievePRPRQ1ById(null, 'TransId = ?', [TransId]);
+  purchaseItemDetails.ItemDetails.items =
+      await retrievePRPRQ1ById(null, 'TransId = ?', [TransId]);
 
-  Get.offAll(()=>PurchaseRequest(0));
+  Get.offAll(() => PurchaseRequest(0));
 }
 
 class ClearGRNDocument {
@@ -701,133 +838,104 @@ class ClearGRNDocument {
     grnGenData.GeneralData.hasCreated = false;
     grnGenData.GeneralData.hasUpdated = false;
   }
-  static setGeneralDataTextFields({
-    required PROPDN data
-}) {
-    grnGenData.GeneralData.iD = data.ID?.toString()??'';
-    grnGenData.GeneralData.transId = data.TransId??'';
-    grnGenData.GeneralData.cardCode = data.CardCode??'';
-    grnGenData.GeneralData.cardName = data.CardName??'';
-    grnGenData.GeneralData.refNo = data.RefNo??'';
-    grnGenData.GeneralData.contactPersonId = data.ContactPersonId?.toString()??'';
-    grnGenData.GeneralData.contactPersonName = data.ContactPersonName??'';
-    grnGenData.GeneralData.mobileNo = data.MobileNo??'';
+
+  static setGeneralDataTextFields({required PROPDN data}) {
+    grnGenData.GeneralData.iD = data.ID?.toString() ?? '';
+    grnGenData.GeneralData.transId = data.TransId ?? '';
+    grnGenData.GeneralData.cardCode = data.CardCode ?? '';
+    grnGenData.GeneralData.cardName = data.CardName ?? '';
+    grnGenData.GeneralData.refNo = data.RefNo ?? '';
+    grnGenData.GeneralData.contactPersonId =
+        data.ContactPersonId?.toString() ?? '';
+    grnGenData.GeneralData.contactPersonName = data.ContactPersonName ?? '';
+    grnGenData.GeneralData.mobileNo = data.MobileNo ?? '';
     grnGenData.GeneralData.postingDate = getFormattedDate(data.PostingDate);
-    grnGenData.GeneralData.validUntill =
-        getFormattedDate(data.ValidUntill);
-    grnGenData.GeneralData.currency = data.Currency??'';
-    grnGenData.GeneralData.currRate = data.CurrRate?.toStringAsFixed(2)??'1';
-    grnGenData.GeneralData.paymentTermCode = data.PaymentTermCode??'';
-    grnGenData.GeneralData.paymentTermName = data.PaymentTermName??'';
-    grnGenData.GeneralData.paymentTermDays = data.PaymentTermDays?.toString()??'';
-    grnGenData.GeneralData.approvalStatus = data.ApprovalStatus??'Pending';
-    grnGenData.GeneralData.docStatus = data.DocStatus??'Open';
-    grnGenData.GeneralData.rPTransId = data.RPTransId??'';
-    grnGenData.GeneralData.dSTranId = data.DSTranId??'';
-    grnGenData.GeneralData.cRTransId = data.CRTransId??'';
-    grnGenData.GeneralData.baseTab = data.BaseTab??'';
-    grnGenData.GeneralData.totBDisc = data.TotBDisc?.toStringAsFixed(2)??'';
-    grnGenData.GeneralData.discPer = data.DiscPer?.toStringAsFixed(2)??'';
-    grnGenData.GeneralData.discVal = data.DiscVal?.toStringAsFixed(2)??'';
-    grnGenData.GeneralData.taxVal = data.TaxVal?.toStringAsFixed(2)??'';
-    grnGenData.GeneralData.docTotal = data.DocTotal?.toStringAsFixed(2)??'';
-    grnGenData.GeneralData.permanentTransId = data.PermanentTransId??'';
-    grnGenData.GeneralData.docEntry = data.DocEntry?.toString()??'';
-    grnGenData.GeneralData.docNum = data.DocNum??'';
-    grnGenData.GeneralData.createdBy = data.CreatedBy??'';
+    grnGenData.GeneralData.validUntill = getFormattedDate(data.ValidUntill);
+    grnGenData.GeneralData.currency = data.Currency ?? '';
+    grnGenData.GeneralData.currRate = data.CurrRate?.toStringAsFixed(2) ?? '1';
+    grnGenData.GeneralData.paymentTermCode = data.PaymentTermCode ?? '';
+    grnGenData.GeneralData.paymentTermName = data.PaymentTermName ?? '';
+    grnGenData.GeneralData.paymentTermDays =
+        data.PaymentTermDays?.toString() ?? '';
+    grnGenData.GeneralData.approvalStatus = data.ApprovalStatus ?? 'Pending';
+    grnGenData.GeneralData.docStatus = data.DocStatus ?? 'Open';
+    grnGenData.GeneralData.rPTransId = data.RPTransId ?? '';
+    grnGenData.GeneralData.dSTranId = data.DSTranId ?? '';
+    grnGenData.GeneralData.cRTransId = data.CRTransId ?? '';
+    grnGenData.GeneralData.baseTab = data.BaseTab ?? '';
+    grnGenData.GeneralData.totBDisc = data.TotBDisc?.toStringAsFixed(2) ?? '';
+    grnGenData.GeneralData.discPer = data.DiscPer?.toStringAsFixed(2) ?? '';
+    grnGenData.GeneralData.discVal = data.DiscVal?.toStringAsFixed(2) ?? '';
+    grnGenData.GeneralData.taxVal = data.TaxVal?.toStringAsFixed(2) ?? '';
+    grnGenData.GeneralData.docTotal = data.DocTotal?.toStringAsFixed(2) ?? '';
+    grnGenData.GeneralData.permanentTransId = data.PermanentTransId ?? '';
+    grnGenData.GeneralData.docEntry = data.DocEntry?.toString() ?? '';
+    grnGenData.GeneralData.docNum = data.DocNum ?? '';
+    grnGenData.GeneralData.createdBy = data.CreatedBy ?? '';
     grnGenData.GeneralData.createDate = getFormattedDate(data.CreateDate);
-    grnGenData.GeneralData.updateDate = data.UpdatedBy??'';
-    grnGenData.GeneralData.approvedBy = data.ApprovedBy??'';
-    grnGenData.GeneralData.latitude = data.TransId??'';
-    grnGenData.GeneralData.longitude = data.Latitude??'';
-    grnGenData.GeneralData.updatedBy = data.Longitude??'';
-    grnGenData.GeneralData.branchId = data.BranchId??'';
-    grnGenData.GeneralData.remarks = data.Remarks??'';
-    grnGenData.GeneralData.localDate = data.LocalDate??'';
-    grnGenData.GeneralData.whsCode = data.WhsCode??'';
-    grnGenData.GeneralData.objectCode = data.ObjectCode??'';
-    grnGenData.GeneralData.error = data.Error??'';
-    grnGenData.GeneralData.postingAddress = data.PostingAddress??'';
-    grnGenData.GeneralData.tripTransId = data.TripTransId??'';
-    grnGenData.GeneralData.deptCode = data.DeptCode??'';
-    grnGenData.GeneralData.deptName = data.DeptName??'';
+    grnGenData.GeneralData.updateDate = data.UpdatedBy ?? '';
+    grnGenData.GeneralData.approvedBy = data.ApprovedBy ?? '';
+    grnGenData.GeneralData.latitude = data.TransId ?? '';
+    grnGenData.GeneralData.longitude = data.Latitude ?? '';
+    grnGenData.GeneralData.updatedBy = data.Longitude ?? '';
+    grnGenData.GeneralData.branchId = data.BranchId ?? '';
+    grnGenData.GeneralData.remarks = data.Remarks ?? '';
+    grnGenData.GeneralData.localDate = data.LocalDate ?? '';
+    grnGenData.GeneralData.whsCode = data.WhsCode ?? '';
+    grnGenData.GeneralData.objectCode = data.ObjectCode ?? '';
+    grnGenData.GeneralData.error = data.Error ?? '';
+    grnGenData.GeneralData.postingAddress = data.PostingAddress ?? '';
+    grnGenData.GeneralData.tripTransId = data.TripTransId ?? '';
+    grnGenData.GeneralData.deptCode = data.DeptCode ?? '';
+    grnGenData.GeneralData.deptName = data.DeptName ?? '';
     grnGenData.GeneralData.isSelected = true;
     grnGenData.GeneralData.hasCreated = data.hasCreated;
     grnGenData.GeneralData.hasUpdated = data.hasUpdated;
   }
-  static clearShippingAddressTextFields(){
+
+  static clearShippingAddressTextFields() {
 //todo:
   }
-  static clearBillingAddressTextFields(){
+
+  static clearBillingAddressTextFields() {
 //todo:
   }
-  
-  static setShippingAddressTextFields({
-    required PRPDN2 prpdn2
-}) {
 
-
-    grnShipAddress.ShippingAddress.CityName =
-    prpdn2.CityName.toString();
+  static setShippingAddressTextFields({required PRPDN2 prpdn2}) {
+    grnShipAddress.ShippingAddress.CityName = prpdn2.CityName.toString();
     grnShipAddress.ShippingAddress.hasCreated = prpdn2.hasCreated;
     grnShipAddress.ShippingAddress.hasUpdated = prpdn2.hasUpdated;
-    grnShipAddress.ShippingAddress.CityCode =
-    prpdn2.CityCode.toString();
+    grnShipAddress.ShippingAddress.CityCode = prpdn2.CityCode.toString();
     grnShipAddress.ShippingAddress.Addres = prpdn2.Address.toString();
-    grnShipAddress.ShippingAddress.CountryName =
-    prpdn2.CountryName.toString();
-    grnShipAddress.ShippingAddress.CountryCode =
-    prpdn2.CountryCode.toString();
-    grnShipAddress.ShippingAddress.StateName =
-    prpdn2.StateName.toString();
-    grnShipAddress.ShippingAddress.RouteCode =
-    prpdn2.RouteCode.toString();
-    grnShipAddress.ShippingAddress.StateCode =
-    prpdn2.StateCode.toString();
+    grnShipAddress.ShippingAddress.CountryName = prpdn2.CountryName.toString();
+    grnShipAddress.ShippingAddress.CountryCode = prpdn2.CountryCode.toString();
+    grnShipAddress.ShippingAddress.StateName = prpdn2.StateName.toString();
+    grnShipAddress.ShippingAddress.RouteCode = prpdn2.RouteCode.toString();
+    grnShipAddress.ShippingAddress.StateCode = prpdn2.StateCode.toString();
     grnShipAddress.ShippingAddress.Latitude =
-    double.tryParse(prpdn2.Latitude.toString()) ??
-    0.0;
+        double.tryParse(prpdn2.Latitude.toString()) ?? 0.0;
     grnShipAddress.ShippingAddress.Longitude =
-    double.tryParse(prpdn2.Longitude.toString()) ??
-    0.0;
-    grnShipAddress.ShippingAddress.RowId =
-    int.parse(prpdn2.RowId.toString());
-    grnShipAddress.ShippingAddress.AddCode =
-    prpdn2.AddressCode.toString();
-    
+        double.tryParse(prpdn2.Longitude.toString()) ?? 0.0;
+    grnShipAddress.ShippingAddress.RowId = int.parse(prpdn2.RowId.toString());
+    grnShipAddress.ShippingAddress.AddCode = prpdn2.AddressCode.toString();
   }
-  
-  static setBillingAddressTextFields({
-    required PRPDN3 prpdn3
-}) {
-    
 
-    grnBillAddress.BillingAddress.CityName =
-    prpdn3.CityName.toString();
+  static setBillingAddressTextFields({required PRPDN3 prpdn3}) {
+    grnBillAddress.BillingAddress.CityName = prpdn3.CityName.toString();
     grnBillAddress.BillingAddress.hasCreated = prpdn3.hasCreated;
     grnBillAddress.BillingAddress.hasUpdated = prpdn3.hasUpdated;
-    grnBillAddress.BillingAddress.CityCode =
-    prpdn3.CityCode.toString();
+    grnBillAddress.BillingAddress.CityCode = prpdn3.CityCode.toString();
     grnBillAddress.BillingAddress.Addres = prpdn3.Address.toString();
-    grnBillAddress.BillingAddress.CountryName =
-    prpdn3.CountryName.toString();
-    grnBillAddress.BillingAddress.CountryCode =
-    prpdn3.CountryCode.toString();
-    grnBillAddress.BillingAddress.StateName =
-    prpdn3.StateName.toString();
-    grnBillAddress.BillingAddress.StateCode =
-    prpdn3.StateCode.toString();
+    grnBillAddress.BillingAddress.CountryName = prpdn3.CountryName.toString();
+    grnBillAddress.BillingAddress.CountryCode = prpdn3.CountryCode.toString();
+    grnBillAddress.BillingAddress.StateName = prpdn3.StateName.toString();
+    grnBillAddress.BillingAddress.StateCode = prpdn3.StateCode.toString();
     grnBillAddress.BillingAddress.Latitude =
-    double.tryParse(prpdn3.Latitude.toString()) ??
-    0.0;
+        double.tryParse(prpdn3.Latitude.toString()) ?? 0.0;
     grnBillAddress.BillingAddress.Longitude =
-    double.tryParse(prpdn3.Longitude.toString()) ??
-    0.0;
-    grnBillAddress.BillingAddress.RowId =
-    int.parse(prpdn3.RowId.toString());
-    grnBillAddress.BillingAddress.AddCode =
-    prpdn3.AddressCode.toString();
-    
+        double.tryParse(prpdn3.Longitude.toString()) ?? 0.0;
+    grnBillAddress.BillingAddress.RowId = int.parse(prpdn3.RowId.toString());
+    grnBillAddress.BillingAddress.AddCode = prpdn3.AddressCode.toString();
   }
 
   static clearEditItems() {
@@ -892,20 +1000,21 @@ navigateToGoodsReceiptNoteDocument({required String TransId}) async {
   if (list.isNotEmpty) {
     ClearGRNDocument.setGeneralDataTextFields(data: list[0]);
   }
-  List<PRPDN2> PRPDN2List = await retrievePRPDN2ById(null, 'TransId = ?', [TransId]);
+  List<PRPDN2> PRPDN2List =
+      await retrievePRPDN2ById(null, 'TransId = ?', [TransId]);
   if (PRPDN2List.isNotEmpty) {
     ClearGRNDocument.setShippingAddressTextFields(prpdn2: PRPDN2List[0]);
   }
-  List<PRPDN3> PRPDN3List = await retrievePRPDN3ById(null, 'TransId = ?', [TransId]);
+  List<PRPDN3> PRPDN3List =
+      await retrievePRPDN3ById(null, 'TransId = ?', [TransId]);
   if (PRPDN3List.isNotEmpty) {
     ClearGRNDocument.setBillingAddressTextFields(prpdn3: PRPDN3List[0]);
   }
-  grnItemDetails.ItemDetails.items=await retrievePRPDN1ById(null, 'TransId = ?', [TransId]);
+  grnItemDetails.ItemDetails.items =
+      await retrievePRPDN1ById(null, 'TransId = ?', [TransId]);
 
-
-  Get.offAll(()=>GoodsRecepitNote(0));
+  Get.offAll(() => GoodsRecepitNote(0));
 }
-
 
 class ClearInternalRequestDocument {
   static clearGeneralDataTextFields() {
@@ -947,43 +1056,44 @@ class ClearInternalRequestDocument {
     internalGenData.GeneralData.hasCreated = false;
     internalGenData.GeneralData.hasUpdated = false;
   }
-  static setGeneralDataTextFields({
-    required PROITR data
-}) {
-    internalGenData.GeneralData.iD = data.ID?.toString()??'';
-    internalGenData.GeneralData.transId = data.TransId??'';
+
+  static setGeneralDataTextFields({required PROITR data}) {
+    internalGenData.GeneralData.iD = data.ID?.toString() ?? '';
+    internalGenData.GeneralData.transId = data.TransId ?? '';
     internalGenData.GeneralData.requestedCode = data.RequestedCode;
     internalGenData.GeneralData.requestedName = data.RequestedName;
-    internalGenData.GeneralData.refNo = data.RefNo??'';
-    internalGenData.GeneralData.mobileNo = data.MobileNo??'';
-    internalGenData.GeneralData.postingDate = getFormattedDate(data.PostingDate);
+    internalGenData.GeneralData.refNo = data.RefNo ?? '';
+    internalGenData.GeneralData.mobileNo = data.MobileNo ?? '';
+    internalGenData.GeneralData.postingDate =
+        getFormattedDate(data.PostingDate);
     internalGenData.GeneralData.validUntill =
         getFormattedDate(data.ValidUntill);
     internalGenData.GeneralData.currency = data.Currency;
-    internalGenData.GeneralData.currRate = data.CurrRate?.toString()??'1';
-    internalGenData.GeneralData.approvalStatus = data.ApprovalStatus??'Pending';
-    internalGenData.GeneralData.docStatus =data.DocStatus?? 'Open';
-    internalGenData.GeneralData.permanentTransId = data.PermanentTransId??'';
-    internalGenData.GeneralData.docEntry = data.DocEntry?.toString()??'';
-    internalGenData.GeneralData.docNum = data.DocNum??'';
-    internalGenData.GeneralData.createdBy = data.CreatedBy??'';
+    internalGenData.GeneralData.currRate = data.CurrRate?.toString() ?? '1';
+    internalGenData.GeneralData.approvalStatus =
+        data.ApprovalStatus ?? 'Pending';
+    internalGenData.GeneralData.docStatus = data.DocStatus ?? 'Open';
+    internalGenData.GeneralData.permanentTransId = data.PermanentTransId ?? '';
+    internalGenData.GeneralData.docEntry = data.DocEntry?.toString() ?? '';
+    internalGenData.GeneralData.docNum = data.DocNum ?? '';
+    internalGenData.GeneralData.createdBy = data.CreatedBy ?? '';
 
-    internalGenData.GeneralData.approvedBy = data.ApprovedBy??'';
-    internalGenData.GeneralData.error = data.Error??'';
-    internalGenData.GeneralData.isPosted = data.IsPosted??false;
-    internalGenData.GeneralData.draftKey = data.DraftKey??'';
-    internalGenData.GeneralData.latitude = data.Latitude??'';
-    internalGenData.GeneralData.longitude = data.Longitude??'';
-    internalGenData.GeneralData.objectCode = data.ObjectCode??'';
-    internalGenData.GeneralData.fromWhsCode = data.FromWhsCode??'';
-    internalGenData.GeneralData.toWhsCode = data.ToWhsCode??'';
-    internalGenData.GeneralData.remarks = data.Remarks??'';
-    internalGenData.GeneralData.branchId = data.BranchId??'';
-    internalGenData.GeneralData.updatedBy = data.UpdatedBy??'';
-    internalGenData.GeneralData.postingAddress = data.PostingAddress??'';
-    internalGenData.GeneralData.tripTransId = data.TripTransId??'';
-    internalGenData.GeneralData.deptCode = data.DeptCode??'';
-    internalGenData.GeneralData.deptName = data.DeptName??'';
+    internalGenData.GeneralData.approvedBy = data.ApprovedBy ?? '';
+    internalGenData.GeneralData.error = data.Error ?? '';
+    internalGenData.GeneralData.isPosted = data.IsPosted ?? false;
+    internalGenData.GeneralData.draftKey = data.DraftKey ?? '';
+    internalGenData.GeneralData.latitude = data.Latitude ?? '';
+    internalGenData.GeneralData.longitude = data.Longitude ?? '';
+    internalGenData.GeneralData.objectCode = data.ObjectCode ?? '';
+    internalGenData.GeneralData.fromWhsCode = data.FromWhsCode ?? '';
+    internalGenData.GeneralData.toWhsCode = data.ToWhsCode ?? '';
+    internalGenData.GeneralData.remarks = data.Remarks ?? '';
+    internalGenData.GeneralData.branchId = data.BranchId ?? '';
+    internalGenData.GeneralData.updatedBy = data.UpdatedBy ?? '';
+    internalGenData.GeneralData.postingAddress = data.PostingAddress ?? '';
+    internalGenData.GeneralData.tripTransId = data.TripTransId ?? '';
+    internalGenData.GeneralData.deptCode = data.DeptCode ?? '';
+    internalGenData.GeneralData.deptName = data.DeptName ?? '';
     internalGenData.GeneralData.isSelected = true;
     internalGenData.GeneralData.hasCreated = data.hasCreated;
     internalGenData.GeneralData.hasUpdated = data.hasUpdated;
@@ -1050,8 +1160,8 @@ navigateToInternalRequestDocument({required String TransId}) async {
   if (list.isNotEmpty) {
     ClearInternalRequestDocument.setGeneralDataTextFields(data: list[0]);
   }
-  internalItemDetails.ItemDetails.items=await retrievePRITR1ById(null, 'TransId = ?', [TransId]);
+  internalItemDetails.ItemDetails.items =
+      await retrievePRITR1ById(null, 'TransId = ?', [TransId]);
 
-
-  Get.offAll(()=>InternalRequest(0));
+  Get.offAll(() => InternalRequest(0));
 }

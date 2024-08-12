@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:maintenance/CheckListDocument/edit/CheckListDocument.dart';
+import 'package:maintenance/CheckListDocument/view/CheckListDocument.dart';
 import 'package:maintenance/Component/ClearTextFieldData.dart';
+import 'package:maintenance/Component/Common.dart';
 import 'package:maintenance/Component/CustomColor.dart';
 import 'package:maintenance/Component/CustomFont.dart';
 import 'package:maintenance/Component/GetFormattedDate.dart';
 import 'package:maintenance/Component/GetTextField.dart';
 import 'package:maintenance/Sync/SyncModels/MNOCLD.dart';
+
 class SearchCheckListDoc extends StatefulWidget {
   const SearchCheckListDoc({super.key});
 
@@ -17,7 +22,7 @@ class _SearchCheckListDocState extends State<SearchCheckListDoc> {
   TextEditingController TransId = TextEditingController();
   int _currentMax = 15;
   List myList = [];
-  bool openOnly=false;
+  bool openOnly = false;
 
   @override
   void initState() {
@@ -101,7 +106,6 @@ class _SearchCheckListDocState extends State<SearchCheckListDoc> {
                   //     ),)
                   //   ],
                   // ),
-
 
                   // Padding(
                   //   padding: const EdgeInsets.only(
@@ -203,10 +207,7 @@ class _SearchCheckListDocState extends State<SearchCheckListDoc> {
                       Align(
                         alignment: Alignment.centerRight,
                         child: Container(
-                          width: MediaQuery
-                              .of(context)
-                              .size
-                              .width / 2.5,
+                          width: MediaQuery.of(context).size.width / 2.5,
                           child: Padding(
                             padding: const EdgeInsets.only(
                               bottom: 6.0,
@@ -221,10 +222,7 @@ class _SearchCheckListDocState extends State<SearchCheckListDoc> {
                                 onPressed: () async {
                                   setState(() {});
                                 },
-                                minWidth: MediaQuery
-                                    .of(context)
-                                    .size
-                                    .width,
+                                minWidth: MediaQuery.of(context).size.width,
                                 child: Text(
                                   "Search",
                                   textAlign: TextAlign.center,
@@ -251,9 +249,9 @@ class _SearchCheckListDocState extends State<SearchCheckListDoc> {
 
                   return ListView.separated(
                     itemCount: ((TransId.text == "") &&
-                        ((snapshot.data?.length ?? 0) > 31)
-                        ? myList.length + 1
-                        : snapshot.data?.length) ??
+                                ((snapshot.data?.length ?? 0) > 31)
+                            ? myList.length + 1
+                            : snapshot.data?.length) ??
                         0,
                     shrinkWrap: true,
                     physics: ScrollPhysics(),
@@ -267,251 +265,255 @@ class _SearchCheckListDocState extends State<SearchCheckListDoc> {
                           width: 0.0,
                         );
                       }
-                      return InkWell(
-                        onDoubleTap: (){
-                          navigateToCheckListDocument(TransId: snapshot.data![index].TransId??'');
-                        },
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            shape: BoxShape.rectangle,
-                            borderRadius: BorderRadius.circular(16.0),
-                            boxShadow: const [
-                              BoxShadow(
-                                color: Colors.black26,
-                                blurRadius: 4.0,
-                                offset: Offset(2.0, 2.0),
-                              ),
-                            ],
-                          ),
-                          margin: const EdgeInsets.all(15),
-                          width: MediaQuery
-                              .of(context)
-                              .size
-                              .width,
-                          child: Padding(
-                            padding: const EdgeInsets.all(8),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                if (snapshot.data![index].PermanentTransId ==
-                                    '' ||
-                                    snapshot.data![index].PermanentTransId ==
-                                        null) ...[
-                                  getPoppinsText(
-                                      text:
-                                      "*The document isn't generated on the web.",
-                                      fontSize: 13,
-                                      textAlign: TextAlign.start,
-                                      color: Colors.red),
-                                  Divider(
-                                    thickness: 1.5,
-                                    color: Colors.black,
-                                  ),
-                                ],
-                                Row(
-                                  crossAxisAlignment:
-                                  CrossAxisAlignment.start,
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    Expanded(
-                                        child: Column(
-                                          crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                          children: [
-                                            // Text.rich(
-                                            //   TextSpan(
-                                            //     children: [
-                                            //       getPoppinsTextSpanHeading(
-                                            //           text: 'ID'),
-                                            //       getPoppinsTextSpanDetails(
-                                            //           text: snapshot.data![index]
-                                            //                           .ID ==
-                                            //                       null ||
-                                            //                   snapshot
-                                            //                           .data![
-                                            //                               index]
-                                            //                           .ID ==
-                                            //                       ""
-                                            //               ? ""
-                                            //               : snapshot
-                                            //                   .data![index].ID
-                                            //                   .toString()),
-                                            //     ],
-                                            //   ),
-                                            // ),
-                                            Text.rich(
-                                              TextSpan(
-                                                children: [
-                                                  getPoppinsTextSpanHeading(
-                                                      text: 'TransId'),
-                                                  getPoppinsTextSpanDetails(
-                                                      text: snapshot
-                                                          .data![index]
-                                                          .TransId ==
-                                                          null ||
-                                                          snapshot
-                                                              .data![
-                                                          index]
-                                                              .TransId ==
-                                                              ""
-                                                          ? ""
-                                                          : snapshot
-                                                          .data![index]
-                                                          .TransId
-                                                          .toString()),
-                                                ],
-                                              ),
-                                            ),
-                                            Text.rich(
-                                              TextSpan(
-                                                children: [
-                                                  getPoppinsTextSpanHeading(
-                                                      text: 'Web TransId'),
-                                                  getPoppinsTextSpanDetails(
-                                                      text: snapshot
-                                                          .data![index]
-                                                          .PermanentTransId ==
-                                                          null
-                                                          ? ""
-                                                          : snapshot
-                                                          .data![index]
-                                                          .PermanentTransId
-                                                          .toString()),
-                                                ],
-                                              ),
-                                            ),
-                                            Text.rich(
-                                              TextSpan(
-                                                children: [
-                                                  getPoppinsTextSpanHeading(
-                                                      text: 'ERP DocNum'),
-                                                  getPoppinsTextSpanDetails(
-                                                      text: snapshot
-                                                          .data![index]
-                                                          .DocNum?.toString() ??
-                                                          ''),
-                                                ],
-                                              ),
-                                            ),
-
-                                            Text.rich(
-                                              TextSpan(
-                                                children: [
-                                                  getPoppinsTextSpanHeading(
-                                                      text: 'TransId'),
-                                                  getPoppinsTextSpanDetails(
-                                                      text: snapshot
-                                                          .data![index]
-                                                          .TransId??''),
-                                                ],
-                                              ),
-                                            ),
-                                            Text.rich(
-                                              TextSpan(
-                                                children: [
-                                                  getPoppinsTextSpanHeading(
-                                                      text: 'CheckListName'),
-                                                  getPoppinsTextSpanDetails(
-                                                      text: snapshot
-                                                          .data![index].CheckListName),
-                                                ],
-                                              ),
-                                            ),
-                                          ],
-                                        )),
-                                    Expanded(
-                                        child: Column(
-                                          crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                          children: [
-                                            Text.rich(
-                                              TextSpan(
-                                                children: [
-                                                  getPoppinsTextSpanHeading(
-                                                      text: 'Posting Date'),
-                                                  getPoppinsTextSpanDetails(
-                                                      text:  getFormattedDate(
-                                                          snapshot
-                                                              .data![index]
-                                                              .PostingDate)),
-                                                ],
-                                              ),
-                                            ),
-                                            Text.rich(
-                                              TextSpan(
-                                                children: [
-                                                  getPoppinsTextSpanHeading(
-                                                      text: 'Valid Until'),
-                                                  getPoppinsTextSpanDetails(
-                                                      text:  getFormattedDate(
-                                                          snapshot
-                                                              .data![index]
-                                                              .ValidUntill)),
-                                                ],
-                                              ),
-                                            ),
-
-                                            // TotalPrice(
-                                            //   database: DBName.DB1,
-                                            //   l: [
-                                            //     snapshot.data![index].TransId
-                                            //   ],
-                                            //   str: "TransId = ?",
-                                            // ),
-                                            Text.rich(
-                                              TextSpan(
-                                                children: [
-                                                  getPoppinsTextSpanHeading(
-                                                      text: 'Document Status'),
-                                                  getPoppinsTextSpanDetails(
-                                                      text: snapshot
-                                                          .data![index]
-                                                          .DocStatus ==
-                                                          null ||
-                                                          snapshot
-                                                              .data![
-                                                          index]
-                                                              .DocStatus ==
-                                                              ""
-                                                          ? ""
-                                                          : snapshot
-                                                          .data![index]
-                                                          .DocStatus
-                                                          .toString()),
-                                                ],
-                                              ),
-                                            ),
-                                            Text.rich(
-                                              TextSpan(
-                                                children: [
-                                                  getPoppinsTextSpanHeading(
-                                                      text: 'Approval Status'),
-                                                  getPoppinsTextSpanDetails(
-                                                      text: snapshot
-                                                          .data![index]
-                                                          .ApprovalStatus ==
-                                                          null ||
-                                                          snapshot
-                                                              .data![
-                                                          index]
-                                                              .ApprovalStatus ==
-                                                              ""
-                                                          ? ""
-                                                          : snapshot
-                                                          .data![index]
-                                                          .ApprovalStatus
-                                                          .toString()),
-                                                ],
-                                              ),
-                                            ),
-                                          ],
-                                        )),
-                                  ],
+                      return Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          shape: BoxShape.rectangle,
+                          borderRadius: BorderRadius.circular(16.0),
+                          boxShadow: const [
+                            BoxShadow(
+                              color: Colors.black26,
+                              blurRadius: 4.0,
+                              offset: Offset(2.0, 2.0),
+                            ),
+                          ],
+                        ),
+                        margin: const EdgeInsets.all(15),
+                        width: MediaQuery.of(context).size.width,
+                        child: Padding(
+                          padding: const EdgeInsets.all(8),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              if (snapshot.data![index].PermanentTransId ==
+                                      '' ||
+                                  snapshot.data![index].PermanentTransId ==
+                                      null) ...[
+                                getPoppinsText(
+                                    text:
+                                        "*The document isn't generated on the web.",
+                                    fontSize: 13,
+                                    textAlign: TextAlign.start,
+                                    color: Colors.red),
+                                Divider(
+                                  thickness: 1.5,
+                                  color: Colors.black,
                                 ),
                               ],
-                            ),
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Expanded(
+                                      child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      // Text.rich(
+                                      //   TextSpan(
+                                      //     children: [
+                                      //       getPoppinsTextSpanHeading(
+                                      //           text: 'ID'),
+                                      //       getPoppinsTextSpanDetails(
+                                      //           text: snapshot.data![index]
+                                      //                           .ID ==
+                                      //                       null ||
+                                      //                   snapshot
+                                      //                           .data![
+                                      //                               index]
+                                      //                           .ID ==
+                                      //                       ""
+                                      //               ? ""
+                                      //               : snapshot
+                                      //                   .data![index].ID
+                                      //                   .toString()),
+                                      //     ],
+                                      //   ),
+                                      // ),
+                                      Text.rich(
+                                        TextSpan(
+                                          children: [
+                                            getPoppinsTextSpanHeading(
+                                                text: 'TransId'),
+                                            getPoppinsTextSpanDetails(
+                                                text: snapshot.data![index]
+                                                                .TransId ==
+                                                            null ||
+                                                        snapshot.data![index]
+                                                                .TransId ==
+                                                            ""
+                                                    ? ""
+                                                    : snapshot
+                                                        .data![index].TransId
+                                                        .toString()),
+                                          ],
+                                        ),
+                                      ),
+                                      Text.rich(
+                                        TextSpan(
+                                          children: [
+                                            getPoppinsTextSpanHeading(
+                                                text: 'Web TransId'),
+                                            getPoppinsTextSpanDetails(
+                                                text: snapshot.data![index]
+                                                            .PermanentTransId ==
+                                                        null
+                                                    ? ""
+                                                    : snapshot.data![index]
+                                                        .PermanentTransId
+                                                        .toString()),
+                                          ],
+                                        ),
+                                      ),
+                                      Text.rich(
+                                        TextSpan(
+                                          children: [
+                                            getPoppinsTextSpanHeading(
+                                                text: 'ERP DocNum'),
+                                            getPoppinsTextSpanDetails(
+                                                text: snapshot
+                                                        .data![index].DocNum
+                                                        ?.toString() ??
+                                                    ''),
+                                          ],
+                                        ),
+                                      ),
+
+                                      Text.rich(
+                                        TextSpan(
+                                          children: [
+                                            getPoppinsTextSpanHeading(
+                                                text: 'TransId'),
+                                            getPoppinsTextSpanDetails(
+                                                text: snapshot.data![index]
+                                                        .TransId ??
+                                                    ''),
+                                          ],
+                                        ),
+                                      ),
+                                      Text.rich(
+                                        TextSpan(
+                                          children: [
+                                            getPoppinsTextSpanHeading(
+                                                text: 'CheckListName'),
+                                            getPoppinsTextSpanDetails(
+                                                text: snapshot.data![index]
+                                                    .CheckListName),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  )),
+                                  Expanded(
+                                      child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text.rich(
+                                        TextSpan(
+                                          children: [
+                                            getPoppinsTextSpanHeading(
+                                                text: 'Posting Date'),
+                                            getPoppinsTextSpanDetails(
+                                                text: getFormattedDate(
+                                                    snapshot.data![index]
+                                                        .PostingDate)),
+                                          ],
+                                        ),
+                                      ),
+                                      Text.rich(
+                                        TextSpan(
+                                          children: [
+                                            getPoppinsTextSpanHeading(
+                                                text: 'Valid Until'),
+                                            getPoppinsTextSpanDetails(
+                                                text: getFormattedDate(
+                                                    snapshot.data![index]
+                                                        .ValidUntill)),
+                                          ],
+                                        ),
+                                      ),
+
+                                      // TotalPrice(
+                                      //   database: DBName.DB1,
+                                      //   l: [
+                                      //     snapshot.data![index].TransId
+                                      //   ],
+                                      //   str: "TransId = ?",
+                                      // ),
+                                      Text.rich(
+                                        TextSpan(
+                                          children: [
+                                            getPoppinsTextSpanHeading(
+                                                text: 'Document Status'),
+                                            getPoppinsTextSpanDetails(
+                                                text: snapshot.data![index]
+                                                                .DocStatus ==
+                                                            null ||
+                                                        snapshot.data![index]
+                                                                .DocStatus ==
+                                                            ""
+                                                    ? ""
+                                                    : snapshot.data![index]
+                                                        .DocStatus
+                                                        .toString()),
+                                          ],
+                                        ),
+                                      ),
+                                      Text.rich(
+                                        TextSpan(
+                                          children: [
+                                            getPoppinsTextSpanHeading(
+                                                text: 'Approval Status'),
+                                            getPoppinsTextSpanDetails(
+                                                text: snapshot.data![index]
+                                                                .ApprovalStatus ==
+                                                            null ||
+                                                        snapshot.data![index]
+                                                                .ApprovalStatus ==
+                                                            ""
+                                                    ? ""
+                                                    : snapshot.data![index]
+                                                        .ApprovalStatus
+                                                        .toString()),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  )),
+                                ],
+                              ),
+                              getDivider(),
+                              Row(
+                                children: [
+                                  Expanded(
+                                      child: InkWell(
+                                    onTap: () {
+                                      navigateToCheckListDocument(
+                                          TransId: snapshot.data![index].TransId ?? '',isView: true);
+                                    },
+                                    child: getPoppinsText(
+                                        text: 'View',
+                                        color: barColor,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 16),
+                                  )),
+                                  Expanded(
+                                      child: InkWell(
+                                    onTap: () {
+                                      navigateToCheckListDocument(
+                                          TransId: snapshot.data![index].TransId ?? '',isView: false);
+                                    },
+                                    child: getPoppinsText(
+                                        text: 'Edit',
+                                        color: Colors.red,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 16),
+                                  )),
+                                ],
+                              ),
+                            ],
                           ),
                         ),
                       );

@@ -3,10 +3,9 @@ import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:maintenance/ApprovalStatus/ApprovalListUIComponent.dart';
-import 'package:maintenance/CheckListDocument/create/Attachments.dart';
-import 'package:maintenance/CheckListDocument/create/CheckListDetails/CheckListDetails.dart';
-import 'package:maintenance/CheckListDocument/create/GeneralData.dart';
-import 'package:maintenance/CheckListDocument/create/SearchCheckListDoc.dart';
+import 'package:maintenance/CheckListDocument/edit/Attachments.dart';
+import 'package:maintenance/CheckListDocument/edit/CheckListDetails/CheckListDetails.dart';
+import 'package:maintenance/CheckListDocument/edit/GeneralData.dart';
 import 'package:maintenance/Component/BackPressedWarning.dart';
 import 'package:maintenance/Component/ClearTextFieldData.dart';
 import 'package:maintenance/Component/CustomColor.dart';
@@ -28,24 +27,24 @@ import 'package:maintenance/Sync/SyncModels/MNOCLD.dart';
 import 'package:maintenance/main.dart';
 import 'package:sqflite/sqlite_api.dart';
 
-class CheckListDocument extends StatefulWidget {
+class EditCheckListDocument extends StatefulWidget {
   static var address;
   static bool saveButtonPressed = false;
   int index = 0;
   static RxInt numOfTabs = RxInt(3);
   static ApprovalModel? approvalModel;
 
-  CheckListDocument(int index, {this.onBackPressed}) {
+  EditCheckListDocument(int index, {this.onBackPressed}) {
     this.index = index;
   }
 
   Function? onBackPressed;
 
   @override
-  _CheckListDocumentState createState() => _CheckListDocumentState();
+  _EditCheckListDocumentState createState() => _EditCheckListDocumentState();
 }
 
-class _CheckListDocumentState extends State<CheckListDocument> {
+class _EditCheckListDocumentState extends State<EditCheckListDocument> {
   List lists = [];
   int numOfAddress = 0;
   var future_address;
@@ -78,7 +77,7 @@ class _CheckListDocumentState extends State<CheckListDocument> {
       },
       canPop: false,
       child: Obx(() => DefaultTabController(
-            length: CheckListDocument.numOfTabs.value,
+            length: EditCheckListDocument.numOfTabs.value,
             initialIndex: widget.index,
             child: Scaffold(
               key: key,
@@ -121,7 +120,7 @@ class _CheckListDocumentState extends State<CheckListDocument> {
                                 child: Text(
                               "Attachments",
                             )),
-                            if (CheckListDocument.numOfTabs.value == 4)
+                            if (EditCheckListDocument.numOfTabs.value == 4)
                               Tab(
                                   child: Text(
                                 "Tyre Maintenance",
@@ -132,102 +131,8 @@ class _CheckListDocumentState extends State<CheckListDocument> {
                     ),
                     preferredSize: Size.fromHeight(50.0),
                   ),
-                  actions: [
-                    IconButton(
-                      icon: Icon(
-                        Icons.search,
-                        color: Colors.white,
-                      ),
-                      onPressed: () {
-                        Get.to(() => SearchCheckListDoc());
-                        //showSearch(context: context, delegate: SearchCheckListDocument());
-                        // Navigator.push(
-                        //     context,
-                        //     MaterialPageRoute(
-                        //         builder: ((context) => AdvanceSearch())));
-                      },
-                    ),
-                    IconButton(
-                      tooltip: "Add New Document",
-                      icon: Icon(
-                        Icons.add,
-                        color: Colors.black,
-                      ),
-                      onPressed: () async {
-                        if (GeneralData.equipmentCode != '' ||
-                            CheckListDetails.items.isNotEmpty) {
-                          showBackPressedWarning(
-                              text:
-                                  'Your data is not saved. Are you sure you want to create new form?',
-                              onBackPressed: () {
-                                goToNewCheckListDocument();
-                              });
-                        } else {
-                          goToNewCheckListDocument();
-                        }
-                      },
-                    ),
-                    // IconButton(
-                    //   tooltip: "Cancel Document",
-                    //   icon: Icon(Icons.delete_forever,color: Colors.red,),
-                    //   onPressed: (){
-                    //     if(isSelectedAndCancelled() || isCheckListDocumentDocClosed())
-                    //       {
-                    //       getErrorSnackBar( "This Document is already cancelled / closed");
-                    //     }
-                    //     else if(isSelectedButNotCancelled())
-                    //     {
-                    //         AnimatedDialogBox.showScaleAlertBox(
-                    //             title:Center(child: Text("Cancel")) , // IF YOU WANT TO ADD
-                    //             context: context,
-                    //             firstButton: MaterialButton(
-                    //               // OPTIONAL BUTTON
-                    //               shape: RoundedRectangleBorder(
-                    //                 borderRadius: BorderRadius.circular(40),
-                    //               ),
-                    //               color: barColor,
-                    //               child: Text('No',
-                    //                 style: TextStyle(
-                    //                     color: Colors.white
-                    //                 ),),
-                    //               onPressed: () {
-                    //                 Navigator.of(context).pop();
-                    //               },
-                    //             ),
-                    //             secondButton: MaterialButton(
-                    //               // OPTIONAL BUTTON
-                    //               shape: RoundedRectangleBorder(
-                    //                 borderRadius: BorderRadius.circular(40),
-                    //               ),
-                    //               color: Colors.red,
-                    //               child: Text('Yes',
-                    //                 style: TextStyle(
-                    //                     color: Colors.white
-                    //                 ),),
-                    //               onPressed: () async {
-                    //                 GeneralData.docStatus="Cancelled";
-                    //                 final db = await initializeDB(context);
-                    //                 Map<String,dynamic> values={
-                    //                   "docStatus":"Cancelled",
-                    //                   "has_updated":1,
-                    //                 };
-                    //                 await db.update(MNOCLD, values, where: 'MTransId = ?', whereArgs: [GeneralData.MTransID]);
-                    //                 Navigator.of(context).pop();
-                    //                 Navigator.pop(context);
-                    //                 Navigator.push(context, MaterialPageRoute(builder: (context)=>CheckListDocument(0)));
-                    //               },
-                    //             ),
-                    //             icon: Icon(Icons.info_outline,color: Colors.red,), // IF YOU WANT TO ADD ICON
-                    //             yourWidget: Container(
-                    //               child: Text('Are you sure you want to cancel this document?'),
-                    //             ));
-                    //
-                    //       }
-                    //   },
-                    // ),
-                  ],
                   title: getHeadingText(
-                      text: "Check List Documents",
+                      text: "Edit Check List Document",
                       color: headColor,
                       fontSize: 20)),
               body: TabBarView(
@@ -235,7 +140,7 @@ class _CheckListDocumentState extends State<CheckListDocument> {
                   GeneralData(),
                   CheckListDetails(),
                   Attachments(),
-                  if (CheckListDocument.numOfTabs.value == 4) Container()
+                  if (EditCheckListDocument.numOfTabs.value == 4) Container()
                 ],
               ),
               floatingActionButton: FloatingActionButton(
@@ -271,7 +176,7 @@ class _CheckListDocumentState extends State<CheckListDocument> {
 
   save() async {
     //GeneralData.isSelected
-    CheckListDocument.saveButtonPressed = false;
+    EditCheckListDocument.saveButtonPressed = false;
     if (DataSync.isSyncing()) {
       getErrorSnackBar(DataSync.syncingErrorMsg);
     } else if (isSelectedAndCancelled()) {
@@ -288,8 +193,8 @@ class _CheckListDocumentState extends State<CheckListDocument> {
           const SnackBar(content: Text('Invalid General')),
         );
       } else {
-        if (!CheckListDocument.saveButtonPressed) {
-          CheckListDocument.saveButtonPressed = true;
+        if (!EditCheckListDocument.saveButtonPressed) {
+          EditCheckListDocument.saveButtonPressed = true;
           showLoader(context);
           Position pos = await getCurrentLocation();
           print(pos.latitude.toString());
@@ -304,8 +209,8 @@ class _CheckListDocumentState extends State<CheckListDocument> {
               //GENERAL DATA
               MNOCLD generalData = GeneralData.getGeneralData();
               if (!GeneralData.isSelected) {
-                if (CheckListDocument.approvalModel?.Add == true &&
-                    CheckListDocument.approvalModel?.Active == true) {
+                if (EditCheckListDocument.approvalModel?.Add == true &&
+                    EditCheckListDocument.approvalModel?.Active == true) {
                   List approvalList = await GetApprovalConfiguration_Multiple(
                       db: database, docName: 'Check List Document');
                   for (int i = 0; i < approvalList.length; i++) {
