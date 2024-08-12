@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:maintenance/CheckListDocument/CheckListDetails/AddCheckList.dart';
+import 'package:maintenance/CheckListDocument/create/CheckListDetails/AddCheckList.dart';
 import 'package:maintenance/Component/Common.dart';
 import 'package:maintenance/Component/CustomColor.dart';
 import 'package:maintenance/Component/CustomFont.dart';

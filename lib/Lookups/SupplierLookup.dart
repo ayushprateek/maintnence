@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:maintenance/CheckListDocument/CheckListDetails/CheckListDetails.dart';
-import 'package:maintenance/CheckListDocument/CheckListDetails/EditCheckList.dart';
+import 'package:maintenance/CheckListDocument/create/CheckListDetails/CheckListDetails.dart';
+import 'package:maintenance/CheckListDocument/create/CheckListDetails/EditCheckList.dart';
 import 'package:maintenance/Component/CustomColor.dart';
 import 'package:maintenance/Component/CustomFont.dart';
 import 'package:maintenance/Component/GetTextField.dart';

@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:maintenance/CheckListDocument/GeneralData.dart';
+import 'package:maintenance/CheckListDocument/create/GeneralData.dart';
 import 'package:maintenance/Component/AnimatedDialogBox.dart';
 import 'package:maintenance/Component/AppConfig.dart';
 import 'package:maintenance/Component/CustomColor.dart';

@@ -4,10 +4,10 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
-import 'package:maintenance/CheckListDocument/CheckListDetails/CheckListDetails.dart'
+import 'package:maintenance/CheckListDocument/create/CheckListDetails/CheckListDetails.dart'
     as checkListDetails;
-import 'package:maintenance/CheckListDocument/CheckListDocument.dart';
-import 'package:maintenance/CheckListDocument/GeneralData.dart'
+import 'package:maintenance/CheckListDocument/create/CheckListDocument.dart';
+import 'package:maintenance/CheckListDocument/create/GeneralData.dart'
     as checkListGenData;
 import 'package:maintenance/Component/AppConfig.dart';
 import 'package:maintenance/Component/CheckInternet.dart';

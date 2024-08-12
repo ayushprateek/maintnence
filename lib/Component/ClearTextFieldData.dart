@@ -1,12 +1,12 @@
 import 'package:get/get.dart';
-import 'package:maintenance/CheckListDocument/Attachments.dart'
+import 'package:maintenance/CheckListDocument/create/Attachments.dart'
     as checkListAttachments;
-import 'package:maintenance/CheckListDocument/CheckListDetails/CheckListDetails.dart'
+import 'package:maintenance/CheckListDocument/create/CheckListDetails/CheckListDetails.dart'
     as checkListDetails;
-import 'package:maintenance/CheckListDocument/CheckListDetails/EditCheckList.dart'
+import 'package:maintenance/CheckListDocument/create/CheckListDetails/EditCheckList.dart'
     as editCheckList;
-import 'package:maintenance/CheckListDocument/CheckListDocument.dart';
-import 'package:maintenance/CheckListDocument/GeneralData.dart' as checkListDoc;
+import 'package:maintenance/CheckListDocument/create/CheckListDocument.dart';
+import 'package:maintenance/CheckListDocument/create/GeneralData.dart' as checkListDoc;
 import 'package:maintenance/Component/GetFormattedDate.dart';
 import 'package:maintenance/Component/GetLastDocNum.dart';
 import 'package:maintenance/Component/IsAvailableTransId.dart';

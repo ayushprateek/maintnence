@@ -5,7 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:maintenance/3DView.dart';
-import 'package:maintenance/CheckListDocument/CheckListDocument.dart';
+import 'package:maintenance/CheckListDocument/create/CheckListDocument.dart';
 import 'package:maintenance/Component/AppConfig.dart';
 import 'package:maintenance/Component/CheckInternet.dart';
 import 'package:maintenance/Component/ClearTextFieldData.dart';
@@ -30,7 +30,7 @@ import 'package:maintenance/zzzz.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 import '../main.dart';
-import 'package:maintenance/CheckListDocument/GeneralData.dart' as checkListGenData;
+import 'package:maintenance/CheckListDocument/create/GeneralData.dart' as checkListGenData;
 
 class CustomDrawer extends StatefulWidget {
   static bool hasEnabledLocation = false;
