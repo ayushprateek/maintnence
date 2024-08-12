@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:maintenance/Component/ClearTextFieldData.dart';
+import 'package:maintenance/Component/Common.dart';
 import 'package:maintenance/Component/CustomColor.dart';
 import 'package:maintenance/Component/CustomFont.dart';
 import 'package:maintenance/Component/GetFormattedDate.dart';
@@ -478,6 +480,41 @@ class _SearchGoodsIssueState extends State<SearchGoodsIssue> {
                                           ),
                                         ),
                                       ],
+                                    )),
+                                  ],
+                                ),
+                                getDivider(),
+                                Row(
+                                  children: [
+                                    Expanded(
+                                        child: InkWell(
+                                      onTap: () {
+                                        navigateToJobCardDocument(
+                                            TransId:
+                                                snapshot.data![index].TransId ??
+                                                    '',
+                                            isView: true);
+                                      },
+                                      child: getPoppinsText(
+                                          text: 'View',
+                                          color: barColor,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 16),
+                                    )),
+                                    Expanded(
+                                        child: InkWell(
+                                      onTap: () {
+                                        navigateToJobCardDocument(
+                                            TransId:
+                                                snapshot.data![index].TransId ??
+                                                    '',
+                                            isView: false);
+                                      },
+                                      child: getPoppinsText(
+                                          text: 'Edit',
+                                          color: Colors.red,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 16),
                                     )),
                                   ],
                                 ),

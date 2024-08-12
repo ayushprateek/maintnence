@@ -13,34 +13,30 @@ import 'package:maintenance/Component/ShowLoader.dart';
 import 'package:maintenance/Component/SnackbarComponent.dart';
 import 'package:maintenance/Dashboard.dart';
 import 'package:maintenance/DatabaseInitialization.dart';
-import 'package:maintenance/JobCard/view/Attachment.dart';
-import 'package:maintenance/JobCard/view/GeneralData.dart';
-import 'package:maintenance/JobCard/view/ItemDetails/ItemDetails.dart';
-import 'package:maintenance/JobCard/view/ServiceDetails/ServiceDetails.dart';
-import 'package:maintenance/JobCard/view/TyreMaintenance.dart';
+import 'package:maintenance/GoodsIssue/view/GeneralData.dart';
+import 'package:maintenance/GoodsIssue/view/ItemDetails/CalculateGoodIssue.dart';
+import 'package:maintenance/GoodsIssue/view/ItemDetails/ItemDetails.dart';
 import 'package:maintenance/Sync/DataSync.dart';
-import 'package:maintenance/Sync/SyncModels/MNJCD1.dart';
-import 'package:maintenance/Sync/SyncModels/MNJCD2.dart';
-import 'package:maintenance/Sync/SyncModels/MNJCD3.dart';
-import 'package:maintenance/Sync/SyncModels/MNOJCD.dart';
+import 'package:maintenance/Sync/SyncModels/IMGDI1.dart';
+import 'package:maintenance/Sync/SyncModels/IMOGDI.dart';
 import 'package:maintenance/main.dart';
 import 'package:sqflite/sqlite_api.dart';
 
-class ViewJobCard extends StatefulWidget {
+class ViewGoodsIssue extends StatefulWidget {
   static bool saveButtonPressed = false;
   int index = 0;
 
-  ViewJobCard(int index, {this.onBackPressed}) {
+  ViewGoodsIssue(int index, {this.onBackPressed}) {
     this.index = index;
   }
 
   Function? onBackPressed;
 
   @override
-  _ViewJobCardState createState() => _ViewJobCardState();
+  _JobCardState createState() => _JobCardState();
 }
 
-class _ViewJobCardState extends State<ViewJobCard> {
+class _JobCardState extends State<ViewGoodsIssue> {
   List lists = [];
   int numOfAddress = 0;
   var future_address;
@@ -53,7 +49,7 @@ class _ViewJobCardState extends State<ViewJobCard> {
   final key = GlobalKey<ScaffoldState>();
 
   _onBackButtonPressed() {
-    if (GeneralData.equipmentCode != '' || ItemDetails.items.isNotEmpty) {
+    if (GeneralData.deptName != '' || ItemDetails.items.isNotEmpty) {
       showBackPressedWarning(onBackPressed: widget.onBackPressed);
     } else if (widget.onBackPressed != null) {
       widget.onBackPressed!();
@@ -73,7 +69,7 @@ class _ViewJobCardState extends State<ViewJobCard> {
       },
       canPop: false,
       child: DefaultTabController(
-        length: 5,
+        length: 2,
         initialIndex: widget.index,
         child: Scaffold(
           key: key,
@@ -99,30 +95,23 @@ class _ViewJobCardState extends State<ViewJobCard> {
                               topRight: Radius.circular(10)),
                           color: Colors.white),
                       labelColor: barColor,
-                      isScrollable: true,
-                      physics: const ScrollPhysics(),
+                      isScrollable: false,
                       unselectedLabelColor: Colors.white,
                       labelStyle:
                           GoogleFonts.poppins(fontWeight: FontWeight.w500),
                       tabs: [
                         Tab(
-                          child: Text("General Data"),
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text("General Data"),
+                          ),
                         ),
                         Tab(
-                            child: Text(
-                          "Item Details",
-                        )),
-                        Tab(
-                            child: Text(
-                          "Service Details",
-                        )),
-                        Tab(
-                            child: Text(
-                          "Attachments",
-                        )),
-                        Tab(
-                            child: Text(
-                          "Tyre Maintenance",
+                            child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            "Item Details",
+                          ),
                         )),
                       ],
                     ),
@@ -131,14 +120,11 @@ class _ViewJobCardState extends State<ViewJobCard> {
                 preferredSize: Size.fromHeight(50.0),
               ),
               title: getHeadingText(
-                  text: "View Job Card", color: headColor, fontSize: 20)),
+                  text: "View Goods Issue", color: headColor, fontSize: 20)),
           body: TabBarView(
             children: [
               GeneralData(),
               ItemDetails(),
-              ServiceDetails(),
-              Attachments(),
-              TyreMaintenance(),
             ],
           ),
         ),
@@ -165,7 +151,7 @@ class _ViewJobCardState extends State<ViewJobCard> {
 
   save() async {
     //GeneralData.isSelected
-    ViewJobCard.saveButtonPressed = false;
+    ViewGoodsIssue.saveButtonPressed = false;
     if (DataSync.isSyncing()) {
       getErrorSnackBar(DataSync.syncingErrorMsg);
     } else if (isSelectedAndCancelled()) {
@@ -182,8 +168,8 @@ class _ViewJobCardState extends State<ViewJobCard> {
           const SnackBar(content: Text('Invalid General')),
         );
       } else {
-        if (!ViewJobCard.saveButtonPressed) {
-          ViewJobCard.saveButtonPressed = true;
+        if (!ViewGoodsIssue.saveButtonPressed) {
+          ViewGoodsIssue.saveButtonPressed = true;
           showLoader(context);
           Position pos = await getCurrentLocation();
           print(pos.latitude.toString());
@@ -196,11 +182,11 @@ class _ViewJobCardState extends State<ViewJobCard> {
           try {
             await db.transaction((database) async {
               //GENERAL DATA
-              MNOJCD generalData = GeneralData.getGeneralData();
+              IMOGDI generalData = GeneralData.getGeneralData();
               //todo:
               // if (!GeneralData.isSelected) {
-              //   if (JobCard.approvalModel?.Add == true &&
-              //       JobCard.approvalModel?.Active == true) {
+              //   if (GoodsIssue.approvalModel?.Add == true &&
+              //       GoodsIssue.approvalModel?.Active == true) {
               //     List approvalList = await GetApprovalConfiguration_Multiple(
               //         db: database, docName: 'Check List Document');
               //     for (int i = 0; i < approvalList.length; i++) {
@@ -237,6 +223,7 @@ class _ViewJobCardState extends State<ViewJobCard> {
               //   }
               // }
 
+              calculateGoodsIssue();
               print(generalData.toJson());
               generalData
                   .toJson()
@@ -251,7 +238,7 @@ class _ViewJobCardState extends State<ViewJobCard> {
                 Map<String, Object?> map = generalData.toJson();
                 map.removeWhere((key, value) => value == null || value == '');
                 await database
-                    .update('MNOJCD', map, where: str, whereArgs: [data]);
+                    .update('IMOGDI', map, where: str, whereArgs: [data]);
                 getSuccessSnackBar("Sales Quotation Updated Successfully");
               } else {
                 //CreateDate
@@ -261,14 +248,17 @@ class _ViewJobCardState extends State<ViewJobCard> {
                 generalData.CreatedBy = userModel.UserCode;
                 generalData.BranchId = userModel.BranchId.toString();
                 generalData.hasCreated = true;
-                await database.insert('MNOJCD', generalData.toJson());
+                Position pos = await getCurrentLocation();
+                generalData.Latitude = pos.latitude.toString();
+                generalData.Longitude = pos.longitude.toString();
+                await database.insert('IMOGDI', generalData.toJson());
               }
 
               //ITEM DETAILS
               print("Item Details ");
               if (isSelectedButNotCancelled()) {
                 for (int i = 0; i < ItemDetails.items.length; i++) {
-                  MNJCD1 qut1model = ItemDetails.items[i];
+                  IMGDI1 qut1model = ItemDetails.items[i];
                   qut1model.RowId = i;
 
                   if (!qut1model.insertedIntoDatabase) {
@@ -277,66 +267,21 @@ class _ViewJobCardState extends State<ViewJobCard> {
                     qut1model.CreateDate = DateTime.now();
                     qut1model.UpdateDate = DateTime.now();
 
-                    await database.insert('MNJCD1', qut1model.toJson());
+                    await database.insert('IMGDI1', qut1model.toJson());
                   } else {
                     qut1model.hasUpdated = true;
                     qut1model.UpdateDate = DateTime.now();
                     Map<String, Object?> map = qut1model.toJson();
                     map.removeWhere(
                         (key, value) => value == null || value == '');
-                    await database.update('MNJCD1', map,
-                        where: 'TransId = ? AND RowId = ?',
-                        whereArgs: [qut1model.TransId, qut1model.RowId]);
-                  }
-                }
-                for (int i = 0; i < ServiceDetails.items.length; i++) {
-                  MNJCD2 qut1model = ServiceDetails.items[i];
-                  qut1model.RowId = i;
-
-                  if (!qut1model.insertedIntoDatabase) {
-                    qut1model.hasCreated = true;
-
-                    qut1model.CreateDate = DateTime.now();
-                    qut1model.UpdateDate = DateTime.now();
-
-                    await database.insert('MNJCD2', qut1model.toJson());
-                  } else {
-                    qut1model.hasUpdated = true;
-                    qut1model.UpdateDate = DateTime.now();
-                    Map<String, Object?> map = qut1model.toJson();
-                    map.removeWhere(
-                        (key, value) => value == null || value == '');
-                    await database.update('MNJCD2', map,
-                        where: 'TransId = ? AND RowId = ?',
-                        whereArgs: [qut1model.TransId, qut1model.RowId]);
-                  }
-                }
-
-                for (int i = 0; i < Attachments.attachments.length; i++) {
-                  MNJCD3 qut1model = Attachments.attachments[i];
-                  qut1model.RowId = i;
-
-                  if (!qut1model.insertedIntoDatabase) {
-                    qut1model.hasCreated = true;
-
-                    qut1model.CreateDate = DateTime.now();
-                    qut1model.UpdateDate = DateTime.now();
-
-                    await database.insert('MNJCD3', qut1model.toJson());
-                  } else {
-                    qut1model.hasUpdated = true;
-                    qut1model.UpdateDate = DateTime.now();
-                    Map<String, Object?> map = qut1model.toJson();
-                    map.removeWhere(
-                        (key, value) => value == null || value == '');
-                    await database.update('MNJCD3', map,
+                    await database.update('IMGDI1', map,
                         where: 'TransId = ? AND RowId = ?',
                         whereArgs: [qut1model.TransId, qut1model.RowId]);
                   }
                 }
               } else {
                 for (int i = 0; i < ItemDetails.items.length; i++) {
-                  MNJCD1 qut1model = ItemDetails.items[i];
+                  IMGDI1 qut1model = ItemDetails.items[i];
                   qut1model.ID = i;
                   qut1model.RowId = i;
                   qut1model.hasCreated = true;
@@ -346,40 +291,12 @@ class _ViewJobCardState extends State<ViewJobCard> {
                     qut1model.CreateDate = DateTime.now();
                     qut1model.UpdateDate = DateTime.now();
 
-                    await database.insert('MNJCD1', qut1model.toJson());
-                  }
-                }
-                for (int i = 0; i < ServiceDetails.items.length; i++) {
-                  MNJCD2 qut1model = ServiceDetails.items[i];
-                  qut1model.ID = i;
-                  qut1model.RowId = i;
-                  qut1model.hasCreated = true;
-                  qut1model.CreateDate = DateTime.now();
-
-                  if (!qut1model.insertedIntoDatabase) {
-                    qut1model.CreateDate = DateTime.now();
-                    qut1model.UpdateDate = DateTime.now();
-
-                    await database.insert('MNJCD2', qut1model.toJson());
-                  }
-                }
-                for (int i = 0; i < Attachments.attachments.length; i++) {
-                  MNJCD3 qut1model = Attachments.attachments[i];
-                  qut1model.ID = i;
-                  qut1model.RowId = i;
-                  qut1model.hasCreated = true;
-                  qut1model.CreateDate = DateTime.now();
-
-                  if (!qut1model.insertedIntoDatabase) {
-                    qut1model.CreateDate = DateTime.now();
-                    qut1model.UpdateDate = DateTime.now();
-
-                    await database.insert('MNJCD3', qut1model.toJson());
+                    await database.insert('IMGDI1', qut1model.toJson());
                   }
                 }
               }
             });
-            goToNewJobCardDocument();
+            goToNewGoodsIssueDocument();
           } catch (e) {
             writeToLogFile(
                 text: e.toString(),
@@ -391,6 +308,4 @@ class _ViewJobCardState extends State<ViewJobCard> {
       }
     }
   }
-
-  syncWithServer() {}
 }

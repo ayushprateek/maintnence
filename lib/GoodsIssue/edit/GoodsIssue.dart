@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:maintenance/Component/BackPressedWarning.dart';
 import 'package:maintenance/Component/ClearTextFieldData.dart';
@@ -14,21 +13,20 @@ import 'package:maintenance/Component/ShowLoader.dart';
 import 'package:maintenance/Component/SnackbarComponent.dart';
 import 'package:maintenance/Dashboard.dart';
 import 'package:maintenance/DatabaseInitialization.dart';
-import 'package:maintenance/GoodsIssue/GeneralData.dart';
-import 'package:maintenance/GoodsIssue/ItemDetails/CalculateGoodIssue.dart';
-import 'package:maintenance/GoodsIssue/ItemDetails/ItemDetails.dart';
-import 'package:maintenance/GoodsIssue/SearchGoodsIssue.dart';
+import 'package:maintenance/GoodsIssue/edit/GeneralData.dart';
+import 'package:maintenance/GoodsIssue/edit/ItemDetails/CalculateGoodIssue.dart';
+import 'package:maintenance/GoodsIssue/edit/ItemDetails/ItemDetails.dart';
 import 'package:maintenance/Sync/DataSync.dart';
 import 'package:maintenance/Sync/SyncModels/IMGDI1.dart';
 import 'package:maintenance/Sync/SyncModels/IMOGDI.dart';
 import 'package:maintenance/main.dart';
 import 'package:sqflite/sqlite_api.dart';
 
-class GoodsIssue extends StatefulWidget {
+class EditGoodsIssue extends StatefulWidget {
   static bool saveButtonPressed = false;
   int index = 0;
 
-  GoodsIssue(int index, {this.onBackPressed}) {
+  EditGoodsIssue(int index, {this.onBackPressed}) {
     this.index = index;
   }
 
@@ -38,7 +36,7 @@ class GoodsIssue extends StatefulWidget {
   _JobCardState createState() => _JobCardState();
 }
 
-class _JobCardState extends State<GoodsIssue> {
+class _JobCardState extends State<EditGoodsIssue> {
   List lists = [];
   int numOfAddress = 0;
   var future_address;
@@ -121,44 +119,8 @@ class _JobCardState extends State<GoodsIssue> {
                 ),
                 preferredSize: Size.fromHeight(50.0),
               ),
-              actions: [
-                IconButton(
-                  icon: Icon(
-                    Icons.search,
-                    color: Colors.white,
-                  ),
-                  onPressed: () {
-                    Get.to(()=>SearchGoodsIssue());
-                    //showSearch(context: context, delegate: SearchJobCard());
-                    // Navigator.push(
-                    //     context,
-                    //     MaterialPageRoute(
-                    //         builder: ((context) => AdvanceSearch())));
-                  },
-                ),
-                IconButton(
-                  tooltip: "Add New Document",
-                  icon: Icon(
-                    Icons.add,
-                    color: Colors.black,
-                  ),
-                  onPressed: () async {
-                    if (GeneralData.deptName != '' ||
-                        ItemDetails.items.isNotEmpty) {
-                      showBackPressedWarning(
-                          text:
-                              'Your data is not saved. Are you sure you want to create new form?',
-                          onBackPressed: () {
-                            goToNewGoodsIssueDocument();
-                          });
-                    } else {
-                      goToNewGoodsIssueDocument();
-                    }
-                  },
-                ),
-              ],
               title: getHeadingText(
-                  text: "Goods Issue", color: headColor, fontSize: 20)),
+                  text: "Edit Goods Issue", color: headColor, fontSize: 20)),
           body: TabBarView(
             children: [
               GeneralData(),
@@ -198,7 +160,7 @@ class _JobCardState extends State<GoodsIssue> {
 
   save() async {
     //GeneralData.isSelected
-    GoodsIssue.saveButtonPressed = false;
+    EditGoodsIssue.saveButtonPressed = false;
     if (DataSync.isSyncing()) {
       getErrorSnackBar(DataSync.syncingErrorMsg);
     } else if (isSelectedAndCancelled()) {
@@ -215,8 +177,8 @@ class _JobCardState extends State<GoodsIssue> {
           const SnackBar(content: Text('Invalid General')),
         );
       } else {
-        if (!GoodsIssue.saveButtonPressed) {
-          GoodsIssue.saveButtonPressed = true;
+        if (!EditGoodsIssue.saveButtonPressed) {
+          EditGoodsIssue.saveButtonPressed = true;
           showLoader(context);
           Position pos = await getCurrentLocation();
           print(pos.latitude.toString());

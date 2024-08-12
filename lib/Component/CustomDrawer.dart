@@ -19,7 +19,7 @@ import 'package:maintenance/Component/LogFileFunctions.dart';
 import 'package:maintenance/Component/MenuDescription.dart';
 import 'package:maintenance/Component/SnackbarComponent.dart';
 import 'package:maintenance/DrangAndDropItem.dart';
-import 'package:maintenance/GoodsIssue/GoodsIssue.dart';
+import 'package:maintenance/GoodsIssue/create/GoodsIssue.dart';
 import 'package:maintenance/GoodsReceiptNote/GoodsReceiptNote.dart';
 import 'package:maintenance/InternalRequest/InternalRequest.dart';
 import 'package:maintenance/JobCard/create/JobCard.dart';

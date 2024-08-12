@@ -5,7 +5,7 @@ import 'package:maintenance/Component/CustomFont.dart';
 import 'package:maintenance/Component/GetFormattedDate.dart';
 import 'package:maintenance/Component/GetTextField.dart';
 import 'package:maintenance/Component/SnackbarComponent.dart';
-import 'package:maintenance/GoodsIssue/ItemDetails/CalculateGoodIssue.dart';
+import 'package:maintenance/GoodsIssue/edit/ItemDetails/CalculateGoodIssue.dart';
 import 'package:maintenance/Lookups/DepartmentLookup.dart';
 import 'package:maintenance/Lookups/OCRDLookup.dart';
 import 'package:maintenance/Lookups/TripLookup.dart';
@@ -16,7 +16,7 @@ import 'package:maintenance/Sync/SyncModels/OPOTRP.dart';
 import 'package:maintenance/Sync/SyncModels/OUDP.dart';
 import 'package:maintenance/Sync/SyncModels/OWHS.dart';
 
-import '../Lookups/WarehouseLookup.dart';
+import '../../Lookups/WarehouseLookup.dart';
 
 class GeneralData extends StatefulWidget {
   GeneralData({super.key});

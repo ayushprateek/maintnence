@@ -18,11 +18,11 @@ import 'package:maintenance/Component/GetFormattedDate.dart';
 import 'package:maintenance/Component/GetLastDocNum.dart';
 import 'package:maintenance/Component/IsAvailableTransId.dart';
 //------------------------------ GOODS ISSUE IMPORTS------------
-import 'package:maintenance/GoodsIssue/GeneralData.dart' as goodsGenData;
-import 'package:maintenance/GoodsIssue/GoodsIssue.dart';
-import 'package:maintenance/GoodsIssue/ItemDetails/EditItems.dart'
+import 'package:maintenance/GoodsIssue/create/GeneralData.dart' as goodsGenData;
+import 'package:maintenance/GoodsIssue/create/GoodsIssue.dart';
+import 'package:maintenance/GoodsIssue/create/ItemDetails/EditItems.dart'
     as goodsEditItems;
-import 'package:maintenance/GoodsIssue/ItemDetails/ItemDetails.dart'
+import 'package:maintenance/GoodsIssue/create/ItemDetails/ItemDetails.dart'
     as goodsItemDetails;
 import 'package:maintenance/GoodsReceiptNote/Address/BillingAddress.dart'
     as grnBillAddress;

@@ -1,7 +1,7 @@
 import 'package:maintenance/Component/CompanyDetails.dart';
 import 'package:maintenance/Component/IsNumeric.dart';
-import 'package:maintenance/GoodsIssue/GeneralData.dart';
-import 'package:maintenance/GoodsIssue/ItemDetails/ItemDetails.dart';
+import 'package:maintenance/GoodsIssue/create/GeneralData.dart';
+import 'package:maintenance/GoodsIssue/create/ItemDetails/ItemDetails.dart';
 import 'package:maintenance/Sync/SyncModels/IMGDI1.dart';
 
 void calculateGoodsIssue() {

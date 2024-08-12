@@ -5,6 +5,8 @@ import 'package:maintenance/Component/GetCredentials.dart';
 import 'package:maintenance/Component/LogFileFunctions.dart';
 import 'package:maintenance/DatabaseInitialization.dart';
 import 'package:maintenance/Sync/CustomURL.dart';
+import 'package:maintenance/Sync/SyncModels/IMGDI1.dart';
+import 'package:maintenance/Sync/SyncModels/IMOGDI.dart';
 import 'package:maintenance/Sync/SyncModels/MNCLD1.dart';
 import 'package:maintenance/Sync/SyncModels/MNCLD2.dart';
 import 'package:maintenance/Sync/SyncModels/MNCLD3.dart';
@@ -50,53 +52,6 @@ class Transaction1 {
 
 //----------- CONSTRUCTOR ----------
   Transaction1({
-    // this.act1,
-    // this.act2,
-    // this.act3,
-    // this.dln1,
-    // this.dln2,
-    // this.dln3,
-    // this.dpt1,
-    // this.dsc1,
-    // this.dsc2,
-    // this.inv1,
-    // this.inv2,
-    // this.inv3,
-    // this.oact,
-    // this.ocrt,
-    // this.ocsh,
-    // this.odln,
-    // this.odpt,
-    // this.odsc,
-    // this.oecp,
-    // this.oexr,
-    // this.oinv,
-    // this.optr,
-    // this.oqut,
-    // this.ordr,
-    // this.ortp,
-    // this.ovld,
-    // this.qut1,
-    // this.qut2,
-    // this.qut3,
-    // this.rdr1,
-    // this.rdr2,
-    // this.rdr3,
-    // this.rtn1,
-    // this.rtn2,
-    // this.rtn3,
-    // this.rtp1,
-    // this.rtp2,
-    // this.vld1,
-    // this.ostk,
-    // this.stk1,
-    // this.cvocvp,
-    // this.cvcvp1,
-    // this.suoita,
-    // this.suita1,
-    // this.suita2,
-    // this.suoatp,
-    // this.suatp1,
     this.mnocld,
     this.mncld1,
     this.mncld2,
@@ -135,57 +90,14 @@ class Transaction1 {
     this.prqut1,
     this.prqut2,
     this.prqut3,
+    this.imogdi,
+    this.imgdi1,
   });
 
-//----------- VARIABLES ----------
-//   List<ACT1Model>? act1;
-//   List<ACT2Model>? act2;
-//   List<ACT3Model>? act3;
-//   List<DLN1Model>? dln1;
-//   List<DLN2Model>? dln2;
-//   List<DLN3Model>? dln3;
-//   List<DPT1Model>? dpt1;
-//   List<DSC1Model>? dsc1;
-//   List<DSC2Model>? dsc2;
-//   List<INV1Model>? inv1;
-//   List<INV2Model>? inv2;
-//   List<INV3Model>? inv3;
-//   List<OACTModel>? oact;
-//   List<OCRTModel>? ocrt;
-//   List<OCSH>? ocsh;
-//   List<ODLNModel>? odln;
-//   List<ODPTModel>? odpt;
-//   List<ODSCModel>? odsc;
-//   List<OECPModel>? oecp;
-//   List<OEXRModel>? oexr;
-//   List<OINVModel>? oinv;
-//   List<OPTRModel>? optr;
-//   List<OQUTModel>? oqut;
-//   List<ORDRModel>? ordr;
-//   List<ORTPModel>? ortp;
-//   List<OVLDModel>? ovld;
-//   List<QUT1Model>? qut1;
-//   List<QUT2Model>? qut2;
-//   List<QUT3Model>? qut3;
-//   List<RDR1Model>? rdr1;
-//   List<RDR2Model>? rdr2;
-//   List<RDR3Model>? rdr3;
-//   List<RTN1Model>? rtn1;
-//   List<RTN2Model>? rtn2;
-//   List<RTN3Model>? rtn3;
-//   List<RTP1Model>? rtp1;
-//   List<RTP2Model>? rtp2;
-//   List<VLD1Model>? vld1;
-//   List<OSTK>? ostk;
-//   List<STK1>? stk1;
-//   List<CVOCVP>? cvocvp;
-//   List<CVCVP1>? cvcvp1;
-//   List<SUOITA>? suoita;
-//   List<SUITA1>? suita1;
-//   List<SUITA2>? suita2;
-//   List<SUOATP>? suoatp;
-//   List<SUATP1>? suatp1;
+
   List<MNOCLD>? mnocld;
+  List<IMOGDI>? imogdi;
+  List<IMGDI1>? imgdi1;
   List<MNCLD1>? mncld1;
   List<MNCLD2>? mncld2;
   List<MNCLD3>? mncld3;
@@ -395,6 +307,10 @@ class Transaction1 {
             List<PRQUT2>.from(json["PRQUT2"].map((x) => PRQUT2.fromJson(x))),
         prqut3:
             List<PRQUT3>.from(json["PRQUT3"].map((x) => PRQUT3.fromJson(x))),
+    imogdi:
+            List<IMOGDI>.from(json["IMOGDI"].map((x) => IMOGDI.fromJson(x))),
+    imgdi1:
+            List<IMGDI1>.from(json["IMGDI1"].map((x) => IMGDI1.fromJson(x))),
       );
 
 //----------- TO JSON ----------
@@ -527,53 +443,6 @@ class Transaction1 {
     }
 
     Database db = await initializeDB(null);
-    // await insertACT1(db, list: transactions.act1);
-    // await insertACT2(db, list: transactions.act2);
-    // await insertACT3(db, list: transactions.act3);
-    // await insertDLN1(db, list: transactions.dln1);
-    // await insertDLN2(db, list: transactions.dln2);
-    // await insertDLN3(db, list: transactions.dln3);
-    // await insertDPT1(db, list: transactions.dpt1);
-    // await insertDSC1(db, list: transactions.dsc1);
-    // await insertDSC2(db, list: transactions.dsc2);
-    // await insertINV1(db, list: transactions.inv1);
-    // await insertINV2(db, list: transactions.inv2);
-    // await insertINV3(db, list: transactions.inv3);
-    // await insertOACT(db, list: transactions.oact);
-    // await insertOCRT(db, list: transactions.ocrt);
-    // await insertOCSH(db, list: transactions.ocsh);
-    // await insertODLN(db, list: transactions.odln);
-    // await insertODPT(db, list: transactions.odpt);
-    // await insertODSC(db, list: transactions.odsc);
-    // await insertOECP(db, list: transactions.oecp);
-    // await insertOEXR(db, list: transactions.oexr);
-    // await insertOINV(db, list: transactions.oinv);
-    // await insertOPTR(db, list: transactions.optr);
-    // await insertOQUT(db, list: transactions.oqut);
-    // await insertORDR(db, list: transactions.ordr);
-    // await insertORTP(db, list: transactions.ortp);
-    // await insertOVLD(db, list: transactions.ovld);
-    // await insertQUT1(db, list: transactions.qut1);
-    // await insertQUT2(db, list: transactions.qut2);
-    // await insertQUT3(db, list: transactions.qut3);
-    // await insertRDR1(db, list: transactions.rdr1);
-    // await insertRDR2(db, list: transactions.rdr2);
-    // await insertRDR3(db, list: transactions.rdr3);
-    // await insertRTN1(db, list: transactions.rtn1);
-    // await insertRTN2(db, list: transactions.rtn2);
-    // await insertRTN3(db, list: transactions.rtn3);
-    // await insertRTP1(db, list: transactions.rtp1);
-    // await insertRTP2(db, list: transactions.rtp2);
-    // await insertVLD1(db, list: transactions.vld1);
-    // await insertOSTK(db, list: transactions.ostk);
-    // await insertSTK1(db, list: transactions.stk1);
-    // await insertCVOCVP(db, list: transactions.cvocvp);
-    // await insertCVCVP1(db, list: transactions.cvcvp1);
-    // await insertSUOITA(db, list: transactions.suoita);
-    // await insertSUITA1(db, list: transactions.suita1);
-    // await insertSUITA2(db, list: transactions.suita2);
-    // await insertSUOATP(db, list: transactions.suoatp);
-    // await insertSUATP1(db, list: transactions.suatp1);
     await insertMNOCLD(db, list: transactions.mnocld);
     await insertMNCLD1(db, list: transactions.mncld1);
     await insertMNCLD2(db, list: transactions.mncld2);
@@ -581,6 +450,8 @@ class Transaction1 {
     await insertMNJCD1(db, list: transactions.mnjcd1);
     await insertMNJCD2(db, list: transactions.mnjcd2);
     await insertMNJCD3(db, list: transactions.mnjcd3);
+    await insertIMOGDI(db, list: transactions.imogdi);
+    await insertIMGDI1(db, list: transactions.imgdi1);
     // await insertMNJCD4(db, list: transactions.mnjcd4);
     await insertMNOJCD(db, list: transactions.mnojcd);
     await insertOPCNA1(db, list: transactions.opcna1);

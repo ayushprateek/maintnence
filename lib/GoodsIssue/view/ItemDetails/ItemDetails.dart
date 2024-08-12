@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:maintenance/Component/CustomColor.dart';
 import 'package:maintenance/Component/CustomFont.dart';
-import 'package:maintenance/GoodsIssue/ItemDetails/AddItems.dart';
+import 'package:maintenance/GoodsIssue/view/ItemDetails/AddItems.dart';
 import 'package:maintenance/Sync/SyncModels/IMGDI1.dart';
 
 
