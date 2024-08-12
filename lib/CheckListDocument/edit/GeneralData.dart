@@ -230,9 +230,9 @@ class _GeneralDataState extends State<GeneralData> {
                       onSelection: (OVCLModel ovcl) {
                         setState(() {
                           GeneralData.equipmentCode =
-                              _equipmentCode.text = ovcl.Code;
+                              _equipmentCode.text = ovcl.Code??'';
                           GeneralData.equipmentName =
-                              _equipmentName.text = ovcl.Code;
+                              _equipmentName.text = ovcl.Name??'';
                         });
                       },
                     ));

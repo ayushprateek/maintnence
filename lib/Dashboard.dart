@@ -292,17 +292,17 @@ WHERE
                     lastReadingDateList[0]['UpdateDate'].toString()));
       }
       List lastReadingList = await await db.rawQuery(
-          "SELECT LastReading FROM MNOVCL WHERE Code = '${dashboardItem.equipmentCode}'");
+          "SELECT OdometerReading FROM OVCL WHERE Code = '${dashboardItem.equipmentCode}'");
       if (lastReadingList.isNotEmpty) {
         checkListGenData.GeneralData.lastReading =
-            lastReadingList[0]['LastReading']?.toString();
+            lastReadingList[0]['OdometerReading']?.toString();
       }
       // checkListGenData.GeneralData.lastReading= db.MNOVCLs.FirstOrDefault(x => x.Code == checkListGenData.GeneralData.EquipmentCode).LastReading.ToString() ?? "0";
 
       print('CHILD DATA');
       // String EquipmentGroupCode = StaticFuntion.GetEquipmentGroupCodeByEquipmentCode(checkListGenData.GeneralData.EquipmentCode);
       String? EquipmentGroupCode = (await db.rawQuery(
-                  "SELECT EquipmentGroupCode FROM MNOVCL WHERE Code='${dashboardItem.equipmentCode}'"))[
+                  "SELECT EquipmentGroupCode FROM OVCL WHERE Code='${dashboardItem.equipmentCode}'"))[
               0]['EquipmentGroupCode']
           ?.toString();
 

@@ -263,7 +263,7 @@ class GetAllMaster2 {
     await insertCRD3(db, list: getAll.crd3);
     // await insertOROL(db, list: getAll.orol);
     await insertORTU(db, list: getAll.ortu);
-    await insertOVCL(db, list: getAll.ovcl);
+    await insertOVCLModel(db, list: getAll.ovcl);
     await insertIUOM(db, list: getAll.iuom);
     await insertIWHS(db, list: getAll.iwhs);
     // await insertOUOM(db, list: getAll.ouom);

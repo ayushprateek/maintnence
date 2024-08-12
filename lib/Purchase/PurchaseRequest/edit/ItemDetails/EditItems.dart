@@ -225,7 +225,7 @@ class _EditCheckListState extends State<EditItems> {
                 onLookupPressed: () {
                   Get.to(() => VehicleCodeLookup(onSelected: (OVCLModel ovcl) {
                         setState(() {
-                          EditItems.truckNo = _truckNo.text = ovcl.Code;
+                          EditItems.truckNo = _truckNo.text = ovcl.Code??'';
                         });
                       }));
                 }),
