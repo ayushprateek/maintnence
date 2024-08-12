@@ -6,10 +6,7 @@ String dateFormat = 'dd-MM-yyyy';
 
 String getFormattedDate(DateTime? now) {
   if (now == null) {
-    now = DateTime.parse("1900-01-01");
-    DateFormat formatter = DateFormat(dateFormat);
-    String formatted = formatter.format(now);
-    return formatted;
+   return '';
   } else {
     DateFormat formatter = DateFormat(dateFormat);
     String formatted = formatter.format(now);

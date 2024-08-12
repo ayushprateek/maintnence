@@ -1,5 +1,7 @@
 class MaintenanceItemsQueryModel {
   String? transId;
+  String? checkListStatus;
+  String? checkType;
   String? code;
   int? id;
   DateTime? validUntilDb;
@@ -18,7 +20,7 @@ class MaintenanceItemsQueryModel {
   String? technicianName;
   String? checkListDocEntry;
   DateTime? dueDate;
-  DateTime? lastReadingDate;
+  DateTime? lastPostingDate;
   int? validDays;
   double? openQty;
   String? docNum;
@@ -28,6 +30,8 @@ class MaintenanceItemsQueryModel {
   MaintenanceItemsQueryModel({
     required this.transId,
     required this.code,
+    required this.checkListStatus,
+    required this.checkType,
     required this.id,
     this.validUntilDb,
     required this.validUntil,
@@ -45,7 +49,7 @@ class MaintenanceItemsQueryModel {
     required this.technicianName,
     required this.checkListDocEntry,
     this.dueDate,
-    this.lastReadingDate,
+    this.lastPostingDate,
     required this.validDays,
     this.openQty,
     required this.docNum,
@@ -57,6 +61,8 @@ class MaintenanceItemsQueryModel {
     return MaintenanceItemsQueryModel(
       transId: json['TransId']?.toString() ?? '',
       code: json['Code']?.toString() ?? '',
+      checkListStatus: json['CheckListStatus']?.toString() ?? '',
+      checkType: json['CheckType']?.toString() ?? '',
       id: int.tryParse(json['ID'].toString()),
       validUntilDb: DateTime.tryParse(json['ValidUntilDb'].toString()),
       validUntil: json['validUntil']?.toString() ?? '',
@@ -74,7 +80,7 @@ class MaintenanceItemsQueryModel {
       technicianName: json['TechnicianName']?.toString() ?? '',
       checkListDocEntry: json['CheckListDocEntry']?.toString() ?? '',
       dueDate: json['DueDate'] != null ? DateTime.parse(json['DueDate']) : null,
-      lastReadingDate: DateTime.tryParse(json['LastReadingDate'].toString()),
+      lastPostingDate: DateTime.tryParse(json['LastPostingDate'].toString()),
       validDays: int.tryParse(json['ValidDays'].toString()),
       openQty: json['OpenQty'] != null ? json['OpenQty'].toDouble() : null,
       docNum: json['DocNum']?.toString() ?? '',
@@ -86,6 +92,8 @@ class MaintenanceItemsQueryModel {
   Map<String?, dynamic> toJson() {
     return {
       'transId': transId,
+      'CheckListStatus': checkListStatus,
+      'CheckType': checkType,
       'code': code,
       'id': id,
       'validUntilDb': validUntilDb?.toIso8601String(),
@@ -104,7 +112,7 @@ class MaintenanceItemsQueryModel {
       'technicianName': technicianName,
       'checkListDocEntry': checkListDocEntry,
       'dueDate': dueDate?.toIso8601String(),
-      'lastReadingDate': lastReadingDate?.toIso8601String(),
+      'LastPostingDate': lastPostingDate?.toIso8601String(),
       'validDays': validDays,
       'openQty': openQty,
       'docNum': docNum,

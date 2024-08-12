@@ -109,6 +109,7 @@ class _DashboardState extends State<Dashboard> {
     MNVCL1.CheckListCode,
     MNVCL1.CheckListName,  
     MNOCLD.PostingDate AS "LastPostingDate",
+    MNOCLD.CheckListStatus,
     MNVCL1.WorkCenterCode,
     MNVCL1.WorkCenterName,
     MNVCL1.TechnicianCode,
@@ -506,6 +507,46 @@ WHERE
                                             ),
                                           ),
                                         ),
+                                        Padding(
+                                          padding: const EdgeInsets.only(
+                                              left: 8.0, right: 8.0, top: 4.0),
+                                          child: Align(
+                                            alignment: Alignment.topLeft,
+                                            child: FittedBox(
+                                              fit: BoxFit.contain,
+                                              child: Text.rich(
+                                                TextSpan(
+                                                  children: [
+                                                    getPoppinsTextSpanHeading(
+                                                        text: 'Type'),
+                                                    getPoppinsTextSpanDetails(
+                                                        text:
+                                                            data.checkType ??
+                                                                ""),
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.only(
+                                              left: 8.0, right: 8.0, top: 4.0),
+                                          child: Align(
+                                            alignment: Alignment.topLeft,
+                                            child: Text.rich(
+                                              TextSpan(
+                                                children: [
+                                                  getPoppinsTextSpanHeading(
+                                                      text: 'Last Posting Date'),
+                                                  getPoppinsTextSpanDetails(
+                                                      text:
+                                                      getFormattedDate(data.lastPostingDate)),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        ),
                                       ],
                                     ),
                                   ),
@@ -515,6 +556,24 @@ WHERE
                                       mainAxisAlignment:
                                           MainAxisAlignment.start,
                                       children: [
+                                        Padding(
+                                          padding: const EdgeInsets.only(
+                                              left: 8.0, right: 8.0, top: 4.0),
+                                          child: Align(
+                                            alignment: Alignment.topLeft,
+                                            child: Text.rich(
+                                              TextSpan(
+                                                children: [
+                                                  getPoppinsTextSpanHeading(
+                                                      text: 'Check List Status'),
+                                                  getPoppinsTextSpanDetails(
+                                                      text:
+                                                      data.checkListStatus),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        ),
                                         Padding(
                                           padding: const EdgeInsets.only(
                                               left: 8.0, right: 8.0, top: 4.0),
@@ -538,18 +597,15 @@ WHERE
                                               left: 8.0, right: 8.0, top: 4.0),
                                           child: Align(
                                             alignment: Alignment.topLeft,
-                                            child: FittedBox(
-                                              fit: BoxFit.contain,
-                                              child: Text.rich(
-                                                TextSpan(
-                                                  children: [
-                                                    getPoppinsTextSpanHeading(
-                                                        text: 'Technician'),
-                                                    getPoppinsTextSpanDetails(
-                                                        text: data
-                                                            .technicianName),
-                                                  ],
-                                                ),
+                                            child: Text.rich(
+                                              TextSpan(
+                                                children: [
+                                                  getPoppinsTextSpanHeading(
+                                                      text: 'Technician'),
+                                                  getPoppinsTextSpanDetails(
+                                                      text: data
+                                                          .technicianName),
+                                                ],
                                               ),
                                             ),
                                           ),
