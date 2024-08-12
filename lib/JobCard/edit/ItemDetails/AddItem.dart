@@ -3,10 +3,12 @@ import 'package:get/get.dart';
 import 'package:maintenance/Component/ClearTextFieldData.dart';
 import 'package:maintenance/Component/CustomColor.dart';
 import 'package:maintenance/Component/CustomFont.dart';
+import 'package:maintenance/Component/GetFormattedDate.dart';
 import 'package:maintenance/Component/GetTextField.dart';
 import 'package:maintenance/Component/SnackbarComponent.dart';
-import 'package:maintenance/JobCard/create/ItemDetails/ItemDetails.dart';
-import 'package:maintenance/JobCard/create/ItemDetails/EditJobCardItem.dart';
+import 'package:maintenance/JobCard/edit/ItemDetails/ItemDetails.dart';
+import 'package:maintenance/JobCard/edit/ItemDetails/EditJobCardItem.dart';
+import 'package:maintenance/JobCard/edit/GeneralData.dart';
 import 'package:maintenance/Sync/SyncModels/OITM.dart';
 
 class AddItem extends StatefulWidget {
@@ -41,7 +43,7 @@ class _AddItemState extends State<AddItem> {
       appBar: AppBar(
         backgroundColor: barColor,
         title: Text(
-          "Select Item",
+          "Add Item",
           style: TextStyle(color: Colors.white),
         ),
       ),
@@ -193,21 +195,46 @@ class _AddItemState extends State<AddItem> {
                             }
                             if (_query.text.isNotEmpty
                                 ? (snapshot.data![index].ItemCode
-                                .toString()
-                                .toUpperCase()
-                                .contains(_query.text
-                                .toString()
-                                .toUpperCase()) ||
-                                snapshot.data![index].ItemName
-                                    .toString()
-                                    .toUpperCase()
-                                    .contains(_query.text
-                                    .toString()
-                                    .toUpperCase()))
+                                        .toString()
+                                        .toUpperCase()
+                                        .contains(_query.text
+                                            .toString()
+                                            .toUpperCase()) ||
+                                    snapshot.data![index].ItemName
+                                        .toString()
+                                        .toUpperCase()
+                                        .contains(_query.text
+                                            .toString()
+                                            .toUpperCase()))
                                 : true) {
                               return InkWell(
                                 onDoubleTap: () {
-
+                                  bool isAdded = false;
+                                  for (int i = 0;
+                                      i < ItemDetails.items.length;
+                                      i++) {
+                                    if (snapshot.data![index].ItemCode ==
+                                        ItemDetails.items[i].ItemCode) {
+                                      isAdded = true;
+                                      break;
+                                    }
+                                  }
+                                  if (isAdded) {
+                                    getErrorSnackBar(
+                                        snapshot.data![index].ItemName +
+                                            " is already added");
+                                  } else {
+                                    ClearJobCardDoc.clearEditItems();
+                                    EditJobCardItem.transId =
+                                        GeneralData.transId;
+                                    EditJobCardItem.itemCode =
+                                        snapshot.data![index].ItemCode;
+                                    EditJobCardItem.itemName =
+                                        snapshot.data![index].ItemName;
+                                    EditJobCardItem.requiredDate =
+                                        getFormattedDate(DateTime.now());
+                                    Get.to(() => EditJobCardItem());
+                                  }
                                 },
                                 child: Container(
                                   decoration: BoxDecoration(
@@ -236,13 +263,13 @@ class _AddItemState extends State<AddItem> {
                                               alignment: Alignment.topLeft,
                                               child: getHeadingText(
                                                 text: snapshot.data![index]
-                                                    .ItemCode
-                                                    .toString() ==
-                                                    ""
+                                                            .ItemCode
+                                                            .toString() ==
+                                                        ""
                                                     ? "ABC"
                                                     : snapshot
-                                                    .data![index].ItemCode
-                                                    .toString(),
+                                                        .data![index].ItemCode
+                                                        .toString(),
                                               ),
                                             ),
                                           ),

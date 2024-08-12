@@ -3,19 +3,20 @@ import 'package:get/get.dart';
 import 'package:maintenance/Component/ClearTextFieldData.dart';
 import 'package:maintenance/Component/CustomColor.dart';
 import 'package:maintenance/Component/CustomFont.dart';
+import 'package:maintenance/Component/GetFormattedDate.dart';
 import 'package:maintenance/Component/GetTextField.dart';
 import 'package:maintenance/Component/SnackbarComponent.dart';
-import 'package:maintenance/JobCard/ServiceDetails/EditService.dart';
-import 'package:maintenance/JobCard/ServiceDetails/ServiceDetails.dart';
-import 'package:maintenance/JobCard/GeneralData.dart';
+import 'package:maintenance/JobCard/create/ItemDetails/ItemDetails.dart';
+import 'package:maintenance/JobCard/create/ItemDetails/EditJobCardItem.dart';
+import 'package:maintenance/JobCard/create/GeneralData.dart';
 import 'package:maintenance/Sync/SyncModels/OITM.dart';
 
-class AddServiceItem extends StatefulWidget {
+class AddItem extends StatefulWidget {
   @override
-  _AddServiceItemState createState() => _AddServiceItemState();
+  _AddItemState createState() => _AddItemState();
 }
 
-class _AddServiceItemState extends State<AddServiceItem> {
+class _AddItemState extends State<AddItem> {
   ScrollController _scrollController = ScrollController();
   final TextEditingController _query = TextEditingController();
   int _currentMax = 15;
@@ -42,7 +43,7 @@ class _AddServiceItemState extends State<AddServiceItem> {
       appBar: AppBar(
         backgroundColor: barColor,
         title: Text(
-          "Add Service",
+          "Add Item",
           style: TextStyle(color: Colors.white),
         ),
       ),
@@ -210,10 +211,10 @@ class _AddServiceItemState extends State<AddServiceItem> {
                                 onDoubleTap: () {
                                   bool isAdded = false;
                                   for (int i = 0;
-                                      i < ServiceDetails.items.length;
+                                      i < ItemDetails.items.length;
                                       i++) {
                                     if (snapshot.data![index].ItemCode ==
-                                        ServiceDetails.items[i].ServiceCode) {
+                                        ItemDetails.items[i].ItemCode) {
                                       isAdded = true;
                                       break;
                                     }
@@ -222,17 +223,17 @@ class _AddServiceItemState extends State<AddServiceItem> {
                                     getErrorSnackBar(
                                         snapshot.data![index].ItemName +
                                             " is already added");
-                                  }
-                                  else
-                                  {
-                                    ClearJobCardDoc.clearEditService();
-                                    EditService.serviceCode =
-                                        snapshot.data![index].ItemCode;
-                                    EditService.transId =
+                                  } else {
+                                    ClearJobCardDoc.clearEditItems();
+                                    EditJobCardItem.transId =
                                         GeneralData.transId;
-                                    EditService.serviceName =
+                                    EditJobCardItem.itemCode =
+                                        snapshot.data![index].ItemCode;
+                                    EditJobCardItem.itemName =
                                         snapshot.data![index].ItemName;
-                                    Get.to(() => EditService());
+                                    EditJobCardItem.requiredDate =
+                                        getFormattedDate(DateTime.now());
+                                    Get.to(() => EditJobCardItem());
                                   }
                                 },
                                 child: Container(

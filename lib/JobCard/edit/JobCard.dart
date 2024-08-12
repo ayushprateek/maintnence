@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:maintenance/Component/BackPressedWarning.dart';
 import 'package:maintenance/Component/ClearTextFieldData.dart';
@@ -14,12 +13,11 @@ import 'package:maintenance/Component/ShowLoader.dart';
 import 'package:maintenance/Component/SnackbarComponent.dart';
 import 'package:maintenance/Dashboard.dart';
 import 'package:maintenance/DatabaseInitialization.dart';
-import 'package:maintenance/JobCard/Attachment.dart';
-import 'package:maintenance/JobCard/GeneralData.dart';
-import 'package:maintenance/JobCard/ItemDetails/ItemDetails.dart';
-import 'package:maintenance/JobCard/SearchJobCardDoc.dart';
-import 'package:maintenance/JobCard/ServiceDetails/ServiceDetails.dart';
-import 'package:maintenance/JobCard/TyreMaintenance.dart';
+import 'package:maintenance/JobCard/edit/Attachment.dart';
+import 'package:maintenance/JobCard/edit/GeneralData.dart';
+import 'package:maintenance/JobCard/edit/ItemDetails/ItemDetails.dart';
+import 'package:maintenance/JobCard/edit/ServiceDetails/ServiceDetails.dart';
+import 'package:maintenance/JobCard/edit/TyreMaintenance.dart';
 import 'package:maintenance/Sync/DataSync.dart';
 import 'package:maintenance/Sync/SyncModels/MNJCD1.dart';
 import 'package:maintenance/Sync/SyncModels/MNJCD2.dart';
@@ -28,21 +26,21 @@ import 'package:maintenance/Sync/SyncModels/MNOJCD.dart';
 import 'package:maintenance/main.dart';
 import 'package:sqflite/sqlite_api.dart';
 
-class JobCard extends StatefulWidget {
+class EditJobCard extends StatefulWidget {
   static bool saveButtonPressed = false;
   int index = 0;
 
-  JobCard(int index, {this.onBackPressed}) {
+  EditJobCard(int index, {this.onBackPressed}) {
     this.index = index;
   }
 
   Function? onBackPressed;
 
   @override
-  _JobCardState createState() => _JobCardState();
+  _EditJobCardState createState() => _EditJobCardState();
 }
 
-class _JobCardState extends State<JobCard> {
+class _EditJobCardState extends State<EditJobCard> {
   List lists = [];
   int numOfAddress = 0;
   var future_address;
@@ -55,7 +53,6 @@ class _JobCardState extends State<JobCard> {
   final key = GlobalKey<ScaffoldState>();
 
   _onBackButtonPressed() {
-
     if (GeneralData.equipmentCode != '' || ItemDetails.items.isNotEmpty) {
       showBackPressedWarning(onBackPressed: widget.onBackPressed);
     } else if (widget.onBackPressed != null) {
@@ -64,7 +61,7 @@ class _JobCardState extends State<JobCard> {
       Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(builder: (context) => Dashboard()),
-              (route) => false);
+          (route) => false);
     }
   }
 
@@ -133,102 +130,8 @@ class _JobCardState extends State<JobCard> {
                 ),
                 preferredSize: Size.fromHeight(50.0),
               ),
-              actions: [
-                IconButton(
-                  icon: Icon(
-                    Icons.search,
-                    color: Colors.white,
-                  ),
-                  onPressed: () {
-                    Get.to(()=>SearchJobCardDoc());
-                    //showSearch(context: context, delegate: SearchJobCard());
-                    // Navigator.push(
-                    //     context,
-                    //     MaterialPageRoute(
-                    //         builder: ((context) => AdvanceSearch())));
-                  },
-                ),
-                IconButton(
-                  tooltip: "Add New Document",
-                  icon: Icon(
-                    Icons.add,
-                    color: Colors.black,
-                  ),
-                  onPressed: () async {
-                    if (GeneralData.equipmentCode != '' ||
-                        ItemDetails.items.isNotEmpty) {
-                      showBackPressedWarning(
-                          text:
-                              'Your data is not saved. Are you sure you want to create new form?',
-                          onBackPressed: () {
-                            goToNewJobCardDocument();
-                          });
-                    } else {
-                      goToNewJobCardDocument();
-                    }
-                  },
-                ),
-                // IconButton(
-                //   tooltip: "Cancel Document",
-                //   icon: Icon(Icons.delete_forever,color: Colors.red,),
-                //   onPressed: (){
-                //     if(isSelectedAndCancelled() || isJobCardDocClosed())
-                //       {
-                //       getErrorSnackBar( "This Document is already cancelled / closed");
-                //     }
-                //     else if(isSelectedButNotCancelled())
-                //     {
-                //         AnimatedDialogBox.showScaleAlertBox(
-                //             title:Center(child: Text("Cancel")) , // IF YOU WANT TO ADD
-                //             context: context,
-                //             firstButton: MaterialButton(
-                //               // OPTIONAL BUTTON
-                //               shape: RoundedRectangleBorder(
-                //                 borderRadius: BorderRadius.circular(40),
-                //               ),
-                //               color: barColor,
-                //               child: Text('No',
-                //                 style: TextStyle(
-                //                     color: Colors.white
-                //                 ),),
-                //               onPressed: () {
-                //                 Navigator.of(context).pop();
-                //               },
-                //             ),
-                //             secondButton: MaterialButton(
-                //               // OPTIONAL BUTTON
-                //               shape: RoundedRectangleBorder(
-                //                 borderRadius: BorderRadius.circular(40),
-                //               ),
-                //               color: Colors.red,
-                //               child: Text('Yes',
-                //                 style: TextStyle(
-                //                     color: Colors.white
-                //                 ),),
-                //               onPressed: () async {
-                //                 GeneralData.DocStatus="Cancelled";
-                //                 final db = await initializeDB(context);
-                //                 Map<String,dynamic> values={
-                //                   "DocStatus":"Cancelled",
-                //                   "has_updated":1,
-                //                 };
-                //                 await db.update(DBName.ODB, values, where: 'MTransId = ?', whereArgs: [GeneralData.MTransID]);
-                //                 Navigator.of(context).pop();
-                //                 Navigator.pop(context);
-                //                 Navigator.push(context, MaterialPageRoute(builder: (context)=>JobCard(0)));
-                //               },
-                //             ),
-                //             icon: Icon(Icons.info_outline,color: Colors.red,), // IF YOU WANT TO ADD ICON
-                //             yourWidget: Container(
-                //               child: Text('Are you sure you want to cancel this document?'),
-                //             ));
-                //
-                //       }
-                //   },
-                // ),
-              ],
               title: getHeadingText(
-                  text: "Job Card", color: headColor, fontSize: 20)),
+                  text: "Edit Job Card", color: headColor, fontSize: 20)),
           body: TabBarView(
             children: [
               GeneralData(),
@@ -271,7 +174,7 @@ class _JobCardState extends State<JobCard> {
 
   save() async {
     //GeneralData.isSelected
-    JobCard.saveButtonPressed = false;
+    EditJobCard.saveButtonPressed = false;
     if (DataSync.isSyncing()) {
       getErrorSnackBar(DataSync.syncingErrorMsg);
     } else if (isSelectedAndCancelled()) {
@@ -288,8 +191,8 @@ class _JobCardState extends State<JobCard> {
           const SnackBar(content: Text('Invalid General')),
         );
       } else {
-        if (!JobCard.saveButtonPressed) {
-          JobCard.saveButtonPressed = true;
+        if (!EditJobCard.saveButtonPressed) {
+          EditJobCard.saveButtonPressed = true;
           showLoader(context);
           Position pos = await getCurrentLocation();
           print(pos.latitude.toString());

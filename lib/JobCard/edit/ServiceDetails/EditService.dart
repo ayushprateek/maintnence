@@ -4,9 +4,9 @@ import 'package:maintenance/Component/CustomColor.dart';
 import 'package:maintenance/Component/GetTextField.dart';
 import 'package:maintenance/Component/IsNumeric.dart';
 import 'package:maintenance/Component/SnackbarComponent.dart';
-import 'package:maintenance/JobCard/ItemDetails/ItemDetails.dart';
-import 'package:maintenance/JobCard/JobCard.dart';
-import 'package:maintenance/JobCard/ServiceDetails/ServiceDetails.dart';
+import 'package:maintenance/JobCard/edit/ItemDetails/ItemDetails.dart';
+import 'package:maintenance/JobCard/edit/JobCard.dart';
+import 'package:maintenance/JobCard/edit/ServiceDetails/ServiceDetails.dart';
 import 'package:maintenance/Lookups/SupplierLookup.dart';
 import 'package:maintenance/Sync/SyncModels/MNJCD2.dart';
 import 'package:maintenance/Sync/SyncModels/OCRD.dart';
@@ -147,7 +147,7 @@ class _EditServiceState extends State<EditService> {
                                 //todo: updating
                               }
 
-                            Get.offAll(() => JobCard(2));
+                            Get.offAll(() => EditJobCard(2));
 
                             getSuccessSnackBar("Check List Updated");
                           } else {
@@ -169,7 +169,7 @@ class _EditServiceState extends State<EditService> {
                                 insertedIntoDatabase: false);
                             ServiceDetails.items.add(mncld1);
 
-                            Get.offAll(() => JobCard(2));
+                            Get.offAll(() => EditJobCard(2));
                           }
                         }
                       },

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:maintenance/Component/CustomColor.dart';
 import 'package:maintenance/Component/CustomFont.dart';
-import 'package:maintenance/JobCard/ServiceDetails/AddServiceItem.dart';
+import 'package:maintenance/JobCard/create/ServiceDetails/AddServiceItem.dart';
 import 'package:maintenance/Sync/SyncModels/MNJCD2.dart';
 
 class ServiceDetails extends StatefulWidget {

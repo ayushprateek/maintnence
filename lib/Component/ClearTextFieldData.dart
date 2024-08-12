@@ -41,17 +41,31 @@ import 'package:maintenance/InternalRequest/ItemDetails/EditItems.dart'
     as internalEditItems;
 import 'package:maintenance/InternalRequest/ItemDetails/ItemDetails.dart'
     as internalItemDetails;
-//---------------------------------JOB CARD IMPORTS
-import 'package:maintenance/JobCard/GeneralData.dart' as jcdGenData;
-import 'package:maintenance/JobCard/ItemDetails/EditJobCardItem.dart'
-    as editJCDItems;
-import 'package:maintenance/JobCard/ItemDetails/ItemDetails.dart'
-    as jcdItemDetails;
-import 'package:maintenance/JobCard/JobCard.dart';
-import 'package:maintenance/JobCard/ServiceDetails/EditService.dart'
-    as editJCDService;
-import 'package:maintenance/JobCard/ServiceDetails/ServiceDetails.dart'
-    as jcdServiceDetails;
+//---------------------------------CREATE JOB CARD IMPORTS
+import 'package:maintenance/JobCard/create/GeneralData.dart' as jcdCreateGenData;
+import 'package:maintenance/JobCard/create/ItemDetails/EditJobCardItem.dart' as editCreateJCDItems;
+import 'package:maintenance/JobCard/create/ItemDetails/ItemDetails.dart' as jcdCreateItemDetails;
+import 'package:maintenance/JobCard/create/JobCard.dart';
+import 'package:maintenance/JobCard/create/ServiceDetails/EditService.dart' as editCreateJCDService;
+import 'package:maintenance/JobCard/create/ServiceDetails/ServiceDetails.dart' as jcdCreateServiceDetails;
+import 'package:maintenance/JobCard/edit/JobCard.dart';
+
+//---------------------------------VIEW JOB CARD IMPORTS
+import 'package:maintenance/JobCard/view/GeneralData.dart' as jcdViewGenData;
+import 'package:maintenance/JobCard/view/ItemDetails/EditJobCardItem.dart' as editViewJCDItems;
+import 'package:maintenance/JobCard/view/ItemDetails/ItemDetails.dart' as jcdViewItemDetails;
+import 'package:maintenance/JobCard/view/JobCard.dart';
+
+import 'package:maintenance/JobCard/view/ServiceDetails/EditService.dart' as editViewJCDService;
+import 'package:maintenance/JobCard/view/ServiceDetails/ServiceDetails.dart' as jcdViewServiceDetails;
+
+//---------------------------------EDIT JOB CARD IMPORTS
+import 'package:maintenance/JobCard/edit/GeneralData.dart' as jcdEditGenData;
+import 'package:maintenance/JobCard/edit/ItemDetails/EditJobCardItem.dart' as editEditJCDItems;
+import 'package:maintenance/JobCard/edit/ItemDetails/ItemDetails.dart' as jcdEditItemDetails;
+import 'package:maintenance/JobCard/edit/ServiceDetails/EditService.dart' as editEditJCDService;
+import 'package:maintenance/JobCard/edit/ServiceDetails/ServiceDetails.dart' as jcdEditServiceDetails;
+
 //------------------------------ PURCHASE REQUEST IMPORTS------------
 import 'package:maintenance/Purchase/PurchaseRequest/GeneralData.dart'
     as purchaseGenData;
@@ -365,141 +379,239 @@ navigateToCheckListDocument(
 
 class ClearJobCardDoc {
   static clearGeneralData() {
-    jcdGenData.GeneralData.iD = '';
-    jcdGenData.GeneralData.permanentTransId = '';
-    jcdGenData.GeneralData.transId = '';
-    jcdGenData.GeneralData.docEntry = '';
-    jcdGenData.GeneralData.docNum = '';
-    jcdGenData.GeneralData.canceled = '';
-    jcdGenData.GeneralData.docStatus = 'Open';
-    jcdGenData.GeneralData.approvalStatus = 'Pending';
-    jcdGenData.GeneralData.checkListStatus = 'WIP';
-    jcdGenData.GeneralData.objectCode = '';
-    jcdGenData.GeneralData.equipmentCode = '';
-    jcdGenData.GeneralData.equipmentName = '';
-    jcdGenData.GeneralData.checkListCode = '';
-    jcdGenData.GeneralData.checkListName = '';
-    jcdGenData.GeneralData.workCenterCode = '';
-    jcdGenData.GeneralData.workCenterName = '';
-    jcdGenData.GeneralData.openDate = getFormattedDate(DateTime.now());
-    jcdGenData.GeneralData.closeDate = getFormattedDate(DateTime.now());
-    jcdGenData.GeneralData.postingDate = getFormattedDate(DateTime.now());
-    jcdGenData.GeneralData.validUntill =
+    jcdCreateGenData.GeneralData.iD = '';
+    jcdCreateGenData.GeneralData.permanentTransId = '';
+    jcdCreateGenData.GeneralData.transId = '';
+    jcdCreateGenData.GeneralData.docEntry = '';
+    jcdCreateGenData.GeneralData.docNum = '';
+    jcdCreateGenData.GeneralData.canceled = '';
+    jcdCreateGenData.GeneralData.docStatus = 'Open';
+    jcdCreateGenData.GeneralData.approvalStatus = 'Pending';
+    jcdCreateGenData.GeneralData.checkListStatus = 'WIP';
+    jcdCreateGenData.GeneralData.objectCode = '';
+    jcdCreateGenData.GeneralData.equipmentCode = '';
+    jcdCreateGenData.GeneralData.equipmentName = '';
+    jcdCreateGenData.GeneralData.checkListCode = '';
+    jcdCreateGenData.GeneralData.checkListName = '';
+    jcdCreateGenData.GeneralData.workCenterCode = '';
+    jcdCreateGenData.GeneralData.workCenterName = '';
+    jcdCreateGenData.GeneralData.openDate = getFormattedDate(DateTime.now());
+    jcdCreateGenData.GeneralData.closeDate = getFormattedDate(DateTime.now());
+    jcdCreateGenData.GeneralData.postingDate = getFormattedDate(DateTime.now());
+    jcdCreateGenData.GeneralData.validUntill =
         getFormattedDate(DateTime.now().add(Duration(days: 7)));
-    jcdGenData.GeneralData.lastReadingDate = getFormattedDate(DateTime.now());
-    jcdGenData.GeneralData.lastReading = '';
-    jcdGenData.GeneralData.assignedUserCode = '';
-    jcdGenData.GeneralData.assignedUserName = '';
-    jcdGenData.GeneralData.mNJCTransId = '';
-    jcdGenData.GeneralData.remarks = '';
-    jcdGenData.GeneralData.createdBy = '';
-    jcdGenData.GeneralData.updatedBy = '';
-    jcdGenData.GeneralData.branchId = userModel.BranchId.toString();
-    jcdGenData.GeneralData.createDate = '';
-    jcdGenData.GeneralData.updateDate = '';
+    jcdCreateGenData.GeneralData.lastReadingDate = getFormattedDate(DateTime.now());
+    jcdCreateGenData.GeneralData.lastReading = '';
+    jcdCreateGenData.GeneralData.assignedUserCode = '';
+    jcdCreateGenData.GeneralData.assignedUserName = '';
+    jcdCreateGenData.GeneralData.mNJCTransId = '';
+    jcdCreateGenData.GeneralData.remarks = '';
+    jcdCreateGenData.GeneralData.createdBy = '';
+    jcdCreateGenData.GeneralData.updatedBy = '';
+    jcdCreateGenData.GeneralData.branchId = userModel.BranchId.toString();
+    jcdCreateGenData.GeneralData.createDate = '';
+    jcdCreateGenData.GeneralData.updateDate = '';
 
-    jcdGenData.GeneralData.isConsumption = false;
-    jcdGenData.GeneralData.isRequest = false;
-    jcdGenData.GeneralData.isSelected = false;
-    jcdGenData.GeneralData.hasCreated = false;
-    jcdGenData.GeneralData.hasUpdated = false;
-    jcdGenData.GeneralData.warranty = 'Yes';
-    jcdGenData.GeneralData.type = 'Preventive';
+    jcdCreateGenData.GeneralData.isConsumption = false;
+    jcdCreateGenData.GeneralData.isRequest = false;
+    jcdCreateGenData.GeneralData.isSelected = false;
+    jcdCreateGenData.GeneralData.hasCreated = false;
+    jcdCreateGenData.GeneralData.hasUpdated = false;
+    jcdCreateGenData.GeneralData.warranty = 'Yes';
+    jcdCreateGenData.GeneralData.type = 'Preventive';
   }
 
-  static setGeneralData({required MNOJCD mnojcd}) {
-    jcdGenData.GeneralData.iD = mnojcd.ID?.toString() ?? '';
-    jcdGenData.GeneralData.permanentTransId = mnojcd.PermanentTransId ?? '';
-    jcdGenData.GeneralData.transId = mnojcd.TransId ?? '';
-    jcdGenData.GeneralData.docEntry = mnojcd.DocEntry?.toString() ?? '';
-    jcdGenData.GeneralData.docNum = mnojcd.DocNum?.toString() ?? '';
-    jcdGenData.GeneralData.canceled = mnojcd.Canceled ?? '';
-    jcdGenData.GeneralData.docStatus = mnojcd.DocStatus ?? 'Open';
-    jcdGenData.GeneralData.approvalStatus = mnojcd.ApprovalStatus ?? 'Pending';
+  static setCreateJobCardData({required MNOJCD mnojcd}) {
+    jcdCreateGenData.GeneralData.iD = mnojcd.ID?.toString() ?? '';
+    jcdCreateGenData.GeneralData.permanentTransId = mnojcd.PermanentTransId ?? '';
+    jcdCreateGenData.GeneralData.transId = mnojcd.TransId ?? '';
+    jcdCreateGenData.GeneralData.docEntry = mnojcd.DocEntry?.toString() ?? '';
+    jcdCreateGenData.GeneralData.docNum = mnojcd.DocNum?.toString() ?? '';
+    jcdCreateGenData.GeneralData.canceled = mnojcd.Canceled ?? '';
+    jcdCreateGenData.GeneralData.docStatus = mnojcd.DocStatus ?? 'Open';
+    jcdCreateGenData.GeneralData.approvalStatus = mnojcd.ApprovalStatus ?? 'Pending';
     //todo: SET CHECK LIST STATUS
-    jcdGenData.GeneralData.checkListStatus = 'WIP';
-    jcdGenData.GeneralData.objectCode = mnojcd.ObjectCode ?? '';
-    jcdGenData.GeneralData.equipmentCode = mnojcd.EquipmentCode ?? '';
-    jcdGenData.GeneralData.equipmentName = mnojcd.EquipmentName ?? '';
-    jcdGenData.GeneralData.checkListCode = mnojcd.CheckListCode ?? '';
-    jcdGenData.GeneralData.checkListName = mnojcd.CheckListName ?? '';
-    jcdGenData.GeneralData.workCenterCode = mnojcd.WorkCenterCode ?? '';
-    jcdGenData.GeneralData.workCenterName = mnojcd.WorkCenterName ?? '';
-    jcdGenData.GeneralData.openDate = getFormattedDate(mnojcd.OpenDate);
-    jcdGenData.GeneralData.closeDate = getFormattedDate(mnojcd.CloseDate);
-    jcdGenData.GeneralData.postingDate = getFormattedDate(mnojcd.PostingDate);
-    jcdGenData.GeneralData.validUntill = getFormattedDate(mnojcd.ValidUntill);
-    jcdGenData.GeneralData.lastReadingDate =
+    jcdCreateGenData.GeneralData.checkListStatus = 'WIP';
+    jcdCreateGenData.GeneralData.objectCode = mnojcd.ObjectCode ?? '';
+    jcdCreateGenData.GeneralData.equipmentCode = mnojcd.EquipmentCode ?? '';
+    jcdCreateGenData.GeneralData.equipmentName = mnojcd.EquipmentName ?? '';
+    jcdCreateGenData.GeneralData.checkListCode = mnojcd.CheckListCode ?? '';
+    jcdCreateGenData.GeneralData.checkListName = mnojcd.CheckListName ?? '';
+    jcdCreateGenData.GeneralData.workCenterCode = mnojcd.WorkCenterCode ?? '';
+    jcdCreateGenData.GeneralData.workCenterName = mnojcd.WorkCenterName ?? '';
+    jcdCreateGenData.GeneralData.openDate = getFormattedDate(mnojcd.OpenDate);
+    jcdCreateGenData.GeneralData.closeDate = getFormattedDate(mnojcd.CloseDate);
+    jcdCreateGenData.GeneralData.postingDate = getFormattedDate(mnojcd.PostingDate);
+    jcdCreateGenData.GeneralData.validUntill = getFormattedDate(mnojcd.ValidUntill);
+    jcdCreateGenData.GeneralData.lastReadingDate =
         getFormattedDate(mnojcd.LastReading);
     // jcdGenData.GeneralData.lastReading = mnojcd.LastReading??'';
-    jcdGenData.GeneralData.assignedUserCode = mnojcd.AssignedUserCode ?? '';
-    jcdGenData.GeneralData.assignedUserName = mnojcd.AssignedUserName ?? '';
+    jcdCreateGenData.GeneralData.assignedUserCode = mnojcd.AssignedUserCode ?? '';
+    jcdCreateGenData.GeneralData.assignedUserName = mnojcd.AssignedUserName ?? '';
     // jcdGenData.GeneralData.mNJCTransId = mnojcd.MNJ??'';
-    jcdGenData.GeneralData.remarks = mnojcd.Remarks ?? '';
-    jcdGenData.GeneralData.createdBy = mnojcd.CreatedBy ?? '';
-    jcdGenData.GeneralData.updatedBy = mnojcd.UpdatedBy ?? '';
-    jcdGenData.GeneralData.branchId = mnojcd.BranchId ?? '';
-    jcdGenData.GeneralData.createDate = getFormattedDate(mnojcd.CreateDate);
-    jcdGenData.GeneralData.updateDate = getFormattedDate(mnojcd.UpdateDate);
+    jcdCreateGenData.GeneralData.remarks = mnojcd.Remarks ?? '';
+    jcdCreateGenData.GeneralData.createdBy = mnojcd.CreatedBy ?? '';
+    jcdCreateGenData.GeneralData.updatedBy = mnojcd.UpdatedBy ?? '';
+    jcdCreateGenData.GeneralData.branchId = mnojcd.BranchId ?? '';
+    jcdCreateGenData.GeneralData.createDate = getFormattedDate(mnojcd.CreateDate);
+    jcdCreateGenData.GeneralData.updateDate = getFormattedDate(mnojcd.UpdateDate);
 
-    jcdGenData.GeneralData.isConsumption = mnojcd.IsConsumption ?? false;
-    jcdGenData.GeneralData.isRequest = mnojcd.IsRequest ?? false;
-    jcdGenData.GeneralData.isSelected = true;
-    jcdGenData.GeneralData.hasCreated = mnojcd.hasCreated;
-    jcdGenData.GeneralData.hasUpdated = mnojcd.hasUpdated;
-    jcdGenData.GeneralData.warranty =
+    jcdCreateGenData.GeneralData.isConsumption = mnojcd.IsConsumption ?? false;
+    jcdCreateGenData.GeneralData.isRequest = mnojcd.IsRequest ?? false;
+    jcdCreateGenData.GeneralData.isSelected = true;
+    jcdCreateGenData.GeneralData.hasCreated = mnojcd.hasCreated;
+    jcdCreateGenData.GeneralData.hasUpdated = mnojcd.hasUpdated;
+    jcdCreateGenData.GeneralData.warranty =
         mnojcd.WarrentyApplicable == true ? 'Yes' : 'No';
-    jcdGenData.GeneralData.type = mnojcd.Type ?? 'Preventive';
+    jcdCreateGenData.GeneralData.type = mnojcd.Type ?? 'Preventive';
     if (mnojcd.Type == 'True') {
-      jcdGenData.GeneralData.type = 'Preventive';
+      jcdCreateGenData.GeneralData.type = 'Preventive';
     } else if (mnojcd.Type == 'False') {
-      jcdGenData.GeneralData.type = 'Breakdown';
+      jcdCreateGenData.GeneralData.type = 'Breakdown';
+    }
+  }
+  static setViewJobCardData({required MNOJCD mnojcd}) {
+    jcdViewGenData.GeneralData.iD = mnojcd.ID?.toString() ?? '';
+    jcdViewGenData.GeneralData.permanentTransId = mnojcd.PermanentTransId ?? '';
+    jcdViewGenData.GeneralData.transId = mnojcd.TransId ?? '';
+    jcdViewGenData.GeneralData.docEntry = mnojcd.DocEntry?.toString() ?? '';
+    jcdViewGenData.GeneralData.docNum = mnojcd.DocNum?.toString() ?? '';
+    jcdViewGenData.GeneralData.canceled = mnojcd.Canceled ?? '';
+    jcdViewGenData.GeneralData.docStatus = mnojcd.DocStatus ?? 'Open';
+    jcdViewGenData.GeneralData.approvalStatus = mnojcd.ApprovalStatus ?? 'Pending';
+    //todo: SET CHECK LIST STATUS
+    jcdViewGenData.GeneralData.checkListStatus = 'WIP';
+    jcdViewGenData.GeneralData.objectCode = mnojcd.ObjectCode ?? '';
+    jcdViewGenData.GeneralData.equipmentCode = mnojcd.EquipmentCode ?? '';
+    jcdViewGenData.GeneralData.equipmentName = mnojcd.EquipmentName ?? '';
+    jcdViewGenData.GeneralData.checkListCode = mnojcd.CheckListCode ?? '';
+    jcdViewGenData.GeneralData.checkListName = mnojcd.CheckListName ?? '';
+    jcdViewGenData.GeneralData.workCenterCode = mnojcd.WorkCenterCode ?? '';
+    jcdViewGenData.GeneralData.workCenterName = mnojcd.WorkCenterName ?? '';
+    jcdViewGenData.GeneralData.openDate = getFormattedDate(mnojcd.OpenDate);
+    jcdViewGenData.GeneralData.closeDate = getFormattedDate(mnojcd.CloseDate);
+    jcdViewGenData.GeneralData.postingDate = getFormattedDate(mnojcd.PostingDate);
+    jcdViewGenData.GeneralData.validUntill = getFormattedDate(mnojcd.ValidUntill);
+    jcdViewGenData.GeneralData.lastReadingDate =
+        getFormattedDate(mnojcd.LastReading);
+    // jcdGenData.GeneralData.lastReading = mnojcd.LastReading??'';
+    jcdViewGenData.GeneralData.assignedUserCode = mnojcd.AssignedUserCode ?? '';
+    jcdViewGenData.GeneralData.assignedUserName = mnojcd.AssignedUserName ?? '';
+    // jcdGenData.GeneralData.mNJCTransId = mnojcd.MNJ??'';
+    jcdViewGenData.GeneralData.remarks = mnojcd.Remarks ?? '';
+    jcdViewGenData.GeneralData.createdBy = mnojcd.CreatedBy ?? '';
+    jcdViewGenData.GeneralData.updatedBy = mnojcd.UpdatedBy ?? '';
+    jcdViewGenData.GeneralData.branchId = mnojcd.BranchId ?? '';
+    jcdViewGenData.GeneralData.createDate = getFormattedDate(mnojcd.CreateDate);
+    jcdViewGenData.GeneralData.updateDate = getFormattedDate(mnojcd.UpdateDate);
+
+    jcdViewGenData.GeneralData.isConsumption = mnojcd.IsConsumption ?? false;
+    jcdViewGenData.GeneralData.isRequest = mnojcd.IsRequest ?? false;
+    jcdViewGenData.GeneralData.isSelected = true;
+    jcdViewGenData.GeneralData.hasCreated = mnojcd.hasCreated;
+    jcdViewGenData.GeneralData.hasUpdated = mnojcd.hasUpdated;
+    jcdViewGenData.GeneralData.warranty =
+        mnojcd.WarrentyApplicable == true ? 'Yes' : 'No';
+    jcdViewGenData.GeneralData.type = mnojcd.Type ?? 'Preventive';
+    if (mnojcd.Type == 'True') {
+      jcdViewGenData.GeneralData.type = 'Preventive';
+    } else if (mnojcd.Type == 'False') {
+      jcdViewGenData.GeneralData.type = 'Breakdown';
+    }
+  }
+  static setEditJobCardData({required MNOJCD mnojcd}) {
+    jcdEditGenData.GeneralData.iD = mnojcd.ID?.toString() ?? '';
+    jcdEditGenData.GeneralData.permanentTransId = mnojcd.PermanentTransId ?? '';
+    jcdEditGenData.GeneralData.transId = mnojcd.TransId ?? '';
+    jcdEditGenData.GeneralData.docEntry = mnojcd.DocEntry?.toString() ?? '';
+    jcdEditGenData.GeneralData.docNum = mnojcd.DocNum?.toString() ?? '';
+    jcdEditGenData.GeneralData.canceled = mnojcd.Canceled ?? '';
+    jcdEditGenData.GeneralData.docStatus = mnojcd.DocStatus ?? 'Open';
+    jcdEditGenData.GeneralData.approvalStatus = mnojcd.ApprovalStatus ?? 'Pending';
+    //todo: SET CHECK LIST STATUS
+    jcdEditGenData.GeneralData.checkListStatus = 'WIP';
+    jcdEditGenData.GeneralData.objectCode = mnojcd.ObjectCode ?? '';
+    jcdEditGenData.GeneralData.equipmentCode = mnojcd.EquipmentCode ?? '';
+    jcdEditGenData.GeneralData.equipmentName = mnojcd.EquipmentName ?? '';
+    jcdEditGenData.GeneralData.checkListCode = mnojcd.CheckListCode ?? '';
+    jcdEditGenData.GeneralData.checkListName = mnojcd.CheckListName ?? '';
+    jcdEditGenData.GeneralData.workCenterCode = mnojcd.WorkCenterCode ?? '';
+    jcdEditGenData.GeneralData.workCenterName = mnojcd.WorkCenterName ?? '';
+    jcdEditGenData.GeneralData.openDate = getFormattedDate(mnojcd.OpenDate);
+    jcdEditGenData.GeneralData.closeDate = getFormattedDate(mnojcd.CloseDate);
+    jcdEditGenData.GeneralData.postingDate = getFormattedDate(mnojcd.PostingDate);
+    jcdEditGenData.GeneralData.validUntill = getFormattedDate(mnojcd.ValidUntill);
+    jcdEditGenData.GeneralData.lastReadingDate =
+        getFormattedDate(mnojcd.LastReading);
+    // jcdGenData.GeneralData.lastReading = mnojcd.LastReading??'';
+    jcdEditGenData.GeneralData.assignedUserCode = mnojcd.AssignedUserCode ?? '';
+    jcdEditGenData.GeneralData.assignedUserName = mnojcd.AssignedUserName ?? '';
+    // jcdGenData.GeneralData.mNJCTransId = mnojcd.MNJ??'';
+    jcdEditGenData.GeneralData.remarks = mnojcd.Remarks ?? '';
+    jcdEditGenData.GeneralData.createdBy = mnojcd.CreatedBy ?? '';
+    jcdEditGenData.GeneralData.updatedBy = mnojcd.UpdatedBy ?? '';
+    jcdEditGenData.GeneralData.branchId = mnojcd.BranchId ?? '';
+    jcdEditGenData.GeneralData.createDate = getFormattedDate(mnojcd.CreateDate);
+    jcdEditGenData.GeneralData.updateDate = getFormattedDate(mnojcd.UpdateDate);
+
+    jcdEditGenData.GeneralData.isConsumption = mnojcd.IsConsumption ?? false;
+    jcdEditGenData.GeneralData.isRequest = mnojcd.IsRequest ?? false;
+    jcdEditGenData.GeneralData.isSelected = true;
+    jcdEditGenData.GeneralData.hasCreated = mnojcd.hasCreated;
+    jcdEditGenData.GeneralData.hasUpdated = mnojcd.hasUpdated;
+    jcdEditGenData.GeneralData.warranty =
+        mnojcd.WarrentyApplicable == true ? 'Yes' : 'No';
+    jcdEditGenData.GeneralData.type = mnojcd.Type ?? 'Preventive';
+    if (mnojcd.Type == 'True') {
+      jcdEditGenData.GeneralData.type = 'Preventive';
+    } else if (mnojcd.Type == 'False') {
+      jcdEditGenData.GeneralData.type = 'Breakdown';
     }
   }
 
   static clearEditItems() {
-    editJCDItems.EditJobCardItem.id = '';
-    editJCDItems.EditJobCardItem.transId = '';
-    editJCDItems.EditJobCardItem.rowId = '';
-    editJCDItems.EditJobCardItem.itemCode = '';
-    editJCDItems.EditJobCardItem.itemName = '';
-    editJCDItems.EditJobCardItem.quantity = '';
-    editJCDItems.EditJobCardItem.uomCode = '';
-    editJCDItems.EditJobCardItem.uomName = '';
-    editJCDItems.EditJobCardItem.supplierName = '';
-    editJCDItems.EditJobCardItem.supplierCode = '';
-    editJCDItems.EditJobCardItem.requiredDate = '';
-    editJCDItems.EditJobCardItem.isChecked = false;
-    editJCDItems.EditJobCardItem.fromStock = false;
-    editJCDItems.EditJobCardItem.consumption = false;
-    editJCDItems.EditJobCardItem.request = false;
-    editJCDItems.EditJobCardItem.isUpdating = false;
+    editCreateJCDItems.EditJobCardItem.id = '';
+    editCreateJCDItems.EditJobCardItem.transId = '';
+    editCreateJCDItems.EditJobCardItem.rowId = '';
+    editCreateJCDItems.EditJobCardItem.itemCode = '';
+    editCreateJCDItems.EditJobCardItem.itemName = '';
+    editCreateJCDItems.EditJobCardItem.quantity = '';
+    editCreateJCDItems.EditJobCardItem.uomCode = '';
+    editCreateJCDItems.EditJobCardItem.uomName = '';
+    editCreateJCDItems.EditJobCardItem.supplierName = '';
+    editCreateJCDItems.EditJobCardItem.supplierCode = '';
+    editCreateJCDItems.EditJobCardItem.requiredDate = '';
+    editCreateJCDItems.EditJobCardItem.isChecked = false;
+    editCreateJCDItems.EditJobCardItem.fromStock = false;
+    editCreateJCDItems.EditJobCardItem.consumption = false;
+    editCreateJCDItems.EditJobCardItem.request = false;
+    editCreateJCDItems.EditJobCardItem.isUpdating = false;
   }
 
   static clearEditService() {
-    editJCDService.EditService.id = '';
-    editJCDService.EditService.transId = '';
-    editJCDService.EditService.rowId = '';
-    editJCDService.EditService.serviceCode = '';
-    editJCDService.EditService.serviceName = '';
-    editJCDService.EditService.infoPrice = '';
-    editJCDService.EditService.supplierName = '';
-    editJCDService.EditService.supplierCode = '';
-    editJCDService.EditService.isUpdating = false;
-    editJCDService.EditService.isSendable = false;
+    editCreateJCDService.EditService.id = '';
+    editCreateJCDService.EditService.transId = '';
+    editCreateJCDService.EditService.rowId = '';
+    editCreateJCDService.EditService.serviceCode = '';
+    editCreateJCDService.EditService.serviceName = '';
+    editCreateJCDService.EditService.infoPrice = '';
+    editCreateJCDService.EditService.supplierName = '';
+    editCreateJCDService.EditService.supplierCode = '';
+    editCreateJCDService.EditService.isUpdating = false;
+    editCreateJCDService.EditService.isSendable = false;
   }
 }
 
 goToNewJobCardDocument() async {
   await ClearJobCardDoc.clearGeneralData();
-  jcdItemDetails.ItemDetails.items.clear();
-  jcdServiceDetails.ServiceDetails.items.clear();
+  jcdCreateItemDetails.ItemDetails.items.clear();
+  jcdCreateServiceDetails.ServiceDetails.items.clear();
   getLastDocNum("MNJC", null).then((snapshot) async {
     int DocNum = snapshot[0].DocNumber - 1;
 
     do {
       DocNum += 1;
-      jcdGenData.GeneralData.transId =
+      jcdCreateGenData.GeneralData.transId =
           DateTime.now().millisecondsSinceEpoch.toString() +
               "U0" +
               userModel.ID.toString() +
@@ -508,24 +620,41 @@ goToNewJobCardDocument() async {
               "/" +
               DocNum.toString();
     } while (await isMNCLTransIdAvailable(
-        null, jcdGenData.GeneralData.transId ?? ""));
-    print(jcdGenData.GeneralData.transId);
+        null, jcdCreateGenData.GeneralData.transId ?? ""));
+    print(jcdCreateGenData.GeneralData.transId);
 
     Get.offAll(() => JobCard(0));
   });
 }
 
-navigateToJobCardDocument({required String TransId}) async {
-  List<MNOJCD> list = await retrieveMNOJCDById(null, 'TransId = ?', [TransId]);
-  if (list.isNotEmpty) {
-    ClearJobCardDoc.setGeneralData(mnojcd: list[0]);
-  }
-  jcdItemDetails.ItemDetails.items =
+navigateToJobCardDocument({required String TransId,
+required bool isView}) async {
+  if(isView)
+    {
+      List<MNOJCD> list = await retrieveMNOJCDById(null, 'TransId = ?', [TransId]);
+      if (list.isNotEmpty) {
+        ClearJobCardDoc.setViewJobCardData(mnojcd: list[0]);
+      }
+      jcdCreateItemDetails.ItemDetails.items =
       await retrieveMNJCD1ById(null, 'TransId = ?', [TransId]);
-  jcdServiceDetails.ServiceDetails.items =
+      jcdCreateServiceDetails.ServiceDetails.items =
       await retrieveMNJCD2ById(null, 'TransId = ?', [TransId]);
 
-  Get.offAll(() => JobCard(0));
+      Get.offAll(() => ViewJobCard(0));
+    }
+  else{
+    List<MNOJCD> list = await retrieveMNOJCDById(null, 'TransId = ?', [TransId]);
+    if (list.isNotEmpty) {
+      ClearJobCardDoc.setEditJobCardData(mnojcd: list[0]);
+    }
+    jcdCreateItemDetails.ItemDetails.items =
+    await retrieveMNJCD1ById(null, 'TransId = ?', [TransId]);
+    jcdCreateServiceDetails.ServiceDetails.items =
+    await retrieveMNJCD2ById(null, 'TransId = ?', [TransId]);
+
+    Get.offAll(() => EditJobCard(0));
+  }
+  
 }
 
 class ClearGoodsIssueDocument {

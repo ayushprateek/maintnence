@@ -14,7 +14,7 @@ import 'package:maintenance/Component/GetTextField.dart';
 import 'package:maintenance/Component/SnackbarComponent.dart';
 import 'package:maintenance/Sync/CustomURL.dart';
 import 'package:maintenance/Sync/SyncModels/MNJCD3.dart';
-import 'package:maintenance/JobCard/GeneralData.dart';
+import 'package:maintenance/JobCard/view/GeneralData.dart';
 class Attachments extends StatefulWidget {
   static List<MNJCD3> attachments = [];
   static String? attachment, docName, rowId, Remarks;

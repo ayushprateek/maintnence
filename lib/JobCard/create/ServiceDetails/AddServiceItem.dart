@@ -5,16 +5,17 @@ import 'package:maintenance/Component/CustomColor.dart';
 import 'package:maintenance/Component/CustomFont.dart';
 import 'package:maintenance/Component/GetTextField.dart';
 import 'package:maintenance/Component/SnackbarComponent.dart';
-import 'package:maintenance/JobCard/create/ItemDetails/ItemDetails.dart';
-import 'package:maintenance/JobCard/create/ItemDetails/EditJobCardItem.dart';
+import 'package:maintenance/JobCard/create/ServiceDetails/EditService.dart';
+import 'package:maintenance/JobCard/create/ServiceDetails/ServiceDetails.dart';
+import 'package:maintenance/JobCard/create/GeneralData.dart';
 import 'package:maintenance/Sync/SyncModels/OITM.dart';
 
-class AddItem extends StatefulWidget {
+class AddServiceItem extends StatefulWidget {
   @override
-  _AddItemState createState() => _AddItemState();
+  _AddServiceItemState createState() => _AddServiceItemState();
 }
 
-class _AddItemState extends State<AddItem> {
+class _AddServiceItemState extends State<AddServiceItem> {
   ScrollController _scrollController = ScrollController();
   final TextEditingController _query = TextEditingController();
   int _currentMax = 15;
@@ -41,7 +42,7 @@ class _AddItemState extends State<AddItem> {
       appBar: AppBar(
         backgroundColor: barColor,
         title: Text(
-          "Select Item",
+          "Add Service",
           style: TextStyle(color: Colors.white),
         ),
       ),
@@ -193,21 +194,46 @@ class _AddItemState extends State<AddItem> {
                             }
                             if (_query.text.isNotEmpty
                                 ? (snapshot.data![index].ItemCode
-                                .toString()
-                                .toUpperCase()
-                                .contains(_query.text
-                                .toString()
-                                .toUpperCase()) ||
-                                snapshot.data![index].ItemName
-                                    .toString()
-                                    .toUpperCase()
-                                    .contains(_query.text
-                                    .toString()
-                                    .toUpperCase()))
+                                        .toString()
+                                        .toUpperCase()
+                                        .contains(_query.text
+                                            .toString()
+                                            .toUpperCase()) ||
+                                    snapshot.data![index].ItemName
+                                        .toString()
+                                        .toUpperCase()
+                                        .contains(_query.text
+                                            .toString()
+                                            .toUpperCase()))
                                 : true) {
                               return InkWell(
                                 onDoubleTap: () {
-
+                                  bool isAdded = false;
+                                  for (int i = 0;
+                                      i < ServiceDetails.items.length;
+                                      i++) {
+                                    if (snapshot.data![index].ItemCode ==
+                                        ServiceDetails.items[i].ServiceCode) {
+                                      isAdded = true;
+                                      break;
+                                    }
+                                  }
+                                  if (isAdded) {
+                                    getErrorSnackBar(
+                                        snapshot.data![index].ItemName +
+                                            " is already added");
+                                  }
+                                  else
+                                  {
+                                    ClearJobCardDoc.clearEditService();
+                                    EditService.serviceCode =
+                                        snapshot.data![index].ItemCode;
+                                    EditService.transId =
+                                        GeneralData.transId;
+                                    EditService.serviceName =
+                                        snapshot.data![index].ItemName;
+                                    Get.to(() => EditService());
+                                  }
                                 },
                                 child: Container(
                                   decoration: BoxDecoration(
@@ -236,13 +262,13 @@ class _AddItemState extends State<AddItem> {
                                               alignment: Alignment.topLeft,
                                               child: getHeadingText(
                                                 text: snapshot.data![index]
-                                                    .ItemCode
-                                                    .toString() ==
-                                                    ""
+                                                            .ItemCode
+                                                            .toString() ==
+                                                        ""
                                                     ? "ABC"
                                                     : snapshot
-                                                    .data![index].ItemCode
-                                                    .toString(),
+                                                        .data![index].ItemCode
+                                                        .toString(),
                                               ),
                                             ),
                                           ),
