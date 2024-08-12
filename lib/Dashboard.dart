@@ -128,7 +128,7 @@ FROM
     LEFT JOIN MNOCLT MNOCLT ON MNOCLT.Code = MNVCL1.CheckListCode
 WHERE 
    --(julianday('now') - julianday(IFNULL(MNOCLD.PostingDate, '1990-12-12'))) > MNOCLT.UnitValue AND
-     MNOCLT.CheckType = 'Others'
+     MNOCLT.CheckType = 'Preventive'
     ''';
     List dataList = await db.rawQuery(query);
     print(dataList);
