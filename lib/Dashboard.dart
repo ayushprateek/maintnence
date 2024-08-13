@@ -341,7 +341,8 @@ WHERE
           Description: mnclm1.CheckListDesc,
           Remarks: mnclm1.Remarks,
           ConsumptionQty: mnclm1.Quantity,
-          insertedIntoDatabase: false
+          insertedIntoDatabase: false,
+          Attachment: mnclm1.Attachment
         ));
       }
       Get.to(() => CheckListDocument(0));
