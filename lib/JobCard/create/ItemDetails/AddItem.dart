@@ -225,8 +225,8 @@ class _AddItemState extends State<AddItem> {
                                             " is already added");
                                   } else {
                                     ClearJobCardDoc.clearEditItems();
-                                    EditJobCardItem.transId =
-                                        GeneralData.transId;
+                                    EditJobCardItem.transId = GeneralData.transId;
+                                    EditJobCardItem.isUpdating = false;
                                     EditJobCardItem.itemCode =
                                         snapshot.data![index].ItemCode;
                                     EditJobCardItem.itemName =

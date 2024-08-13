@@ -501,7 +501,7 @@ class ClearJobCardDoc {
     jcdCreateGenData.GeneralData.validUntill =
         getFormattedDate(mnojcd.ValidUntill);
     jcdCreateGenData.GeneralData.lastReadingDate =
-        getFormattedDate(mnojcd.LastReading);
+        getFormattedDate(mnojcd.LastReadingDate);
     // jcdGenData.GeneralData.lastReading = mnojcd.LastReading??'';
     jcdCreateGenData.GeneralData.assignedUserCode =
         mnojcd.AssignedUserCode ?? '';
@@ -558,7 +558,7 @@ class ClearJobCardDoc {
     jcdViewGenData.GeneralData.validUntill =
         getFormattedDate(mnojcd.ValidUntill);
     jcdViewGenData.GeneralData.lastReadingDate =
-        getFormattedDate(mnojcd.LastReading);
+        getFormattedDate(mnojcd.LastReadingDate);
     // jcdGenData.GeneralData.lastReading = mnojcd.LastReading??'';
     jcdViewGenData.GeneralData.assignedUserCode = mnojcd.AssignedUserCode ?? '';
     jcdViewGenData.GeneralData.assignedUserName = mnojcd.AssignedUserName ?? '';
@@ -611,7 +611,7 @@ class ClearJobCardDoc {
     jcdEditGenData.GeneralData.validUntill =
         getFormattedDate(mnojcd.ValidUntill);
     jcdEditGenData.GeneralData.lastReadingDate =
-        getFormattedDate(mnojcd.LastReading);
+        getFormattedDate(mnojcd.LastReadingDate);
     // jcdGenData.GeneralData.lastReading = mnojcd.LastReading??'';
     jcdEditGenData.GeneralData.assignedUserCode = mnojcd.AssignedUserCode ?? '';
     jcdEditGenData.GeneralData.assignedUserName = mnojcd.AssignedUserName ?? '';

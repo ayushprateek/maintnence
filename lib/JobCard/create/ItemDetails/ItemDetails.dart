@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:maintenance/Component/ClearTextFieldData.dart';
 import 'package:maintenance/Component/CustomColor.dart';
 import 'package:maintenance/Component/CustomFont.dart';
 import 'package:maintenance/Component/GetFormattedDate.dart';
+import 'package:maintenance/DatabaseInitialization.dart';
 import 'package:maintenance/JobCard/create/ItemDetails/AddItem.dart';
+import 'package:maintenance/JobCard/create/ItemDetails/EditJobCardItem.dart';
+import 'package:maintenance/JobCard/create/GeneralData.dart';
 import 'package:maintenance/Sync/SyncModels/MNJCD1.dart';
+import 'package:maintenance/Sync/SyncModels/OUOM.dart';
+import 'package:sqflite/sqflite.dart';
 
 class ItemDetails extends StatefulWidget {
   const ItemDetails({super.key});
@@ -80,47 +86,31 @@ class _ItemDetailsState extends State<ItemDetails> {
 
                           children: [
                             InkWell(
-                              // onDoubleTap: () {
-                              //   if (isSelectedAndCancelled() ||
-                              //       isSalesQuotationDocClosed()) {
-                              //     getErrorSnackBar(
-                              //         "This Document is already cancelled / closed");
-                              //   } else {
-                              //     EditItems.isInserted =
-                              //         ItemDetails.items[index].insertedIntoDatabase;
-                              //     EditItems.TaxCode =
-                              //         ItemDetails.items[index].TaxCode.toString();
-                              //     EditItems.TaxRate =
-                              //         ItemDetails.items[index].TaxRate;
-                              //     Navigator.push(
-                              //         context,
-                              //         MaterialPageRoute(
-                              //             builder: ((context) => EditItems(
-                              //                 ItemDetails.items[index].ID ?? 0,
-                              //                 1,
-                              //                 ItemDetails.items[index].WhsCode ??
-                              //                     '',
-                              //                 ItemDetails.items[index].TransId ??
-                              //                     '',
-                              //                 ItemDetails.items[index].ItemCode ??
-                              //                     '',
-                              //                 ItemDetails.items[index].ItemName ??
-                              //                     '',
-                              //                 ItemDetails.items[index].UOM ?? '',
-                              //                 ItemDetails.items[index].TaxCode ??
-                              //                     '',
-                              //                 ItemDetails.items[index].Quantity ??
-                              //                     0.0,
-                              //                 ItemDetails.items[index].Price ?? 0.0,
-                              //                 ItemDetails.items[index].TaxRate ??
-                              //                     0.0,
-                              //                 ItemDetails.items[index].Discount ??
-                              //                     0.0,
-                              //                 ItemDetails.items[index].LineTotal ??
-                              //                     0.0,
-                              //                 true))));
-                              //   }
-                              // },
+                              onDoubleTap: () async{
+                                ClearJobCardDoc.clearEditItems();
+                                List<OUOMModel> uomList=await retrieveOUOMById(null, 'UomCode = ?', [mnjcd1.UOM]);
+                                if(uomList.isNotEmpty)
+                                  {
+                                    EditJobCardItem.uomName=uomList[0].UomName;
+                                  }
+
+                                EditJobCardItem.transId =
+                                    GeneralData.transId;
+                                EditJobCardItem.itemCode =
+                                    mnjcd1.ItemCode;
+                                EditJobCardItem.itemName =
+                                    mnjcd1.ItemName;
+                                EditJobCardItem.requiredDate = getFormattedDate(mnjcd1.RequestDate);
+                                EditJobCardItem.quantity = mnjcd1.Quantity?.toStringAsFixed(2);
+                                EditJobCardItem.uomCode = mnjcd1.UOM;
+                                EditJobCardItem.supplierCode = mnjcd1.SupplierCode;
+                                EditJobCardItem.supplierName = mnjcd1.SupplierName;
+                                EditJobCardItem.fromStock = mnjcd1.IsFromStock;
+                                EditJobCardItem.consumption = mnjcd1.IsConsumption;
+                                EditJobCardItem.request = mnjcd1.IsRequest;
+                                EditJobCardItem.isUpdating = true;
+                                Get.to(() => EditJobCardItem());
+                              },
                               child: Container(
                                 decoration: BoxDecoration(
                                   color: Colors.white,

@@ -32,7 +32,7 @@ class MNOJCD {
   DateTime? OpenDate;
   DateTime? CloseDate;
   DateTime? LastReadingDate;
-  DateTime? LastReading;
+  double? LastReading;
   String? AssignedUserCode;
   String? AssignedUserName;
   bool? WarrentyApplicable;
@@ -113,7 +113,7 @@ class MNOJCD {
         OpenDate: DateTime.tryParse(json['OpenDate'].toString()),
         CloseDate: DateTime.tryParse(json['CloseDate'].toString()),
         LastReadingDate: DateTime.tryParse(json['LastReadingDate'].toString()),
-        LastReading: DateTime.tryParse(json['LastReading'].toString()),
+        LastReading: double.tryParse(json['LastReading'].toString()),
         AssignedUserCode: json['AssignedUserCode']?.toString() ?? '',
         AssignedUserName: json['AssignedUserName']?.toString() ?? '',
         WarrentyApplicable: json['WarrentyApplicable'] is bool
@@ -160,7 +160,7 @@ class MNOJCD {
         'OpenDate': OpenDate?.toIso8601String(),
         'CloseDate': CloseDate?.toIso8601String(),
         'LastReadingDate': LastReadingDate?.toIso8601String(),
-        'LastReading': LastReading?.toIso8601String(),
+        'LastReading': LastReading,
         'AssignedUserCode': AssignedUserCode,
         'AssignedUserName': AssignedUserName,
         'WarrentyApplicable': WarrentyApplicable,
