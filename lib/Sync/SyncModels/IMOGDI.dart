@@ -48,6 +48,8 @@ class IMOGDI {
   String? TripTransId;
   String? DeptCode;
   String? DeptName;
+  String? AdditionalStatus;
+  String? BaseTab;
   bool hasCreated;
   bool hasUpdated;
 
@@ -77,7 +79,7 @@ class IMOGDI {
     this.UpdateDate,
     this.ApprovedBy,
     this.Error,
-    this.IsPosted,
+    this.IsPosted ,
     this.DraftKey,
     this.Latitude,
     this.Longitude,
@@ -90,6 +92,8 @@ class IMOGDI {
     this.TripTransId,
     this.DeptCode,
     this.DeptName,
+    this.AdditionalStatus,
+    this.BaseTab,
     this.hasCreated = false,
     this.hasUpdated = false,
   });
@@ -134,6 +138,8 @@ class IMOGDI {
         TripTransId: json['TripTransId'],
         DeptCode: json['DeptCode'],
         DeptName: json['DeptName'],
+        AdditionalStatus: json['AdditionalStatus'],
+        BaseTab: json['BaseTab'],
         hasCreated: json['has_created'] == 1,
         hasUpdated: json['has_updated'] == 1,
       );
@@ -164,7 +170,7 @@ class IMOGDI {
         'UpdateDate': UpdateDate?.toIso8601String(),
         'ApprovedBy': ApprovedBy,
         'Error': Error,
-        'IsPosted': IsPosted,
+        'IsPosted': IsPosted == 1 ? 1 : 0,
         'DraftKey': DraftKey,
         'Latitude': Latitude,
         'Longitude': Longitude,
@@ -177,8 +183,10 @@ class IMOGDI {
         'TripTransId': TripTransId,
         'DeptCode': DeptCode,
         'DeptName': DeptName,
-        "has_created": hasCreated ? 1 : 0,
-        "has_updated": hasUpdated ? 1 : 0,
+        'AdditionalStatus': AdditionalStatus,
+        'BaseTab': BaseTab,
+        'has_created': hasCreated ? 1 : 0,
+        'has_updated': hasUpdated ? 1 : 0,
       };
 }
 
@@ -376,11 +384,9 @@ Future<String> insertIMOGDIToServer(BuildContext? context,
           map["ID"] = model.ID;
           map["has_created"] = 0;
           var x = await db.update("IMGDI1", map,
-              where: "TransId = ?",
-              whereArgs: [model.TransId]);
+              where: "TransId = ?", whereArgs: [model.TransId]);
           print(x.toString());
-        } else
-        if (res.statusCode == 201 || res.statusCode == 500) {
+        } else if (res.statusCode == 201 || res.statusCode == 500) {
           sentSuccessInServer = true;
           if (res.statusCode == 201) {
             map['ID'] = jsonDecode(res.body)['ID'];

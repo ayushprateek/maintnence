@@ -39,6 +39,10 @@ class IMGDI1 {
   String? RouteName;
   String? DeptCode;
   String? DeptName;
+  String? BaseTransId;
+  int? BaseRowId;
+  String? AdditionalStatus;
+  String? BaseTab;
   bool hasCreated;
   bool hasUpdated;
   bool insertedIntoDatabase;
@@ -73,6 +77,10 @@ class IMGDI1 {
     this.RouteName,
     this.DeptCode,
     this.DeptName,
+    this.BaseTransId,
+    this.BaseRowId,
+    this.AdditionalStatus,
+    this.BaseTab,
     this.hasCreated = false,
     this.hasUpdated = false,
     this.insertedIntoDatabase = true,
@@ -108,6 +116,10 @@ class IMGDI1 {
         RouteName: json['RouteName'],
         DeptCode: json['DeptCode'],
         DeptName: json['DeptName'],
+        BaseTransId: json['BaseTransId'],
+        BaseRowId: int.tryParse(json['BaseRowId'].toString()) ?? 0,
+        AdditionalStatus: json['AdditionalStatus'],
+        BaseTab: json['BaseTab'],
         hasCreated: json['has_created'] == 1,
         hasUpdated: json['has_updated'] == 1,
       );
@@ -142,6 +154,10 @@ class IMGDI1 {
         'RouteName': RouteName,
         'DeptCode': DeptCode,
         'DeptName': DeptName,
+        'BaseTransId': BaseTransId,
+        'BaseRowId': BaseRowId,
+        'AdditionalStatus': AdditionalStatus,
+        'BaseTab': BaseTab,
         "has_created": hasCreated ? 1 : 0,
         "has_updated": hasUpdated ? 1 : 0,
       };
@@ -219,8 +235,8 @@ Future<void> insertIMGDI1(Database db, {List? list}) async {
         try {
           batch.update("IMGDI1", element,
               where:
-                  "TransId = ? AND ifnull(has_created,0) <> ? AND ifnull(has_updated,0) <> ?",
-              whereArgs: [element["TransId"], 1, 1]);
+                  "TransId = ? AND RowId = ? AND ifnull(has_created,0) <> ? AND ifnull(has_updated,0) <> ?",
+              whereArgs: [element["TransId"], element["RowId"], 1, 1]);
         } catch (e) {
           writeToLogFile(
               text: e.toString(),
@@ -237,12 +253,11 @@ Future<void> insertIMGDI1(Database db, {List? list}) async {
   print('Time taken for IMGDI1 update: ${stopwatch.elapsedMilliseconds}ms');
   stopwatch.reset();
   stopwatch.start();
-  // var v = await db.rawQuery("Select * from IMGDI1_Temp where TransId not in (Select TransId from IMGDI1)");
   var v = await db.rawQuery('''
     SELECT T0.*
 FROM IMGDI1_Temp T0
-LEFT JOIN IMGDI1 T1 ON T0.TransId = T1.TransId 
-WHERE T1.TransId IS NULL;
+LEFT JOIN IMGDI1 T1 ON T0.TransId = T1.TransId AND T0.RowId = T1.RowId
+WHERE T1.TransId IS NULL AND T1.RowId IS NULL;
 ''');
   for (var i = 0; i < v.length; i += batchSize) {
     var end = (i + batchSize < v.length) ? i + batchSize : v.length;
