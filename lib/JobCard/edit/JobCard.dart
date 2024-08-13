@@ -16,8 +16,11 @@ import 'package:maintenance/DatabaseInitialization.dart';
 import 'package:maintenance/JobCard/edit/Attachment.dart';
 import 'package:maintenance/JobCard/edit/GeneralData.dart';
 import 'package:maintenance/JobCard/edit/ItemDetails/ItemDetails.dart';
+import 'package:maintenance/JobCard/edit/ProblemDetails.dart';
+import 'package:maintenance/JobCard/edit/SectionDetails.dart';
 import 'package:maintenance/JobCard/edit/ServiceDetails/ServiceDetails.dart';
 import 'package:maintenance/JobCard/edit/TyreMaintenance.dart';
+import 'package:maintenance/JobCard/edit/WhyWhyAnalysis.dart';
 import 'package:maintenance/Sync/DataSync.dart';
 import 'package:maintenance/Sync/SyncModels/MNJCD1.dart';
 import 'package:maintenance/Sync/SyncModels/MNJCD2.dart';
@@ -73,7 +76,7 @@ class _EditJobCardState extends State<EditJobCard> {
       },
       canPop: false,
       child: DefaultTabController(
-        length: 5,
+        length: 8,
         initialIndex: widget.index,
         child: Scaffold(
           key: key,
@@ -124,6 +127,18 @@ class _EditJobCardState extends State<EditJobCard> {
                             child: Text(
                           "Tyre Maintenance",
                         )),
+                        Tab(
+                            child: Text(
+                              "Why Why Analysis",
+                            )),
+                        Tab(
+                            child: Text(
+                              "Problem Details",
+                            )),
+                        Tab(
+                            child: Text(
+                              "Section Details",
+                            )),
                       ],
                     ),
                   ],
@@ -139,6 +154,9 @@ class _EditJobCardState extends State<EditJobCard> {
               ServiceDetails(),
               Attachments(),
               TyreMaintenance(),
+              WhyWhyAnalysis(),
+              ProblemDetails(),
+              SectionDetails(),
             ],
           ),
           floatingActionButton: FloatingActionButton(

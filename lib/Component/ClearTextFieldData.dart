@@ -74,19 +74,30 @@ import 'package:maintenance/JobCard/create/GeneralData.dart'
     as jcdCreateGenData;
 import 'package:maintenance/JobCard/create/ItemDetails/EditJobCardItem.dart'
     as editCreateJCDItems;
-import 'package:maintenance/JobCard/create/ItemDetails/ItemDetails.dart'
-    as jcdCreateItemDetails;
+import 'package:maintenance/JobCard/create/ItemDetails/ItemDetails.dart' as jcdCreateItemDetails;
+import 'package:maintenance/JobCard/create/ServiceDetails/ServiceDetails.dart' as jcdCreateServiceDetails;
 import 'package:maintenance/JobCard/create/JobCard.dart';
 import 'package:maintenance/JobCard/create/ServiceDetails/EditService.dart'
     as editCreateJCDService;
-import 'package:maintenance/JobCard/create/ServiceDetails/ServiceDetails.dart'
-    as jcdCreateServiceDetails;
+
 //---------------------------------EDIT JOB CARD IMPORTS
 import 'package:maintenance/JobCard/edit/GeneralData.dart' as jcdEditGenData;
 import 'package:maintenance/JobCard/edit/JobCard.dart';
+import 'package:maintenance/JobCard/edit/ItemDetails/ItemDetails.dart' as jcdEditItemDetails;
+import 'package:maintenance/JobCard/edit/ServiceDetails/ServiceDetails.dart' as jcdEditServiceDetails;
+import 'package:maintenance/JobCard/edit/Attachment.dart' as jcdEditAttachment;
+import 'package:maintenance/JobCard/edit/WhyWhyAnalysis.dart' as jcdEditWhyWhyAnalysis;
+import 'package:maintenance/JobCard/edit/ProblemDetails.dart' as jcdEditProblemDetails;
+import 'package:maintenance/JobCard/edit/SectionDetails.dart' as jcdEditSectionDetails;
 //---------------------------------VIEW JOB CARD IMPORTS
 import 'package:maintenance/JobCard/view/GeneralData.dart' as jcdViewGenData;
 import 'package:maintenance/JobCard/view/JobCard.dart';
+import 'package:maintenance/JobCard/view/ItemDetails/ItemDetails.dart' as jcdViewItemDetails;
+import 'package:maintenance/JobCard/view/ServiceDetails/ServiceDetails.dart' as jcdViewServiceDetails;
+import 'package:maintenance/JobCard/view/Attachment.dart' as jcdViewAttachment;
+import 'package:maintenance/JobCard/view/WhyWhyAnalysis.dart' as jcdViewWhyWhyAnalysis;
+import 'package:maintenance/JobCard/view/ProblemDetails.dart' as jcdViewProblemDetails;
+import 'package:maintenance/JobCard/view/SectionDetails.dart' as jcdViewSectionDetails;
 //------------------------------ CREATE PURCHASE REQUEST IMPORTS------------
 import 'package:maintenance/Purchase/PurchaseRequest/create/GeneralData.dart'
     as createPurchaseGenData;
@@ -110,6 +121,10 @@ import 'package:maintenance/Purchase/PurchaseRequest/view/PurchaseRequest.dart';
 import 'package:maintenance/Sync/SyncModels/MNCLD1.dart';
 import 'package:maintenance/Sync/SyncModels/MNJCD1.dart';
 import 'package:maintenance/Sync/SyncModels/MNJCD2.dart';
+import 'package:maintenance/Sync/SyncModels/MNJCD3.dart';
+import 'package:maintenance/Sync/SyncModels/MNJCD5.dart';
+import 'package:maintenance/Sync/SyncModels/MNJCD6.dart';
+import 'package:maintenance/Sync/SyncModels/MNJCD7.dart';
 import 'package:maintenance/Sync/SyncModels/MNOCLD.dart';
 import 'package:maintenance/Sync/SyncModels/MNOJCD.dart';
 import 'package:maintenance/Sync/SyncModels/PRITR1.dart';
@@ -689,10 +704,13 @@ navigateToJobCardDocument(
     if (list.isNotEmpty) {
       ClearJobCardDoc.setViewJobCardData(mnojcd: list[0]);
     }
-    jcdCreateItemDetails.ItemDetails.items =
+    jcdViewItemDetails.ItemDetails.items =
         await retrieveMNJCD1ById(null, 'TransId = ?', [TransId]);
-    jcdCreateServiceDetails.ServiceDetails.items =
-        await retrieveMNJCD2ById(null, 'TransId = ?', [TransId]);
+    jcdViewServiceDetails.ServiceDetails.items = await retrieveMNJCD2ById(null, 'TransId = ?', [TransId]);
+    jcdViewAttachment.Attachments.attachments= await retrieveMNJCD3ById(null, 'TransId = ?', [TransId]);
+    jcdViewWhyWhyAnalysis.WhyWhyAnalysis.list = await retrieveMNJCD5ById(null, 'Code = ?', [TransId]);
+    jcdViewProblemDetails.ProblemDetails.list = await retrieveMNJCD6ById(null, 'TransId = ?', [TransId]);
+    jcdViewSectionDetails.SectionDetails.list = await retrieveMNJCD7ById(null, 'TransId = ?', [TransId]);
 
     Get.offAll(() => ViewJobCard(0));
   } else {
@@ -701,10 +719,15 @@ navigateToJobCardDocument(
     if (list.isNotEmpty) {
       ClearJobCardDoc.setEditJobCardData(mnojcd: list[0]);
     }
-    jcdCreateItemDetails.ItemDetails.items =
+    jcdEditItemDetails.ItemDetails.items =
         await retrieveMNJCD1ById(null, 'TransId = ?', [TransId]);
-    jcdCreateServiceDetails.ServiceDetails.items =
+    jcdEditServiceDetails.ServiceDetails.items =
         await retrieveMNJCD2ById(null, 'TransId = ?', [TransId]);
+    jcdEditAttachment.Attachments.attachments= await retrieveMNJCD3ById(null, 'TransId = ?', [TransId]);
+
+    jcdEditWhyWhyAnalysis.WhyWhyAnalysis.list = await retrieveMNJCD5ById(null, 'Code = ?', [TransId]);
+    jcdEditProblemDetails.ProblemDetails.list = await retrieveMNJCD6ById(null, 'TransId = ?', [TransId]);
+    jcdEditSectionDetails.SectionDetails.list = await retrieveMNJCD7ById(null, 'TransId = ?', [TransId]);
 
     Get.offAll(() => EditJobCard(0));
   }

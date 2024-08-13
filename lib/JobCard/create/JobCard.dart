@@ -17,13 +17,19 @@ import 'package:maintenance/DatabaseInitialization.dart';
 import 'package:maintenance/JobCard/create/Attachment.dart';
 import 'package:maintenance/JobCard/create/GeneralData.dart';
 import 'package:maintenance/JobCard/create/ItemDetails/ItemDetails.dart';
+import 'package:maintenance/JobCard/create/ProblemDetails.dart';
 import 'package:maintenance/JobCard/create/SearchJobCardDoc.dart';
+import 'package:maintenance/JobCard/create/SectionDetails.dart';
 import 'package:maintenance/JobCard/create/ServiceDetails/ServiceDetails.dart';
 import 'package:maintenance/JobCard/create/TyreMaintenance.dart';
+import 'package:maintenance/JobCard/create/WhyWhyAnalysis.dart';
 import 'package:maintenance/Sync/DataSync.dart';
 import 'package:maintenance/Sync/SyncModels/MNJCD1.dart';
 import 'package:maintenance/Sync/SyncModels/MNJCD2.dart';
 import 'package:maintenance/Sync/SyncModels/MNJCD3.dart';
+import 'package:maintenance/Sync/SyncModels/MNJCD5.dart';
+import 'package:maintenance/Sync/SyncModels/MNJCD6.dart';
+import 'package:maintenance/Sync/SyncModels/MNJCD7.dart';
 import 'package:maintenance/Sync/SyncModels/MNOJCD.dart';
 import 'package:maintenance/main.dart';
 import 'package:sqflite/sqlite_api.dart';
@@ -55,7 +61,6 @@ class _JobCardState extends State<JobCard> {
   final key = GlobalKey<ScaffoldState>();
 
   _onBackButtonPressed() {
-
     if (GeneralData.equipmentCode != '' || ItemDetails.items.isNotEmpty) {
       showBackPressedWarning(onBackPressed: widget.onBackPressed);
     } else if (widget.onBackPressed != null) {
@@ -64,7 +69,7 @@ class _JobCardState extends State<JobCard> {
       Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(builder: (context) => Dashboard()),
-              (route) => false);
+          (route) => false);
     }
   }
 
@@ -76,7 +81,7 @@ class _JobCardState extends State<JobCard> {
       },
       canPop: false,
       child: DefaultTabController(
-        length: 5,
+        length: 8,
         initialIndex: widget.index,
         child: Scaffold(
           key: key,
@@ -127,6 +132,18 @@ class _JobCardState extends State<JobCard> {
                             child: Text(
                           "Tyre Maintenance",
                         )),
+                        Tab(
+                            child: Text(
+                          "Why Why Analysis",
+                        )),
+                        Tab(
+                            child: Text(
+                          "Problem Details",
+                        )),
+                        Tab(
+                            child: Text(
+                          "Section Details",
+                        )),
                       ],
                     ),
                   ],
@@ -140,7 +157,7 @@ class _JobCardState extends State<JobCard> {
                     color: Colors.white,
                   ),
                   onPressed: () {
-                    Get.to(()=>SearchJobCardDoc());
+                    Get.to(() => SearchJobCardDoc());
                     //showSearch(context: context, delegate: SearchJobCard());
                     // Navigator.push(
                     //     context,
@@ -236,6 +253,9 @@ class _JobCardState extends State<JobCard> {
               ServiceDetails(),
               Attachments(),
               TyreMaintenance(),
+              WhyWhyAnalysis(),
+              ProblemDetails(),
+              SectionDetails(),
             ],
           ),
           floatingActionButton: FloatingActionButton(
@@ -349,139 +369,96 @@ class _JobCardState extends State<JobCard> {
                   .removeWhere((key, value) => value == null || value == '');
               print(generalData.toJson());
               print(generalData);
-              if (isSelectedButNotCancelled()) {
-                //UpdateDate
-                generalData.UpdateDate = DateTime.now();
-                generalData.UpdatedBy = userModel.UserCode;
-                generalData.hasUpdated = true;
-                Map<String, Object?> map = generalData.toJson();
-                map.removeWhere((key, value) => value == null || value == '');
-                await database
-                    .update('MNOJCD', map, where: str, whereArgs: [data]);
-                getSuccessSnackBar("Sales Quotation Updated Successfully");
-              } else {
-                //CreateDate
-                getSuccessSnackBar("Creating Sales Quotation...");
-                generalData.CreateDate = DateTime.now();
-                generalData.UpdateDate = DateTime.now();
-                generalData.CreatedBy = userModel.UserCode;
-                generalData.BranchId = userModel.BranchId.toString();
-                generalData.hasCreated = true;
-                await database.insert('MNOJCD', generalData.toJson());
-              }
-
+              generalData.CreateDate = DateTime.now();
+              generalData.UpdateDate = DateTime.now();
+              generalData.CreatedBy = userModel.UserCode;
+              generalData.BranchId = userModel.BranchId.toString();
+              generalData.hasCreated = true;
+              await database.insert('MNOJCD', generalData.toJson());
               //ITEM DETAILS
               print("Item Details ");
-              if (isSelectedButNotCancelled()) {
-                for (int i = 0; i < ItemDetails.items.length; i++) {
-                  MNJCD1 qut1model = ItemDetails.items[i];
-                  qut1model.RowId = i;
+              for (int i = 0; i < ItemDetails.items.length; i++) {
+                MNJCD1 qut1model = ItemDetails.items[i];
+                qut1model.ID = i;
+                qut1model.RowId = i;
+                qut1model.hasCreated = true;
+                qut1model.CreateDate = DateTime.now();
 
-                  if (!qut1model.insertedIntoDatabase) {
-                    qut1model.hasCreated = true;
-
-                    qut1model.CreateDate = DateTime.now();
-                    qut1model.UpdateDate = DateTime.now();
-
-                    await database.insert('MNJCD1', qut1model.toJson());
-                  } else {
-                    qut1model.hasUpdated = true;
-                    qut1model.UpdateDate = DateTime.now();
-                    Map<String, Object?> map = qut1model.toJson();
-                    map.removeWhere(
-                        (key, value) => value == null || value == '');
-                    await database.update('MNJCD1', map,
-                        where: 'TransId = ? AND RowId = ?',
-                        whereArgs: [qut1model.TransId, qut1model.RowId]);
-                  }
-                }
-                for (int i = 0; i < ServiceDetails.items.length; i++) {
-                  MNJCD2 qut1model = ServiceDetails.items[i];
-                  qut1model.RowId = i;
-
-                  if (!qut1model.insertedIntoDatabase) {
-                    qut1model.hasCreated = true;
-
-                    qut1model.CreateDate = DateTime.now();
-                    qut1model.UpdateDate = DateTime.now();
-
-                    await database.insert('MNJCD2', qut1model.toJson());
-                  } else {
-                    qut1model.hasUpdated = true;
-                    qut1model.UpdateDate = DateTime.now();
-                    Map<String, Object?> map = qut1model.toJson();
-                    map.removeWhere(
-                        (key, value) => value == null || value == '');
-                    await database.update('MNJCD2', map,
-                        where: 'TransId = ? AND RowId = ?',
-                        whereArgs: [qut1model.TransId, qut1model.RowId]);
-                  }
-                }
-
-                for (int i = 0; i < Attachments.attachments.length; i++) {
-                  MNJCD3 qut1model = Attachments.attachments[i];
-                  qut1model.RowId = i;
-
-                  if (!qut1model.insertedIntoDatabase) {
-                    qut1model.hasCreated = true;
-
-                    qut1model.CreateDate = DateTime.now();
-                    qut1model.UpdateDate = DateTime.now();
-
-                    await database.insert('MNJCD3', qut1model.toJson());
-                  } else {
-                    qut1model.hasUpdated = true;
-                    qut1model.UpdateDate = DateTime.now();
-                    Map<String, Object?> map = qut1model.toJson();
-                    map.removeWhere(
-                        (key, value) => value == null || value == '');
-                    await database.update('MNJCD3', map,
-                        where: 'TransId = ? AND RowId = ?',
-                        whereArgs: [qut1model.TransId, qut1model.RowId]);
-                  }
-                }
-              } else {
-                for (int i = 0; i < ItemDetails.items.length; i++) {
-                  MNJCD1 qut1model = ItemDetails.items[i];
-                  qut1model.ID = i;
-                  qut1model.RowId = i;
-                  qut1model.hasCreated = true;
+                if (!qut1model.insertedIntoDatabase) {
                   qut1model.CreateDate = DateTime.now();
+                  qut1model.UpdateDate = DateTime.now();
 
-                  if (!qut1model.insertedIntoDatabase) {
-                    qut1model.CreateDate = DateTime.now();
-                    qut1model.UpdateDate = DateTime.now();
-
-                    await database.insert('MNJCD1', qut1model.toJson());
-                  }
+                  await database.insert('MNJCD1', qut1model.toJson());
                 }
-                for (int i = 0; i < ServiceDetails.items.length; i++) {
-                  MNJCD2 qut1model = ServiceDetails.items[i];
-                  qut1model.ID = i;
-                  qut1model.RowId = i;
-                  qut1model.hasCreated = true;
+              }
+              for (int i = 0; i < ServiceDetails.items.length; i++) {
+                MNJCD2 qut1model = ServiceDetails.items[i];
+                qut1model.ID = i;
+                qut1model.RowId = i;
+                qut1model.hasCreated = true;
+                qut1model.CreateDate = DateTime.now();
+
+                if (!qut1model.insertedIntoDatabase) {
                   qut1model.CreateDate = DateTime.now();
+                  qut1model.UpdateDate = DateTime.now();
 
-                  if (!qut1model.insertedIntoDatabase) {
-                    qut1model.CreateDate = DateTime.now();
-                    qut1model.UpdateDate = DateTime.now();
-
-                    await database.insert('MNJCD2', qut1model.toJson());
-                  }
+                  await database.insert('MNJCD2', qut1model.toJson());
                 }
-                for (int i = 0; i < Attachments.attachments.length; i++) {
-                  MNJCD3 qut1model = Attachments.attachments[i];
-                  qut1model.ID = i;
-                  qut1model.RowId = i;
-                  qut1model.hasCreated = true;
+              }
+              for (int i = 0; i < Attachments.attachments.length; i++) {
+                MNJCD3 qut1model = Attachments.attachments[i];
+                qut1model.ID = i;
+                qut1model.RowId = i;
+                qut1model.hasCreated = true;
+                qut1model.CreateDate = DateTime.now();
+
+                if (!qut1model.insertedIntoDatabase) {
                   qut1model.CreateDate = DateTime.now();
+                  qut1model.UpdateDate = DateTime.now();
 
-                  if (!qut1model.insertedIntoDatabase) {
-                    qut1model.CreateDate = DateTime.now();
-                    qut1model.UpdateDate = DateTime.now();
+                  await database.insert('MNJCD3', qut1model.toJson());
+                }
+              }
+              for (int i = 0; i < WhyWhyAnalysis.list.length; i++) {
+                MNJCD5 qut1model = WhyWhyAnalysis.list[i];
+                qut1model.ID = i;
+                qut1model.RowId = i;
+                qut1model.hasCreated = true;
+                qut1model.CreateDate = DateTime.now();
 
-                    await database.insert('MNJCD3', qut1model.toJson());
-                  }
+                if (!qut1model.insertedIntoDatabase) {
+                  qut1model.CreateDate = DateTime.now();
+                  qut1model.UpdateDate = DateTime.now();
+
+                  await database.insert('MNJCD5', qut1model.toJson());
+                }
+              }
+              for (int i = 0; i < ProblemDetails.list.length; i++) {
+                MNJCD6 qut1model = ProblemDetails.list[i];
+                qut1model.ID = i;
+                qut1model.RowId = i;
+                qut1model.hasCreated = true;
+                qut1model.CreateDate = DateTime.now();
+
+                if (!qut1model.insertedIntoDatabase) {
+                  qut1model.CreateDate = DateTime.now();
+                  qut1model.UpdateDate = DateTime.now();
+
+                  await database.insert('MNJCD6', qut1model.toJson());
+                }
+              }
+              for (int i = 0; i < SectionDetails.list.length; i++) {
+                MNJCD7 qut1model = SectionDetails.list[i];
+                qut1model.ID = i;
+                qut1model.RowId = i;
+                qut1model.hasCreated = true;
+                qut1model.CreateDate = DateTime.now();
+
+                if (!qut1model.insertedIntoDatabase) {
+                  qut1model.CreateDate = DateTime.now();
+                  qut1model.UpdateDate = DateTime.now();
+
+                  await database.insert('MNJCD7', qut1model.toJson());
                 }
               }
             });

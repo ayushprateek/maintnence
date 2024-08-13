@@ -15,8 +15,9 @@ class MNJCD5{
   String? Remarks;
   DateTime? CreateDate;
   DateTime? UpdateDate;
-  int? hasCreated;
-  int? hasUpdated;
+  bool hasCreated;
+  bool hasUpdated;
+  bool insertedIntoDatabase;
   MNJCD5({
     this.ID,
     this.Code,
@@ -24,8 +25,9 @@ class MNJCD5{
     this.Remarks,
     this.CreateDate,
     this.UpdateDate,
-    this.hasCreated,
-    this.hasUpdated,
+    this.hasCreated = false,
+    this.hasUpdated = false,
+    this.insertedIntoDatabase = true,
   });
   factory MNJCD5.fromJson(Map<String,dynamic> json)=>MNJCD5(
     ID : int.tryParse(json['ID'].toString())??0,
@@ -34,8 +36,8 @@ class MNJCD5{
     Remarks : json['Remarks'],
     CreateDate : DateTime.tryParse(json['CreateDate'].toString()),
     UpdateDate : DateTime.tryParse(json['UpdateDate'].toString()),
-    hasCreated : int.tryParse(json['has_created'].toString())??0,
-    hasUpdated : int.tryParse(json['has_updated'].toString())??0,
+    hasCreated: json['has_created'] == 1,
+    hasUpdated: json['has_updated'] == 1,
   );
   Map<String,dynamic> toJson()=>{
     'ID' : ID,
@@ -44,8 +46,8 @@ class MNJCD5{
     'Remarks' : Remarks,
     'CreateDate' : CreateDate?.toIso8601String(),
     'UpdateDate' : UpdateDate?.toIso8601String(),
-    'has_created' : hasCreated,
-    'has_updated' : hasUpdated,
+    "has_created": hasCreated ? 1 : 0,
+    "has_updated": hasUpdated ? 1 : 0,
   };
 }
 List<MNJCD5> mNJCD5FromJson(String str) => List<MNJCD5>.from(
@@ -135,8 +137,8 @@ Future<void> insertMNJCD5(Database db, {List? list}) async {
   // var v = await db.rawQuery("Select * from MNJCD5_Temp where TransId not in (Select TransId from MNJCD5)");
   var v = await db.rawQuery('''
     SELECT T0.*
-FROM QUT1_Temp T0
-LEFT JOIN QUT1 T1 ON T0.Code = T1.Code AND T0.RowId = T1.RowId
+FROM MNJCD5_Temp T0
+LEFT JOIN MNJCD5 T1 ON T0.Code = T1.Code AND T0.RowId = T1.RowId
 WHERE T1.Code IS NULL AND T1.RowId IS NULL;
 ''');
   for (var i = 0; i < v.length; i += batchSize) {

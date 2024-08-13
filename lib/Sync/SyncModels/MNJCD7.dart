@@ -17,8 +17,9 @@ class MNJCD7 {
   String? Remarks;
   DateTime? CreateDate;
   DateTime? UpdateDate;
-  int? hasCreated;
-  int? hasUpdated;
+  bool hasCreated;
+  bool hasUpdated;
+  bool insertedIntoDatabase;
 
   MNJCD7({
     this.ID,
@@ -28,8 +29,9 @@ class MNJCD7 {
     this.Remarks,
     this.CreateDate,
     this.UpdateDate,
-    this.hasCreated,
-    this.hasUpdated,
+    this.hasCreated = false,
+    this.hasUpdated = false,
+    this.insertedIntoDatabase = true,
   });
 
   factory MNJCD7.fromJson(Map<String, dynamic> json) => MNJCD7(
@@ -40,8 +42,8 @@ class MNJCD7 {
         Remarks: json['Remarks'],
         CreateDate: DateTime.tryParse(json['CreateDate'].toString()),
         UpdateDate: DateTime.tryParse(json['UpdateDate'].toString()),
-        hasCreated: int.tryParse(json['has_created'].toString()) ?? 0,
-        hasUpdated: int.tryParse(json['has_updated'].toString()) ?? 0,
+    hasCreated: json['has_created'] == 1,
+    hasUpdated: json['has_updated'] == 1,
       );
 
   Map<String, dynamic> toJson() => {
@@ -52,8 +54,8 @@ class MNJCD7 {
         'Remarks': Remarks,
         'CreateDate': CreateDate?.toIso8601String(),
         'UpdateDate': UpdateDate?.toIso8601String(),
-        'has_created': hasCreated,
-        'has_updated': hasUpdated,
+    "has_created": hasCreated ? 1 : 0,
+    "has_updated": hasUpdated ? 1 : 0,
       };
 }
 

@@ -16,8 +16,11 @@ import 'package:maintenance/DatabaseInitialization.dart';
 import 'package:maintenance/JobCard/view/Attachment.dart';
 import 'package:maintenance/JobCard/view/GeneralData.dart';
 import 'package:maintenance/JobCard/view/ItemDetails/ItemDetails.dart';
+import 'package:maintenance/JobCard/view/ProblemDetails.dart';
+import 'package:maintenance/JobCard/view/SectionDetails.dart';
 import 'package:maintenance/JobCard/view/ServiceDetails/ServiceDetails.dart';
 import 'package:maintenance/JobCard/view/TyreMaintenance.dart';
+import 'package:maintenance/JobCard/view/WhyWhyAnalysis.dart';
 import 'package:maintenance/Sync/DataSync.dart';
 import 'package:maintenance/Sync/SyncModels/MNJCD1.dart';
 import 'package:maintenance/Sync/SyncModels/MNJCD2.dart';
@@ -73,7 +76,7 @@ class _ViewJobCardState extends State<ViewJobCard> {
       },
       canPop: false,
       child: DefaultTabController(
-        length: 5,
+        length: 8,
         initialIndex: widget.index,
         child: Scaffold(
           key: key,
@@ -124,6 +127,18 @@ class _ViewJobCardState extends State<ViewJobCard> {
                             child: Text(
                           "Tyre Maintenance",
                         )),
+                        Tab(
+                            child: Text(
+                          "Why Why Analysis",
+                        )),
+                        Tab(
+                            child: Text(
+                          "Problem Details",
+                        )),
+                        Tab(
+                            child: Text(
+                          "Section Details",
+                        )),
                       ],
                     ),
                   ],
@@ -139,6 +154,9 @@ class _ViewJobCardState extends State<ViewJobCard> {
               ServiceDetails(),
               Attachments(),
               TyreMaintenance(),
+              WhyWhyAnalysis(),
+              ProblemDetails(),
+              SectionDetails(),
             ],
           ),
         ),

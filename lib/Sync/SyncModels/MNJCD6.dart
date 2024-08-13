@@ -16,8 +16,9 @@ class MNJCD6{
   String? SubProblem;
   DateTime? CreateDate;
   DateTime? UpdateDate;
-  int? hasCreated;
-  int? hasUpdated;
+  bool hasCreated;
+  bool hasUpdated;
+  bool insertedIntoDatabase;
   MNJCD6({
     this.ID,
     this.TransId,
@@ -26,8 +27,9 @@ class MNJCD6{
     this.SubProblem,
     this.CreateDate,
     this.UpdateDate,
-    this.hasCreated,
-    this.hasUpdated,
+    this.hasCreated = false,
+    this.hasUpdated = false,
+    this.insertedIntoDatabase = true,
   });
   factory MNJCD6.fromJson(Map<String,dynamic> json)=>MNJCD6(
     ID : int.tryParse(json['ID'].toString())??0,
@@ -37,8 +39,8 @@ class MNJCD6{
     SubProblem : json['SubProblem'],
     CreateDate : DateTime.tryParse(json['CreateDate'].toString()),
     UpdateDate : DateTime.tryParse(json['UpdateDate'].toString()),
-    hasCreated : int.tryParse(json['has_created'].toString())??0,
-    hasUpdated : int.tryParse(json['has_updated'].toString())??0,
+    hasCreated: json['has_created'] == 1,
+    hasUpdated: json['has_updated'] == 1,
   );
   Map<String,dynamic> toJson()=>{
     'ID' : ID,
@@ -48,8 +50,8 @@ class MNJCD6{
     'SubProblem' : SubProblem,
     'CreateDate' : CreateDate?.toIso8601String(),
     'UpdateDate' : UpdateDate?.toIso8601String(),
-    'has_created' : hasCreated,
-    'has_updated' : hasUpdated,
+    "has_created": hasCreated ? 1 : 0,
+    "has_updated": hasUpdated ? 1 : 0,
   };
 }
 List<MNJCD6> mNJCD6FromJson(String str) => List<MNJCD6>.from(
