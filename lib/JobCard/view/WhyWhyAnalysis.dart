@@ -28,28 +28,7 @@ class _WhyWhyAnalysisState extends State<WhyWhyAnalysis> {
               const SizedBox(
                 height: 25,
               ),
-              Padding(
-                padding: const EdgeInsets.only(top: 10.0, bottom: 10),
-                child: Align(
-                  alignment: Alignment.centerRight,
-                  child: TextButton(
-                    child: Text(
-                      "+ Add Item",
-                      style: TextStyle(
-                        color: barColor,
-                        fontSize: 16,
-                        fontStyle: FontStyle.italic,
-                      ),
-                    ),
-                    onPressed: () {
-                      setState(() {
-                        WhyWhyAnalysis.list
-                            .add(MNJCD5(insertedIntoDatabase: false));
-                      });
-                    },
-                  ),
-                ),
-              ),
+
               ListView.builder(
                   itemCount: WhyWhyAnalysis.list.length,
                   shrinkWrap: true,
@@ -61,16 +40,6 @@ class _WhyWhyAnalysisState extends State<WhyWhyAnalysis> {
                         onChanged: (val) {
                           WhyWhyAnalysis.list[index].Remarks = val;
                         },
-                        suffixIcon: IconButton(
-                            onPressed: () {
-                              setState(() {
-                                WhyWhyAnalysis.list.removeAt(index);
-                              });
-                            },
-                            icon: Icon(
-                              Icons.delete,
-                              color: Colors.red,
-                            )),
                         labelText: "Why?");
                   }),
             ],
