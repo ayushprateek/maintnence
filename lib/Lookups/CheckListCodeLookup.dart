@@ -6,9 +6,10 @@ import 'package:maintenance/Component/CustomColor.dart';
 import 'package:maintenance/Component/CustomFont.dart';
 import 'package:maintenance/Component/GetTextField.dart';
 import 'package:maintenance/Sync/SyncModels/MNOCLM.dart';
+import 'package:maintenance/Sync/SyncModels/MNOCLT.dart';
 
 class CheckListCodeLookup extends StatefulWidget {
-  Function(MNOCLM) onSelection;
+  Function(MNOCLT) onSelection;
    CheckListCodeLookup({super.key,
   required this.onSelection});
 
@@ -125,9 +126,9 @@ class _CheckListCodeLookupState extends State<CheckListCodeLookup> {
               ),
             ),
             FutureBuilder(
-                future: retrieveMNOCLMForSearch(
+                future: retrieveMNOCLTForSearch(
                     query: _query.text, limit: _currentMax),
-                builder: (context, AsyncSnapshot<List<MNOCLM>> snapshot) {
+                builder: (context, AsyncSnapshot<List<MNOCLT>> snapshot) {
                   if (!snapshot.hasData) return Container();
 
                   return Column(

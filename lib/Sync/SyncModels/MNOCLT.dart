@@ -91,7 +91,16 @@ Future<List<MNOCLT>> dataSyncMNOCLT() async {
   print(res.body);
   return mNOCLTFromJson(res.body);
 }
-
+Future<List<MNOCLT>> retrieveMNOCLTForSearch({
+  int? limit,
+  String? query,
+}) async {
+  query = "%$query%";
+  final Database db = await initializeDB(null);
+  final List<Map<String, Object?>> queryResult = await db.rawQuery(
+      'SELECT * FROM MNOCLT WHERE Code LIKE "$query" OR Name LIKE "$query" LIMIT $limit');
+  return queryResult.map((e) => MNOCLT.fromJson(e)).toList();
+}
 Future<void> insertMNOCLT(Database db, {List? list}) async {
   if (postfix.toLowerCase().contains('all')) {
     await deleteMNOCLT(db);

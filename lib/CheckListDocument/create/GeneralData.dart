@@ -12,6 +12,7 @@ import 'package:maintenance/Lookups/CheckListCodeLookup.dart';
 import 'package:maintenance/Lookups/EquipmentCodeLokup.dart';
 import 'package:maintenance/Sync/SyncModels/MNOCLD.dart';
 import 'package:maintenance/Sync/SyncModels/MNOCLM.dart';
+import 'package:maintenance/Sync/SyncModels/MNOCLT.dart';
 import 'package:maintenance/Sync/SyncModels/MNOWCM.dart';
 import 'package:maintenance/Sync/SyncModels/OEMP.dart';
 import 'package:maintenance/Sync/SyncModels/OVCL.dart';
@@ -245,7 +246,7 @@ class _GeneralDataState extends State<GeneralData> {
                   controller: _checkListName, labelText: 'CheckList',
                   onLookupPressed: () {
                     Get.to(() => CheckListCodeLookup(
-                      onSelection: (MNOCLM mnoclm) {
+                      onSelection: (MNOCLT mnoclm) {
                         setState(() {
                           GeneralData.checkListCode =
                               _checkListCode.text = mnoclm.Code ?? '';
