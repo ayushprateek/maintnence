@@ -413,6 +413,8 @@ navigateToCheckListDocument(
 class ClearJobCardDoc {
   static clearGeneralData() {
     jcdCreateGenData.GeneralData.iD = '';
+    jcdCreateGenData.GeneralData.currentReading = '';
+    jcdCreateGenData.GeneralData.difference = '';
     jcdCreateGenData.GeneralData.permanentTransId = '';
     jcdCreateGenData.GeneralData.transId = '';
     jcdCreateGenData.GeneralData.docEntry = '';
@@ -436,6 +438,8 @@ class ClearJobCardDoc {
     jcdCreateGenData.GeneralData.lastReadingDate =
         getFormattedDate(DateTime.now());
     jcdCreateGenData.GeneralData.lastReading = '';
+    jcdCreateGenData.GeneralData.subject = '';
+    jcdCreateGenData.GeneralData.resolution = '';
     jcdCreateGenData.GeneralData.assignedUserCode = '';
     jcdCreateGenData.GeneralData.assignedUserName = '';
     jcdCreateGenData.GeneralData.mNJCTransId = '';
@@ -452,7 +456,7 @@ class ClearJobCardDoc {
     jcdCreateGenData.GeneralData.hasCreated = false;
     jcdCreateGenData.GeneralData.hasUpdated = false;
     jcdCreateGenData.GeneralData.warranty = 'Yes';
-    jcdCreateGenData.GeneralData.type = 'Preventive';
+    jcdCreateGenData.GeneralData.type = 'Breakdown';
   }
 
   static setCreateJobCardData({required MNOJCD mnojcd}) {

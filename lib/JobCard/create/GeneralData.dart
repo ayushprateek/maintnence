@@ -9,7 +9,6 @@ import 'package:maintenance/Lookups/CheckListCodeLookup.dart';
 import 'package:maintenance/Lookups/EmployeeLookup.dart';
 import 'package:maintenance/Lookups/EquipmentCodeLokup.dart';
 import 'package:maintenance/Lookups/WorkCenterLookup.dart';
-import 'package:maintenance/Sync/SyncModels/MNOCLM.dart';
 import 'package:maintenance/Sync/SyncModels/MNOCLT.dart';
 import 'package:maintenance/Sync/SyncModels/MNOJCD.dart';
 import 'package:maintenance/Sync/SyncModels/MNOWCM.dart';
@@ -42,6 +41,10 @@ class GeneralData extends StatefulWidget {
   static String? postingDate;
   static String? validUntill;
   static String? lastReadingDate;
+  static String? currentReading;
+  static String? difference;
+  static String? subject;
+  static String? resolution;
   static String? lastReading;
   static String? assignedUserCode;
   static String? assignedUserName;
@@ -53,7 +56,7 @@ class GeneralData extends StatefulWidget {
   static String? createDate;
   static String? updateDate;
   static String warranty = 'Yes';
-  static String type = 'Preventive';
+  static String type = 'Breakdown';
 
   static bool isConsumption = false;
   static bool isRequest = false;
@@ -90,6 +93,8 @@ class GeneralData extends StatefulWidget {
     return MNOJCD(
       ID: int.tryParse(iD ?? ''),
       TransId: transId,
+      Subject: subject,
+      Resolution: resolution,
 
       //todo:
       // DocNum: docNum ?? '',
@@ -142,6 +147,14 @@ class _GeneralDataState extends State<GeneralData> {
       TextEditingController(text: GeneralData.docStatus);
   final TextEditingController _approvalStatus =
       TextEditingController(text: GeneralData.approvalStatus);
+  final TextEditingController _currentReading =
+      TextEditingController(text: GeneralData.currentReading);
+  final TextEditingController _difference =
+      TextEditingController(text: GeneralData.difference);
+  final TextEditingController _subject =
+      TextEditingController(text: GeneralData.subject);
+  final TextEditingController _resolution =
+      TextEditingController(text: GeneralData.resolution);
   final TextEditingController _checkListStatus =
       TextEditingController(text: GeneralData.checkListStatus);
   final TextEditingController _equipmentCode =
@@ -215,77 +228,93 @@ class _GeneralDataState extends State<GeneralData> {
                 labelText: 'Posting Date',
                 onChanged: (val) {
                   GeneralData.postingDate = _postingDate.text = val;
-                }, localCurrController: TextEditingController(),
+                },
+                localCurrController: TextEditingController(),
               ),
               getDateTextField(
                 controller: _validUntill,
                 labelText: 'Valid Until',
                 onChanged: (val) {
                   GeneralData.validUntill = _validUntill.text = val;
-                }, localCurrController: TextEditingController(),
+                },
+                localCurrController: TextEditingController(),
               ),
               // getDisabledTextField(
               //     controller: _equipmentCode,
               //     labelText: 'Equipment Code',
               //     ),
-              getDisabledTextField(
-                  controller: _equipmentName,
-                  labelText: 'Equipment',
-                  enableLookup: true,
-                  onLookupPressed: () {
-                    Get.to(() => EquipmentCodeLookup(
-                          onSelection: (OVCLModel ovcl) {
-                            setState(() {
-                              GeneralData.equipmentCode =
-                                  _equipmentCode.text = ovcl.Code??'';
-                              GeneralData.equipmentName =
-                                  _equipmentName.text = ovcl.Name??'';
-                            });
-                          },
-                        ));
-                  }),
+              if (GeneralData.type == 'Preventive')
+                getDisabledTextField(
+                    controller: _equipmentName, labelText: 'Equipment')
+              else
+                getDisabledTextField(
+                    controller: _equipmentName,
+                    labelText: 'Equipment',
+                    enableLookup: true,
+                    onLookupPressed: () {
+                      Get.to(() => EquipmentCodeLookup(
+                            onSelection: (OVCLModel ovcl) {
+                              setState(() {
+                                GeneralData.equipmentCode =
+                                    _equipmentCode.text = ovcl.Code ?? '';
+                                GeneralData.equipmentName =
+                                    _equipmentName.text = ovcl.Name ?? '';
+                              });
+                            },
+                          ));
+                    }),
               // getDisabledTextField(
               //     controller: _checkListCode,
               //     labelText: 'Check List Code',
               //     ),
-              getDisabledTextField(
-                  controller: _checkListName,
-                  labelText: 'CheckList',
-                  enableLookup: true,
-                  onLookupPressed: () {
-                    Get.to(() => CheckListCodeLookup(
-                          onSelection: (MNOCLT mnoclm) {
-                            setState(() {
-                              GeneralData.checkListCode =
-                                  _checkListCode.text = mnoclm.Code ?? '';
-                              GeneralData.checkListName =
-                                  _checkListName.text = mnoclm.Name ?? '';
-                            });
-                          },
-                        ));
-                  }),
+              if (GeneralData.type == 'Preventive')
+                getDisabledTextField(
+                    controller: _checkListName, labelText: 'CheckList')
+              else
+                getDisabledTextField(
+                    controller: _checkListName,
+                    labelText: 'CheckList',
+                    enableLookup: true,
+                    onLookupPressed: () {
+                      Get.to(() => CheckListCodeLookup(
+                            onSelection: (MNOCLT mnoclm) {
+                              setState(() {
+                                GeneralData.checkListCode =
+                                    _checkListCode.text = mnoclm.Code ?? '';
+                                GeneralData.checkListName =
+                                    _checkListName.text = mnoclm.Name ?? '';
+                              });
+                            },
+                          ));
+                    }),
               // getDisabledTextField(
               //   controller: _workCenterCode,
               //   labelText: 'WorkCenter Code',
               //
               // ),
-              getDisabledTextField(
-                controller: _workCenterName,
-                labelText: 'WorkCenter',
-                enableLookup: true,
-                onLookupPressed: () {
-                  Get.to(() => WorkCenterLookup(
-                        onSelection: (MNOWCM mnowcm) {
-                          setState(() {
-                            GeneralData.workCenterCode =
-                                _workCenterCode.text = mnowcm.Code ?? '';
-                            GeneralData.workCenterName =
-                                _workCenterName.text = mnowcm.Name ?? '';
-                          });
-                        },
-                      ));
-                },
-              ),
+              if (GeneralData.type == 'Preventive')
+                getDisabledTextField(
+                  controller: _workCenterName,
+                  labelText: 'WorkCenter',
+                )
+              else
+                getDisabledTextField(
+                  controller: _workCenterName,
+                  labelText: 'WorkCenter',
+                  enableLookup: true,
+                  onLookupPressed: () {
+                    Get.to(() => WorkCenterLookup(
+                          onSelection: (MNOWCM mnowcm) {
+                            setState(() {
+                              GeneralData.workCenterCode =
+                                  _workCenterCode.text = mnowcm.Code ?? '';
+                              GeneralData.workCenterName =
+                                  _workCenterName.text = mnowcm.Name ?? '';
+                            });
+                          },
+                        ));
+                  },
+                ),
               getDisabledTextField(
                 controller: _docStatus,
                 labelText: 'Doc Status',
@@ -400,6 +429,20 @@ class _GeneralDataState extends State<GeneralData> {
                   ),
                 ),
               ),
+              getTextField(
+                controller: _currentReading,
+                labelText: 'Current Reading',
+                onChanged: (val) {
+                  GeneralData.currentReading = val;
+                },
+              ),
+              getDisabledTextField(
+                controller: _difference,
+                labelText: 'Difference',
+                onChanged: (val) {
+                  GeneralData.difference = val;
+                },
+              ),
               getDateTextField(
                 controller: _lastReadingDate,
                 labelText: 'Last Reading Date',
@@ -408,28 +451,73 @@ class _GeneralDataState extends State<GeneralData> {
                   GeneralData.lastReadingDate = _lastReadingDate.text = val;
                 },
               ),
-              getDisabledTextField(
-                controller: _lastReading,
-                labelText: 'Last Reading',
-                onChanged: (val) {
-                  GeneralData.lastReading = val;
-                },
-              ),
-              getDisabledTextField(
-                  controller: _assignedUserName,
-                  labelText: 'Assign To',
-                  enableLookup: true,
-                  onLookupPressed: () {
-                    Get.to(() =>
-                        EmployeeLookup(onSelection: (OEMPModel oempModel) {
-                          setState(() {
-                            GeneralData.assignedUserCode =
-                                _assignedUserCode.text = oempModel.Code;
-                            GeneralData.assignedUserName =
-                                _assignedUserName.text = oempModel.Name ?? '';
-                          });
-                        }));
-                  }),
+              if (GeneralData.type == 'Preventive')
+                getDisabledTextField(
+                  controller: _lastReading,
+                  labelText: 'Last Reading',
+                  onChanged: (val) {
+                    GeneralData.lastReading = val;
+                  },
+                )
+              else
+                getTextField(
+                  controller: _lastReading,
+                  labelText: 'Last Reading',
+                  onChanged: (val) {
+                    GeneralData.lastReading = val;
+                  },
+                ),
+              if (GeneralData.type == 'Preventive')
+                getDisabledTextField(
+                  controller: _subject,
+                  labelText: 'Subject',
+                  onChanged: (val) {
+                    GeneralData.subject = val;
+                  },
+                )
+              else
+                getTextField(
+                  controller: _subject,
+                  labelText: 'Subject',
+                  onChanged: (val) {
+                    GeneralData.subject = val;
+                  },
+                ),
+              if (GeneralData.type == 'Preventive')
+                getDisabledTextField(
+                  controller: _resolution,
+                  labelText: 'Resolution',
+                  onChanged: (val) {
+                    GeneralData.resolution = val;
+                  },
+                )
+              else
+                getTextField(
+                  controller: _resolution,
+                  labelText: 'Resolution',
+                  onChanged: (val) {
+                    GeneralData.resolution = val;
+                  },
+                ),
+              if (GeneralData.type == 'Preventive')
+                getDisabledTextField(
+                    controller: _assignedUserName, labelText: 'Technician Code')
+              else
+                getDisabledTextField(
+                    controller: _assignedUserName,
+                    labelText: 'Technician Code',
+                    enableLookup: true,
+                    onLookupPressed: () {
+                      Get.to(() =>
+                          EmployeeLookup(onSelection: (OEMPModel oempModel) {
+                            setState(() {
+                              GeneralData.assignedUserCode =
+                                  _assignedUserCode.text = oempModel.Code;
+                              GeneralData.assignedUserName =
+                                  _assignedUserName.text = oempModel.Name ?? '';
+                            });
+                          }));
+                    }),
               Padding(
                 padding: const EdgeInsets.only(
                   bottom: 6.0,
