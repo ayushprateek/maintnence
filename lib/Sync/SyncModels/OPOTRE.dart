@@ -162,7 +162,17 @@ Future<List<OPOTRE>> dataSyncOPOTRE() async {
   print(res.body);
   return oPOTREFromJson(res.body);
 }
-
+Future<List<OPOTRE>> retrieveOPOTREForDisplay(
+    {String dbQuery = '', int limit = 15, bool isCompetitor = false}) async {
+  final Database db = await initializeDB(null);
+  dbQuery = '%$dbQuery%';
+  String searchQuery = '';
+  searchQuery = '''
+  SELECT * FROM OPOTRE WHERE TransId LIKE '$dbQuery' LIMIT $limit
+  ''';
+  final List<Map<String, Object?>> queryResult = await db.rawQuery(searchQuery);
+  return queryResult.map((e) => OPOTRE.fromJson(e)).toList();
+}
 Future<void> insertOPOTRE(Database db, {List? list}) async {
   if (postfix.toLowerCase().contains('all')) {
     await deleteOPOTRE(db);

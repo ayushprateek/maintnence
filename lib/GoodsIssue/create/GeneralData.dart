@@ -281,18 +281,7 @@ class _GeneralDataState extends State<GeneralData> {
                       });
                     }));
                   }),
-              getDisabledTextField(
-                  controller: _contactPersonName, labelText: 'Person Name',
-                  onChanged: (val){
-                    //todo:
-                    // _contactPersonName.text = GeneralData. = val;
-                  }
-                  ),
-              getDisabledTextField(
-                  controller: _mobileNo, labelText: 'Mobile Number',
-                  onChanged: (val){
-                    _mobileNo.text = GeneralData.mobileNo = val;
-                  }),
+
               getDisabledTextField(
                   controller: _toWhsCode,
                   labelText: 'To Warehouse',
@@ -358,6 +347,16 @@ class _GeneralDataState extends State<GeneralData> {
                     getDisabledTextField(controller: _docEntry, labelText: 'Doc Entry',
                         onChanged: (val){
                           _docEntry.text = GeneralData.docEntry = val;
+                        }),
+                    getDisabledTextField(
+                        controller: _contactPersonName, labelText: 'Person Name',
+                        onChanged: (val){
+                        }
+                    ),
+                    getDisabledTextField(
+                        controller: _mobileNo, labelText: 'Mobile Number',
+                        onChanged: (val){
+                          _mobileNo.text = GeneralData.mobileNo = val;
                         }),
                     getDisabledTextField(controller: _currency, labelText: 'Currency',
                         onChanged: (val){
