@@ -1,123 +1,132 @@
 import 'package:get/get.dart';
 import 'package:maintenance/CheckListDocument/create/Attachments.dart'
-    as checkListAttachments;
+as checkListAttachments;
 import 'package:maintenance/CheckListDocument/create/CheckListDetails/CheckListDetails.dart' as checkListCreateDetails;
-import 'package:maintenance/CheckListDocument/view/CheckListDetails/CheckListDetails.dart' as checkListViewDetails;
-import 'package:maintenance/CheckListDocument/edit/CheckListDetails/CheckListDetails.dart' as checkListEditDetails;
 import 'package:maintenance/CheckListDocument/create/CheckListDetails/EditCheckList.dart'
-    as editCheckList;
+as editCheckList;
 import 'package:maintenance/CheckListDocument/create/CheckListDocument.dart';
 import 'package:maintenance/CheckListDocument/create/GeneralData.dart'
-    as createCheckListDoc;
+as createCheckListDoc;
+import 'package:maintenance/CheckListDocument/edit/CheckListDetails/CheckListDetails.dart' as checkListEditDetails;
 import 'package:maintenance/CheckListDocument/edit/CheckListDocument.dart';
 import 'package:maintenance/CheckListDocument/edit/GeneralData.dart'
-    as editCheckListDoc;
+as editCheckListDoc;
+import 'package:maintenance/CheckListDocument/view/CheckListDetails/CheckListDetails.dart' as checkListViewDetails;
 import 'package:maintenance/CheckListDocument/view/CheckListDocument.dart';
 import 'package:maintenance/CheckListDocument/view/GeneralData.dart'
-    as viewCheckListDoc;
+as viewCheckListDoc;
 import 'package:maintenance/Component/GetFormattedDate.dart';
 import 'package:maintenance/Component/GetLastDocNum.dart';
 import 'package:maintenance/Component/IsAvailableTransId.dart';
-//------------------------------ GOODS ISSUE IMPORTS------------
-import 'package:maintenance/GoodsIssue/create/GeneralData.dart' as goodsGenData;
+//------------------------------ CREATE GOODS ISSUE IMPORTS------------
+import 'package:maintenance/GoodsIssue/create/GeneralData.dart' as goodsIssueCreateGenData;
 import 'package:maintenance/GoodsIssue/create/GoodsIssue.dart';
-import 'package:maintenance/GoodsIssue/create/ItemDetails/EditItems.dart'
-    as goodsEditItems;
-import 'package:maintenance/GoodsIssue/create/ItemDetails/ItemDetails.dart'
-    as goodsItemDetails;
-import 'package:maintenance/GoodsReceiptNote/create/Address/BillingAddress.dart'
-    as createGrnBillAddress;
-import 'package:maintenance/GoodsReceiptNote/create/Address/ShippingAddress.dart'
-    as createGrnShipAddress;
+import 'package:maintenance/GoodsIssue/create/ItemDetails/EditItems.dart' as goodsIssueCreateEditItems;
+import 'package:maintenance/GoodsIssue/create/ItemDetails/ItemDetails.dart' as goodsIssueCreateDetails;
+//------------------------------ EDIT GOODS ISSUE IMPORTS------------
+import 'package:maintenance/GoodsIssue/edit/GeneralData.dart' as goodsIssueEditGenData;
+import 'package:maintenance/GoodsIssue/edit/GoodsIssue.dart';
+import 'package:maintenance/GoodsIssue/edit/ItemDetails/ItemDetails.dart' as goodsIssueEditDetails;
+//------------------------------ VIEW GOODS ISSUE IMPORTS------------
+import 'package:maintenance/GoodsIssue/view/GeneralData.dart' as goodsIssueViewGenData;
+import 'package:maintenance/GoodsIssue/view/GoodsIssue.dart';
+import 'package:maintenance/GoodsIssue/view/ItemDetails/ItemDetails.dart' as goodsIssueViewDetails;
+import 'package:maintenance/GoodsReceiptNote/create/Address/BillingAddress.dart' as createGrnBillAddress;
+import 'package:maintenance/GoodsReceiptNote/create/Address/ShippingAddress.dart' as createGrnShipAddress;
 //------------------------------CREATE GOODS RECEIPT NOTES------------
 import 'package:maintenance/GoodsReceiptNote/create/GeneralData.dart'
-    as createGrnGenData;
+as createGrnGenData;
 import 'package:maintenance/GoodsReceiptNote/create/GoodsReceiptNote.dart';
 import 'package:maintenance/GoodsReceiptNote/create/ItemDetails/ItemDetails.dart'
-    as createGrnItemDetails;
+as createGrnItemDetails;
 import 'package:maintenance/GoodsReceiptNote/edit/Address/BillingAddress.dart'
-    as editGrnBillAddress;
+as editGrnBillAddress;
 import 'package:maintenance/GoodsReceiptNote/edit/Address/ShippingAddress.dart'
-    as editGrnShipAddress;
+as editGrnShipAddress;
 //------------------------------EDIT GOODS RECEIPT NOTES------------
 import 'package:maintenance/GoodsReceiptNote/edit/GeneralData.dart'
-    as editGrnGenData;
+as editGrnGenData;
 import 'package:maintenance/GoodsReceiptNote/edit/GoodsReceiptNote.dart';
 import 'package:maintenance/GoodsReceiptNote/edit/ItemDetails/ItemDetails.dart'
-    as editGrnItemDetails;
+as editGrnItemDetails;
 import 'package:maintenance/GoodsReceiptNote/view/Address/BillingAddress.dart'
-    as viewGrnBillAddress;
+as viewGrnBillAddress;
 import 'package:maintenance/GoodsReceiptNote/view/Address/ShippingAddress.dart'
-    as viewGrnShipAddress;
+as viewGrnShipAddress;
 //------------------------------VIEW GOODS RECEIPT NOTES------------
 import 'package:maintenance/GoodsReceiptNote/view/GeneralData.dart'
-    as viewGrnGenData;
+as viewGrnGenData;
 import 'package:maintenance/GoodsReceiptNote/view/GoodsReceiptNote.dart';
 import 'package:maintenance/GoodsReceiptNote/view/ItemDetails/ItemDetails.dart'
-    as viewGrnItemDetails;
+as viewGrnItemDetails;
 //------------------------------ CREATE INTERNAL REQUEST------------
 import 'package:maintenance/InternalRequest/create/GeneralData.dart'
-    as createInternalGenData;
+as createInternalGenData;
 import 'package:maintenance/InternalRequest/create/InternalRequest.dart';
 import 'package:maintenance/InternalRequest/create/ItemDetails/EditItems.dart'
-    as createInternalEditItems;
+as createInternalEditItems;
 import 'package:maintenance/InternalRequest/create/ItemDetails/ItemDetails.dart'
-    as createInternalItemDetails;
+as createInternalItemDetails;
 import 'package:maintenance/InternalRequest/edit/InternalRequest.dart';
 import 'package:maintenance/InternalRequest/edit/ItemDetails/ItemDetails.dart'
-    as editInternalItemDetails;
+as editInternalItemDetails;
 import 'package:maintenance/InternalRequest/view/InternalRequest.dart';
 import 'package:maintenance/InternalRequest/view/ItemDetails/ItemDetails.dart'
-    as viewInternalItemDetails;
+as viewInternalItemDetails;
 //---------------------------------CREATE JOB CARD IMPORTS
 import 'package:maintenance/JobCard/create/GeneralData.dart'
-    as jcdCreateGenData;
+as jcdCreateGenData;
 import 'package:maintenance/JobCard/create/ItemDetails/EditJobCardItem.dart'
-    as editCreateJCDItems;
+as editCreateJCDItems;
 import 'package:maintenance/JobCard/create/ItemDetails/ItemDetails.dart' as jcdCreateItemDetails;
-import 'package:maintenance/JobCard/create/ServiceDetails/ServiceDetails.dart' as jcdCreateServiceDetails;
 import 'package:maintenance/JobCard/create/JobCard.dart';
 import 'package:maintenance/JobCard/create/ServiceDetails/EditService.dart'
-    as editCreateJCDService;
-
+as editCreateJCDService;
+import 'package:maintenance/JobCard/create/ServiceDetails/ServiceDetails.dart' as jcdCreateServiceDetails;
+import 'package:maintenance/JobCard/edit/Attachment.dart' as jcdEditAttachment;
 //---------------------------------EDIT JOB CARD IMPORTS
 import 'package:maintenance/JobCard/edit/GeneralData.dart' as jcdEditGenData;
-import 'package:maintenance/JobCard/edit/JobCard.dart';
 import 'package:maintenance/JobCard/edit/ItemDetails/ItemDetails.dart' as jcdEditItemDetails;
-import 'package:maintenance/JobCard/edit/ServiceDetails/ServiceDetails.dart' as jcdEditServiceDetails;
-import 'package:maintenance/JobCard/edit/Attachment.dart' as jcdEditAttachment;
-import 'package:maintenance/JobCard/edit/WhyWhyAnalysis.dart' as jcdEditWhyWhyAnalysis;
+import 'package:maintenance/JobCard/edit/JobCard.dart';
 import 'package:maintenance/JobCard/edit/ProblemDetails.dart' as jcdEditProblemDetails;
 import 'package:maintenance/JobCard/edit/SectionDetails.dart' as jcdEditSectionDetails;
+import 'package:maintenance/JobCard/edit/ServiceDetails/ServiceDetails.dart' as jcdEditServiceDetails;
+import 'package:maintenance/JobCard/edit/WhyWhyAnalysis.dart' as jcdEditWhyWhyAnalysis;
+import 'package:maintenance/JobCard/view/Attachment.dart' as jcdViewAttachment;
 //---------------------------------VIEW JOB CARD IMPORTS
 import 'package:maintenance/JobCard/view/GeneralData.dart' as jcdViewGenData;
-import 'package:maintenance/JobCard/view/JobCard.dart';
 import 'package:maintenance/JobCard/view/ItemDetails/ItemDetails.dart' as jcdViewItemDetails;
-import 'package:maintenance/JobCard/view/ServiceDetails/ServiceDetails.dart' as jcdViewServiceDetails;
-import 'package:maintenance/JobCard/view/Attachment.dart' as jcdViewAttachment;
-import 'package:maintenance/JobCard/view/WhyWhyAnalysis.dart' as jcdViewWhyWhyAnalysis;
+import 'package:maintenance/JobCard/view/JobCard.dart';
 import 'package:maintenance/JobCard/view/ProblemDetails.dart' as jcdViewProblemDetails;
 import 'package:maintenance/JobCard/view/SectionDetails.dart' as jcdViewSectionDetails;
+import 'package:maintenance/JobCard/view/ServiceDetails/ServiceDetails.dart' as jcdViewServiceDetails;
+import 'package:maintenance/JobCard/view/WhyWhyAnalysis.dart' as jcdViewWhyWhyAnalysis;
 //------------------------------ CREATE PURCHASE REQUEST IMPORTS------------
 import 'package:maintenance/Purchase/PurchaseRequest/create/GeneralData.dart'
-    as createPurchaseGenData;
+as createPurchaseGenData;
 import 'package:maintenance/Purchase/PurchaseRequest/create/ItemDetails/EditItems.dart'
-    as createGrnEditItems;
+as createGrnEditItems;
 import 'package:maintenance/Purchase/PurchaseRequest/create/ItemDetails/EditItems.dart'
-    as createPurchaseEditItems;
+as createPurchaseEditItems;
 import 'package:maintenance/Purchase/PurchaseRequest/create/ItemDetails/ItemDetails.dart'
-    as createPurchaseItemDetails;
+as createPurchaseItemDetails;
 import 'package:maintenance/Purchase/PurchaseRequest/create/PurchaseRequest.dart';
 //------------------------------ EDIT PURCHASE REQUEST IMPORTS------------
 import 'package:maintenance/Purchase/PurchaseRequest/edit/GeneralData.dart'
-    as editPurchaseGenData;
+as editPurchaseGenData;
+import 'package:maintenance/Purchase/PurchaseRequest/edit/ItemDetails/EditItems.dart'
+as editGrnEditItems;
+import 'package:maintenance/Purchase/PurchaseRequest/edit/PurchaseRequest.dart'  as editPurchaseGenData;
 import 'package:maintenance/Purchase/PurchaseRequest/edit/ItemDetails/EditItems.dart'
     as editGrnEditItems;
 import 'package:maintenance/Purchase/PurchaseRequest/edit/PurchaseRequest.dart';
+
 //------------------------------ VIEW PURCHASE REQUEST IMPORTS------------
 import 'package:maintenance/Purchase/PurchaseRequest/view/GeneralData.dart'
     as viewPurchaseGenData;
 import 'package:maintenance/Purchase/PurchaseRequest/view/PurchaseRequest.dart';
+import 'package:maintenance/Sync/SyncModels/IMGDI1.dart';
+import 'package:maintenance/Sync/SyncModels/IMOGDI.dart';
 import 'package:maintenance/Sync/SyncModels/MNCLD1.dart';
 import 'package:maintenance/Sync/SyncModels/MNJCD1.dart';
 import 'package:maintenance/Sync/SyncModels/MNJCD2.dart';
@@ -420,7 +429,7 @@ navigateToCheckListDocument(
       ClearCheckListDoc.setEditCheckListDocTextFields(mnocld: list[0]);
     }
     checkListEditDetails.CheckListDetails.items =
-    await retrieveMNCLD1ById(null, 'TransId = ?', [TransId]);
+        await retrieveMNCLD1ById(null, 'TransId = ?', [TransId]);
     Get.offAll(() => EditCheckListDocument(0));
   }
 }
@@ -706,11 +715,16 @@ navigateToJobCardDocument(
     }
     jcdViewItemDetails.ItemDetails.items =
         await retrieveMNJCD1ById(null, 'TransId = ?', [TransId]);
-    jcdViewServiceDetails.ServiceDetails.items = await retrieveMNJCD2ById(null, 'TransId = ?', [TransId]);
-    jcdViewAttachment.Attachments.attachments= await retrieveMNJCD3ById(null, 'TransId = ?', [TransId]);
-    jcdViewWhyWhyAnalysis.WhyWhyAnalysis.list = await retrieveMNJCD5ById(null, 'Code = ?', [TransId]);
-    jcdViewProblemDetails.ProblemDetails.list = await retrieveMNJCD6ById(null, 'TransId = ?', [TransId]);
-    jcdViewSectionDetails.SectionDetails.list = await retrieveMNJCD7ById(null, 'TransId = ?', [TransId]);
+    jcdViewServiceDetails.ServiceDetails.items =
+        await retrieveMNJCD2ById(null, 'TransId = ?', [TransId]);
+    jcdViewAttachment.Attachments.attachments =
+        await retrieveMNJCD3ById(null, 'TransId = ?', [TransId]);
+    jcdViewWhyWhyAnalysis.WhyWhyAnalysis.list =
+        await retrieveMNJCD5ById(null, 'Code = ?', [TransId]);
+    jcdViewProblemDetails.ProblemDetails.list =
+        await retrieveMNJCD6ById(null, 'TransId = ?', [TransId]);
+    jcdViewSectionDetails.SectionDetails.list =
+        await retrieveMNJCD7ById(null, 'TransId = ?', [TransId]);
 
     Get.offAll(() => ViewJobCard(0));
   } else {
@@ -723,103 +737,247 @@ navigateToJobCardDocument(
         await retrieveMNJCD1ById(null, 'TransId = ?', [TransId]);
     jcdEditServiceDetails.ServiceDetails.items =
         await retrieveMNJCD2ById(null, 'TransId = ?', [TransId]);
-    jcdEditAttachment.Attachments.attachments= await retrieveMNJCD3ById(null, 'TransId = ?', [TransId]);
+    jcdEditAttachment.Attachments.attachments =
+        await retrieveMNJCD3ById(null, 'TransId = ?', [TransId]);
 
-    jcdEditWhyWhyAnalysis.WhyWhyAnalysis.list = await retrieveMNJCD5ById(null, 'Code = ?', [TransId]);
-    jcdEditProblemDetails.ProblemDetails.list = await retrieveMNJCD6ById(null, 'TransId = ?', [TransId]);
-    jcdEditSectionDetails.SectionDetails.list = await retrieveMNJCD7ById(null, 'TransId = ?', [TransId]);
+    jcdEditWhyWhyAnalysis.WhyWhyAnalysis.list =
+        await retrieveMNJCD5ById(null, 'Code = ?', [TransId]);
+    jcdEditProblemDetails.ProblemDetails.list =
+        await retrieveMNJCD6ById(null, 'TransId = ?', [TransId]);
+    jcdEditSectionDetails.SectionDetails.list =
+        await retrieveMNJCD7ById(null, 'TransId = ?', [TransId]);
 
     Get.offAll(() => EditJobCard(0));
   }
 }
 
+navigateToGoodsIssueDocument(
+    {required String TransId, required bool isView}) async {
+  if (isView) {
+    List<IMOGDI> list =
+        await retrieveIMOGDIById(null, 'TransId = ?', [TransId]);
+    if (list.isNotEmpty) {
+      ClearGoodsIssueDocument.setViewData(imogdi: list[0]);
+    }
+    goodsIssueViewDetails.ItemDetails.items =
+        await retrieveIMGDI1ById(null, 'TransId = ?', [TransId]);
+    print(goodsIssueViewDetails.ItemDetails.items);
+
+    Get.offAll(() => ViewGoodsIssue(0));
+  } else {
+    List<IMOGDI> list =
+        await retrieveIMOGDIById(null, 'TransId = ?', [TransId]);
+    if (list.isNotEmpty) {
+      ClearGoodsIssueDocument.setEditData(imogdi: list[0]);
+    }
+    goodsIssueEditDetails.ItemDetails.items =
+        await retrieveIMGDI1ById(null, 'TransId = ?', [TransId]);
+    print(goodsIssueEditDetails.ItemDetails.items);
+    Get.offAll(() => EditGoodsIssue(0));
+  }
+}
+
 class ClearGoodsIssueDocument {
   static clearGeneralDataTextFields() {
-    goodsGenData.GeneralData.iD = '';
-    goodsGenData.GeneralData.transId = '';
-    goodsGenData.GeneralData.priceListCode = '';
-    goodsGenData.GeneralData.requestedCode = '';
-    goodsGenData.GeneralData.requestedName = '';
-    goodsGenData.GeneralData.refNo = '';
-    goodsGenData.GeneralData.mobileNo = '';
-    goodsGenData.GeneralData.postingDate = getFormattedDate(DateTime.now());
-    goodsGenData.GeneralData.validUntill =
+    goodsIssueCreateGenData.GeneralData.iD = '';
+    goodsIssueCreateGenData.GeneralData.transId = '';
+    goodsIssueCreateGenData.GeneralData.priceListCode = '';
+    goodsIssueCreateGenData.GeneralData.requestedCode = '';
+    goodsIssueCreateGenData.GeneralData.requestedName = '';
+    goodsIssueCreateGenData.GeneralData.refNo = '';
+    goodsIssueCreateGenData.GeneralData.mobileNo = '';
+    goodsIssueCreateGenData.GeneralData.postingDate =
+        getFormattedDate(DateTime.now());
+    goodsIssueCreateGenData.GeneralData.validUntill =
         getFormattedDate(DateTime.now().add(Duration(days: 7)));
-    goodsGenData.GeneralData.currency = userModel.Currency;
-    goodsGenData.GeneralData.currRate = userModel.Rate;
-    goodsGenData.GeneralData.approvalStatus = 'Pending';
-    goodsGenData.GeneralData.docStatus = 'Open';
-    goodsGenData.GeneralData.totBDisc = '';
-    goodsGenData.GeneralData.discPer = '';
-    goodsGenData.GeneralData.discVal = '';
-    goodsGenData.GeneralData.taxVal = '';
-    goodsGenData.GeneralData.docTotal = '';
-    goodsGenData.GeneralData.permanentTransId = '';
-    goodsGenData.GeneralData.docEntry = '';
-    goodsGenData.GeneralData.docNum = '';
-    goodsGenData.GeneralData.createdBy = '';
-    goodsGenData.GeneralData.createDate = getFormattedDate(DateTime.now());
-    goodsGenData.GeneralData.updateDate =
+    goodsIssueCreateGenData.GeneralData.currency = userModel.Currency;
+    goodsIssueCreateGenData.GeneralData.currRate = userModel.Rate;
+    goodsIssueCreateGenData.GeneralData.approvalStatus = 'Pending';
+    goodsIssueCreateGenData.GeneralData.docStatus = 'Open';
+    goodsIssueCreateGenData.GeneralData.totBDisc = '';
+    goodsIssueCreateGenData.GeneralData.discPer = '';
+    goodsIssueCreateGenData.GeneralData.discVal = '';
+    goodsIssueCreateGenData.GeneralData.taxVal = '';
+    goodsIssueCreateGenData.GeneralData.docTotal = '';
+    goodsIssueCreateGenData.GeneralData.permanentTransId = '';
+    goodsIssueCreateGenData.GeneralData.docEntry = '';
+    goodsIssueCreateGenData.GeneralData.docNum = '';
+    goodsIssueCreateGenData.GeneralData.createdBy = '';
+    goodsIssueCreateGenData.GeneralData.createDate =
+        getFormattedDate(DateTime.now());
+    goodsIssueCreateGenData.GeneralData.updateDate =
         getFormattedDate(DateTime.now().add(Duration(days: 7)));
-    goodsGenData.GeneralData.approvedBy = '';
-    goodsGenData.GeneralData.error = '';
-    goodsGenData.GeneralData.isPosted = false;
-    goodsGenData.GeneralData.draftKey = '';
-    goodsGenData.GeneralData.latitude = '';
-    goodsGenData.GeneralData.longitude = '';
-    goodsGenData.GeneralData.objectCode = '';
-    goodsGenData.GeneralData.toWhsCode = '';
-    goodsGenData.GeneralData.remarks = '';
-    goodsGenData.GeneralData.branchId = '';
-    goodsGenData.GeneralData.updatedBy = '';
-    goodsGenData.GeneralData.postingAddress = '';
-    goodsGenData.GeneralData.tripTransId = '';
-    goodsGenData.GeneralData.deptCode = '';
-    goodsGenData.GeneralData.deptName = '';
-    goodsGenData.GeneralData.isSelected = false;
-    goodsGenData.GeneralData.hasCreated = false;
-    goodsGenData.GeneralData.hasUpdated = false;
+    goodsIssueCreateGenData.GeneralData.approvedBy = '';
+    goodsIssueCreateGenData.GeneralData.error = '';
+    goodsIssueCreateGenData.GeneralData.isPosted = false;
+    goodsIssueCreateGenData.GeneralData.draftKey = '';
+    goodsIssueCreateGenData.GeneralData.latitude = '';
+    goodsIssueCreateGenData.GeneralData.longitude = '';
+    goodsIssueCreateGenData.GeneralData.objectCode = '';
+    goodsIssueCreateGenData.GeneralData.toWhsCode = '';
+    goodsIssueCreateGenData.GeneralData.remarks = '';
+    goodsIssueCreateGenData.GeneralData.branchId = '';
+    goodsIssueCreateGenData.GeneralData.updatedBy = '';
+    goodsIssueCreateGenData.GeneralData.postingAddress = '';
+    goodsIssueCreateGenData.GeneralData.tripTransId = '';
+    goodsIssueCreateGenData.GeneralData.deptCode = '';
+    goodsIssueCreateGenData.GeneralData.deptName = '';
+    goodsIssueCreateGenData.GeneralData.isSelected = false;
+    goodsIssueCreateGenData.GeneralData.hasCreated = false;
+    goodsIssueCreateGenData.GeneralData.hasUpdated = false;
+  }
+
+  static setViewData({required IMOGDI imogdi}) {
+    goodsIssueViewGenData.GeneralData.iD = imogdi.ID?.toString();
+    goodsIssueViewGenData.GeneralData.transId = imogdi.TransId;
+    goodsIssueViewGenData.GeneralData.priceListCode = '';
+    goodsIssueViewGenData.GeneralData.requestedCode = imogdi.RequestedCode;
+    goodsIssueViewGenData.GeneralData.requestedName = imogdi.RequestedName;
+    goodsIssueViewGenData.GeneralData.refNo = imogdi.RefNo;
+    goodsIssueViewGenData.GeneralData.mobileNo = imogdi.MobileNo;
+    goodsIssueViewGenData.GeneralData.postingDate =
+        getFormattedDate(imogdi.PostingDate);
+    goodsIssueViewGenData.GeneralData.validUntill =
+        getFormattedDate(imogdi.ValidUntill);
+    goodsIssueViewGenData.GeneralData.currency = imogdi.Currency;
+    goodsIssueViewGenData.GeneralData.currRate =
+        imogdi.CurrRate?.toStringAsFixed(2);
+    goodsIssueViewGenData.GeneralData.approvalStatus = imogdi.ApprovalStatus;
+    goodsIssueViewGenData.GeneralData.docStatus = imogdi.DocStatus;
+    goodsIssueViewGenData.GeneralData.totBDisc =
+        imogdi.TotBDisc?.toStringAsFixed(2);
+    goodsIssueViewGenData.GeneralData.discPer =
+        imogdi.DiscPer?.toStringAsFixed(2);
+    goodsIssueViewGenData.GeneralData.discVal =
+        imogdi.DiscVal?.toStringAsFixed(2);
+    goodsIssueViewGenData.GeneralData.taxVal =
+        imogdi.TaxVal?.toStringAsFixed(2);
+    goodsIssueViewGenData.GeneralData.docTotal =
+        imogdi.DocTotal?.toStringAsFixed(2);
+    goodsIssueViewGenData.GeneralData.permanentTransId =
+        imogdi.PermanentTransId;
+    goodsIssueViewGenData.GeneralData.docEntry = imogdi.DocEntry?.toString();
+    goodsIssueViewGenData.GeneralData.docNum = imogdi.DocNum;
+    goodsIssueViewGenData.GeneralData.createdBy = imogdi.CreatedBy;
+    goodsIssueViewGenData.GeneralData.createDate =
+        getFormattedDate(imogdi.CreateDate);
+    goodsIssueViewGenData.GeneralData.updateDate =
+        getFormattedDate(imogdi.UpdateDate);
+    goodsIssueViewGenData.GeneralData.approvedBy = imogdi.ApprovedBy;
+    goodsIssueViewGenData.GeneralData.error = imogdi.Error;
+    goodsIssueViewGenData.GeneralData.isPosted = imogdi.IsPosted;
+    goodsIssueViewGenData.GeneralData.draftKey = imogdi.DraftKey;
+    goodsIssueViewGenData.GeneralData.latitude = imogdi.Latitude;
+    goodsIssueViewGenData.GeneralData.longitude = imogdi.Longitude;
+    goodsIssueViewGenData.GeneralData.objectCode = imogdi.ObjectCode;
+    goodsIssueViewGenData.GeneralData.toWhsCode = imogdi.ToWhsCode;
+    goodsIssueViewGenData.GeneralData.remarks = imogdi.Remarks;
+    goodsIssueViewGenData.GeneralData.branchId = imogdi.BranchId;
+    goodsIssueViewGenData.GeneralData.updatedBy = imogdi.UpdatedBy;
+    goodsIssueViewGenData.GeneralData.postingAddress = imogdi.PostingAddress;
+    goodsIssueViewGenData.GeneralData.tripTransId = imogdi.TripTransId;
+    goodsIssueViewGenData.GeneralData.deptCode = imogdi.DeptCode;
+    goodsIssueViewGenData.GeneralData.deptName = imogdi.DeptName;
+    goodsIssueViewGenData.GeneralData.isSelected = true;
+    goodsIssueViewGenData.GeneralData.hasCreated = imogdi.hasCreated;
+    goodsIssueViewGenData.GeneralData.hasUpdated = imogdi.hasUpdated;
+  }
+
+  static setEditData({required IMOGDI imogdi}) {
+    goodsIssueEditGenData.GeneralData.iD = imogdi.ID?.toString();
+    goodsIssueEditGenData.GeneralData.transId = imogdi.TransId;
+    goodsIssueEditGenData.GeneralData.priceListCode = '';
+    goodsIssueEditGenData.GeneralData.requestedCode = imogdi.RequestedCode;
+    goodsIssueEditGenData.GeneralData.requestedName = imogdi.RequestedName;
+    goodsIssueEditGenData.GeneralData.refNo = imogdi.RefNo;
+    goodsIssueEditGenData.GeneralData.mobileNo = imogdi.MobileNo;
+    goodsIssueEditGenData.GeneralData.postingDate =
+        getFormattedDate(imogdi.PostingDate);
+    goodsIssueEditGenData.GeneralData.validUntill =
+        getFormattedDate(imogdi.ValidUntill);
+    goodsIssueEditGenData.GeneralData.currency = imogdi.Currency;
+    goodsIssueEditGenData.GeneralData.currRate =
+        imogdi.CurrRate?.toStringAsFixed(2);
+    goodsIssueEditGenData.GeneralData.approvalStatus = imogdi.ApprovalStatus;
+    goodsIssueEditGenData.GeneralData.docStatus = imogdi.DocStatus;
+    goodsIssueEditGenData.GeneralData.totBDisc =
+        imogdi.TotBDisc?.toStringAsFixed(2);
+    goodsIssueEditGenData.GeneralData.discPer =
+        imogdi.DiscPer?.toStringAsFixed(2);
+    goodsIssueEditGenData.GeneralData.discVal =
+        imogdi.DiscVal?.toStringAsFixed(2);
+    goodsIssueEditGenData.GeneralData.taxVal =
+        imogdi.TaxVal?.toStringAsFixed(2);
+    goodsIssueEditGenData.GeneralData.docTotal =
+        imogdi.DocTotal?.toStringAsFixed(2);
+    goodsIssueEditGenData.GeneralData.permanentTransId =
+        imogdi.PermanentTransId;
+    goodsIssueEditGenData.GeneralData.docEntry = imogdi.DocEntry?.toString();
+    goodsIssueEditGenData.GeneralData.docNum = imogdi.DocNum;
+    goodsIssueEditGenData.GeneralData.createdBy = imogdi.CreatedBy;
+    goodsIssueEditGenData.GeneralData.createDate =
+        getFormattedDate(imogdi.CreateDate);
+    goodsIssueEditGenData.GeneralData.updateDate =
+        getFormattedDate(imogdi.UpdateDate);
+    goodsIssueEditGenData.GeneralData.approvedBy = imogdi.ApprovedBy;
+    goodsIssueEditGenData.GeneralData.error = imogdi.Error;
+    goodsIssueEditGenData.GeneralData.isPosted = imogdi.IsPosted;
+    goodsIssueEditGenData.GeneralData.draftKey = imogdi.DraftKey;
+    goodsIssueEditGenData.GeneralData.latitude = imogdi.Latitude;
+    goodsIssueEditGenData.GeneralData.longitude = imogdi.Longitude;
+    goodsIssueEditGenData.GeneralData.objectCode = imogdi.ObjectCode;
+    goodsIssueEditGenData.GeneralData.toWhsCode = imogdi.ToWhsCode;
+    goodsIssueEditGenData.GeneralData.remarks = imogdi.Remarks;
+    goodsIssueEditGenData.GeneralData.branchId = imogdi.BranchId;
+    goodsIssueEditGenData.GeneralData.updatedBy = imogdi.UpdatedBy;
+    goodsIssueEditGenData.GeneralData.postingAddress = imogdi.PostingAddress;
+    goodsIssueEditGenData.GeneralData.tripTransId = imogdi.TripTransId;
+    goodsIssueEditGenData.GeneralData.deptCode = imogdi.DeptCode;
+    goodsIssueEditGenData.GeneralData.deptName = imogdi.DeptName;
+    goodsIssueEditGenData.GeneralData.isSelected = true;
+    goodsIssueEditGenData.GeneralData.hasCreated = imogdi.hasCreated;
+    goodsIssueEditGenData.GeneralData.hasUpdated = imogdi.hasUpdated;
   }
 
   static clearEditItems() {
-    goodsEditItems.EditItems.id = '';
-    goodsEditItems.EditItems.truckNo = '';
-    goodsEditItems.EditItems.toWhsCode = '';
-    goodsEditItems.EditItems.toWhsName = '';
-    goodsEditItems.EditItems.driverCode = '';
-    goodsEditItems.EditItems.driverName = '';
-    goodsEditItems.EditItems.routeCode = '';
-    goodsEditItems.EditItems.routeName = '';
-    goodsEditItems.EditItems.transId = '';
-    goodsEditItems.EditItems.rowId = '';
-    goodsEditItems.EditItems.itemCode = '';
-    goodsEditItems.EditItems.itemName = '';
-    goodsEditItems.EditItems.consumptionQty = '';
-    goodsEditItems.EditItems.uomCode = '';
-    goodsEditItems.EditItems.uomName = '';
-    goodsEditItems.EditItems.deptCode = '';
-    goodsEditItems.EditItems.deptName = '';
-    goodsEditItems.EditItems.price = '';
-    goodsEditItems.EditItems.mtv = '';
-    goodsEditItems.EditItems.taxCode = '';
-    goodsEditItems.EditItems.taxRate = '';
-    goodsEditItems.EditItems.lineDiscount = '';
-    goodsEditItems.EditItems.lineTotal = '';
-    goodsEditItems.EditItems.isUpdating = false;
+    goodsIssueCreateEditItems.EditItems.id = '';
+    goodsIssueCreateEditItems.EditItems.truckNo = '';
+    goodsIssueCreateEditItems.EditItems.toWhsCode = '';
+    goodsIssueCreateEditItems.EditItems.toWhsName = '';
+    goodsIssueCreateEditItems.EditItems.driverCode = '';
+    goodsIssueCreateEditItems.EditItems.driverName = '';
+    goodsIssueCreateEditItems.EditItems.routeCode = '';
+    goodsIssueCreateEditItems.EditItems.routeName = '';
+    goodsIssueCreateEditItems.EditItems.transId = '';
+    goodsIssueCreateEditItems.EditItems.rowId = '';
+    goodsIssueCreateEditItems.EditItems.itemCode = '';
+    goodsIssueCreateEditItems.EditItems.itemName = '';
+    goodsIssueCreateEditItems.EditItems.consumptionQty = '';
+    goodsIssueCreateEditItems.EditItems.uomCode = '';
+    goodsIssueCreateEditItems.EditItems.uomName = '';
+    goodsIssueCreateEditItems.EditItems.deptCode = '';
+    goodsIssueCreateEditItems.EditItems.deptName = '';
+    goodsIssueCreateEditItems.EditItems.price = '';
+    goodsIssueCreateEditItems.EditItems.mtv = '';
+    goodsIssueCreateEditItems.EditItems.taxCode = '';
+    goodsIssueCreateEditItems.EditItems.taxRate = '';
+    goodsIssueCreateEditItems.EditItems.lineDiscount = '';
+    goodsIssueCreateEditItems.EditItems.lineTotal = '';
+    goodsIssueCreateEditItems.EditItems.isUpdating = false;
   }
 }
 
 goToNewGoodsIssueDocument() async {
   await ClearGoodsIssueDocument.clearGeneralDataTextFields();
   await ClearGoodsIssueDocument.clearEditItems();
-  goodsItemDetails.ItemDetails.items.clear();
+  goodsIssueCreateDetails.ItemDetails.items.clear();
 
   getLastDocNum("MNGI", null).then((snapshot) async {
     int DocNum = snapshot[0].DocNumber - 1;
 
     do {
       DocNum += 1;
-      goodsGenData.GeneralData.transId =
+      goodsIssueCreateGenData.GeneralData.transId =
           DateTime.now().millisecondsSinceEpoch.toString() +
               "U0" +
               userModel.ID.toString() +
@@ -828,8 +986,8 @@ goToNewGoodsIssueDocument() async {
               "/" +
               DocNum.toString();
     } while (await isMNCLTransIdAvailable(
-        null, goodsGenData.GeneralData.transId ?? ""));
-    print(goodsGenData.GeneralData.transId);
+        null, goodsIssueCreateGenData.GeneralData.transId ?? ""));
+    print(goodsIssueCreateGenData.GeneralData.transId);
 
     Get.offAll(() => GoodsIssue(0));
   });

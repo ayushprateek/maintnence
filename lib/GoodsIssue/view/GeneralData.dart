@@ -231,56 +231,15 @@ class _GeneralDataState extends State<GeneralData> {
               //     labelText: 'Department Code',
               //     ),
               getDisabledTextField(
-                  controller: _deptName, labelText: 'Department',
-                  enableLookup: true,
-                  onLookupPressed: () {
-                    Get.to(() => DepartmentLookup(
-                      onSelection: (OUDP oudp) {
-                        setState(() {
-                          GeneralData.deptCode =
-                              _deptCode.text = oudp.Code ?? '';
-                          GeneralData.deptName =
-                              _deptName.text = oudp.Name ?? '';
-                        });
-                      },
-                    ));
-                  }),
-              getDisabledTextField(controller: _tripTransId, labelText: 'TripTransId',
-                  enableLookup: true,
-                  onLookupPressed: () {
-                    Get.to(() => TripLookup(onSelection: (OPOTRP oemp) {
-                      setState(() {
-                        GeneralData.tripTransId =
-                            _tripTransId.text = oemp.TransId ?? '';
-                      });
-                    }));
-                  }),
-              getTextField(controller: _refNo, labelText: 'Reference No',
+                  controller: _deptName, labelText: 'Department'),
+              getDisabledTextField(controller: _tripTransId, labelText: 'TripTransId'),
+              getDisabledTextField(controller: _refNo, labelText: 'Reference No',
                   onChanged: (val){
                     _refNo.text = GeneralData.refNo = val;
                   }
               ),
               getDisabledTextField(
-                  controller: _requestedName, labelText: 'Request*',
-                  enableLookup: true,
-                  onLookupPressed: () {
-                    Get.to(() => OCRDLookup(onSelection:
-                        (OCRDModel ocrdModel, CRD1Model? crd1Model) {
-                      setState(() {
-                        GeneralData.requestedCode =
-                            _requestedCode.text = ocrdModel.Code;
-                        GeneralData.priceListCode = ocrdModel.PriceListCode;
-                        GeneralData.requestedName =
-                            _requestedName.text = ocrdModel.Name ?? '';
-                        GeneralData.mobileNo =
-                            _mobileNo.text = ocrdModel.MobileNo;
-                        if (crd1Model != null) {
-                          _contactPersonName.text =
-                          "${crd1Model.FirstName} ${crd1Model.MiddleName} ${crd1Model.LastName}";
-                        }
-                      });
-                    }));
-                  }),
+                  controller: _requestedName, labelText: 'Request*'),
               getDisabledTextField(
                   controller: _contactPersonName, labelText: 'Person Name',
                   onChanged: (val){
@@ -296,19 +255,9 @@ class _GeneralDataState extends State<GeneralData> {
               getDisabledTextField(
                   controller: _toWhsCode,
                   labelText: 'To Warehouse',
-                  enableLookup: true,
-                  onLookupPressed: () {
-                    Get.to(() => WarehouseLookup(
-                      onSelection: (OWHS owhs) {
-                        setState(() {
-                          GeneralData.toWhsCode =
-                              _toWhsCode.text = owhs.WhsCode ?? '';
-                        });
-                      },
-                    ));
-                  }
+
                   ),
-              getTextField(controller: _remarks, labelText: 'Remarks',
+              getDisabledTextField(controller: _remarks, labelText: 'Remarks',
                 onChanged: (val){
                   _remarks.text = GeneralData.remarks = val;
                 }

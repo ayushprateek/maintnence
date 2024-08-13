@@ -489,7 +489,7 @@ class _SearchGoodsIssueState extends State<SearchGoodsIssue> {
                                     Expanded(
                                         child: InkWell(
                                       onTap: () {
-                                        navigateToJobCardDocument(
+                                        navigateToGoodsIssueDocument(
                                             TransId:
                                                 snapshot.data![index].TransId ??
                                                     '',
@@ -504,7 +504,7 @@ class _SearchGoodsIssueState extends State<SearchGoodsIssue> {
                                     Expanded(
                                         child: InkWell(
                                       onTap: () {
-                                        navigateToJobCardDocument(
+                                        navigateToGoodsIssueDocument(
                                             TransId:
                                                 snapshot.data![index].TransId ??
                                                     '',
