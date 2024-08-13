@@ -4,7 +4,6 @@ import 'package:maintenance/Component/CustomColor.dart';
 import 'package:maintenance/Component/GetTextField.dart';
 import 'package:maintenance/Component/IsNumeric.dart';
 import 'package:maintenance/Component/SnackbarComponent.dart';
-import 'package:maintenance/JobCard/create/ItemDetails/ItemDetails.dart';
 import 'package:maintenance/JobCard/create/JobCard.dart';
 import 'package:maintenance/JobCard/create/ServiceDetails/ServiceDetails.dart';
 import 'package:maintenance/Lookups/SupplierLookup.dart';
@@ -141,10 +140,33 @@ class _EditServiceState extends State<EditService> {
                           getErrorSnackBar("Supplier can not be empty");
                         } else {
                           if (EditService.isUpdating) {
-                            for (int i = 0; i < ItemDetails.items.length; i++)
+                            for (int i = 0;
+                                i < ServiceDetails.items.length;
+                                i++)
                               if (EditService.serviceCode ==
-                                  ItemDetails.items[i].ItemCode) {
-                                //todo: updating
+                                  ServiceDetails.items[i].ServiceCode) {
+                                MNJCD2 mncld1 = MNJCD2(
+                                    ID: int.tryParse(EditService.id ?? ''),
+                                    TransId: EditService.transId,
+                                    RowId: ServiceDetails.items[i].RowId,
+                                    ServiceCode:
+                                        EditService.serviceCode.toString() ??
+                                            '',
+                                    ServiceName:
+                                        EditService.serviceName.toString() ??
+                                            '',
+                                    InfoPrice: double.tryParse(
+                                            EditService.infoPrice.toString()) ??
+                                        0.0,
+                                    IsSendableItem: EditService.isSendable,
+                                    SupplierCode:
+                                        EditService.supplierCode.toString() ??
+                                            '',
+                                    SupplierName:
+                                        EditService.supplierName.toString() ??
+                                            '',
+                                    insertedIntoDatabase: false);
+                                ServiceDetails.items[i] = mncld1;
                               }
 
                             Get.offAll(() => JobCard(2));
@@ -154,7 +176,7 @@ class _EditServiceState extends State<EditService> {
                             MNJCD2 mncld1 = MNJCD2(
                                 ID: int.tryParse(EditService.id ?? ''),
                                 TransId: EditService.transId,
-                                RowId: ItemDetails.items.length,
+                                RowId: ServiceDetails.items.length,
                                 ServiceCode:
                                     EditService.serviceCode.toString() ?? '',
                                 ServiceName:
@@ -162,6 +184,7 @@ class _EditServiceState extends State<EditService> {
                                 InfoPrice: double.tryParse(
                                         EditService.infoPrice.toString()) ??
                                     0.0,
+                                IsSendableItem: EditService.isSendable,
                                 SupplierCode:
                                     EditService.supplierCode.toString() ?? '',
                                 SupplierName:

@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:maintenance/Component/ClearTextFieldData.dart';
 import 'package:maintenance/Component/CustomColor.dart';
 import 'package:maintenance/Component/CustomFont.dart';
 import 'package:maintenance/JobCard/create/ServiceDetails/AddServiceItem.dart';
+import 'package:maintenance/JobCard/create/ServiceDetails/EditService.dart';
+import 'package:maintenance/JobCard/create/GeneralData.dart';
 import 'package:maintenance/Sync/SyncModels/MNJCD2.dart';
 
 class ServiceDetails extends StatefulWidget {
@@ -78,47 +81,19 @@ class _ServiceDetailsState extends State<ServiceDetails> {
                           clipBehavior: Clip.none,
                           children: [
                             InkWell(
-                              // onDoubleTap: () {
-                              //   if (isSelectedAndCancelled() ||
-                              //       isSalesQuotationDocClosed()) {
-                              //     getErrorSnackBar(
-                              //         "This Document is already cancelled / closed");
-                              //   } else {
-                              //     EditItems.isInserted =
-                              //         ItemDetails.items[index].insertedIntoDatabase;
-                              //     EditItems.TaxCode =
-                              //         ItemDetails.items[index].TaxCode.toString();
-                              //     EditItems.TaxRate =
-                              //         ItemDetails.items[index].TaxRate;
-                              //     Navigator.push(
-                              //         context,
-                              //         MaterialPageRoute(
-                              //             builder: ((context) => EditItems(
-                              //                 ItemDetails.items[index].ID ?? 0,
-                              //                 1,
-                              //                 ItemDetails.items[index].WhsCode ??
-                              //                     '',
-                              //                 ItemDetails.items[index].TransId ??
-                              //                     '',
-                              //                 ItemDetails.items[index].ItemCode ??
-                              //                     '',
-                              //                 ItemDetails.items[index].ItemName ??
-                              //                     '',
-                              //                 ItemDetails.items[index].UOM ?? '',
-                              //                 ItemDetails.items[index].TaxCode ??
-                              //                     '',
-                              //                 ItemDetails.items[index].Quantity ??
-                              //                     0.0,
-                              //                 ItemDetails.items[index].Price ?? 0.0,
-                              //                 ItemDetails.items[index].TaxRate ??
-                              //                     0.0,
-                              //                 ItemDetails.items[index].Discount ??
-                              //                     0.0,
-                              //                 ItemDetails.items[index].LineTotal ??
-                              //                     0.0,
-                              //                 true))));
-                              //   }
-                              // },
+                              onDoubleTap: (){
+                                ClearJobCardDoc.clearEditService();
+                                EditService.serviceCode = mnjcd2.ServiceCode;
+                                EditService.serviceName = mnjcd2.ServiceName;
+                                EditService.supplierCode = mnjcd2.SupplierCode;
+                                EditService.supplierName = mnjcd2.SupplierName;
+                                EditService.infoPrice = mnjcd2.InfoPrice?.toStringAsFixed(2);
+                                EditService.isSendable = mnjcd2.IsSendableItem;
+                                EditService.isUpdating = true;
+                                EditService.transId = GeneralData.transId;
+
+                                Get.to(() => EditService());
+                              },
                               child: Container(
                                 decoration: BoxDecoration(
                                   color: Colors.white,

@@ -212,7 +212,7 @@ class _EditJobCardItemState extends State<EditJobCardItem> {
                                 MNJCD1 mncld1 = MNJCD1(
                                     ID: int.tryParse(EditJobCardItem.id ?? ''),
                                     TransId: EditJobCardItem.transId,
-                                    RowId: ItemDetails.items.length,
+                                    RowId: ItemDetails.items[i].RowId,
                                     ItemCode: EditJobCardItem.itemCode
                                             .toString() ??
                                         '',
