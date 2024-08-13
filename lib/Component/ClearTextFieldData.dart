@@ -1,8 +1,9 @@
 import 'package:get/get.dart';
 import 'package:maintenance/CheckListDocument/create/Attachments.dart'
     as checkListAttachments;
-import 'package:maintenance/CheckListDocument/create/CheckListDetails/CheckListDetails.dart'
-    as checkListDetails;
+import 'package:maintenance/CheckListDocument/create/CheckListDetails/CheckListDetails.dart' as checkListCreateDetails;
+import 'package:maintenance/CheckListDocument/view/CheckListDetails/CheckListDetails.dart' as checkListViewDetails;
+import 'package:maintenance/CheckListDocument/edit/CheckListDetails/CheckListDetails.dart' as checkListEditDetails;
 import 'package:maintenance/CheckListDocument/create/CheckListDetails/EditCheckList.dart'
     as editCheckList;
 import 'package:maintenance/CheckListDocument/create/CheckListDocument.dart';
@@ -363,7 +364,7 @@ goToNewCheckListDocument() async {
   await ClearCheckListDoc.clearCheckListDocTextFields();
   await ClearCheckListDoc.clearEditCheckList();
   await ClearCheckListDoc.clearCheckListAttachments();
-  checkListDetails.CheckListDetails.items.clear();
+  checkListCreateDetails.CheckListDetails.items.clear();
 
   getLastDocNum("MNCL", null).then((snapshot) async {
     int DocNum = snapshot[0].DocNumber - 1;
@@ -394,7 +395,7 @@ navigateToCheckListDocument(
     if (list.isNotEmpty) {
       ClearCheckListDoc.setViewCheckListDocTextFields(mnocld: list[0]);
     }
-    checkListDetails.CheckListDetails.items =
+    checkListViewDetails.CheckListDetails.items =
         await retrieveMNCLD1ById(null, 'TransId = ?', [TransId]);
     Get.offAll(() => ViewCheckListDocument(0));
   } else {
@@ -403,6 +404,8 @@ navigateToCheckListDocument(
     if (list.isNotEmpty) {
       ClearCheckListDoc.setEditCheckListDocTextFields(mnocld: list[0]);
     }
+    checkListEditDetails.CheckListDetails.items =
+    await retrieveMNCLD1ById(null, 'TransId = ?', [TransId]);
     Get.offAll(() => EditCheckListDocument(0));
   }
 }

@@ -77,49 +77,53 @@ class MNCLD1{
     this.AvailableQty,
     this.insertedIntoDatabase = true,
   });
-  factory MNCLD1.fromJson(Map<String,dynamic> json)=>MNCLD1(
-    ID : int.tryParse(json['ID'].toString())??0,
-    TransId : json['TransId'],
-    RowId : int.tryParse(json['RowId'].toString())??0,
-    ItemCode : json['ItemCode'],
-    ItemName : json['ItemName'],
-    UOM : json['UOM'],
-    Description : json['Description'],
-    Remarks : json['Remarks'],
-    UserRemarks : json['UserRemarks'],
-    IsChecked: json['IsChecked'] is bool
-        ? json['IsChecked']
-        : json['IsChecked'] == 1,
-    IsFromStock: json['IsFromStock'] is bool
-        ? json['IsFromStock']
-        : json['IsFromStock'] == 1,
-    ConsumptionQty : double.tryParse(json['ConsumptionQty'].toString())??0.0,
-    MNGITransId : json['MNGITransId'],
-    MNGIRowId : int.tryParse(json['MNGIRowId'].toString())??0,
-    PRTransId : json['PRTransId'],
-    PRRowId : int.tryParse(json['PRRowId'].toString())??0,
-    MNITTransId : json['MNITTransId'],
-    MNITRowId : int.tryParse(json['MNITRowId'].toString())??0,
-    SupplierCode : json['SupplierCode'],
-    SupplierName : json['SupplierName'],
-    CreateDate : DateTime.tryParse(json['CreateDate'].toString()),
-    UpdateDate : DateTime.tryParse(json['UpdateDate'].toString()),
-    IsConsumption: json['IsConsumption'] is bool
-        ? json['IsConsumption']
-        : json['IsConsumption'] == 1,
-    IsRequest: json['IsRequest'] is bool
-        ? json['IsRequest']
-        : json['IsRequest'] == 1,
-    RequiredDate : DateTime.tryParse(json['RequiredDate'].toString()),
-    EquipmentCode : json['EquipmentCode'],
-    Attachment : json['Attachment'],
-    hasCreated: json['has_created'] is bool
-        ? json['has_created']
-        : json['has_created'] == 1,
-    hasUpdated: json['has_updated'] is bool
-        ? json['has_updated']
-        : json['has_updated'] == 1,
-  );
+  factory MNCLD1.fromJson(Map<String,dynamic> json){
+    MNCLD1 mncld1=MNCLD1(
+      ID : int.tryParse(json['ID'].toString())??0,
+      TransId : json['TransId'],
+      RowId : int.tryParse(json['RowId'].toString())??0,
+      ItemCode : json['ItemCode'],
+      ItemName : json['ItemName'],
+      UOM : json['UOM'],
+      Description : json['Description'],
+      Remarks : json['Remarks'],
+      UserRemarks : json['UserRemarks'],
+      IsChecked: json['IsChecked'] is bool
+          ? json['IsChecked']
+          : json['IsChecked'] == 1,
+      IsFromStock: json['IsFromStock'] is bool
+          ? json['IsFromStock']
+          : json['IsFromStock'] == 1,
+      ConsumptionQty : double.tryParse(json['ConsumptionQty'].toString())??0.0,
+      MNGITransId : json['MNGITransId'],
+      MNGIRowId : int.tryParse(json['MNGIRowId'].toString())??0,
+      PRTransId : json['PRTransId'],
+      PRRowId : int.tryParse(json['PRRowId'].toString())??0,
+      MNITTransId : json['MNITTransId'],
+      MNITRowId : int.tryParse(json['MNITRowId'].toString())??0,
+      SupplierCode : json['SupplierCode'],
+      SupplierName : json['SupplierName'],
+      CreateDate : DateTime.tryParse(json['CreateDate'].toString()),
+      UpdateDate : DateTime.tryParse(json['UpdateDate'].toString()),
+      IsConsumption: json['IsConsumption'] is bool
+          ? json['IsConsumption']
+          : json['IsConsumption'] == 1,
+      IsRequest: json['IsRequest'] is bool
+          ? json['IsRequest']
+          : json['IsRequest'] == 1,
+      RequiredDate : DateTime.tryParse(json['RequiredDate'].toString()),
+      EquipmentCode : json['EquipmentCode'],
+      Attachment : json['Attachment'],
+      hasCreated: json['has_created'] is bool
+          ? json['has_created']
+          : json['has_created'] == 1,
+      hasUpdated: json['has_updated'] is bool
+          ? json['has_updated']
+          : json['has_updated'] == 1,
+    );
+    mncld1.consumptionQtyController.text=mncld1.ConsumptionQty?.toStringAsFixed(2)??'0.0';
+    return mncld1;
+  }
   Map<String,dynamic> toJson()=>{
     'ID' : ID,
     'TransId' : TransId,
