@@ -14,10 +14,12 @@ import 'package:maintenance/Component/ShowLoader.dart';
 import 'package:maintenance/Component/SnackbarComponent.dart';
 import 'package:maintenance/Dashboard.dart';
 import 'package:maintenance/DatabaseInitialization.dart';
+import 'package:maintenance/GoodsIssue/create/BatchNoData.dart';
 import 'package:maintenance/GoodsIssue/create/GeneralData.dart';
 import 'package:maintenance/GoodsIssue/create/ItemDetails/CalculateGoodIssue.dart';
 import 'package:maintenance/GoodsIssue/create/ItemDetails/ItemDetails.dart';
 import 'package:maintenance/GoodsIssue/create/SearchGoodsIssue.dart';
+import 'package:maintenance/GoodsIssue/create/SerialNoData.dart';
 import 'package:maintenance/Sync/DataSync.dart';
 import 'package:maintenance/Sync/SyncModels/IMGDI1.dart';
 import 'package:maintenance/Sync/SyncModels/IMOGDI.dart';
@@ -71,7 +73,7 @@ class _JobCardState extends State<GoodsIssue> {
       },
       canPop: false,
       child: DefaultTabController(
-        length: 2,
+        length: 4,
         initialIndex: widget.index,
         child: Scaffold(
           key: key,
@@ -97,7 +99,7 @@ class _JobCardState extends State<GoodsIssue> {
                               topRight: Radius.circular(10)),
                           color: Colors.white),
                       labelColor: barColor,
-                      isScrollable: false,
+                      isScrollable: true,
                       unselectedLabelColor: Colors.white,
                       labelStyle:
                           GoogleFonts.poppins(fontWeight: FontWeight.w500),
@@ -113,6 +115,20 @@ class _JobCardState extends State<GoodsIssue> {
                           padding: const EdgeInsets.all(8.0),
                           child: Text(
                             "Item Details",
+                          ),
+                        )),
+                        Tab(
+                            child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            "Serial No",
+                          ),
+                        )),
+                        Tab(
+                            child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            "Batch No",
                           ),
                         )),
                       ],
@@ -163,6 +179,8 @@ class _JobCardState extends State<GoodsIssue> {
             children: [
               GeneralData(),
               ItemDetails(),
+              SerialNoData(),
+              BatchNoData(),
             ],
           ),
           floatingActionButton: FloatingActionButton(
