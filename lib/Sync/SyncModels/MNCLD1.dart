@@ -40,6 +40,10 @@ class MNCLD1{
   bool insertedIntoDatabase;
   bool IsChecked;
   bool IsFromStock;
+
+  ///FOR DEV PURPOSE ONLY
+  double? AvailableQty;
+  TextEditingController consumptionQtyController=TextEditingController();
   MNCLD1({
     this.ID,
     this.TransId,
@@ -70,6 +74,7 @@ class MNCLD1{
     this.Attachment,
     this.hasCreated,
     this.hasUpdated,
+    this.AvailableQty,
     this.insertedIntoDatabase = true,
   });
   factory MNCLD1.fromJson(Map<String,dynamic> json)=>MNCLD1(

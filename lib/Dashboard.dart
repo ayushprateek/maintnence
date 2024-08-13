@@ -332,7 +332,22 @@ WHERE
       List<MNCLM1> checkListMaster =
           await retrieveMNCLM1ById(null, 'Code = ?', [CheckListTemplateCode]);
       for (MNCLM1 mnclm1 in checkListMaster) {
-        checkListDetails.CheckListDetails.items.add(MNCLD1(
+        // string wareHouseCode = db.MNOWCMs.FirstOrDefault(x => x.Code == MNOCLDViewModel.MNOCLD.WorkCenterCode)?.WhsCode;
+        List<MNOWCM> whsList=await retrieveMNOWCMById(null, 'Code = ?', [dashboardItem.workCenterCode]);
+        String? whsCode;
+        if(whsList.isNotEmpty)
+          {
+            whsCode=whsList[0].WhsCode;
+          }
+        double? availableQty=0.0;
+        List list=await db.rawQuery('''
+        SELECT SUM(InQty)-SUM(OutQty) as AvailableQty FROM OINM WHERE ItemCode='${mnclm1.ItemCode}' AND WhsCode='$whsCode'
+        ''');
+        if(list.isNotEmpty)
+          {
+            availableQty=double.tryParse(list[0]['AvailableQty'].toString());
+          }
+        MNCLD1 mncld1=MNCLD1(
           TransId: checkListGenData.GeneralData.transId,
           RowId: checkListDetails.CheckListDetails.items.length,
           ItemCode: mnclm1.ItemCode,
@@ -341,9 +356,14 @@ WHERE
           Description: mnclm1.CheckListDesc,
           Remarks: mnclm1.Remarks,
           ConsumptionQty: mnclm1.Quantity,
+          AvailableQty: availableQty,
           insertedIntoDatabase: false,
-          Attachment: mnclm1.Attachment
-        ));
+          EquipmentCode: dashboardItem.equipmentCode,
+          Attachment: mnclm1.Attachment,
+        );
+        mncld1.consumptionQtyController.text=mnclm1.Quantity?.toStringAsFixed(2)??'';
+
+        checkListDetails.CheckListDetails.items.add(mncld1);
       }
       Get.to(() => CheckListDocument(0));
 
@@ -359,6 +379,22 @@ WHERE
     } catch (e) {
       print(e.toString());
     }
+  }
+  double getAvailableItemsFromOINM(String? ItemCode, String? WhsCode)
+  {
+
+    if(ItemCode==null || ItemCode=='' ||WhsCode==null || WhsCode=='')
+      return 0.0;
+    double availableItems=0.0;
+
+    // double availableItems =
+    //     (_db.OINMs.Where(x => x.ItemCode == ItemCode && x.WhsCode == WhsCode)?.
+    //     Sum(y => y.InQty) ?? 0)
+    //     -
+    //     (_db.OINMs.Where(x => x.ItemCode == ItemCode && x.WhsCode == WhsCode)?.Sum(y => y.OutQty) ?? 0);
+
+
+    return availableItems;
   }
 
   Future<void> initializeTimer() async {
