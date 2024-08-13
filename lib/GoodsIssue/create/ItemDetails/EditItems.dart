@@ -369,15 +369,54 @@ class _EditCheckListState extends State<EditItems> {
                                           i++)
                                         if (EditItems.itemCode ==
                                             ItemDetails.items[i].ItemCode) {
-                                          ItemDetails.items[i].UOM =
-                                              EditItems.uomCode;
-                                          //todo: updating
+                                          IMGDI1 mncld1 = IMGDI1(
+                                            ID: int.tryParse(
+                                                EditItems.id ?? ''),
+                                            TransId: EditItems.transId,
+                                            RowId: ItemDetails.items[i].RowId,
+                                            ItemCode:
+                                                EditItems.itemCode.toString() ??
+                                                    '',
+                                            ItemName:
+                                                EditItems.itemName.toString() ??
+                                                    '',
+                                            UOM: EditItems.uomCode.toString() ??
+                                                '',
+                                            DeptCode: EditItems.deptCode,
+                                            DeptName: EditItems.deptName,
+                                            ToWhsCode: EditItems.toWhsCode,
+                                            TripTransId: _tripTransId.text,
+                                            Discount: double.tryParse(
+                                                EditItems.lineDiscount ?? ''),
+                                            DriverCode: EditItems.driverCode,
+                                            DriverName: EditItems.driverName,
+                                            TruckNo: EditItems.truckNo,
+                                            TaxCode: EditItems.taxCode,
+                                            TaxRate: double.tryParse(
+                                                EditItems.taxRate ?? ''),
+                                            RouteCode: EditItems.routeCode,
+                                            RouteName: EditItems.routeName,
+                                            Quantity: double.tryParse(
+                                                EditItems.consumptionQty ?? ''),
+                                            Price: double.tryParse(
+                                                EditItems.price ?? ''),
+                                            OpenQty: double.tryParse(
+                                                EditItems.consumptionQty ?? ''),
+                                            MSP: double.tryParse(
+                                                EditItems.mtv ?? ''),
+                                            LineTotal: double.tryParse(
+                                                EditItems.lineTotal ?? ''),
+                                            LineStatus: 'Open',
+                                            CreateDate: DateTime.now(),
+                                            insertedIntoDatabase: false,
+                                          );
+                                          ItemDetails.items[i] = mncld1;
                                         }
 
                                       calculateGoodsIssue();
                                       Get.offAll(() => GoodsIssue(1));
 
-                                      getSuccessSnackBar("Check List Updated");
+                                      getSuccessSnackBar("Goods Issue Updated");
                                     } else {
                                       IMGDI1 mncld1 = IMGDI1(
                                         ID: int.tryParse(EditItems.id ?? ''),

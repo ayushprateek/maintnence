@@ -3,12 +3,15 @@ import 'package:get/get.dart';
 import 'package:maintenance/Component/CustomColor.dart';
 import 'package:maintenance/Component/CustomFont.dart';
 import 'package:maintenance/GoodsIssue/edit/ItemDetails/AddItems.dart';
+import 'package:maintenance/GoodsIssue/edit/ItemDetails/EditItems.dart';
 import 'package:maintenance/Sync/SyncModels/IMGDI1.dart';
-
+import 'package:maintenance/Sync/SyncModels/OUOM.dart';
+import 'package:maintenance/Sync/SyncModels/OWHS.dart';
 
 class ItemDetails extends StatefulWidget {
   const ItemDetails({super.key});
-  static List<IMGDI1> items=[];
+
+  static List<IMGDI1> items = [];
 
   @override
   State<ItemDetails> createState() => _ItemDetailsState();
@@ -34,7 +37,7 @@ class _ItemDetailsState extends State<ItemDetails> {
                   ),
                 ),
                 onPressed: () {
-                  Get.to(()=>AddItems());
+                  Get.to(() => AddItems());
                   // if (GeneralData.customerCode?.isEmpty==true) {
                   //   getErrorSnackBar("Please select customer to continue");
                   // } else if (GeneralData.WhsCode?.isEmpty==true) {
@@ -78,47 +81,52 @@ class _ItemDetailsState extends State<ItemDetails> {
                           clipBehavior: Clip.none,
                           children: [
                             InkWell(
-                              // onDoubleTap: () {
-                              //   if (isSelectedAndCancelled() ||
-                              //       isSalesQuotationDocClosed()) {
-                              //     getErrorSnackBar(
-                              //         "This Document is already cancelled / closed");
-                              //   } else {
-                              //     EditItems.isInserted =
-                              //         ItemDetails.items[index].insertedIntoDatabase;
-                              //     EditItems.TaxCode =
-                              //         ItemDetails.items[index].TaxCode.toString();
-                              //     EditItems.TaxRate =
-                              //         ItemDetails.items[index].TaxRate;
-                              //     Navigator.push(
-                              //         context,
-                              //         MaterialPageRoute(
-                              //             builder: ((context) => EditItems(
-                              //                 ItemDetails.items[index].ID ?? 0,
-                              //                 1,
-                              //                 ItemDetails.items[index].WhsCode ??
-                              //                     '',
-                              //                 ItemDetails.items[index].TransId ??
-                              //                     '',
-                              //                 ItemDetails.items[index].ItemCode ??
-                              //                     '',
-                              //                 ItemDetails.items[index].ItemName ??
-                              //                     '',
-                              //                 ItemDetails.items[index].UOM ?? '',
-                              //                 ItemDetails.items[index].TaxCode ??
-                              //                     '',
-                              //                 ItemDetails.items[index].Quantity ??
-                              //                     0.0,
-                              //                 ItemDetails.items[index].Price ?? 0.0,
-                              //                 ItemDetails.items[index].TaxRate ??
-                              //                     0.0,
-                              //                 ItemDetails.items[index].Discount ??
-                              //                     0.0,
-                              //                 ItemDetails.items[index].LineTotal ??
-                              //                     0.0,
-                              //                 true))));
-                              //   }
-                              // },
+                              onDoubleTap: () async {
+                                EditItems.id = item.ID?.toString();
+                                EditItems.truckNo = item.TruckNo;
+                                EditItems.toWhsCode = item.ToWhsCode;
+                                List<OWHS> wareHouseList =
+                                    await retrieveOWHSById(
+                                        null, 'WhsCode = ?', [item.ToWhsCode]);
+                                if (wareHouseList.isNotEmpty) {
+                                  EditItems.toWhsName =
+                                      wareHouseList[0].WhsName;
+                                }
+                                EditItems.driverCode = item.DriverCode;
+                                EditItems.driverName = item.DriverName;
+                                EditItems.routeCode = item.RouteCode;
+                                EditItems.routeName = item.RouteName;
+                                EditItems.transId = item.TransId;
+                                EditItems.rowId = item.RowId?.toString();
+                                EditItems.itemCode = item.ItemCode;
+                                EditItems.itemName = item.ItemName;
+                                EditItems.consumptionQty =
+                                    item.Quantity?.toStringAsFixed(2);
+                                EditItems.tripTransId = item.TripTransId;
+                                EditItems.uomCode = item.UOM;
+                                List<OUOMModel> uomList =
+                                    await retrieveOUOMById(
+                                        null, 'UomCode = ?', [item.UOM]);
+                                if (uomList.isNotEmpty) {
+                                  EditItems.uomName = uomList[0].UomName;
+                                }
+
+                                EditItems.deptCode = item.DeptCode;
+                                EditItems.deptName = item.DeptName;
+                                EditItems.price =
+                                    item.Price?.toStringAsFixed(2);
+                                EditItems.mtv = item.MSP?.toStringAsFixed(2);
+                                EditItems.taxCode = item.TaxCode;
+                                EditItems.taxRate =
+                                    item.TaxRate?.toStringAsFixed(2);
+                                EditItems.lineDiscount =
+                                    item.Discount?.toStringAsFixed(2);
+                                EditItems.lineTotal =
+                                    item.LineTotal?.toStringAsFixed(2);
+
+                                EditItems.isUpdating = true;
+                                Get.to(() => EditItems());
+                              },
                               child: Container(
                                 decoration: BoxDecoration(
                                   color: Colors.white,
@@ -160,7 +168,9 @@ class _ItemDetailsState extends State<ItemDetails> {
                                                       getPoppinsTextSpanHeading(
                                                           text: 'TripTransId'),
                                                       getPoppinsTextSpanDetails(
-                                                          text: item.TripTransId??''),
+                                                          text:
+                                                              item.TripTransId ??
+                                                                  ''),
                                                     ],
                                                   ),
                                                 ),
@@ -179,7 +189,8 @@ class _ItemDetailsState extends State<ItemDetails> {
                                                       getPoppinsTextSpanHeading(
                                                           text: 'Item'),
                                                       getPoppinsTextSpanDetails(
-                                                          text: item.ItemName??''),
+                                                          text: item.ItemName ??
+                                                              ''),
                                                     ],
                                                   ),
                                                 ),
@@ -217,7 +228,10 @@ class _ItemDetailsState extends State<ItemDetails> {
                                                       getPoppinsTextSpanHeading(
                                                           text: 'Quantity'),
                                                       getPoppinsTextSpanDetails(
-                                                          text: item.Quantity?.toStringAsFixed(2)??'0.0'),
+                                                          text: item.Quantity
+                                                                  ?.toStringAsFixed(
+                                                                      2) ??
+                                                              '0.0'),
                                                     ],
                                                   ),
                                                 ),
@@ -236,7 +250,7 @@ class _ItemDetailsState extends State<ItemDetails> {
                                                       getPoppinsTextSpanHeading(
                                                           text: 'UOM'),
                                                       getPoppinsTextSpanDetails(
-                                                          text: item.UOM??''),
+                                                          text: item.UOM ?? ''),
                                                     ],
                                                   ),
                                                 ),
@@ -253,10 +267,10 @@ class _ItemDetailsState extends State<ItemDetails> {
                                                   TextSpan(
                                                     children: [
                                                       getPoppinsTextSpanHeading(
-                                                          text:
-                                                          'TruckNo'),
+                                                          text: 'TruckNo'),
                                                       getPoppinsTextSpanDetails(
-                                                          text: item.TruckNo??''),
+                                                          text: item.TruckNo ??
+                                                              ''),
                                                     ],
                                                   ),
                                                 ),
@@ -273,16 +287,15 @@ class _ItemDetailsState extends State<ItemDetails> {
                                                   TextSpan(
                                                     children: [
                                                       getPoppinsTextSpanHeading(
-                                                          text:
-                                                          'Driver'),
+                                                          text: 'Driver'),
                                                       getPoppinsTextSpanDetails(
-                                                          text: item.DriverName),
+                                                          text:
+                                                              item.DriverName),
                                                     ],
                                                   ),
                                                 ),
                                               ),
                                             ),
-
                                           ],
                                         ),
                                       ),
@@ -292,8 +305,6 @@ class _ItemDetailsState extends State<ItemDetails> {
                                           mainAxisAlignment:
                                               MainAxisAlignment.start,
                                           children: [
-
-
                                             Padding(
                                               padding: const EdgeInsets.only(
                                                   left: 8.0,
@@ -305,8 +316,7 @@ class _ItemDetailsState extends State<ItemDetails> {
                                                   TextSpan(
                                                     children: [
                                                       getPoppinsTextSpanHeading(
-                                                          text:
-                                                              'Route'),
+                                                          text: 'Route'),
                                                       getPoppinsTextSpanDetails(
                                                           text: item.RouteName),
                                                     ],
@@ -325,8 +335,7 @@ class _ItemDetailsState extends State<ItemDetails> {
                                                   TextSpan(
                                                     children: [
                                                       getPoppinsTextSpanHeading(
-                                                          text:
-                                                              'Dept'),
+                                                          text: 'Dept'),
                                                       getPoppinsTextSpanDetails(
                                                           text: item.DeptName),
                                                     ],
@@ -345,10 +354,12 @@ class _ItemDetailsState extends State<ItemDetails> {
                                                   TextSpan(
                                                     children: [
                                                       getPoppinsTextSpanHeading(
-                                                          text:
-                                                              'Price'),
+                                                          text: 'Price'),
                                                       getPoppinsTextSpanDetails(
-                                                          text: item.Price?.toStringAsFixed(2)??'0.0'),
+                                                          text: item.Price
+                                                                  ?.toStringAsFixed(
+                                                                      2) ??
+                                                              '0.0'),
                                                     ],
                                                   ),
                                                 ),
@@ -365,10 +376,12 @@ class _ItemDetailsState extends State<ItemDetails> {
                                                   TextSpan(
                                                     children: [
                                                       getPoppinsTextSpanHeading(
-                                                          text:
-                                                              'Tax Rate'),
+                                                          text: 'Tax Rate'),
                                                       getPoppinsTextSpanDetails(
-                                                          text: item.TaxRate?.toStringAsFixed(2)??'0.0'),
+                                                          text: item.TaxRate
+                                                                  ?.toStringAsFixed(
+                                                                      2) ??
+                                                              '0.0'),
                                                     ],
                                                   ),
                                                 ),
@@ -388,7 +401,10 @@ class _ItemDetailsState extends State<ItemDetails> {
                                                           text:
                                                               'Line Discount'),
                                                       getPoppinsTextSpanDetails(
-                                                          text: item.Discount?.toStringAsFixed(2)??''),
+                                                          text: item.Discount
+                                                                  ?.toStringAsFixed(
+                                                                      2) ??
+                                                              ''),
                                                     ],
                                                   ),
                                                 ),
@@ -405,10 +421,12 @@ class _ItemDetailsState extends State<ItemDetails> {
                                                   TextSpan(
                                                     children: [
                                                       getPoppinsTextSpanHeading(
-                                                          text:
-                                                              'Line Total'),
+                                                          text: 'Line Total'),
                                                       getPoppinsTextSpanDetails(
-                                                          text: item.LineTotal?.toStringAsFixed(2)??'0.0'),
+                                                          text: item.LineTotal
+                                                                  ?.toStringAsFixed(
+                                                                      2) ??
+                                                              '0.0'),
                                                     ],
                                                   ),
                                                 ),
@@ -429,54 +447,67 @@ class _ItemDetailsState extends State<ItemDetails> {
                                 child: IconButton(
                                     onPressed: () async {
                                       await showDialog(
-                                      barrierDismissible: false,
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return AlertDialog(
-                                          content: Container(
-                                            height: MediaQuery.of(context).size.height / 20,
-                                            width: MediaQuery.of(context).size.width / 1.5,
-                                            child: Text(
-                                              "Are you sure you want to delete this row?",
-                                              style: TextStyle(
-                                                  color: Colors.black, fontWeight: FontWeight.bold),
-                                            ),
-                                          ),
-                                          actions: [
-                                            MaterialButton(
-                                              // OPTIONAL BUTTON
-                                              shape: RoundedRectangleBorder(
-                                                borderRadius: BorderRadius.circular(40),
-                                              ),
-                                              color: barColor,
+                                        barrierDismissible: false,
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return AlertDialog(
+                                            content: Container(
+                                              height: MediaQuery.of(context)
+                                                      .size
+                                                      .height /
+                                                  20,
+                                              width: MediaQuery.of(context)
+                                                      .size
+                                                      .width /
+                                                  1.5,
                                               child: Text(
-                                                'No',
-                                                style: TextStyle(color: Colors.white),
+                                                "Are you sure you want to delete this row?",
+                                                style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontWeight:
+                                                        FontWeight.bold),
                                               ),
-                                              onPressed: () {
-                                                Navigator.pop(context);
-                                              },
                                             ),
-                                            MaterialButton(
-                                              // OPTIONAL BUTTON
-                                              shape: RoundedRectangleBorder(
-                                                borderRadius: BorderRadius.circular(40),
+                                            actions: [
+                                              MaterialButton(
+                                                // OPTIONAL BUTTON
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(40),
+                                                ),
+                                                color: barColor,
+                                                child: Text(
+                                                  'No',
+                                                  style: TextStyle(
+                                                      color: Colors.white),
+                                                ),
+                                                onPressed: () {
+                                                  Navigator.pop(context);
+                                                },
                                               ),
-                                              color: Colors.red,
-                                              child: Text(
-                                                'Yes',
-                                                style: TextStyle(color: Colors.white),
+                                              MaterialButton(
+                                                // OPTIONAL BUTTON
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(40),
+                                                ),
+                                                color: Colors.red,
+                                                child: Text(
+                                                  'Yes',
+                                                  style: TextStyle(
+                                                      color: Colors.white),
+                                                ),
+                                                onPressed: () async {
+                                                  ItemDetails.items
+                                                      .removeAt(index);
+                                                  Navigator.pop(context);
+                                                },
                                               ),
-                                              onPressed: () async {
-                                                ItemDetails.items.removeAt(index);
-                                                Navigator.pop(context);
-                                              },
-                                            ),
-                                          ],
-                                        );
-                                      },
-                                      ).then((value){
-                                        setState((){});
+                                            ],
+                                          );
+                                        },
+                                      ).then((value) {
+                                        setState(() {});
                                       });
                                     },
                                     icon: Icon(
@@ -489,10 +520,10 @@ class _ItemDetailsState extends State<ItemDetails> {
                         );
                       },
                     ),
-                    if(ItemDetails.items.isNotEmpty)
-                    SizedBox(
-                      height: MediaQuery.of(context).size.height / 10,
-                    )
+                    if (ItemDetails.items.isNotEmpty)
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height / 10,
+                      )
                   ],
                 ),
               ),

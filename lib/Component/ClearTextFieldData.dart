@@ -940,6 +940,7 @@ class ClearGoodsIssueDocument {
   }
 
   static clearEditItems() {
+    goodsIssueCreateEditItems.EditItems.tripTransId = '';
     goodsIssueCreateEditItems.EditItems.id = '';
     goodsIssueCreateEditItems.EditItems.truckNo = '';
     goodsIssueCreateEditItems.EditItems.toWhsCode = '';
