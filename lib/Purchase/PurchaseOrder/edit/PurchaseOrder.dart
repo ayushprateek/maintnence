@@ -16,6 +16,8 @@ import 'package:maintenance/Dashboard.dart';
 import 'package:maintenance/DatabaseInitialization.dart';
 import 'package:maintenance/Purchase/PurchaseOrder/edit/GeneralData.dart';
 import 'package:maintenance/Purchase/PurchaseOrder/edit/ItemDetails/ItemDetails.dart';
+import 'package:maintenance/Purchase/PurchaseOrder/edit/Address/BillingAddress.dart';
+import 'package:maintenance/Purchase/PurchaseOrder/edit/Address/ShippingAddress.dart';
 
 import 'package:maintenance/Sync/DataSync.dart';
 import 'package:maintenance/Sync/SyncModels/PROPOR.dart';
@@ -70,7 +72,7 @@ class _JobCardState extends State<EditPurchaseOrder> {
       },
       canPop: false,
       child: DefaultTabController(
-        length: 2,
+        length: 4,
         initialIndex: widget.index,
         child: Scaffold(
           key: key,
@@ -96,7 +98,7 @@ class _JobCardState extends State<EditPurchaseOrder> {
                               topRight: Radius.circular(10)),
                           color: Colors.white),
                       labelColor: barColor,
-                      isScrollable: false,
+                      isScrollable: true,
                       unselectedLabelColor: Colors.white,
                       labelStyle:
                           GoogleFonts.poppins(fontWeight: FontWeight.w500),
@@ -114,6 +116,20 @@ class _JobCardState extends State<EditPurchaseOrder> {
                             "Item Details",
                           ),
                         )),
+                        Tab(
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(
+                                "Shipping Address",
+                              ),
+                            )),
+                        Tab(
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(
+                                "Billing Address",
+                              ),
+                            )),
                       ],
                     ),
                   ],
@@ -126,6 +142,8 @@ class _JobCardState extends State<EditPurchaseOrder> {
             children: [
               GeneralData(),
               ItemDetails(),
+              ShippingAddress(),
+              BillingAddress(),
             ],
           ),
           floatingActionButton: FloatingActionButton(

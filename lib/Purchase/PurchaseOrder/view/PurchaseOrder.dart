@@ -16,6 +16,8 @@ import 'package:maintenance/Dashboard.dart';
 import 'package:maintenance/DatabaseInitialization.dart';
 import 'package:maintenance/Purchase/PurchaseOrder/view/GeneralData.dart';
 import 'package:maintenance/Purchase/PurchaseOrder/view/ItemDetails/ItemDetails.dart';
+import 'package:maintenance/Purchase/PurchaseOrder/view/Address/BillingAddress.dart';
+import 'package:maintenance/Purchase/PurchaseOrder/view/Address/ShippingAddress.dart';
 import 'package:maintenance/Sync/DataSync.dart';
 import 'package:maintenance/Sync/SyncModels/PROPOR.dart';
 import 'package:maintenance/Sync/SyncModels/PRPOR1.dart';
@@ -69,7 +71,7 @@ class _JobCardState extends State<ViewPurchaseOrder> {
       },
       canPop: false,
       child: DefaultTabController(
-        length: 2,
+        length: 4,
         initialIndex: widget.index,
         child: Scaffold(
           key: key,
@@ -95,7 +97,7 @@ class _JobCardState extends State<ViewPurchaseOrder> {
                               topRight: Radius.circular(10)),
                           color: Colors.white),
                       labelColor: barColor,
-                      isScrollable: false,
+                      isScrollable: true,
                       unselectedLabelColor: Colors.white,
                       labelStyle:
                           GoogleFonts.poppins(fontWeight: FontWeight.w500),
@@ -113,6 +115,20 @@ class _JobCardState extends State<ViewPurchaseOrder> {
                             "Item Details",
                           ),
                         )),
+                        Tab(
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(
+                                "Shipping Address",
+                              ),
+                            )),
+                        Tab(
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(
+                                "Billing Address",
+                              ),
+                            )),
                       ],
                     ),
                   ],
@@ -125,6 +141,8 @@ class _JobCardState extends State<ViewPurchaseOrder> {
             children: [
               GeneralData(),
               ItemDetails(),
+              ShippingAddress(),
+              BillingAddress(),
             ],
           ),
         ),

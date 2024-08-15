@@ -138,17 +138,28 @@ as createPurchaseOrderShippingAddress;
 import 'package:maintenance/Purchase/PurchaseOrder/create/PurchaseOrder.dart';
 import 'package:maintenance/Purchase/PurchaseOrder/edit/PurchaseOrder.dart';
 
-//------------------------------ CREATE VIEW ORDER IMPORTS------------
+//------------------------------ VIEW PURCHASE ORDER IMPORTS------------
 import 'package:maintenance/Purchase/PurchaseOrder/view/GeneralData.dart'
     as viewPurchaseOrderGenData;
 import 'package:maintenance/Purchase/PurchaseOrder/view/ItemDetails/ItemDetails.dart'
     as viewPurchaseOrderItemDetails;
 
-//------------------------------ CREATE EDIT ORDER IMPORTS------------
+import 'package:maintenance/Purchase/PurchaseOrder/view/Address/BillingAddress.dart'
+as viewPurchaseOrderBillAddress;
+import 'package:maintenance/Purchase/PurchaseOrder/view/Address/ShippingAddress.dart'
+as viewPurchaseOrderShippingAddress;
+
+
+
+//------------------------------ EDIT PURCHASE ORDER IMPORTS------------
 import 'package:maintenance/Purchase/PurchaseOrder/edit/GeneralData.dart'
     as editPurchaseOrderGenData;
 import 'package:maintenance/Purchase/PurchaseOrder/edit/ItemDetails/ItemDetails.dart'
     as editPurchaseOrderItemDetails;
+import 'package:maintenance/Purchase/PurchaseOrder/edit/Address/BillingAddress.dart'
+as editPurchaseOrderBillAddress;
+import 'package:maintenance/Purchase/PurchaseOrder/edit/Address/ShippingAddress.dart'
+as editPurchaseOrderShippingAddress;
 import 'package:maintenance/Purchase/PurchaseOrder/view/PurchaseOrder.dart';
 //------------------------------ CREATE PURCHASE REQUEST IMPORTS------------
 import 'package:maintenance/Purchase/PurchaseRequest/create/GeneralData.dart'
@@ -1491,7 +1502,7 @@ class ClearPurchaseOrderDocument {
     editPurchaseOrderGenData.GeneralData.isPosted = data.IsPosted ?? false;
   }
 
-  static setShippingAddressTextFields({required PRPOR2 prpdn2}) {
+  static setCreateShippingAddressTextFields({required PRPOR2 prpdn2}) {
     createPurchaseOrderShippingAddress.ShippingAddress.CityName = prpdn2.CityName.toString();
     createPurchaseOrderShippingAddress.ShippingAddress.hasCreated = prpdn2.hasCreated;
     createPurchaseOrderShippingAddress.ShippingAddress.hasUpdated = prpdn2.hasUpdated;
@@ -1517,7 +1528,7 @@ class ClearPurchaseOrderDocument {
         prpdn2.AddressCode.toString();
   }
 
-  static setBillingAddressTextFields({required PRPOR3 prpdn3}) {
+  static setCreateBillingAddressTextFields({required PRPOR3 prpdn3}) {
     createPurchaseOrderBillAddress.BillingAddress.CityName = prpdn3.CityName.toString();
     createPurchaseOrderBillAddress.BillingAddress.hasCreated = prpdn3.hasCreated;
     createPurchaseOrderBillAddress.BillingAddress.hasUpdated = prpdn3.hasUpdated;
@@ -1536,6 +1547,101 @@ class ClearPurchaseOrderDocument {
     createPurchaseOrderBillAddress.BillingAddress.RowId =
         int.parse(prpdn3.RowId.toString());
     createPurchaseOrderBillAddress.BillingAddress.AddCode = prpdn3.AddressCode.toString();
+  }
+
+
+  static setViewShippingAddressTextFields({required PRPOR2 prpdn2}) {
+    viewPurchaseOrderShippingAddress.ShippingAddress.CityName = prpdn2.CityName.toString();
+    viewPurchaseOrderShippingAddress.ShippingAddress.hasCreated = prpdn2.hasCreated;
+    viewPurchaseOrderShippingAddress.ShippingAddress.hasUpdated = prpdn2.hasUpdated;
+    viewPurchaseOrderShippingAddress.ShippingAddress.CityCode = prpdn2.CityCode.toString();
+    viewPurchaseOrderShippingAddress.ShippingAddress.Addres = prpdn2.Address.toString();
+    viewPurchaseOrderShippingAddress.ShippingAddress.CountryName =
+        prpdn2.CountryName.toString();
+    viewPurchaseOrderShippingAddress.ShippingAddress.CountryCode =
+        prpdn2.CountryCode.toString();
+    viewPurchaseOrderShippingAddress.ShippingAddress.StateName =
+        prpdn2.StateName.toString();
+    viewPurchaseOrderShippingAddress.ShippingAddress.RouteCode =
+        prpdn2.RouteCode.toString();
+    viewPurchaseOrderShippingAddress.ShippingAddress.StateCode =
+        prpdn2.StateCode.toString();
+    viewPurchaseOrderShippingAddress.ShippingAddress.Latitude =
+        double.tryParse(prpdn2.Latitude.toString()) ?? 0.0;
+    viewPurchaseOrderShippingAddress.ShippingAddress.Longitude =
+        double.tryParse(prpdn2.Longitude.toString()) ?? 0.0;
+    viewPurchaseOrderShippingAddress.ShippingAddress.RowId =
+        int.parse(prpdn2.RowId.toString());
+    viewPurchaseOrderShippingAddress.ShippingAddress.AddCode =
+        prpdn2.AddressCode.toString();
+  }
+
+  static setViewBillingAddressTextFields({required PRPOR3 prpdn3}) {
+    viewPurchaseOrderBillAddress.BillingAddress.CityName = prpdn3.CityName.toString();
+    viewPurchaseOrderBillAddress.BillingAddress.hasCreated = prpdn3.hasCreated;
+    viewPurchaseOrderBillAddress.BillingAddress.hasUpdated = prpdn3.hasUpdated;
+    viewPurchaseOrderBillAddress.BillingAddress.CityCode = prpdn3.CityCode.toString();
+    viewPurchaseOrderBillAddress.BillingAddress.Addres = prpdn3.Address.toString();
+    viewPurchaseOrderBillAddress.BillingAddress.CountryName =
+        prpdn3.CountryName.toString();
+    viewPurchaseOrderBillAddress.BillingAddress.CountryCode =
+        prpdn3.CountryCode.toString();
+    viewPurchaseOrderBillAddress.BillingAddress.StateName = prpdn3.StateName.toString();
+    viewPurchaseOrderBillAddress.BillingAddress.StateCode = prpdn3.StateCode.toString();
+    viewPurchaseOrderBillAddress.BillingAddress.Latitude =
+        double.tryParse(prpdn3.Latitude.toString()) ?? 0.0;
+    viewPurchaseOrderBillAddress.BillingAddress.Longitude =
+        double.tryParse(prpdn3.Longitude.toString()) ?? 0.0;
+    viewPurchaseOrderBillAddress.BillingAddress.RowId =
+        int.parse(prpdn3.RowId.toString());
+    viewPurchaseOrderBillAddress.BillingAddress.AddCode = prpdn3.AddressCode.toString();
+  }
+
+  static setEditShippingAddressTextFields({required PRPOR2 prpdn2}) {
+    editPurchaseOrderShippingAddress.ShippingAddress.CityName = prpdn2.CityName.toString();
+    editPurchaseOrderShippingAddress.ShippingAddress.hasCreated = prpdn2.hasCreated;
+    editPurchaseOrderShippingAddress.ShippingAddress.hasUpdated = prpdn2.hasUpdated;
+    editPurchaseOrderShippingAddress.ShippingAddress.CityCode = prpdn2.CityCode.toString();
+    editPurchaseOrderShippingAddress.ShippingAddress.Addres = prpdn2.Address.toString();
+    editPurchaseOrderShippingAddress.ShippingAddress.CountryName =
+        prpdn2.CountryName.toString();
+    editPurchaseOrderShippingAddress.ShippingAddress.CountryCode =
+        prpdn2.CountryCode.toString();
+    editPurchaseOrderShippingAddress.ShippingAddress.StateName =
+        prpdn2.StateName.toString();
+    editPurchaseOrderShippingAddress.ShippingAddress.RouteCode =
+        prpdn2.RouteCode.toString();
+    editPurchaseOrderShippingAddress.ShippingAddress.StateCode =
+        prpdn2.StateCode.toString();
+    editPurchaseOrderShippingAddress.ShippingAddress.Latitude =
+        double.tryParse(prpdn2.Latitude.toString()) ?? 0.0;
+    editPurchaseOrderShippingAddress.ShippingAddress.Longitude =
+        double.tryParse(prpdn2.Longitude.toString()) ?? 0.0;
+    editPurchaseOrderShippingAddress.ShippingAddress.RowId =
+        int.parse(prpdn2.RowId.toString());
+    editPurchaseOrderShippingAddress.ShippingAddress.AddCode =
+        prpdn2.AddressCode.toString();
+  }
+
+  static setEditBillingAddressTextFields({required PRPOR3 prpdn3}) {
+    editPurchaseOrderBillAddress.BillingAddress.CityName = prpdn3.CityName.toString();
+    editPurchaseOrderBillAddress.BillingAddress.hasCreated = prpdn3.hasCreated;
+    editPurchaseOrderBillAddress.BillingAddress.hasUpdated = prpdn3.hasUpdated;
+    editPurchaseOrderBillAddress.BillingAddress.CityCode = prpdn3.CityCode.toString();
+    editPurchaseOrderBillAddress.BillingAddress.Addres = prpdn3.Address.toString();
+    editPurchaseOrderBillAddress.BillingAddress.CountryName =
+        prpdn3.CountryName.toString();
+    editPurchaseOrderBillAddress.BillingAddress.CountryCode =
+        prpdn3.CountryCode.toString();
+    editPurchaseOrderBillAddress.BillingAddress.StateName = prpdn3.StateName.toString();
+    editPurchaseOrderBillAddress.BillingAddress.StateCode = prpdn3.StateCode.toString();
+    editPurchaseOrderBillAddress.BillingAddress.Latitude =
+        double.tryParse(prpdn3.Latitude.toString()) ?? 0.0;
+    editPurchaseOrderBillAddress.BillingAddress.Longitude =
+        double.tryParse(prpdn3.Longitude.toString()) ?? 0.0;
+    editPurchaseOrderBillAddress.BillingAddress.RowId =
+        int.parse(prpdn3.RowId.toString());
+    editPurchaseOrderBillAddress.BillingAddress.AddCode = prpdn3.AddressCode.toString();
   }
 
   static clearShippingAddressTextFields() {
@@ -1657,7 +1763,19 @@ navigateToPurchaseOrderDocument(
       ClearPurchaseOrderDocument.setViewPurchaseOrderTextFields(data: list[0]);
     }
     viewPurchaseOrderItemDetails.ItemDetails.items =
-        await retrievePRPOR1ById(null, 'TransId = ?', [TransId]);
+    await retrievePRPOR1ById(null, 'TransId = ?', [TransId]);
+
+    List<PRPOR2> PRPOR2list =
+        await retrievePRPOR2ById(null, 'TransId = ?', [TransId]);
+    if (PRPOR2list.isNotEmpty) {
+      ClearPurchaseOrderDocument.setViewShippingAddressTextFields(prpdn2: PRPOR2list[0]);
+    }
+    List<PRPOR3> PRPOR3list =
+        await retrievePRPOR3ById(null, 'TransId = ?', [TransId]);
+    if (PRPOR3list.isNotEmpty) {
+      ClearPurchaseOrderDocument.setViewBillingAddressTextFields(prpdn3: PRPOR3list[0]);
+    }
+
 
     Get.offAll(() => ViewPurchaseOrder(0));
   } else {
@@ -1669,6 +1787,17 @@ navigateToPurchaseOrderDocument(
     }
     editPurchaseOrderItemDetails.ItemDetails.items =
         await retrievePRPOR1ById(null, 'TransId = ?', [TransId]);
+
+    List<PRPOR2> PRPOR2list =
+    await retrievePRPOR2ById(null, 'TransId = ?', [TransId]);
+    if (PRPOR2list.isNotEmpty) {
+      ClearPurchaseOrderDocument.setEditShippingAddressTextFields(prpdn2: PRPOR2list[0]);
+    }
+    List<PRPOR3> PRPOR3list =
+    await retrievePRPOR3ById(null, 'TransId = ?', [TransId]);
+    if (PRPOR3list.isNotEmpty) {
+      ClearPurchaseOrderDocument.setEditBillingAddressTextFields(prpdn3: PRPOR3list[0]);
+    }
 
     Get.offAll(() => EditPurchaseOrder(0));
   }
