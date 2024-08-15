@@ -1,20 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:maintenance/Component/CustomColor.dart';
 import 'package:maintenance/Component/CustomFont.dart';
 import 'package:maintenance/Component/GetFormattedDate.dart';
 import 'package:maintenance/Component/GetTextField.dart';
 import 'package:maintenance/Component/SnackbarComponent.dart';
-import 'package:maintenance/Lookups/DepartmentLookup.dart';
-import 'package:maintenance/Lookups/EmployeeLookup.dart';
-import 'package:maintenance/Lookups/TripLookup.dart';
-import 'package:maintenance/Sync/SyncModels/OEMP.dart';
-import 'package:maintenance/Sync/SyncModels/OPOTRP.dart';
-import 'package:maintenance/Sync/SyncModels/OUDP.dart';
-import 'package:maintenance/Sync/SyncModels/OWHS.dart';
 import 'package:maintenance/Sync/SyncModels/PROPRQ.dart';
-
-import '../../../Lookups/WarehouseLookup.dart';
 
 class GeneralData extends StatefulWidget {
   const GeneralData({super.key});
@@ -196,37 +186,20 @@ class _GeneralDataState extends State<GeneralData> {
                     GeneralData.transId = _transId.text = val;
                   }),
               getDisabledTextField(
-                  controller: _deptName,
-                  labelText: 'Department Name',
-                  onChanged: (val) {
-                    GeneralData.deptName = _deptName.text = val;
-                  },
-                  enableLookup: true,
-                  onLookupPressed: () {
-                    Get.to(() => DepartmentLookup(onSelection: (OUDP oudp) {
-                          setState(() {
-                            GeneralData.deptCode = oudp.Code ?? '';
-                            GeneralData.deptName =
-                                _deptName.text = oudp.Name ?? '';
-                          });
-                        }));
-                  }),
+                controller: _deptName,
+                labelText: 'Department Name',
+                onChanged: (val) {
+                  GeneralData.deptName = _deptName.text = val;
+                },
+              ),
               getDisabledTextField(
-                  controller: _tripTransId,
-                  labelText: 'TripTransId',
-                  onChanged: (val) {
-                    GeneralData.tripTransId = _tripTransId.text = val;
-                  },
-                  enableLookup: true,
-                  onLookupPressed: () {
-                    Get.to(() => TripLookup(onSelection: (OPOTRP oemp) {
-                          setState(() {
-                            GeneralData.tripTransId =
-                                _tripTransId.text = oemp.TransId ?? '';
-                          });
-                        }));
-                  }),
-              getTextField(
+                controller: _tripTransId,
+                labelText: 'TripTransId',
+                onChanged: (val) {
+                  GeneralData.tripTransId = _tripTransId.text = val;
+                },
+              ),
+              getDisabledTextField(
                   controller: _refNo,
                   labelText: 'Reference No',
                   onChanged: (val) {
@@ -237,32 +210,14 @@ class _GeneralDataState extends State<GeneralData> {
                   labelText: 'Requester Name*',
                   onChanged: (val) {
                     GeneralData.requestedName = _requestedName.text = val;
-                  },
-                  enableLookup: true,
-                  onLookupPressed: () {
-                    Get.to(() => EmployeeLookup(onSelection: (OEMPModel oemp) {
-                          setState(() {
-                            GeneralData.requestedCode = oemp.Code;
-                            GeneralData.requestedName =
-                                _requestedName.text = oemp.Name ?? '';
-                          });
-                        }));
                   }),
               getDisabledTextField(
-                  controller: _whsCode,
-                  labelText: 'WhsCode',
-                  onChanged: (val) {
-                    GeneralData.whsCode = _whsCode.text = val;
-                  },
-                  enableLookup: true,
-                  onLookupPressed: () {
-                    Get.to(() => WarehouseLookup(onSelection: (OWHS owhs) {
-                          setState(() {
-                            GeneralData.whsCode =
-                                _whsCode.text = owhs.WhsCode ?? '';
-                          });
-                        }));
-                  }),
+                controller: _whsCode,
+                labelText: 'WhsCode',
+                onChanged: (val) {
+                  GeneralData.whsCode = _whsCode.text = val;
+                },
+              ),
               getDisabledTextField(
                   controller: TextEditingController(),
                   labelText: 'City',
@@ -303,7 +258,7 @@ class _GeneralDataState extends State<GeneralData> {
                   onChanged: (val) {
                     GeneralData.approvalStatus = _approvalStatus.text = val;
                   }),
-              getTextField(
+              getDisabledTextField(
                   controller: _remarks,
                   labelText: 'Remarks',
                   onChanged: (val) {

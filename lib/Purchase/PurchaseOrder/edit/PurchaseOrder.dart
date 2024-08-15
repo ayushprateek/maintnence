@@ -121,7 +121,7 @@ class _JobCardState extends State<EditPurchaseOrder> {
                 preferredSize: Size.fromHeight(50.0),
               ),
               title: getHeadingText(
-                  text: "Purchase Order", color: headColor, fontSize: 20)),
+                  text: "Edit Purchase Order", color: headColor, fontSize: 20)),
           body: TabBarView(
             children: [
               GeneralData(),

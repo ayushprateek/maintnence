@@ -17,6 +17,7 @@ class _ItemDetailsState extends State<ItemDetails> {
     return SingleChildScrollView(
       child: Column(
         children: [
+          const SizedBox(height: 25,),
           Padding(
             padding: const EdgeInsets.only(left: 8.0, right: 8, bottom: 8),
             child: Container(
