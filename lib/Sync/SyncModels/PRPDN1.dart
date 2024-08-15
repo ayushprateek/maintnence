@@ -46,9 +46,13 @@ class PRPDN1 {
   String? RouteName;
   String? DeptCode;
   String? DeptName;
+  double? NoOfPieces;
+  String? Remarks;
+  String? BaseTab;
   bool hasCreated;
-  bool hasUpdated;
   bool insertedIntoDatabase;
+
+  bool hasUpdated;
 
   PRPDN1({
     this.ID,
@@ -87,6 +91,9 @@ class PRPDN1 {
     this.RouteName,
     this.DeptCode,
     this.DeptName,
+    this.NoOfPieces,
+    this.Remarks,
+    this.BaseTab,
     this.hasCreated = false,
     this.hasUpdated = false,
     this.insertedIntoDatabase = true,
@@ -94,48 +101,53 @@ class PRPDN1 {
 
   factory PRPDN1.fromJson(Map<String, dynamic> json) => PRPDN1(
         ID: int.tryParse(json['ID'].toString()) ?? 0,
-        TransId: json['TransId']?.toString() ?? '',
+        TransId: json['TransId'],
         RowId: int.tryParse(json['RowId'].toString()) ?? 0,
-        ItemCode: json['ItemCode']?.toString() ?? '',
-        ItemName: json['ItemName']?.toString() ?? '',
+        ItemCode: json['ItemCode'],
+        ItemName: json['ItemName'],
         Quantity: double.tryParse(json['Quantity'].toString()) ?? 0.0,
-        UOM: json['UOM']?.toString() ?? '',
+        UOM: json['UOM'],
         Price: double.tryParse(json['Price'].toString()) ?? 0.0,
-        TaxCode: json['TaxCode']?.toString() ?? '',
+        TaxCode: json['TaxCode'],
+        hasCreated: json['has_created'] == 1,
+        hasUpdated: json['has_updated'] == 1,
         TaxRate: double.tryParse(json['TaxRate'].toString()) ?? 0.0,
         Discount: double.tryParse(json['Discount'].toString()) ?? 0.0,
         LineTotal: double.tryParse(json['LineTotal'].toString()) ?? 0.0,
-        RPTransId: json['RPTransId']?.toString() ?? '',
-        DSTranId: json['DSTranId']?.toString() ?? '',
-        CRTransId: json['CRTransId']?.toString() ?? '',
+        RPTransId: json['RPTransId'],
+        DSTranId: json['DSTranId'],
+        CRTransId: json['CRTransId'],
         DSRowId: int.tryParse(json['DSRowId'].toString()) ?? 0,
-        BaseTransId: json['BaseTransId']?.toString() ?? '',
+        BaseTransId: json['BaseTransId'],
         BaseRowId: int.tryParse(json['BaseRowId'].toString()) ?? 0,
-        BaseType: json['BaseType']?.toString() ?? '',
-        LineStatus: json['LineStatus']?.toString() ?? '',
+        BaseType: json['BaseType'],
+        LineStatus: json['LineStatus'],
         MSP: double.tryParse(json['MSP'].toString()) ?? 0.0,
         CreateDate: DateTime.tryParse(json['CreateDate'].toString()),
         UpdateDate: DateTime.tryParse(json['UpdateDate'].toString()),
         OpenQty: double.tryParse(json['OpenQty'].toString()) ?? 0.0,
-        BaseObjectCode: json['BaseObjectCode']?.toString() ?? '',
-        WhsCode: json['WhsCode']?.toString() ?? '',
+        BaseObjectCode: json['BaseObjectCode'],
+        WhsCode: json['WhsCode'],
         DocEntry: int.tryParse(json['DocEntry'].toString()) ?? 0,
-        DocNum: json['DocNum']?.toString() ?? '',
-        TripTransId: json['TripTransId']?.toString() ?? '',
-        TruckNo: json['TruckNo']?.toString() ?? '',
-        DriverCode: json['DriverCode']?.toString() ?? '',
-        DriverName: json['DriverName']?.toString() ?? '',
-        RouteCode: json['RouteCode']?.toString() ?? '',
-        RouteName: json['RouteName']?.toString() ?? '',
-        DeptCode: json['DeptCode']?.toString() ?? '',
-        DeptName: json['DeptName']?.toString() ?? '',
-        hasCreated: json['has_created'] == 1,
-        hasUpdated: json['has_updated'] == 1,
+        DocNum: json['DocNum'],
+        TripTransId: json['TripTransId'],
+        TruckNo: json['TruckNo'],
+        DriverCode: json['DriverCode'],
+        DriverName: json['DriverName'],
+        RouteCode: json['RouteCode'],
+        RouteName: json['RouteName'],
+        DeptCode: json['DeptCode'],
+        DeptName: json['DeptName'],
+        NoOfPieces: double.tryParse(json['NoOfPieces'].toString()) ?? 0.0,
+        Remarks: json['Remarks'],
+        BaseTab: json['BaseTab'],
       );
 
   Map<String, dynamic> toJson() => {
         'ID': ID,
         'TransId': TransId,
+        "has_created": hasCreated ? 1 : 0,
+        "has_updated": hasUpdated ? 1 : 0,
         'RowId': RowId,
         'ItemCode': ItemCode,
         'ItemName': ItemName,
@@ -170,8 +182,9 @@ class PRPDN1 {
         'RouteName': RouteName,
         'DeptCode': DeptCode,
         'DeptName': DeptName,
-        "has_created": hasCreated ? 1 : 0,
-        "has_updated": hasUpdated ? 1 : 0,
+        'NoOfPieces': NoOfPieces,
+        'Remarks': Remarks,
+        'BaseTab': BaseTab,
       };
 }
 
@@ -362,22 +375,12 @@ Future<String> insertPRPDN1ToServer(BuildContext? context,
         response = await res.body;
         print("eeaaae status");
         print(await res.statusCode);
-        if (res.statusCode == 409) {
-          ///Already added in server
-          final Database db = await initializeDB(context);
-          PRPDN1 model = PRPDN1.fromJson(jsonDecode(res.body));
-          map["ID"] = model.ID;
-          map["has_created"] = 0;
-          var x = await db.update("PRPDN1", map,
-              where: "TransId = ? AND RowId = ?",
-              whereArgs: [model.TransId, model.RowId]);
-          print(x.toString());
-        } else if (res.statusCode == 201 || res.statusCode == 500) {
+        if (res.statusCode == 201 || res.statusCode == 500) {
           sentSuccessInServer = true;
           if (res.statusCode == 201) {
             map['ID'] = jsonDecode(res.body)['ID'];
             final Database db = await initializeDB(context);
-            // map=jsonDecode(res.body);
+            map = jsonDecode(res.body);
             map["has_created"] = 0;
             var x = await db.update("PRPDN1", map,
                 where: "TransId = ? AND RowId = ?",
@@ -390,7 +393,7 @@ Future<String> insertPRPDN1ToServer(BuildContext? context,
         print("Timeout " + e.toString());
         sentSuccessInServer = true;
       }
-      i++;
+      print('i++;');
       print("INDEX = " + i.toString());
     } while (i < list.length && sentSuccessInServer == true);
   }

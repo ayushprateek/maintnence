@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:maintenance/Component/CustomColor.dart';
 import 'package:maintenance/Component/CustomFont.dart';
+import 'package:maintenance/Sync/SyncModels/OUOM.dart';
+import 'package:maintenance/Sync/SyncModels/OWHS.dart';
 import 'package:maintenance/Sync/SyncModels/PRPDN1.dart';
 import 'package:maintenance/GoodsReceiptNote/edit/ItemDetails/AddItems.dart';
+import 'package:maintenance/GoodsReceiptNote/edit/ItemDetails/EditItems.dart';
 class ItemDetails extends StatefulWidget {
   const ItemDetails({super.key});
   static List<PRPDN1> items=[];
@@ -78,47 +81,48 @@ class _ItemDetailsState extends State<ItemDetails> {
                           clipBehavior: Clip.none,
                           children: [
                             InkWell(
-                              // onDoubleTap: () {
-                              //   if (isSelectedAndCancelled() ||
-                              //       isSalesQuotationDocClosed()) {
-                              //     getErrorSnackBar(
-                              //         "This Document is already cancelled / closed");
-                              //   } else {
-                              //     EditItems.isInserted =
-                              //         ItemDetails.items[index].insertedIntoDatabase;
-                              //     EditItems.TaxCode =
-                              //         ItemDetails.items[index].TaxCode.toString();
-                              //     EditItems.TaxRate =
-                              //         ItemDetails.items[index].TaxRate;
-                              //     Navigator.push(
-                              //         context,
-                              //         MaterialPageRoute(
-                              //             builder: ((context) => EditItems(
-                              //                 ItemDetails.items[index].ID ?? 0,
-                              //                 1,
-                              //                 ItemDetails.items[index].WhsCode ??
-                              //                     '',
-                              //                 ItemDetails.items[index].TransId ??
-                              //                     '',
-                              //                 ItemDetails.items[index].ItemCode ??
-                              //                     '',
-                              //                 ItemDetails.items[index].ItemName ??
-                              //                     '',
-                              //                 ItemDetails.items[index].UOM ?? '',
-                              //                 ItemDetails.items[index].TaxCode ??
-                              //                     '',
-                              //                 ItemDetails.items[index].Quantity ??
-                              //                     0.0,
-                              //                 ItemDetails.items[index].Price ?? 0.0,
-                              //                 ItemDetails.items[index].TaxRate ??
-                              //                     0.0,
-                              //                 ItemDetails.items[index].Discount ??
-                              //                     0.0,
-                              //                 ItemDetails.items[index].LineTotal ??
-                              //                     0.0,
-                              //                 true))));
-                              //   }
-                              // },
+                              onDoubleTap: () async{
+                                EditItems.id=item.ID?.toString()??'';
+                                EditItems.truckNo=item.TruckNo;
+                                EditItems.tripTransId=item.TripTransId??'';
+                                EditItems.toWhsCode=item.WhsCode??'';
+                                EditItems.remarks=item.Remarks??'';
+                                List<OWHS> wareHouseList =
+                                await retrieveOWHSById(
+                                    null, 'WhsCode = ?', [item.WhsCode]);
+                                if (wareHouseList.isNotEmpty) {
+                                  EditItems.toWhsName =
+                                      wareHouseList[0].WhsName;
+                                }
+                                EditItems.driverCode=item.DriverCode??'';
+                                EditItems.driverName=item.DriverName??'';
+                                EditItems.routeCode=item.RouteCode??'';
+                                EditItems.routeName=item.RouteName??'';
+                                EditItems.transId=item.TransId??'';
+                                EditItems.rowId=item.RowId?.toString()??'';
+                                EditItems.itemCode=item.ItemCode??'';
+                                EditItems.itemName=item.ItemName??'';
+                                EditItems.consumptionQty=item.Quantity?.toStringAsFixed(2)??'';
+                                EditItems.uomCode=item.UOM??'';
+                                List<OUOMModel> uomList =
+                                await retrieveOUOMById(
+                                    null, 'UomCode = ?', [item.UOM]);
+                                if (uomList.isNotEmpty) {
+                                  EditItems.uomName = uomList[0].UomName;
+                                }
+                                EditItems.deptCode=item.DeptCode??'';
+                                EditItems.deptName=item.DeptName??'';
+                                EditItems.price=item.Price?.toStringAsFixed(2)??'';
+                                EditItems.mtv=item.MSP?.toStringAsFixed(2)??'';
+                                EditItems.taxCode=item.TaxCode??'';
+                                EditItems.taxRate=item.TaxRate?.toStringAsFixed(2)??'';
+                                EditItems.noOfPieces=item.NoOfPieces?.toStringAsFixed(2)??'';
+                                EditItems.lineDiscount=item.Discount?.toStringAsFixed(2)??'';
+                                EditItems.lineTotal=item.LineTotal?.toStringAsFixed(2)??'';
+
+                                EditItems.isUpdating =true;
+                                Get.to(()=>EditItems());
+                              },
                               child: Container(
                                 decoration: BoxDecoration(
                                   color: Colors.white,
@@ -291,6 +295,27 @@ class _ItemDetailsState extends State<ItemDetails> {
                                                 ),
                                               ),
                                             ),
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  left: 8.0,
+                                                  right: 8.0,
+                                                  top: 4.0),
+                                              child: Align(
+                                                alignment: Alignment.topLeft,
+                                                child: Text.rich(
+                                                  TextSpan(
+                                                    children: [
+                                                      getPoppinsTextSpanHeading(
+                                                          text: 'NoOfPieces'),
+                                                      getPoppinsTextSpanDetails(
+                                                          text:
+                                                          item.NoOfPieces?.toStringAsFixed(2) ??
+                                                              ''),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
                                           ],
                                         ),
                                       ),
@@ -445,6 +470,26 @@ class _ItemDetailsState extends State<ItemDetails> {
                                                           text: item.LineTotal
                                                               ?.toStringAsFixed(
                                                               2) ??
+                                                              ''),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  left: 8.0,
+                                                  right: 8.0,
+                                                  top: 4.0),
+                                              child: Align(
+                                                alignment: Alignment.topLeft,
+                                                child: Text.rich(
+                                                  TextSpan(
+                                                    children: [
+                                                      getPoppinsTextSpanHeading(
+                                                          text: 'Remarks'),
+                                                      getPoppinsTextSpanDetails(
+                                                          text: item.Remarks ??
                                                               ''),
                                                     ],
                                                   ),

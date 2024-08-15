@@ -9,11 +9,15 @@ import 'package:maintenance/GoodsReceiptNote/view/Address/BillingAddress.dart';
 import 'package:maintenance/GoodsReceiptNote/view/Address/ShippingAddress.dart';
 import 'package:maintenance/Lookups/DepartmentLookup.dart';
 import 'package:maintenance/Lookups/SupplierLookup.dart';
+import 'package:maintenance/Lookups/TripLookup.dart';
+import 'package:maintenance/Lookups/WarehouseLookup.dart';
 import 'package:maintenance/Sync/SyncModels/CRD1.dart';
 import 'package:maintenance/Sync/SyncModels/CRD2.dart';
 import 'package:maintenance/Sync/SyncModels/CRD3.dart';
 import 'package:maintenance/Sync/SyncModels/OCRD.dart';
+import 'package:maintenance/Sync/SyncModels/OPOTRP.dart';
 import 'package:maintenance/Sync/SyncModels/OUDP.dart';
+import 'package:maintenance/Sync/SyncModels/OWHS.dart';
 import 'package:maintenance/Sync/SyncModels/PROPDN.dart';
 
 class GeneralData extends StatefulWidget {
@@ -215,16 +219,18 @@ class _GeneralDataState extends State<GeneralData> {
 
   // final TextEditingController _localDate =
   //     TextEditingController(text: GeneralData.localDate);
-  // final TextEditingController _whsCode =
-  //     TextEditingController(text: GeneralData.whsCode);
+  final TextEditingController _whsCode =
+      TextEditingController(text: GeneralData.whsCode);
+
   // final TextEditingController _objectCode =
   //     TextEditingController(text: GeneralData.objectCode);
   // final TextEditingController _error =
   //     TextEditingController(text: GeneralData.error);
   // final TextEditingController _postingAddress =
   //     TextEditingController(text: GeneralData.postingAddress);
-  // final TextEditingController _tripTransId =
-  //     TextEditingController(text: GeneralData.tripTransId);
+  final TextEditingController _tripTransId =
+      TextEditingController(text: GeneralData.tripTransId);
+
   // final TextEditingController _deptCode =
   //     TextEditingController(text: GeneralData.deptCode);
   final TextEditingController _deptName =
@@ -306,7 +312,6 @@ class _GeneralDataState extends State<GeneralData> {
               const SizedBox(
                 height: 25,
               ),
-
               getDisabledTextField(
                   controller: _transId,
                   labelText: 'Trans Id',
@@ -329,6 +334,18 @@ class _GeneralDataState extends State<GeneralData> {
                         ));
                   }),
               getDisabledTextField(
+                  controller: _tripTransId,
+                  labelText: 'TripTransId',
+                  enableLookup: true,
+                  onLookupPressed: () {
+                    Get.to(() => TripLookup(onSelection: (OPOTRP oemp) {
+                          setState(() {
+                            GeneralData.tripTransId =
+                                _tripTransId.text = oemp.TransId ?? '';
+                          });
+                        }));
+                  }),
+              getDisabledTextField(
                   controller: _cardName,
                   labelText: 'Supplier',
                   onChanged: (val) {
@@ -338,10 +355,14 @@ class _GeneralDataState extends State<GeneralData> {
                   onLookupPressed: () {
                     Get.to(() =>
                         SupplierLookup(onSelected: (OCRDModel ocrdModel) async {
-                          GeneralData.cardCode = _cardCode.text = ocrdModel.Code;
-                          GeneralData.paymentTermDays = _paymentTermDays.text = ocrdModel.PaymentTermDays.toString()??'';
-                          GeneralData.paymentTermName  = ocrdModel.PaymentTermName;
-                          GeneralData.paymentTermCode  = ocrdModel.PaymentTermCode;
+                          GeneralData.cardCode =
+                              _cardCode.text = ocrdModel.Code;
+                          GeneralData.paymentTermDays = _paymentTermDays.text =
+                              ocrdModel.PaymentTermDays.toString() ?? '';
+                          GeneralData.paymentTermName =
+                              ocrdModel.PaymentTermName;
+                          GeneralData.paymentTermCode =
+                              ocrdModel.PaymentTermCode;
                           GeneralData.cardName =
                               _cardName.text = ocrdModel.Name ?? '';
                           await setAddress();
@@ -369,7 +390,6 @@ class _GeneralDataState extends State<GeneralData> {
                   onChanged: (val) {
                     _validUntill.text = GeneralData.validUntill = val;
                   }),
-
               getDisabledTextField(
                   controller: _approvalStatus,
                   labelText: 'Approval Status',
@@ -388,13 +408,26 @@ class _GeneralDataState extends State<GeneralData> {
                   onChanged: (val) {
                     GeneralData.paymentTermDays = val;
                   }),
+              getDisabledTextField(
+                  controller: _whsCode,
+                  labelText: 'Warehouse',
+                  enableLookup: true,
+                  onLookupPressed: () {
+                    Get.to(() => WarehouseLookup(
+                          onSelection: (OWHS owhs) {
+                            setState(() {
+                              GeneralData.whsCode =
+                                  _whsCode.text = owhs.WhsCode ?? '';
+                            });
+                          },
+                        ));
+                  }),
               getTextField(
                   controller: _refNo,
                   labelText: 'Ref. No',
                   onChanged: (val) {
                     GeneralData.refNo = val;
                   }),
-
               getTextField(
                   controller: _remarks,
                   labelText: 'Remarks',
@@ -409,14 +442,19 @@ class _GeneralDataState extends State<GeneralData> {
                   title: getHeadingText(text: "Details", color: headColor),
                   children: [
                     getDisabledTextField(
-                        controller: _permanentTransId, labelText: 'Permanent Trans Id',
+                      controller: _permanentTransId,
+                      labelText: 'Permanent Trans Id',
                       onChanged: (val) {
-                        GeneralData.permanentTransId  = val;
-                      },),
-                    getDisabledTextField(controller: _docNum, labelText: 'ERP Docnum',
+                        GeneralData.permanentTransId = val;
+                      },
+                    ),
+                    getDisabledTextField(
+                      controller: _docNum,
+                      labelText: 'ERP Docnum',
                       onChanged: (val) {
-                        GeneralData.docNum  = val;
-                      },),
+                        GeneralData.docNum = val;
+                      },
+                    ),
                     getDisabledTextField(
                         controller: _currency,
                         labelText: 'Currency',
@@ -430,11 +468,14 @@ class _GeneralDataState extends State<GeneralData> {
                           GeneralData.currRate = val;
                         }),
                     getDisabledTextField(
-                        controller: TextEditingController(), labelText: 'Local Date'),
+                        controller: TextEditingController(),
+                        labelText: 'Local Date'),
                   ],
                 ),
               ),
-              const SizedBox(height: 70,),
+              const SizedBox(
+                height: 70,
+              ),
             ],
           ),
         ),
