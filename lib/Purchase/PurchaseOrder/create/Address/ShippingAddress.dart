@@ -5,7 +5,6 @@ import 'package:maintenance/Component/GetTextField.dart';
 import 'package:maintenance/Component/SnackbarComponent.dart';
 import 'package:maintenance/Purchase/PurchaseOrder/create/Address/AddressLookup.dart';
 import 'package:maintenance/Purchase/PurchaseOrder/create/GeneralData.dart';
-import 'package:maintenance/Purchase/PurchaseOrder/create/PurchaseOrder.dart';
 import 'package:maintenance/Sync/SyncModels/PRPOR2.dart';
 import 'package:maps_launcher/maps_launcher.dart';
 
@@ -150,9 +149,7 @@ class _ShippingAddressState extends State<ShippingAddress> {
                           ShippingAddress.Addres = value;
                         },
                         readOnly: true,
-                        onTap: () {
-
-                        },
+                        onTap: () {},
                         decoration: new InputDecoration(
                           labelStyle: GoogleFonts.poppins(
                               fontSize: 14, fontWeight: FontWeight.w500),
@@ -160,7 +157,7 @@ class _ShippingAddressState extends State<ShippingAddress> {
                           labelText: 'Address*',
 
                           //prefixIconConstraints: BoxConstraints(minWidth: 0,minHeight: 0),
-                          fillColor:Color(0XFFF3ECE7),
+                          fillColor: Color(0XFFF3ECE7),
                           disabledBorder: new OutlineInputBorder(
                             borderRadius: new BorderRadius.circular(10.0),
                             borderSide:

@@ -52,8 +52,7 @@ class RTN2Model {
   String? CountryName;
   String? BaseObjectCode;
 
-  factory RTN2Model.fromJson(Map<String, dynamic> json) =>
-      RTN2Model(
+  factory RTN2Model.fromJson(Map<String, dynamic> json) => RTN2Model(
         ID: int.tryParse(json["ID"].toString()) ?? 0,
         TransId: json["TransId"] ?? "",
         RowId: int.tryParse(json["RowId"].toString()) ?? 0,
@@ -78,8 +77,7 @@ class RTN2Model {
         BaseObjectCode: json['BaseObjectCode'] ?? '',
       );
 
-  Map<String, dynamic> toJson() =>
-      {
+  Map<String, dynamic> toJson() => {
         "ID": ID,
         "TransId": TransId,
         "RowId": RowId,
@@ -101,7 +99,7 @@ class RTN2Model {
 
 Future<List<RTN2Model>> dataSyncRTN2() async {
   var res =
-  await http.get(headers: header, Uri.parse(prefix + "RTN2" + postfix));
+      await http.get(headers: header, Uri.parse(prefix + "RTN2" + postfix));
   print(res.body);
   return RTN2ModelFromJson(res.body);
 }
@@ -112,8 +110,8 @@ Future<List<RTN2Model>> retrieveRTN2(BuildContext context) async {
   return queryResult.map((e) => RTN2Model.fromJson(e)).toList();
 }
 
-Future<void> updateRTN2(int id, Map<String, dynamic> values,
-    BuildContext context) async {
+Future<void> updateRTN2(
+    int id, Map<String, dynamic> values, BuildContext context) async {
   final db = await initializeDB(context);
   try {
     db.transaction((db) async {
@@ -224,7 +222,7 @@ Future<void> insertRTN2(Database db, {List? list}) async {
   stopwatch.start();
   for (var i = 0; i < customers.length; i += batchSize) {
     var end =
-    (i + batchSize < customers.length) ? i + batchSize : customers.length;
+        (i + batchSize < customers.length) ? i + batchSize : customers.length;
     var batchRecords = customers.sublist(i, end);
     await db.transaction((txn) async {
       var batch = txn.batch();
@@ -265,7 +263,7 @@ Future<void> insertRTN2(Database db, {List? list}) async {
         try {
           batch.update("RTN2", element,
               where:
-              "RowId = ? AND TransId = ? AND ifnull(has_created,0) <> ? AND ifnull(has_updated,0) <> ?",
+                  "RowId = ? AND TransId = ? AND ifnull(has_created,0) <> ? AND ifnull(has_updated,0) <> ?",
               whereArgs: [element["RowId"], element["TransId"], 1, 1]);
         } catch (e) {
           writeToLogFile(
@@ -311,8 +309,7 @@ WHERE T1.TransId IS NULL AND T1.RowId IS NULL;
   }
   stopwatch.stop();
   print(
-      'Time taken for RTN2_Temp and RTN2 compare : ${stopwatch
-          .elapsedMilliseconds}ms');
+      'Time taken for RTN2_Temp and RTN2 compare : ${stopwatch.elapsedMilliseconds}ms');
   stopwatch.reset();
   print('Time taken for insertDataInTable: ${stopwatch.elapsedMilliseconds}ms');
   // stopwatch.start();
@@ -323,11 +320,11 @@ WHERE T1.TransId IS NULL AND T1.RowId IS NULL;
 
 //SEND DATA TO SERVER
 //--------------------------
-Future<List<RTN2Model>> retrieveRTN2ById(BuildContext? context, String str,
-    List l) async {
+Future<List<RTN2Model>> retrieveRTN2ById(
+    BuildContext? context, String str, List l) async {
   final Database db = await initializeDB(context);
   final List<Map<String, Object?>> queryResult =
-  await db.query('RTN2', where: str, whereArgs: l);
+      await db.query('RTN2', where: str, whereArgs: l);
   return queryResult.map((e) => RTN2Model.fromJson(e)).toList();
 }
 
@@ -364,7 +361,7 @@ Future<void> insertRTN2ToServer(BuildContext? context,
             'TransId=${list[i].TransId}&RowId=${list[i].RowId}';
         var res = await http
             .post(Uri.parse(prefix + "RTN2/Add?$queryParams"),
-            headers: header, body: jsonEncode(map))
+                headers: header, body: jsonEncode(map))
             .timeout(Duration(seconds: 30), onTimeout: () {
           writeToLogFile(
               text: '500 error \nMap : $map',
@@ -379,7 +376,7 @@ Future<void> insertRTN2ToServer(BuildContext? context,
         if (res.statusCode != 201) {
           await writeToLogFile(
               text:
-              '${res.statusCode} error \nMap : $map\nResponse : ${res.body}',
+                  '${res.statusCode} error \nMap : $map\nResponse : ${res.body}',
               fileName: StackTrace.current.toString(),
               lineNo: 141);
         }
@@ -442,7 +439,7 @@ Future<void> updateRTN2OnServer(BuildContext? context,
       Map<String, dynamic> map = list[i].toJson();
       var res = await http
           .put(Uri.parse(prefix + 'RTN2/Update'),
-          headers: header, body: jsonEncode(map))
+              headers: header, body: jsonEncode(map))
           .timeout(Duration(seconds: 30), onTimeout: () {
         writeToLogFile(
             text: '500 error \nMap : $map',
@@ -454,7 +451,7 @@ Future<void> updateRTN2OnServer(BuildContext? context,
       if (res.statusCode != 201) {
         await writeToLogFile(
             text:
-            '${res.statusCode} error \nMap : $map\nResponse : ${res.body}',
+                '${res.statusCode} error \nMap : $map\nResponse : ${res.body}',
             fileName: StackTrace.current.toString(),
             lineNo: 141);
       }

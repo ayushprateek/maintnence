@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:maintenance/Component/BackPressedWarning.dart';
-import 'package:maintenance/Component/ClearTextFieldData.dart';
 import 'package:maintenance/Component/CustomColor.dart';
 import 'package:maintenance/Component/CustomFont.dart';
 import 'package:maintenance/Component/GetCurrentLocation.dart';
@@ -13,6 +12,7 @@ import 'package:maintenance/Component/ShowLoader.dart';
 import 'package:maintenance/Component/SnackbarComponent.dart';
 import 'package:maintenance/Dashboard.dart';
 import 'package:maintenance/DatabaseInitialization.dart';
+import 'package:maintenance/JobCard/ClearJobCardDocument.dart';
 import 'package:maintenance/JobCard/edit/Attachment.dart';
 import 'package:maintenance/JobCard/edit/GeneralData.dart';
 import 'package:maintenance/JobCard/edit/ItemDetails/ItemDetails.dart';
@@ -227,8 +227,7 @@ class _EditJobCardState extends State<EditJobCard> {
                   qut1model.UpdateDate = DateTime.now();
 
                   await database.insert('MNJCD1', qut1model.toJson());
-                }
-                else {
+                } else {
                   qut1model.hasUpdated = true;
                   qut1model.UpdateDate = DateTime.now();
                   Map<String, Object?> map = qut1model.toJson();

@@ -12,9 +12,9 @@ import 'package:maintenance/Component/CustomUrlLauncher.dart';
 import 'package:maintenance/Component/CustomViewImage.dart';
 import 'package:maintenance/Component/GetTextField.dart';
 import 'package:maintenance/Component/SnackbarComponent.dart';
+import 'package:maintenance/JobCard/create/GeneralData.dart';
 import 'package:maintenance/Sync/CustomURL.dart';
 import 'package:maintenance/Sync/SyncModels/MNJCD3.dart';
-import 'package:maintenance/JobCard/create/GeneralData.dart';
 
 class Attachments extends StatefulWidget {
   static List<MNJCD3> attachments = [];

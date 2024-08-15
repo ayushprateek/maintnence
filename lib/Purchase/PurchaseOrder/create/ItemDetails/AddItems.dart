@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:maintenance/Component/ClearTextFieldData.dart';
+
 import 'package:maintenance/Component/CustomColor.dart';
 import 'package:maintenance/Component/CustomFont.dart';
 import 'package:maintenance/Component/GetTextField.dart';
 import 'package:maintenance/Component/SnackbarComponent.dart';
+import 'package:maintenance/Purchase/PurchaseOrder/ClearPurchaseOrder.dart';
 import 'package:maintenance/Purchase/PurchaseOrder/create/GeneralData.dart';
 import 'package:maintenance/Purchase/PurchaseOrder/create/ItemDetails/EditItems.dart';
 import 'package:maintenance/Purchase/PurchaseOrder/create/ItemDetails/ItemDetails.dart';
@@ -223,8 +224,7 @@ class _AddItemsState extends State<AddItems> {
                                         snapshot.data![index].ItemName +
                                             " is already added");
                                   } else {
-                                    ClearPurchaseRequestDocument
-                                        .clearEditItems();
+                                    ClearPurchaseOrderDocument.clearEditItems();
                                     EditItems.tripTransId =
                                         GeneralData.tripTransId;
                                     EditItems.toWhsCode = GeneralData.whsCode;

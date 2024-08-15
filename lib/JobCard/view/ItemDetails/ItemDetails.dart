@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:maintenance/Component/CustomColor.dart';
 import 'package:maintenance/Component/CustomFont.dart';
 import 'package:maintenance/Component/GetFormattedDate.dart';
-import 'package:maintenance/JobCard/view/ItemDetails/AddItem.dart';
 import 'package:maintenance/Sync/SyncModels/MNJCD1.dart';
 
 class ItemDetails extends StatefulWidget {

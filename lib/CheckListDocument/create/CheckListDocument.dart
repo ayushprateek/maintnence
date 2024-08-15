@@ -3,18 +3,17 @@ import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:maintenance/ApprovalStatus/ApprovalListUIComponent.dart';
+import 'package:maintenance/CheckListDocument/ClearCheckListDocument.dart';
 import 'package:maintenance/CheckListDocument/create/Attachments.dart';
 import 'package:maintenance/CheckListDocument/create/CheckListDetails/CheckListDetails.dart';
 import 'package:maintenance/CheckListDocument/create/GeneralData.dart';
 import 'package:maintenance/CheckListDocument/create/SearchCheckListDoc.dart';
 import 'package:maintenance/Component/BackPressedWarning.dart';
-import 'package:maintenance/Component/ClearTextFieldData.dart';
+
 import 'package:maintenance/Component/CustomColor.dart';
 import 'package:maintenance/Component/CustomFont.dart';
 import 'package:maintenance/Component/GetCurrentLocation.dart';
 import 'package:maintenance/Component/LogFileFunctions.dart';
-import 'package:maintenance/Component/MenuDescription.dart';
-import 'package:maintenance/Component/Mode.dart';
 import 'package:maintenance/Component/ShowLoader.dart';
 import 'package:maintenance/Component/SnackbarComponent.dart';
 import 'package:maintenance/Dashboard.dart';
@@ -46,10 +45,6 @@ class CheckListDocument extends StatefulWidget {
 }
 
 class _CheckListDocumentState extends State<CheckListDocument> {
-  
-  
-  
-
   @override
   void initState() {
     super.initState();
@@ -251,7 +246,6 @@ class _CheckListDocumentState extends State<CheckListDocument> {
           )),
     );
   }
-
 
   save() async {
     //GeneralData.isSelected

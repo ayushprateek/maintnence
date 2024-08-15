@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:maintenance/Component/BackPressedWarning.dart';
-import 'package:maintenance/Component/ClearTextFieldData.dart';
+
 import 'package:maintenance/Component/CustomColor.dart';
 import 'package:maintenance/Component/CustomFont.dart';
 import 'package:maintenance/Component/GetCurrentLocation.dart';
@@ -13,6 +13,7 @@ import 'package:maintenance/Component/ShowLoader.dart';
 import 'package:maintenance/Component/SnackbarComponent.dart';
 import 'package:maintenance/Dashboard.dart';
 import 'package:maintenance/DatabaseInitialization.dart';
+import 'package:maintenance/InternalRequest/ClearInternalRequestDocument.dart';
 import 'package:maintenance/InternalRequest/edit/GeneralData.dart';
 import 'package:maintenance/InternalRequest/edit/ItemDetails/ItemDetails.dart';
 import 'package:maintenance/Sync/DataSync.dart';
@@ -36,10 +37,6 @@ class EditInternalRequest extends StatefulWidget {
 }
 
 class EditInternalRequestState extends State<EditInternalRequest> {
-  
-  
-  
-
   @override
   void initState() {
     super.initState();
@@ -142,14 +139,12 @@ class EditInternalRequestState extends State<EditInternalRequest> {
     );
   }
 
-
-
   save() async {
     //GeneralData.isSelected
     EditInternalRequest.saveButtonPressed = false;
     if (DataSync.isSyncing()) {
       getErrorSnackBar(DataSync.syncingErrorMsg);
-    }  else if (!(await Mode.isEdit(MenuDescription.salesQuotation))) {
+    } else if (!(await Mode.isEdit(MenuDescription.salesQuotation))) {
       getErrorSnackBar("You are not authorised to edit this document");
     } else {
       if (!GeneralData.validate()) {
@@ -245,8 +240,7 @@ class EditInternalRequestState extends State<EditInternalRequest> {
                   qut1model.hasUpdated = true;
                   qut1model.UpdateDate = DateTime.now();
                   Map<String, Object?> map = qut1model.toJson();
-                  map.removeWhere(
-                          (key, value) => value == null || value == '');
+                  map.removeWhere((key, value) => value == null || value == '');
                   await database.update('PRITR1', map,
                       where: 'TransId = ? AND RowId = ?',
                       whereArgs: [qut1model.TransId, qut1model.RowId]);

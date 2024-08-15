@@ -1,18 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:maintenance/Component/BackPressedWarning.dart';
-import 'package:maintenance/Component/ClearTextFieldData.dart';
+
 import 'package:maintenance/Component/CustomColor.dart';
 import 'package:maintenance/Component/CustomFont.dart';
-import 'package:maintenance/Component/GetCurrentLocation.dart';
-import 'package:maintenance/Component/LogFileFunctions.dart';
-import 'package:maintenance/Component/MenuDescription.dart';
-import 'package:maintenance/Component/Mode.dart';
-import 'package:maintenance/Component/ShowLoader.dart';
-import 'package:maintenance/Component/SnackbarComponent.dart';
 import 'package:maintenance/Dashboard.dart';
-import 'package:maintenance/DatabaseInitialization.dart';
 import 'package:maintenance/JobCard/view/Attachment.dart';
 import 'package:maintenance/JobCard/view/GeneralData.dart';
 import 'package:maintenance/JobCard/view/ItemDetails/ItemDetails.dart';
@@ -21,13 +13,6 @@ import 'package:maintenance/JobCard/view/SectionDetails.dart';
 import 'package:maintenance/JobCard/view/ServiceDetails/ServiceDetails.dart';
 import 'package:maintenance/JobCard/view/TyreMaintenance.dart';
 import 'package:maintenance/JobCard/view/WhyWhyAnalysis.dart';
-import 'package:maintenance/Sync/DataSync.dart';
-import 'package:maintenance/Sync/SyncModels/MNJCD1.dart';
-import 'package:maintenance/Sync/SyncModels/MNJCD2.dart';
-import 'package:maintenance/Sync/SyncModels/MNJCD3.dart';
-import 'package:maintenance/Sync/SyncModels/MNOJCD.dart';
-import 'package:maintenance/main.dart';
-import 'package:sqflite/sqlite_api.dart';
 
 class ViewJobCard extends StatefulWidget {
   static bool saveButtonPressed = false;
@@ -159,5 +144,4 @@ class _ViewJobCardState extends State<ViewJobCard> {
       ),
     );
   }
-
 }

@@ -3,7 +3,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:maintenance/Component/BackPressedWarning.dart';
-import 'package:maintenance/Component/ClearTextFieldData.dart';
+
 import 'package:maintenance/Component/CustomColor.dart';
 import 'package:maintenance/Component/CustomFont.dart';
 import 'package:maintenance/Component/GetCurrentLocation.dart';
@@ -14,6 +14,7 @@ import 'package:maintenance/Component/ShowLoader.dart';
 import 'package:maintenance/Component/SnackbarComponent.dart';
 import 'package:maintenance/Dashboard.dart';
 import 'package:maintenance/DatabaseInitialization.dart';
+import 'package:maintenance/InternalRequest/ClearInternalRequestDocument.dart';
 import 'package:maintenance/InternalRequest/create/GeneralData.dart';
 import 'package:maintenance/InternalRequest/create/ItemDetails/ItemDetails.dart';
 import 'package:maintenance/InternalRequest/create/SearchInternalRequest.dart';
@@ -38,10 +39,6 @@ class InternalRequest extends StatefulWidget {
 }
 
 class InternalRequestState extends State<InternalRequest> {
-  
-  
-  
-
   @override
   void initState() {
     super.initState();
@@ -178,15 +175,12 @@ class InternalRequestState extends State<InternalRequest> {
     );
   }
 
-
-
   save() async {
     //GeneralData.isSelected
     InternalRequest.saveButtonPressed = false;
     if (DataSync.isSyncing()) {
       getErrorSnackBar(DataSync.syncingErrorMsg);
-    } else if (
-        !(await Mode.isCreate(MenuDescription.salesQuotation))) {
+    } else if (!(await Mode.isCreate(MenuDescription.salesQuotation))) {
       getErrorSnackBar("You are not authorised to create this document");
     } else {
       if (!GeneralData.validate()) {

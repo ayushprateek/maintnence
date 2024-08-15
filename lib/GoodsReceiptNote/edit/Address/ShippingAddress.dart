@@ -150,9 +150,7 @@ class _ShippingAddressState extends State<ShippingAddress> {
                           ShippingAddress.Addres = value;
                         },
                         readOnly: false,
-                        onTap: () {
-
-                        },
+                        onTap: () {},
                         decoration: new InputDecoration(
                           labelStyle: GoogleFonts.poppins(
                               fontSize: 14, fontWeight: FontWeight.w500),
@@ -160,7 +158,7 @@ class _ShippingAddressState extends State<ShippingAddress> {
                           labelText: 'Address*',
 
                           //prefixIconConstraints: BoxConstraints(minWidth: 0,minHeight: 0),
-                          fillColor:  Colors.white,
+                          fillColor: Colors.white,
                           disabledBorder: new OutlineInputBorder(
                             borderRadius: new BorderRadius.circular(10.0),
                             borderSide:

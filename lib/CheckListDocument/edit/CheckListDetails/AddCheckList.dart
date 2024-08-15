@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:maintenance/CheckListDocument/ClearCheckListDocument.dart';
 import 'package:maintenance/CheckListDocument/edit/CheckListDetails/CheckListDetails.dart';
 import 'package:maintenance/CheckListDocument/edit/CheckListDetails/EditCheckList.dart';
 import 'package:maintenance/CheckListDocument/edit/GeneralData.dart';
-import 'package:maintenance/Component/ClearTextFieldData.dart';
+
 import 'package:maintenance/Component/CustomColor.dart';
 import 'package:maintenance/Component/CustomFont.dart';
 import 'package:maintenance/Component/GetFormattedDate.dart';

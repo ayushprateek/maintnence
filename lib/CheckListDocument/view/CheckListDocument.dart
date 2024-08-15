@@ -1,31 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:maintenance/ApprovalStatus/ApprovalListUIComponent.dart';
 import 'package:maintenance/CheckListDocument/view/Attachments.dart';
 import 'package:maintenance/CheckListDocument/view/CheckListDetails/CheckListDetails.dart';
 import 'package:maintenance/CheckListDocument/view/GeneralData.dart';
 import 'package:maintenance/Component/BackPressedWarning.dart';
-import 'package:maintenance/Component/ClearTextFieldData.dart';
+
 import 'package:maintenance/Component/CustomColor.dart';
 import 'package:maintenance/Component/CustomFont.dart';
-import 'package:maintenance/Component/GetCurrentLocation.dart';
-import 'package:maintenance/Component/LogFileFunctions.dart';
-import 'package:maintenance/Component/MenuDescription.dart';
-import 'package:maintenance/Component/Mode.dart';
-import 'package:maintenance/Component/ShowLoader.dart';
-import 'package:maintenance/Component/SnackbarComponent.dart';
 import 'package:maintenance/Dashboard.dart';
-import 'package:maintenance/DatabaseInitialization.dart';
-import 'package:maintenance/Sync/DataSync.dart';
 import 'package:maintenance/Sync/SyncModels/ApprovalModel.dart';
-import 'package:maintenance/Sync/SyncModels/LITPL_OOAL.dart';
-import 'package:maintenance/Sync/SyncModels/MNCLD1.dart';
-import 'package:maintenance/Sync/SyncModels/MNCLD2.dart';
-import 'package:maintenance/Sync/SyncModels/MNOCLD.dart';
-import 'package:maintenance/main.dart';
-import 'package:sqflite/sqlite_api.dart';
 
 class ViewCheckListDocument extends StatefulWidget {
   static var address;
@@ -45,10 +29,6 @@ class ViewCheckListDocument extends StatefulWidget {
 }
 
 class _ViewCheckListDocumentState extends State<ViewCheckListDocument> {
-  
-  
-  
-
   @override
   void initState() {
     super.initState();

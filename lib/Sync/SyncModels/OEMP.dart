@@ -8,7 +8,6 @@ import 'package:maintenance/Component/Mode.dart';
 import 'package:maintenance/Component/SnackbarComponent.dart';
 import 'package:maintenance/DatabaseInitialization.dart';
 import 'package:maintenance/Sync/CustomURL.dart';
-import 'package:maintenance/Sync/DataSync.dart';
 import 'package:maintenance/Sync/SyncModels/CVOCVP.dart';
 import 'package:maintenance/Sync/SyncModels/ORTP.dart';
 import 'package:maintenance/main.dart';

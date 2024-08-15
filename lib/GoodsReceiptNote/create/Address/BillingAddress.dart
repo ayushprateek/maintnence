@@ -4,9 +4,8 @@ import 'package:maintenance/Component/CustomColor.dart';
 import 'package:maintenance/Component/GetTextField.dart';
 import 'package:maintenance/Component/SnackbarComponent.dart';
 import 'package:maintenance/GoodsReceiptNote/create/Address/AddressLookup.dart';
-import 'package:maintenance/Sync/SyncModels/PRPDN3.dart';
 import 'package:maintenance/GoodsReceiptNote/create/GeneralData.dart';
-import 'package:maintenance/GoodsReceiptNote/create/GoodsReceiptNote.dart';
+import 'package:maintenance/Sync/SyncModels/PRPDN3.dart';
 import 'package:maps_launcher/maps_launcher.dart';
 
 class BillingAddress extends StatefulWidget {
@@ -142,9 +141,7 @@ class _BillingAddressState extends State<BillingAddress> {
                         BillingAddress.Addres = value;
                       },
                       readOnly: false,
-                      onTap: () {
-
-                      },
+                      onTap: () {},
                       decoration: new InputDecoration(
                         labelStyle: GoogleFonts.poppins(
                             fontSize: 14, fontWeight: FontWeight.w500),
@@ -152,7 +149,7 @@ class _BillingAddressState extends State<BillingAddress> {
                         labelText: 'Address*',
 
                         //prefixIconConstraints: BoxConstraints(minWidth: 0,minHeight: 0),
-                        fillColor:  Colors.white,
+                        fillColor: Colors.white,
                         disabledBorder: new OutlineInputBorder(
                           borderRadius: new BorderRadius.circular(10.0),
                           borderSide: new BorderSide(color: barColor, width: 1),

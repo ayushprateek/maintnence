@@ -150,9 +150,7 @@ class _ShippingAddressState extends State<ShippingAddress> {
                           ShippingAddress.Addres = value;
                         },
                         readOnly: false,
-                        onTap: () {
-
-                        },
+                        onTap: () {},
                         decoration: new InputDecoration(
                           labelStyle: GoogleFonts.poppins(
                               fontSize: 14, fontWeight: FontWeight.w500),

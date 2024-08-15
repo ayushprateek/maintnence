@@ -1,29 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:maintenance/Component/BackPressedWarning.dart';
-import 'package:maintenance/Component/ClearTextFieldData.dart';
+
 import 'package:maintenance/Component/CustomColor.dart';
 import 'package:maintenance/Component/CustomFont.dart';
-import 'package:maintenance/Component/GetCurrentLocation.dart';
-import 'package:maintenance/Component/LogFileFunctions.dart';
-import 'package:maintenance/Component/MenuDescription.dart';
-import 'package:maintenance/Component/Mode.dart';
-import 'package:maintenance/Component/ShowLoader.dart';
-import 'package:maintenance/Component/SnackbarComponent.dart';
 import 'package:maintenance/Dashboard.dart';
-import 'package:maintenance/DatabaseInitialization.dart';
 import 'package:maintenance/GoodsReceiptNote/view/Address/BillingAddress.dart';
 import 'package:maintenance/GoodsReceiptNote/view/Address/ShippingAddress.dart';
 import 'package:maintenance/GoodsReceiptNote/view/GeneralData.dart';
 import 'package:maintenance/GoodsReceiptNote/view/ItemDetails/ItemDetails.dart';
-import 'package:maintenance/Sync/DataSync.dart';
-import 'package:maintenance/Sync/SyncModels/PROPDN.dart';
-import 'package:maintenance/Sync/SyncModels/PRPDN1.dart';
-import 'package:maintenance/Sync/SyncModels/PRPDN2.dart';
-import 'package:maintenance/Sync/SyncModels/PRPDN3.dart';
-import 'package:maintenance/main.dart';
-import 'package:sqflite/sqflite.dart';
 
 class ViewGoodsRecepitNote extends StatefulWidget {
   static bool saveButtonPressed = false;
@@ -40,10 +25,6 @@ class ViewGoodsRecepitNote extends StatefulWidget {
 }
 
 class _JobCardState extends State<ViewGoodsRecepitNote> {
-  
-  
-  
-
   @override
   void initState() {
     super.initState();
@@ -153,8 +134,4 @@ class _JobCardState extends State<ViewGoodsRecepitNote> {
       ),
     );
   }
-
-
 }
-
-

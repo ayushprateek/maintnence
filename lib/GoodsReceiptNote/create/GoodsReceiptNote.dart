@@ -3,7 +3,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:maintenance/Component/BackPressedWarning.dart';
-import 'package:maintenance/Component/ClearTextFieldData.dart';
+
 import 'package:maintenance/Component/CustomColor.dart';
 import 'package:maintenance/Component/CustomFont.dart';
 import 'package:maintenance/Component/GetCurrentLocation.dart';
@@ -14,6 +14,7 @@ import 'package:maintenance/Component/ShowLoader.dart';
 import 'package:maintenance/Component/SnackbarComponent.dart';
 import 'package:maintenance/Dashboard.dart';
 import 'package:maintenance/DatabaseInitialization.dart';
+import 'package:maintenance/GoodsReceiptNote/ClearGRNDocument.dart';
 import 'package:maintenance/GoodsReceiptNote/create/Address/BillingAddress.dart';
 import 'package:maintenance/GoodsReceiptNote/create/Address/ShippingAddress.dart';
 import 'package:maintenance/GoodsReceiptNote/create/GeneralData.dart';
@@ -42,10 +43,6 @@ class GoodsRecepitNote extends StatefulWidget {
 }
 
 class _JobCardState extends State<GoodsRecepitNote> {
-  
-  
-  
-
   @override
   void initState() {
     super.initState();
@@ -204,7 +201,7 @@ class _JobCardState extends State<GoodsRecepitNote> {
     GoodsRecepitNote.saveButtonPressed = false;
     if (DataSync.isSyncing()) {
       getErrorSnackBar(DataSync.syncingErrorMsg);
-    }else if (!(await Mode.isCreate(MenuDescription.salesQuotation))) {
+    } else if (!(await Mode.isCreate(MenuDescription.salesQuotation))) {
       getErrorSnackBar("You are not authorised to create this document");
     } else {
       if (!GeneralData.validate()) {
@@ -331,5 +328,3 @@ class _JobCardState extends State<GoodsRecepitNote> {
     }
   }
 }
-
-

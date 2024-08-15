@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:maintenance/Component/ClearTextFieldData.dart';
+
 import 'package:maintenance/Component/CustomColor.dart';
 import 'package:maintenance/Component/CustomFont.dart';
 import 'package:maintenance/Component/GetFormattedDate.dart';
 import 'package:maintenance/Component/GetTextField.dart';
 import 'package:maintenance/Component/SnackbarComponent.dart';
+import 'package:maintenance/JobCard/ClearJobCardDocument.dart';
 import 'package:maintenance/JobCard/create/GeneralData.dart';
 import 'package:maintenance/JobCard/create/ItemDetails/EditJobCardItem.dart';
 import 'package:maintenance/JobCard/create/ItemDetails/ItemDetails.dart';

@@ -4,7 +4,6 @@ import 'package:maintenance/Component/CustomColor.dart';
 import 'package:maintenance/Component/GetTextField.dart';
 import 'package:maintenance/Component/SnackbarComponent.dart';
 import 'package:maintenance/GoodsReceiptNote/view/GeneralData.dart';
-import 'package:maintenance/GoodsReceiptNote/view/GoodsReceiptNote.dart';
 import 'package:maintenance/Sync/SyncModels/PRPDN3.dart';
 import 'package:maps_launcher/maps_launcher.dart';
 
@@ -135,9 +134,7 @@ class _BillingAddressState extends State<BillingAddress> {
                         BillingAddress.Addres = value;
                       },
                       readOnly: true,
-                      onTap: () {
-
-                      },
+                      onTap: () {},
                       decoration: new InputDecoration(
                         labelStyle: GoogleFonts.poppins(
                             fontSize: 14, fontWeight: FontWeight.w500),

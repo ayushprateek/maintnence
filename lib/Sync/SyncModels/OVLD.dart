@@ -6,7 +6,6 @@ import 'package:maintenance/Component/LogFileFunctions.dart';
 import 'package:maintenance/Component/SnackbarComponent.dart';
 import 'package:maintenance/DatabaseInitialization.dart';
 import 'package:maintenance/Sync/CustomURL.dart';
-import 'package:maintenance/Sync/DataSync.dart';
 import 'package:sqflite/sqlite_api.dart';
 
 List<OVLDModel> OVLDModelFromJson(String str) =>

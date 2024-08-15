@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:maintenance/Component/BackPressedWarning.dart';
-import 'package:maintenance/Component/ClearTextFieldData.dart';
+
 import 'package:maintenance/Component/CustomColor.dart';
 import 'package:maintenance/Component/CustomFont.dart';
 import 'package:maintenance/Component/GetCurrentLocation.dart';
@@ -13,6 +13,7 @@ import 'package:maintenance/Component/ShowLoader.dart';
 import 'package:maintenance/Component/SnackbarComponent.dart';
 import 'package:maintenance/Dashboard.dart';
 import 'package:maintenance/DatabaseInitialization.dart';
+import 'package:maintenance/Purchase/PurchaseOrder/ClearPurchaseOrder.dart';
 import 'package:maintenance/Purchase/PurchaseOrder/edit/Address/BillingAddress.dart';
 import 'package:maintenance/Purchase/PurchaseOrder/edit/Address/ShippingAddress.dart';
 import 'package:maintenance/Purchase/PurchaseOrder/edit/GeneralData.dart';
@@ -38,10 +39,6 @@ class EditPurchaseOrder extends StatefulWidget {
 }
 
 class _JobCardState extends State<EditPurchaseOrder> {
-  
-  
-  
-
   @override
   void initState() {
     super.initState();
@@ -163,8 +160,7 @@ class _JobCardState extends State<EditPurchaseOrder> {
     EditPurchaseOrder.saveButtonPressed = false;
     if (DataSync.isSyncing()) {
       getErrorSnackBar(DataSync.syncingErrorMsg);
-    }  else if (
-        !(await Mode.isEdit(MenuDescription.salesQuotation))) {
+    } else if (!(await Mode.isEdit(MenuDescription.salesQuotation))) {
       getErrorSnackBar("You are not authorised to edit this document");
     } else {
       if (!GeneralData.validate()) {
@@ -259,8 +255,7 @@ class _JobCardState extends State<EditPurchaseOrder> {
                   qut1model.hasUpdated = true;
                   qut1model.UpdateDate = DateTime.now();
                   Map<String, Object?> map = qut1model.toJson();
-                  map.removeWhere(
-                          (key, value) => value == null || value == '');
+                  map.removeWhere((key, value) => value == null || value == '');
                   await database.update('PRPOR1', map,
                       where: 'TransId = ? AND RowId = ?',
                       whereArgs: [qut1model.TransId, qut1model.RowId]);
@@ -280,5 +275,3 @@ class _JobCardState extends State<EditPurchaseOrder> {
     }
   }
 }
-
-

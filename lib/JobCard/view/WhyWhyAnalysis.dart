@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:maintenance/Component/CustomColor.dart';
 import 'package:maintenance/Component/GetTextField.dart';
 import 'package:maintenance/Sync/SyncModels/MNJCD5.dart';
 
