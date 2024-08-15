@@ -141,7 +141,7 @@ class _BillingAddressState extends State<BillingAddress> {
                         filled: true,
                         labelText: 'Address*',
 
-                        fillColor: Colors.white,
+                        fillColor: Color(0XFFF3ECE7),
                         disabledBorder: new OutlineInputBorder(
                           borderRadius: new BorderRadius.circular(10.0),
                           borderSide: new BorderSide(color: barColor, width: 1),

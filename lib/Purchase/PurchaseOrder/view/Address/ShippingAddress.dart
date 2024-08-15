@@ -6,7 +6,6 @@ import 'package:maintenance/Component/SnackbarComponent.dart';
 import 'package:maintenance/Purchase/PurchaseOrder/create/Address/AddressLookup.dart';
 import 'package:maintenance/Purchase/PurchaseOrder/create/GeneralData.dart';
 import 'package:maintenance/Purchase/PurchaseOrder/create/PurchaseOrder.dart';
-import 'package:maintenance/Sync/SyncModels/PRPDN2.dart';
 import 'package:maintenance/Sync/SyncModels/PRPOR2.dart';
 import 'package:maps_launcher/maps_launcher.dart';
 
@@ -132,19 +131,6 @@ class _ShippingAddressState extends State<ShippingAddress> {
                   labelText: 'Add Code*',
                   onChanged: (value) {
                     ShippingAddress.AddCode = value;
-                  },
-                  enableLookup: true,
-                  onLookupPressed: () {
-                    if (isSelectedAndCancelled() ||
-                        isSalesQuotationDocClosed()) {
-                      getErrorSnackBar(
-                          "This Document is already cancelled / closed");
-                    } else {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: ((context) => AddressLookup(true))));
-                    }
                   }),
               Padding(
                 padding: const EdgeInsets.only(bottom: 6.0, left: 8, right: 8),
@@ -156,15 +142,7 @@ class _ShippingAddressState extends State<ShippingAddress> {
                         onChanged: (value) {
                           ShippingAddress.Addres = value;
                         },
-                        readOnly: isSelectedAndCancelled() ||
-                            isSalesQuotationDocClosed(),
-                        onTap: () {
-                          if (isSelectedAndCancelled() ||
-                              isSalesQuotationDocClosed()) {
-                            getErrorSnackBar(
-                                "This Document is already cancelled / closed");
-                          }
-                        },
+                        readOnly: true,
                         decoration: new InputDecoration(
                           labelStyle: GoogleFonts.poppins(
                               fontSize: 14, fontWeight: FontWeight.w500),
@@ -172,9 +150,7 @@ class _ShippingAddressState extends State<ShippingAddress> {
                           labelText: 'Address*',
 
                           //prefixIconConstraints: BoxConstraints(minWidth: 0,minHeight: 0),
-                          fillColor: isSalesQuotationDocClosed()
-                              ? Color(0XFFF3ECE7)
-                              : Colors.white,
+                          fillColor:Color(0XFFF3ECE7),
                           disabledBorder: new OutlineInputBorder(
                             borderRadius: new BorderRadius.circular(10.0),
                             borderSide:
