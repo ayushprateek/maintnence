@@ -30,6 +30,8 @@ class PRPOR2 {
   String? BaseObjectCode;
   int? DocEntry;
   String? DocNum;
+  bool hasCreated;
+  bool hasUpdated;
 
   PRPOR2({
     this.ID,
@@ -52,6 +54,8 @@ class PRPOR2 {
     this.BaseObjectCode,
     this.DocEntry,
     this.DocNum,
+    this.hasCreated = false,
+    this.hasUpdated = false,
   });
 
   factory PRPOR2.fromJson(Map<String, dynamic> json) => PRPOR2(
@@ -75,6 +79,8 @@ class PRPOR2 {
         BaseObjectCode: json['BaseObjectCode']?.toString() ?? '',
         DocEntry: int.tryParse(json['DocEntry'].toString()) ?? 0,
         DocNum: json['DocNum']?.toString() ?? '',
+        hasCreated: json['has_created'] == 1,
+        hasUpdated: json['has_updated'] == 1,
       );
 
   Map<String, dynamic> toJson() => {
@@ -98,6 +104,8 @@ class PRPOR2 {
         'BaseObjectCode': BaseObjectCode,
         'DocEntry': DocEntry,
         'DocNum': DocNum,
+        "has_created": hasCreated ? 1 : 0,
+        "has_updated": hasUpdated ? 1 : 0,
       };
 }
 
@@ -298,9 +306,7 @@ Future<String> insertPRPOR2ToServer(BuildContext? context,
               where: "TransId = ? AND RowId = ?",
               whereArgs: [model.TransId, model.RowId]);
           print(x.toString());
-        } else
-
-        if (res.statusCode == 201 || res.statusCode == 500) {
+        } else if (res.statusCode == 201 || res.statusCode == 500) {
           sentSuccessInServer = true;
           if (res.statusCode == 201) {
             map['ID'] = jsonDecode(res.body)['ID'];

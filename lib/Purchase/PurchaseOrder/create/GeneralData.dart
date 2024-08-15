@@ -6,12 +6,14 @@ import 'package:maintenance/Component/GetFormattedDate.dart';
 import 'package:maintenance/Component/GetTextField.dart';
 import 'package:maintenance/Component/SnackbarComponent.dart';
 import 'package:maintenance/Lookups/DepartmentLookup.dart';
-import 'package:maintenance/Lookups/EmployeeLookup.dart';
 import 'package:maintenance/Lookups/OCRDLookup.dart';
 import 'package:maintenance/Lookups/TripLookup.dart';
+import 'package:maintenance/Purchase/PurchaseOrder/create/Address/BillingAddress.dart';
+import 'package:maintenance/Purchase/PurchaseOrder/create/Address/ShippingAddress.dart';
 import 'package:maintenance/Sync/SyncModels/CRD1.dart';
+import 'package:maintenance/Sync/SyncModels/CRD2.dart';
+import 'package:maintenance/Sync/SyncModels/CRD3.dart';
 import 'package:maintenance/Sync/SyncModels/OCRD.dart';
-import 'package:maintenance/Sync/SyncModels/OEMP.dart';
 import 'package:maintenance/Sync/SyncModels/OPOTRP.dart';
 import 'package:maintenance/Sync/SyncModels/OUDP.dart';
 import 'package:maintenance/Sync/SyncModels/OWHS.dart';
@@ -103,8 +105,8 @@ class GeneralData extends StatefulWidget {
         RefNo: refNo,
         DeptCode: deptCode,
         DeptName: deptName,
-        ContactPersonName:contactPersonName ,
-        ContactPersonId: int.tryParse(contactPersonId?.toString()??''),
+        ContactPersonName: contactPersonName,
+        ContactPersonId: int.tryParse(contactPersonId?.toString() ?? ''),
         IsPosted: isPosted,
         ApprovalStatus: approvalStatus ?? "Pending",
         DocStatus: docStatus,
@@ -183,6 +185,62 @@ class _GeneralDataState extends State<GeneralData> {
   List<String> warrantyList = ['Yes', 'No'];
   String warranty = 'Yes';
 
+  Future<void> setAddress() async {
+    List<CRD2Model> shipping =
+        await retrieveCRD2ById(context, "Code = ?", [GeneralData.supplierCode]);
+    if (shipping.isNotEmpty) {
+      ShippingAddress.RouteName = shipping[0].RouteName;
+      ShippingAddress.RouteCode = shipping[0].RouteCode;
+      ShippingAddress.CityName = shipping[0].CityName;
+      ShippingAddress.CityCode = shipping[0].CityCode;
+      ShippingAddress.Addres = shipping[0].Address;
+      ShippingAddress.CountryName = shipping[0].CountryName;
+      ShippingAddress.CountryCode = shipping[0].CountryCode;
+      ShippingAddress.StateName = shipping[0].StateName;
+      ShippingAddress.StateCode = shipping[0].StateCode;
+      ShippingAddress.Latitude = double.tryParse(shipping[0].Latitude) ?? 0.0;
+      ShippingAddress.Longitude =
+          double.tryParse(shipping[0].Longitude.toString()) ?? 0.0;
+      ShippingAddress.RowId = shipping[0].RowId;
+      ShippingAddress.AddCode = shipping[0].AddressCode;
+    }
+
+    //SET FIRST BILLING ADDRESS --> CRD3 WHERE Code = ? CUSTOMER CODE
+
+    List<CRD3Model> billing =
+        await retrieveCRD3ById(context, "Code = ?", [GeneralData.supplierCode]);
+    if (billing.isNotEmpty) {
+      BillingAddress.CityName = billing[0].CityName;
+      BillingAddress.CityCode = billing[0].CityCode;
+      BillingAddress.Addres = billing[0].Address;
+      BillingAddress.CountryName = billing[0].CountryName;
+      BillingAddress.CountryCode = billing[0].CountryCode;
+      BillingAddress.StateName = billing[0].StateName;
+      BillingAddress.StateCode = billing[0].StateCode;
+      BillingAddress.Latitude = double.tryParse(billing[0].Latitude) ?? 0.0;
+      BillingAddress.Longitude =
+          double.tryParse(billing[0].Longitude.toString()) ?? 0.0;
+      BillingAddress.RowId = billing[0].RowId;
+      BillingAddress.AddCode = billing[0].AddressCode;
+    }
+
+    //SET FIRST CONTACT PERSON --> OCRD WHERE Code = ? CUSTOMER CODE
+
+    List<CRD1Model> contactPerson = await retrieveCRD1ById(
+        context, "Code = ? AND Active = ?", [GeneralData.supplierCode, 1]);
+    if (contactPerson.isNotEmpty) {
+      GeneralData.contactPersonId = contactPerson[0].ID.toString();
+      _mobileNo.text =
+          GeneralData.mobileNo = contactPerson[0].MobileNo.toString();
+      _contactPersonName.text = GeneralData.contactPersonName =
+          contactPerson[0].FirstName.toString() +
+              " " +
+              contactPerson[0].MiddleName.toString() +
+              " " +
+              contactPerson[0].LastName.toString();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -250,39 +308,33 @@ class _GeneralDataState extends State<GeneralData> {
                   enableLookup: true,
                   onLookupPressed: () {
                     Get.to(() => OCRDLookup(onSelection:
-                        (OCRDModel ocrdModel, CRD1Model? crd1Model) {
-                      setState(() {
-                        GeneralData.supplierCode =
-                            _requestedCode.text = ocrdModel.Code;
-
-                        GeneralData.supplierName =
-                            _supplierName.text = ocrdModel.Name ?? '';
-                        GeneralData.mobileNo =
-                            _mobileNo.text = ocrdModel.MobileNo;
-                        if (crd1Model != null) {
-                          GeneralData.contactPersonName=_contactPersonName.text = "${crd1Model.FirstName} ${crd1Model.MiddleName} ${crd1Model.LastName}";
-                          GeneralData.contactPersonId=crd1Model.ID.toString();
-                        }
-                      });
-                    }));
-                  }),
-
-              getDisabledTextField(
-                  controller: _contactPersonName,
-                  labelText: 'Person Name',
-                  onChanged: (val) {
-                    GeneralData.contactPersonId = _supplierName.text = val;
-                  },
-                  enableLookup: true,
-                  onLookupPressed: () {
-                    Get.to(() => EmployeeLookup(onSelection: (OEMPModel oemp) {
+                            (OCRDModel ocrdModel, CRD1Model? crd1Model) {
                           setState(() {
-                            GeneralData.supplierCode = oemp.Code;
+                            GeneralData.supplierCode =
+                                _requestedCode.text = ocrdModel.Code;
+
                             GeneralData.supplierName =
-                                _supplierName.text = oemp.Name ?? '';
+                                _supplierName.text = ocrdModel.Name ?? '';
+                            GeneralData.mobileNo =
+                                _mobileNo.text = ocrdModel.MobileNo;
+                            if (crd1Model != null) {
+                              GeneralData.contactPersonName = _contactPersonName
+                                      .text =
+                                  "${crd1Model.FirstName} ${crd1Model.MiddleName} ${crd1Model.LastName}";
+                              GeneralData.contactPersonId =
+                                  crd1Model.ID.toString();
+                            }
+                            setAddress();
                           });
                         }));
                   }),
+              getDisabledTextField(
+                controller: _contactPersonName,
+                labelText: 'Person Name',
+                onChanged: (val) {
+                  GeneralData.contactPersonId = _supplierName.text = val;
+                },
+              ),
               getDisabledTextField(
                   controller: _whsCode,
                   labelText: 'WhsCode',

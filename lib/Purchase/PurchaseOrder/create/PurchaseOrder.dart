@@ -14,6 +14,8 @@ import 'package:maintenance/Component/ShowLoader.dart';
 import 'package:maintenance/Component/SnackbarComponent.dart';
 import 'package:maintenance/Dashboard.dart';
 import 'package:maintenance/DatabaseInitialization.dart';
+import 'package:maintenance/Purchase/PurchaseOrder/create/Address/BillingAddress.dart';
+import 'package:maintenance/Purchase/PurchaseOrder/create/Address/ShippingAddress.dart';
 import 'package:maintenance/Purchase/PurchaseOrder/create/GeneralData.dart';
 import 'package:maintenance/Purchase/PurchaseOrder/create/ItemDetails/ItemDetails.dart';
 import 'package:maintenance/Purchase/PurchaseOrder/create/SearchPurchaseOrder.dart';
@@ -70,7 +72,7 @@ class _JobCardState extends State<PurchaseOrder> {
       },
       canPop: false,
       child: DefaultTabController(
-        length: 2,
+        length: 4,
         initialIndex: widget.index,
         child: Scaffold(
           key: key,
@@ -96,7 +98,7 @@ class _JobCardState extends State<PurchaseOrder> {
                               topRight: Radius.circular(10)),
                           color: Colors.white),
                       labelColor: barColor,
-                      isScrollable: false,
+                      isScrollable: true,
                       unselectedLabelColor: Colors.white,
                       labelStyle:
                           GoogleFonts.poppins(fontWeight: FontWeight.w500),
@@ -112,6 +114,20 @@ class _JobCardState extends State<PurchaseOrder> {
                           padding: const EdgeInsets.all(8.0),
                           child: Text(
                             "Item Details",
+                          ),
+                        )),
+                        Tab(
+                            child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            "Shipping Address",
+                          ),
+                        )),
+                        Tab(
+                            child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            "Billing Address",
                           ),
                         )),
                       ],
@@ -162,7 +178,8 @@ class _JobCardState extends State<PurchaseOrder> {
             children: [
               GeneralData(),
               ItemDetails(),
-              //todo: add addresses
+              ShippingAddress(),
+              BillingAddress(),
             ],
           ),
           floatingActionButton: FloatingActionButton(
