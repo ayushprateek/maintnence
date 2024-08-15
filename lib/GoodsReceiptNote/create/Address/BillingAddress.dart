@@ -126,15 +126,10 @@ class _BillingAddressState extends State<BillingAddress> {
                 },
                 enableLookup: true,
                 onLookupPressed: () {
-                  if (isSelectedAndCancelled() || isSalesQuotationDocClosed()) {
-                    getErrorSnackBar(
-                        "This Document is already cancelled / closed");
-                  } else {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: ((context) => AddressLookup(false))));
-                  }
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: ((context) => AddressLookup(false))));
                 }),
             Padding(
               padding: const EdgeInsets.only(bottom: 6.0, left: 8, right: 8),
@@ -146,14 +141,9 @@ class _BillingAddressState extends State<BillingAddress> {
                       onChanged: (value) {
                         BillingAddress.Addres = value;
                       },
-                      readOnly: isSelectedAndCancelled() ||
-                          isSalesQuotationDocClosed(),
+                      readOnly: false,
                       onTap: () {
-                        if (isSelectedAndCancelled() ||
-                            isSalesQuotationDocClosed()) {
-                          getErrorSnackBar(
-                              "This Document is already cancelled / closed");
-                        }
+
                       },
                       decoration: new InputDecoration(
                         labelStyle: GoogleFonts.poppins(
@@ -162,9 +152,7 @@ class _BillingAddressState extends State<BillingAddress> {
                         labelText: 'Address*',
 
                         //prefixIconConstraints: BoxConstraints(minWidth: 0,minHeight: 0),
-                        fillColor: isSalesQuotationDocClosed()
-                            ? Color(0XFFF3ECE7)
-                            : Colors.white,
+                        fillColor:  Colors.white,
                         disabledBorder: new OutlineInputBorder(
                           borderRadius: new BorderRadius.circular(10.0),
                           borderSide: new BorderSide(color: barColor, width: 1),

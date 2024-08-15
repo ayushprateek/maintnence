@@ -49,10 +49,6 @@ class JobCard extends StatefulWidget {
 }
 
 class _JobCardState extends State<JobCard> {
-  List lists = [];
-  int numOfAddress = 0;
-  var future_address;
-
   @override
   void initState() {
     super.initState();
@@ -272,36 +268,13 @@ class _JobCardState extends State<JobCard> {
     );
   }
 
-  bool isSelectedAndCancelled() {
-    bool flag = GeneralData.isSelected && GeneralData.docStatus == "Cancelled";
-    flag = flag || GeneralData.docStatus == "Close";
-    return flag;
-  }
-
-  bool isSalesQuotationDocClosed() {
-    return GeneralData.docStatus == null
-        ? false
-        : (GeneralData.docStatus!.toUpperCase().contains('CLOSE') ||
-            GeneralData.approvalStatus != 'Pending');
-  }
-
-  bool isSelectedButNotCancelled() {
-    return GeneralData.isSelected && GeneralData.docStatus != "Cancelled";
-  }
-
   save() async {
     //GeneralData.isSelected
     JobCard.saveButtonPressed = false;
     if (DataSync.isSyncing()) {
       getErrorSnackBar(DataSync.syncingErrorMsg);
-    } else if (isSelectedAndCancelled()) {
-      getErrorSnackBar("This Document is already cancelled / closed");
-    } else if (!isSelectedButNotCancelled() &&
-        !(await Mode.isCreate(MenuDescription.salesQuotation))) {
+    } else if (!(await Mode.isCreate(MenuDescription.salesQuotation))) {
       getErrorSnackBar("You are not authorised to create this document");
-    } else if (isSelectedButNotCancelled() &&
-        !(await Mode.isEdit(MenuDescription.salesQuotation))) {
-      getErrorSnackBar("You are not authorised to edit this document");
     } else {
       if (!GeneralData.validate()) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -315,8 +288,6 @@ class _JobCardState extends State<JobCard> {
           print(pos.latitude.toString());
           print(pos.longitude.toString());
           String str = 'TransId = ?';
-
-          String? data = GeneralData.transId;
 
           final Database db = await initializeDB(context);
           try {
@@ -474,6 +445,4 @@ class _JobCardState extends State<JobCard> {
       }
     }
   }
-
-  syncWithServer() {}
 }

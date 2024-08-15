@@ -37,9 +37,9 @@ class EditGoodsIssue extends StatefulWidget {
 }
 
 class _JobCardState extends State<EditGoodsIssue> {
-  List lists = [];
-  int numOfAddress = 0;
-  var future_address;
+  
+  
+  
 
   @override
   void initState() {
@@ -141,34 +141,14 @@ class _JobCardState extends State<EditGoodsIssue> {
     );
   }
 
-  bool isSelectedAndCancelled() {
-    bool flag = GeneralData.isSelected && GeneralData.docStatus == "Cancelled";
-    flag = flag || GeneralData.docStatus == "Close";
-    return flag;
-  }
 
-  bool isSalesQuotationDocClosed() {
-    return GeneralData.docStatus == null
-        ? false
-        : (GeneralData.docStatus!.toUpperCase().contains('CLOSE') ||
-            GeneralData.approvalStatus != 'Pending');
-  }
-
-  bool isSelectedButNotCancelled() {
-    return GeneralData.isSelected && GeneralData.docStatus != "Cancelled";
-  }
 
   save() async {
     //GeneralData.isSelected
     EditGoodsIssue.saveButtonPressed = false;
     if (DataSync.isSyncing()) {
       getErrorSnackBar(DataSync.syncingErrorMsg);
-    } else if (isSelectedAndCancelled()) {
-      getErrorSnackBar("This Document is already cancelled / closed");
-    } else if (!isSelectedButNotCancelled() &&
-        !(await Mode.isCreate(MenuDescription.salesQuotation))) {
-      getErrorSnackBar("You are not authorised to create this document");
-    } else if (isSelectedButNotCancelled() &&
+    } else if (
         !(await Mode.isEdit(MenuDescription.salesQuotation))) {
       getErrorSnackBar("You are not authorised to edit this document");
     } else {
@@ -239,69 +219,38 @@ class _JobCardState extends State<EditGoodsIssue> {
                   .removeWhere((key, value) => value == null || value == '');
               print(generalData.toJson());
               print(generalData);
-              if (isSelectedButNotCancelled()) {
-                //UpdateDate
-                generalData.UpdateDate = DateTime.now();
-                generalData.UpdatedBy = userModel.UserCode;
-                generalData.hasUpdated = true;
-                Map<String, Object?> map = generalData.toJson();
-                map.removeWhere((key, value) => value == null || value == '');
-                await database
-                    .update('IMOGDI', map, where: str, whereArgs: [data]);
-                getSuccessSnackBar("Sales Quotation Updated Successfully");
-              } else {
-                //CreateDate
-                getSuccessSnackBar("Creating Sales Quotation...");
-                generalData.CreateDate = DateTime.now();
-                generalData.UpdateDate = DateTime.now();
-                generalData.CreatedBy = userModel.UserCode;
-                generalData.BranchId = userModel.BranchId.toString();
-                generalData.hasCreated = true;
-                Position pos = await getCurrentLocation();
-                generalData.Latitude = pos.latitude.toString();
-                generalData.Longitude = pos.longitude.toString();
-                await database.insert('IMOGDI', generalData.toJson());
-              }
+              generalData.UpdateDate = DateTime.now();
+              generalData.UpdatedBy = userModel.UserCode;
+              generalData.hasUpdated = true;
+              Map<String, Object?> map = generalData.toJson();
+              map.removeWhere((key, value) => value == null || value == '');
+              await database
+                  .update('IMOGDI', map, where: str, whereArgs: [data]);
+              getSuccessSnackBar("Sales Quotation Updated Successfully");
+
 
               //ITEM DETAILS
               print("Item Details ");
-              if (isSelectedButNotCancelled()) {
-                for (int i = 0; i < ItemDetails.items.length; i++) {
-                  IMGDI1 qut1model = ItemDetails.items[i];
-                  qut1model.RowId = i;
+              for (int i = 0; i < ItemDetails.items.length; i++) {
+                IMGDI1 qut1model = ItemDetails.items[i];
+                qut1model.RowId = i;
 
-                  if (!qut1model.insertedIntoDatabase) {
-                    qut1model.hasCreated = true;
-
-                    qut1model.CreateDate = DateTime.now();
-                    qut1model.UpdateDate = DateTime.now();
-
-                    await database.insert('IMGDI1', qut1model.toJson());
-                  } else {
-                    qut1model.hasUpdated = true;
-                    qut1model.UpdateDate = DateTime.now();
-                    Map<String, Object?> map = qut1model.toJson();
-                    map.removeWhere(
-                        (key, value) => value == null || value == '');
-                    await database.update('IMGDI1', map,
-                        where: 'TransId = ? AND RowId = ?',
-                        whereArgs: [qut1model.TransId, qut1model.RowId]);
-                  }
-                }
-              } else {
-                for (int i = 0; i < ItemDetails.items.length; i++) {
-                  IMGDI1 qut1model = ItemDetails.items[i];
-                  qut1model.ID = i;
-                  qut1model.RowId = i;
+                if (!qut1model.insertedIntoDatabase) {
                   qut1model.hasCreated = true;
+
                   qut1model.CreateDate = DateTime.now();
+                  qut1model.UpdateDate = DateTime.now();
 
-                  if (!qut1model.insertedIntoDatabase) {
-                    qut1model.CreateDate = DateTime.now();
-                    qut1model.UpdateDate = DateTime.now();
-
-                    await database.insert('IMGDI1', qut1model.toJson());
-                  }
+                  await database.insert('IMGDI1', qut1model.toJson());
+                } else {
+                  qut1model.hasUpdated = true;
+                  qut1model.UpdateDate = DateTime.now();
+                  Map<String, Object?> map = qut1model.toJson();
+                  map.removeWhere(
+                          (key, value) => value == null || value == '');
+                  await database.update('IMGDI1', map,
+                      where: 'TransId = ? AND RowId = ?',
+                      whereArgs: [qut1model.TransId, qut1model.RowId]);
                 }
               }
             });

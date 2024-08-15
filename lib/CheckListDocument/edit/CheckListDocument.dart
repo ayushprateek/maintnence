@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:maintenance/ApprovalStatus/ApprovalListUIComponent.dart';
 import 'package:maintenance/CheckListDocument/edit/Attachments.dart';
 import 'package:maintenance/CheckListDocument/edit/CheckListDetails/CheckListDetails.dart';
 import 'package:maintenance/CheckListDocument/edit/GeneralData.dart';
@@ -20,7 +19,6 @@ import 'package:maintenance/Dashboard.dart';
 import 'package:maintenance/DatabaseInitialization.dart';
 import 'package:maintenance/Sync/DataSync.dart';
 import 'package:maintenance/Sync/SyncModels/ApprovalModel.dart';
-import 'package:maintenance/Sync/SyncModels/LITPL_OOAL.dart';
 import 'package:maintenance/Sync/SyncModels/MNCLD1.dart';
 import 'package:maintenance/Sync/SyncModels/MNCLD2.dart';
 import 'package:maintenance/Sync/SyncModels/MNOCLD.dart';
@@ -45,9 +43,9 @@ class EditCheckListDocument extends StatefulWidget {
 }
 
 class _EditCheckListDocumentState extends State<EditCheckListDocument> {
-  List lists = [];
-  int numOfAddress = 0;
-  var future_address;
+  
+  
+  
 
   @override
   void initState() {
@@ -157,35 +155,14 @@ class _EditCheckListDocumentState extends State<EditCheckListDocument> {
     );
   }
 
-  bool isSelectedAndCancelled() {
-    bool flag = GeneralData.isSelected && GeneralData.docStatus == "Cancelled";
-    flag = flag || GeneralData.docStatus == "Close";
-    return flag;
-  }
-
-  bool isSalesQuotationDocClosed() {
-    return GeneralData.docStatus == null
-        ? false
-        : (GeneralData.docStatus!.toUpperCase().contains('CLOSE') ||
-            GeneralData.approvalStatus != 'Pending');
-  }
-
-  bool isSelectedButNotCancelled() {
-    return GeneralData.isSelected && GeneralData.docStatus != "Cancelled";
-  }
-
   save() async {
     //GeneralData.isSelected
     EditCheckListDocument.saveButtonPressed = false;
     if (DataSync.isSyncing()) {
       getErrorSnackBar(DataSync.syncingErrorMsg);
-    } else if (isSelectedAndCancelled()) {
-      getErrorSnackBar("This Document is already cancelled / closed");
-    } else if (!isSelectedButNotCancelled() &&
-        !(await Mode.isCreate(MenuDescription.salesQuotation))) {
+    } else if (!(await Mode.isCreate(MenuDescription.salesQuotation))) {
       getErrorSnackBar("You are not authorised to create this document");
-    } else if (isSelectedButNotCancelled() &&
-        !(await Mode.isEdit(MenuDescription.salesQuotation))) {
+    } else if (!(await Mode.isEdit(MenuDescription.salesQuotation))) {
       getErrorSnackBar("You are not authorised to edit this document");
     } else {
       if (!GeneralData.validate()) {

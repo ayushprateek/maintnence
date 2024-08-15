@@ -40,10 +40,6 @@ class EditGoodsRecepitNote extends StatefulWidget {
 }
 
 class _JobCardState extends State<EditGoodsRecepitNote> {
-  List lists = [];
-  int numOfAddress = 0;
-  var future_address;
-
   @override
   void initState() {
     super.initState();
@@ -168,13 +164,7 @@ class _JobCardState extends State<EditGoodsRecepitNote> {
     EditGoodsRecepitNote.saveButtonPressed = false;
     if (DataSync.isSyncing()) {
       getErrorSnackBar(DataSync.syncingErrorMsg);
-    } else if (isSelectedAndCancelled()) {
-      getErrorSnackBar("This Document is already cancelled / closed");
-    } else if (!isSelectedButNotCancelled() &&
-        !(await Mode.isCreate(MenuDescription.salesQuotation))) {
-      getErrorSnackBar("You are not authorised to create this document");
-    } else if (isSelectedButNotCancelled() &&
-        !(await Mode.isEdit(MenuDescription.salesQuotation))) {
+    } else if (!(await Mode.isEdit(MenuDescription.salesQuotation))) {
       getErrorSnackBar("You are not authorised to edit this document");
     } else {
       if (!GeneralData.validate()) {
@@ -243,111 +233,60 @@ class _JobCardState extends State<EditGoodsRecepitNote> {
                   .removeWhere((key, value) => value == null || value == '');
               print(generalData.toJson());
               print(generalData);
-              if (isSelectedButNotCancelled()) {
-                //UpdateDate
-                generalData.UpdateDate = DateTime.now();
-                generalData.UpdatedBy = userModel.UserCode;
-                generalData.hasUpdated = true;
-                Map<String, Object?> map = generalData.toJson();
-                map.removeWhere((key, value) => value == null || value == '');
-                await database
-                    .update('PROPDN', map, where: str, whereArgs: [data]);
-                getSuccessSnackBar("Sales Quotation Updated Successfully");
-              } else {
-                //CreateDate
-                getSuccessSnackBar("Creating Sales Quotation...");
-                generalData.CreateDate = DateTime.now();
-                generalData.UpdateDate = DateTime.now();
-                generalData.CreatedBy = userModel.UserCode;
-                generalData.BranchId = userModel.BranchId.toString();
-                generalData.hasCreated = true;
-                Position pos = await getCurrentLocation();
-                generalData.Latitude = pos.latitude.toString();
-                generalData.Longitude = pos.longitude.toString();
-                await database.insert('PROPDN', generalData.toJson());
-              }
+              generalData.UpdateDate = DateTime.now();
+              generalData.UpdatedBy = userModel.UserCode;
+              generalData.hasUpdated = true;
+              Map<String, Object?> map = generalData.toJson();
+              map.removeWhere((key, value) => value == null || value == '');
+              await database
+                  .update('PROPDN', map, where: str, whereArgs: [data]);
+              getSuccessSnackBar("Sales Quotation Updated Successfully");
 
               //ITEM DETAILS
               print("Item Details ");
-              if (isSelectedButNotCancelled()) {
-                for (int i = 0; i < ItemDetails.items.length; i++) {
-                  PRPDN1 qut1model = ItemDetails.items[i];
-                  qut1model.RowId = i;
+              for (int i = 0; i < ItemDetails.items.length; i++) {
+                PRPDN1 qut1model = ItemDetails.items[i];
+                qut1model.RowId = i;
 
-                  if (!qut1model.insertedIntoDatabase) {
-                    qut1model.hasCreated = true;
-
-                    qut1model.CreateDate = DateTime.now();
-                    qut1model.UpdateDate = DateTime.now();
-
-                    await database.insert('PRPDN1', qut1model.toJson());
-                  } else {
-                    qut1model.hasUpdated = true;
-                    qut1model.UpdateDate = DateTime.now();
-                    Map<String, Object?> map = qut1model.toJson();
-                    map.removeWhere(
-                        (key, value) => value == null || value == '');
-                    await database.update('PRPDN1', map,
-                        where: 'TransId = ? AND RowId = ?',
-                        whereArgs: [qut1model.TransId, qut1model.RowId]);
-                  }
-                }
-              } else {
-                for (int i = 0; i < ItemDetails.items.length; i++) {
-                  PRPDN1 qut1model = ItemDetails.items[i];
-                  qut1model.ID = i;
-                  qut1model.RowId = i;
+                if (!qut1model.insertedIntoDatabase) {
                   qut1model.hasCreated = true;
+
                   qut1model.CreateDate = DateTime.now();
+                  qut1model.UpdateDate = DateTime.now();
 
-                  if (!qut1model.insertedIntoDatabase) {
-                    qut1model.CreateDate = DateTime.now();
-                    qut1model.UpdateDate = DateTime.now();
-
-                    await database.insert('PRPDN1', qut1model.toJson());
-                  }
+                  await database.insert('PRPDN1', qut1model.toJson());
+                } else {
+                  qut1model.hasUpdated = true;
+                  qut1model.UpdateDate = DateTime.now();
+                  Map<String, Object?> map = qut1model.toJson();
+                  map.removeWhere((key, value) => value == null || value == '');
+                  await database.update('PRPDN1', map,
+                      where: 'TransId = ? AND RowId = ?',
+                      whereArgs: [qut1model.TransId, qut1model.RowId]);
                 }
               }
 
               PRPDN2 shippingAddress = ShippingAddress.getShippingAddress();
               print("Shipping address= $shippingAddress");
-              if (isSelectedAndCancelled() || isSalesQuotationDocClosed()) {
-                //getErrorSnackBar("This Document is already cancelled / closed");
-              } else if (isSelectedButNotCancelled()) {
-                shippingAddress.hasUpdated = true;
-                shippingAddress.UpdateDate = DateTime.now();
-                Map<String, Object?> map = shippingAddress.toJson();
-                map.removeWhere((key, value) => value == null || value == '');
-                await database
-                    .update('PRPDN2', map, where: str, whereArgs: [data]);
-                getSuccessSnackBar("Sales Quotation Updated Successfully");
-              } else {
-                shippingAddress.CreateDate = DateTime.now();
-                shippingAddress.hasCreated = true;
-                shippingAddress.CreateDate = DateTime.now();
-                shippingAddress.UpdateDate = DateTime.now();
-                await database.insert('PRPDN2', shippingAddress.toJson());
-              }
+              shippingAddress.hasUpdated = true;
+              shippingAddress.UpdateDate = DateTime.now();
+              Map<String, Object?> shippingMap = shippingAddress.toJson();
+              shippingMap
+                  .removeWhere((key, value) => value == null || value == '');
+              await database
+                  .update('PRPDN2', shippingMap, where: str, whereArgs: [data]);
+              getSuccessSnackBar("Sales Quotation Updated Successfully");
               //BILLING ADDRESS
               PRPDN3 billingAddress = BillingAddress.getBillingAddress();
               print(billingAddress);
-              if (isSelectedAndCancelled() || isSalesQuotationDocClosed()) {
-                //getErrorSnackBar("This Document is already cancelled / closed");
-              } else if (isSelectedButNotCancelled()) {
-                billingAddress.hasUpdated = true;
-                billingAddress.UpdateDate = DateTime.now();
-                Map<String, Object?> map = billingAddress.toJson();
-                map.removeWhere((key, value) => value == null || value == '');
-                await database
-                    .update('PRPDN3', map, where: str, whereArgs: [data]);
-                getSuccessSnackBar("Sales Quotation Updated Successfully");
-              } else {
-                billingAddress.CreateDate = DateTime.now();
-                billingAddress.UpdateDate = DateTime.now();
-                billingAddress.hasCreated = true;
-                await database.insert('PRPDN3', billingAddress.toJson());
-                getSuccessSnackBar("Sales Quotation Successfully Created");
-              }
+              billingAddress.hasUpdated = true;
+              billingAddress.UpdateDate = DateTime.now();
+              Map<String, Object?> billingMap = billingAddress.toJson();
+              billingMap
+                  .removeWhere((key, value) => value == null || value == '');
+              await database
+                  .update('PRPDN3', billingMap, where: str, whereArgs: [data]);
+              getSuccessSnackBar("Sales Quotation Updated Successfully");
             });
             goToNewGRNDocument();
           } catch (e) {
@@ -361,21 +300,4 @@ class _JobCardState extends State<EditGoodsRecepitNote> {
       }
     }
   }
-}
-
-bool isSelectedAndCancelled() {
-  bool flag = GeneralData.isSelected && GeneralData.docStatus == "Cancelled";
-  flag = flag || GeneralData.docStatus == "Close";
-  return flag;
-}
-
-bool isSalesQuotationDocClosed() {
-  return GeneralData.docStatus == null
-      ? false
-      : (GeneralData.docStatus!.toUpperCase().contains('CLOSE') ||
-          GeneralData.approvalStatus != 'Pending');
-}
-
-bool isSelectedButNotCancelled() {
-  return GeneralData.isSelected && GeneralData.docStatus != "Cancelled";
 }

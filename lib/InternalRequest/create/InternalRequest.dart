@@ -38,9 +38,9 @@ class InternalRequest extends StatefulWidget {
 }
 
 class InternalRequestState extends State<InternalRequest> {
-  List lists = [];
-  int numOfAddress = 0;
-  var future_address;
+  
+  
+  
 
   @override
   void initState() {
@@ -178,36 +178,16 @@ class InternalRequestState extends State<InternalRequest> {
     );
   }
 
-  bool isSelectedAndCancelled() {
-    bool flag = GeneralData.isSelected && GeneralData.docStatus == "Cancelled";
-    flag = flag || GeneralData.docStatus == "Close";
-    return flag;
-  }
 
-  bool isSalesQuotationDocClosed() {
-    return GeneralData.docStatus == null
-        ? false
-        : (GeneralData.docStatus!.toUpperCase().contains('CLOSE') ||
-            GeneralData.approvalStatus != 'Pending');
-  }
-
-  bool isSelectedButNotCancelled() {
-    return GeneralData.isSelected && GeneralData.docStatus != "Cancelled";
-  }
 
   save() async {
     //GeneralData.isSelected
     InternalRequest.saveButtonPressed = false;
     if (DataSync.isSyncing()) {
       getErrorSnackBar(DataSync.syncingErrorMsg);
-    } else if (isSelectedAndCancelled()) {
-      getErrorSnackBar("This Document is already cancelled / closed");
-    } else if (!isSelectedButNotCancelled() &&
+    } else if (
         !(await Mode.isCreate(MenuDescription.salesQuotation))) {
       getErrorSnackBar("You are not authorised to create this document");
-    } else if (isSelectedButNotCancelled() &&
-        !(await Mode.isEdit(MenuDescription.salesQuotation))) {
-      getErrorSnackBar("You are not authorised to edit this document");
     } else {
       if (!GeneralData.validate()) {
         ScaffoldMessenger.of(context).showSnackBar(
@@ -275,69 +255,32 @@ class InternalRequestState extends State<InternalRequest> {
                   .removeWhere((key, value) => value == null || value == '');
               print(generalData.toJson());
               print(generalData);
-              if (isSelectedButNotCancelled()) {
-                //UpdateDate
-                generalData.UpdateDate = DateTime.now();
-                generalData.UpdatedBy = userModel.UserCode;
-                generalData.hasUpdated = true;
-                Map<String, Object?> map = generalData.toJson();
-                map.removeWhere((key, value) => value == null || value == '');
-                await database
-                    .update('PROITR', map, where: str, whereArgs: [data]);
-                getSuccessSnackBar("Sales Quotation Updated Successfully");
-              } else {
-                //CreateDate
-                getSuccessSnackBar("Creating Sales Quotation...");
-                generalData.CreateDate = DateTime.now();
-                generalData.UpdateDate = DateTime.now();
-                generalData.CreatedBy = userModel.UserCode;
-                generalData.BranchId = userModel.BranchId.toString();
-                generalData.hasCreated = true;
-                Position pos = await getCurrentLocation();
-                generalData.Latitude = pos.latitude.toString();
-                generalData.Longitude = pos.longitude.toString();
-                await database.insert('PROITR', generalData.toJson());
-              }
+              //CreateDate
+              getSuccessSnackBar("Creating Sales Quotation...");
+              generalData.CreateDate = DateTime.now();
+              generalData.UpdateDate = DateTime.now();
+              generalData.CreatedBy = userModel.UserCode;
+              generalData.BranchId = userModel.BranchId.toString();
+              generalData.hasCreated = true;
+              Position pos = await getCurrentLocation();
+              generalData.Latitude = pos.latitude.toString();
+              generalData.Longitude = pos.longitude.toString();
+              await database.insert('PROITR', generalData.toJson());
 
               //ITEM DETAILS
               print("Item Details ");
-              if (isSelectedButNotCancelled()) {
-                for (int i = 0; i < ItemDetails.items.length; i++) {
-                  PRITR1 qut1model = ItemDetails.items[i];
-                  qut1model.RowId = i;
+              for (int i = 0; i < ItemDetails.items.length; i++) {
+                PRITR1 qut1model = ItemDetails.items[i];
+                qut1model.ID = i;
+                qut1model.RowId = i;
+                qut1model.hasCreated = true;
+                qut1model.CreateDate = DateTime.now();
 
-                  if (!qut1model.insertedIntoDatabase) {
-                    qut1model.hasCreated = true;
-
-                    qut1model.CreateDate = DateTime.now();
-                    qut1model.UpdateDate = DateTime.now();
-
-                    await database.insert('PRITR1', qut1model.toJson());
-                  } else {
-                    qut1model.hasUpdated = true;
-                    qut1model.UpdateDate = DateTime.now();
-                    Map<String, Object?> map = qut1model.toJson();
-                    map.removeWhere(
-                        (key, value) => value == null || value == '');
-                    await database.update('PRITR1', map,
-                        where: 'TransId = ? AND RowId = ?',
-                        whereArgs: [qut1model.TransId, qut1model.RowId]);
-                  }
-                }
-              } else {
-                for (int i = 0; i < ItemDetails.items.length; i++) {
-                  PRITR1 qut1model = ItemDetails.items[i];
-                  qut1model.ID = i;
-                  qut1model.RowId = i;
-                  qut1model.hasCreated = true;
+                if (!qut1model.insertedIntoDatabase) {
                   qut1model.CreateDate = DateTime.now();
+                  qut1model.UpdateDate = DateTime.now();
 
-                  if (!qut1model.insertedIntoDatabase) {
-                    qut1model.CreateDate = DateTime.now();
-                    qut1model.UpdateDate = DateTime.now();
-
-                    await database.insert('PRITR1', qut1model.toJson());
-                  }
+                  await database.insert('PRITR1', qut1model.toJson());
                 }
               }
             });

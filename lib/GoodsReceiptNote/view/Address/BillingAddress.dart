@@ -134,14 +134,9 @@ class _BillingAddressState extends State<BillingAddress> {
                       onChanged: (value) {
                         BillingAddress.Addres = value;
                       },
-                      readOnly: isSelectedAndCancelled() ||
-                          isSalesQuotationDocClosed(),
+                      readOnly: true,
                       onTap: () {
-                        if (isSelectedAndCancelled() ||
-                            isSalesQuotationDocClosed()) {
-                          getErrorSnackBar(
-                              "This Document is already cancelled / closed");
-                        }
+
                       },
                       decoration: new InputDecoration(
                         labelStyle: GoogleFonts.poppins(
@@ -150,9 +145,7 @@ class _BillingAddressState extends State<BillingAddress> {
                         labelText: 'Address*',
 
                         //prefixIconConstraints: BoxConstraints(minWidth: 0,minHeight: 0),
-                        fillColor: isSalesQuotationDocClosed()
-                            ? Color(0XFFF3ECE7)
-                            : Colors.white,
+                        fillColor: Colors.white,
                         disabledBorder: new OutlineInputBorder(
                           borderRadius: new BorderRadius.circular(10.0),
                           borderSide: new BorderSide(color: barColor, width: 1),
