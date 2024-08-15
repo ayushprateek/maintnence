@@ -34,6 +34,9 @@ import 'package:maintenance/Sync/SyncModels/MNJCD1.dart';
 import 'package:maintenance/Sync/SyncModels/MNJCD2.dart';
 import 'package:maintenance/Sync/SyncModels/MNJCD3.dart';
 import 'package:maintenance/Sync/SyncModels/MNJCD4.dart';
+import 'package:maintenance/Sync/SyncModels/MNJCD5.dart';
+import 'package:maintenance/Sync/SyncModels/MNJCD6.dart';
+import 'package:maintenance/Sync/SyncModels/MNJCD7.dart';
 import 'package:maintenance/Sync/SyncModels/MNOCLD.dart';
 import 'package:maintenance/Sync/SyncModels/MNOJCD.dart';
 import 'package:maintenance/Sync/SyncModels/OECLO.dart';
@@ -41,10 +44,14 @@ import 'package:maintenance/Sync/SyncModels/OUSR.dart';
 import 'package:maintenance/Sync/SyncModels/PRITR1.dart';
 import 'package:maintenance/Sync/SyncModels/PROITR.dart';
 import 'package:maintenance/Sync/SyncModels/PROPDN.dart';
+import 'package:maintenance/Sync/SyncModels/PROPOR.dart';
 import 'package:maintenance/Sync/SyncModels/PROPRQ.dart';
 import 'package:maintenance/Sync/SyncModels/PRPDN1.dart';
 import 'package:maintenance/Sync/SyncModels/PRPDN2.dart';
 import 'package:maintenance/Sync/SyncModels/PRPDN3.dart';
+import 'package:maintenance/Sync/SyncModels/PRPOR1.dart';
+import 'package:maintenance/Sync/SyncModels/PRPOR2.dart';
+import 'package:maintenance/Sync/SyncModels/PRPOR3.dart';
 import 'package:maintenance/Sync/SyncModels/PRPRQ1.dart';
 import 'package:maintenance/Sync/SyncModels/SingleAPIs/Customer/Customer1.dart';
 import 'package:maintenance/Sync/SyncModels/SingleAPIs/Customer/Customer2.dart';
@@ -129,6 +136,9 @@ class _DataSyncState extends State<DataSync> {
     await insertMNJCD1ToServer(null);
     await insertMNJCD2ToServer(null);
     await insertMNJCD3ToServer(null);
+    await insertMNJCD5ToServer(null);
+    await insertMNJCD6ToServer(null);
+    await insertMNJCD7ToServer(null);
     // await insertMNJCD4ToServer(null);
 
     ///Goods Issue
@@ -140,6 +150,13 @@ class _DataSyncState extends State<DataSync> {
 
     await insertPROPRQToServer(null);
     await insertPRPRQ1ToServer(null);
+
+    ///Purchase order
+
+    await insertPROPORToServer(null);
+    await insertPRPOR1ToServer(null);
+    await insertPRPOR2ToServer(null);
+    await insertPRPOR3ToServer(null);
 
     setState(() {
       _currentStep = 2;
@@ -179,6 +196,9 @@ class _DataSyncState extends State<DataSync> {
     await updateMNJCD1OnServer(null);
     await updateMNJCD2OnServer(null);
     await updateMNJCD3OnServer(null);
+    await updateMNJCD5OnServer(null);
+    await updateMNJCD6OnServer(null);
+    await updateMNJCD7OnServer(null);
     // await updateMNJCD4OnServer(null);
     setState(() {
       _currentStep = 6;
@@ -193,6 +213,13 @@ class _DataSyncState extends State<DataSync> {
 
     await updatePROPRQOnServer(null);
     await updatePRPRQ1OnServer(null);
+
+    ///Purchase order
+
+    await updatePROPOROnServer(null);
+    await updatePRPOR1OnServer(null);
+    await updatePRPOR2OnServer(null);
+    await updatePRPOR3OnServer(null);
 
     setState(() {
       _currentStep = 7;
@@ -680,7 +707,9 @@ class _DataSyncState extends State<DataSync> {
   }
 }
 
-dataSyncBackground(BuildContext? context) async {}
+dataSyncBackground(BuildContext? context) async {
+  //todo: background sync
+}
 // dataSyncBackground(BuildContext? context) async {
 //   print("Syncing in background");
 //   setHeader();

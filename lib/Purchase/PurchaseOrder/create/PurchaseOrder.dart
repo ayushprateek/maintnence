@@ -162,6 +162,7 @@ class _JobCardState extends State<PurchaseOrder> {
             children: [
               GeneralData(),
               ItemDetails(),
+              //todo: add addresses
             ],
           ),
           floatingActionButton: FloatingActionButton(

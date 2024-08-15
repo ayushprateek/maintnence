@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 class SerialNoData extends StatefulWidget {
+  //todo:
   const SerialNoData({super.key});
 
   @override
