@@ -111,10 +111,13 @@ class _EditCheckListState extends State<EditCheckList> {
             //     onChanged: (val) {
             //       EditCheckList.itemCode = val;
             //     }),
-            getDisabledTextField(controller: _itemName, labelText: 'Item Name',
+            getDisabledTextField(
+              controller: _itemName,
+              labelText: 'Item Name',
               onChanged: (val) {
-                EditCheckList.itemName  = val;
-              },),
+                EditCheckList.itemName = val;
+              },
+            ),
             getTextField(
               controller: _consumptionQty,
               labelText: 'Consumption Qty',
@@ -179,18 +182,19 @@ class _EditCheckListState extends State<EditCheckList> {
             //     labelText: 'Supplier Code',
             //     ),
             getDisabledTextField(
-                controller: _supplierName, labelText: 'Supplier',
+                controller: _supplierName,
+                labelText: 'Supplier',
                 enableLookup: true,
                 onLookupPressed: () {
                   Get.to(
-                          () => SupplierLookup(onSelected: (OCRDModel ocrdModel) {
-                        setState(() {
-                          EditCheckList.supplierCode =
-                              _supplierCode.text = ocrdModel.Code;
-                          EditCheckList.supplierName =
-                              _supplierName.text = ocrdModel.Name ?? '';
-                        });
-                      }));
+                      () => SupplierLookup(onSelected: (OCRDModel ocrdModel) {
+                            setState(() {
+                              EditCheckList.supplierCode =
+                                  _supplierCode.text = ocrdModel.Code;
+                              EditCheckList.supplierName =
+                                  _supplierName.text = ocrdModel.Name ?? '';
+                            });
+                          }));
                 }),
             getTextField(
                 controller: _userRemarks,
@@ -214,38 +218,32 @@ class _EditCheckListState extends State<EditCheckList> {
             CheckboxListTile(
               controlAffinity: ListTileControlAffinity.leading,
               value: EditCheckList.fromStock,
-              onChanged: (bool ?val) {
+              onChanged: (bool? val) {
                 setState(() {
-                  EditCheckList.fromStock=val??!EditCheckList.fromStock;
+                  EditCheckList.fromStock = val ?? !EditCheckList.fromStock;
                 });
               },
-
               title: Text('From Stock'),
-
             ),
             CheckboxListTile(
               controlAffinity: ListTileControlAffinity.leading,
               value: EditCheckList.consumption,
-              onChanged: (bool ?val) {
+              onChanged: (bool? val) {
                 setState(() {
-                  EditCheckList.consumption=val??!EditCheckList.consumption;
+                  EditCheckList.consumption = val ?? !EditCheckList.consumption;
                 });
               },
-
               title: Text('Consumption'),
-
             ),
             CheckboxListTile(
               controlAffinity: ListTileControlAffinity.leading,
               value: EditCheckList.request,
-              onChanged: (bool ?val) {
+              onChanged: (bool? val) {
                 setState(() {
-                  EditCheckList.request=val??!EditCheckList.request;
+                  EditCheckList.request = val ?? !EditCheckList.request;
                 });
               },
-
               title: Text('Request'),
-
             ),
             Align(
               alignment: Alignment.centerRight,

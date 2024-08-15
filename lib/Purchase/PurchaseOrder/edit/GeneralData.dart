@@ -103,8 +103,8 @@ class GeneralData extends StatefulWidget {
         RefNo: refNo,
         DeptCode: deptCode,
         DeptName: deptName,
-        ContactPersonName:contactPersonName ,
-        ContactPersonId: int.tryParse(contactPersonId?.toString()??''),
+        ContactPersonName: contactPersonName,
+        ContactPersonId: int.tryParse(contactPersonId?.toString() ?? ''),
         IsPosted: isPosted,
         ApprovalStatus: approvalStatus ?? "Pending",
         DocStatus: docStatus,
@@ -250,23 +250,25 @@ class _GeneralDataState extends State<GeneralData> {
                   enableLookup: true,
                   onLookupPressed: () {
                     Get.to(() => OCRDLookup(onSelection:
-                        (OCRDModel ocrdModel, CRD1Model? crd1Model) {
-                      setState(() {
-                        GeneralData.supplierCode =
-                            _requestedCode.text = ocrdModel.Code;
+                            (OCRDModel ocrdModel, CRD1Model? crd1Model) {
+                          setState(() {
+                            GeneralData.supplierCode =
+                                _requestedCode.text = ocrdModel.Code;
 
-                        GeneralData.supplierName =
-                            _supplierName.text = ocrdModel.Name ?? '';
-                        GeneralData.mobileNo =
-                            _mobileNo.text = ocrdModel.MobileNo;
-                        if (crd1Model != null) {
-                          GeneralData.contactPersonName=_contactPersonName.text = "${crd1Model.FirstName} ${crd1Model.MiddleName} ${crd1Model.LastName}";
-                          GeneralData.contactPersonId=crd1Model.ID.toString();
-                        }
-                      });
-                    }));
+                            GeneralData.supplierName =
+                                _supplierName.text = ocrdModel.Name ?? '';
+                            GeneralData.mobileNo =
+                                _mobileNo.text = ocrdModel.MobileNo;
+                            if (crd1Model != null) {
+                              GeneralData.contactPersonName = _contactPersonName
+                                      .text =
+                                  "${crd1Model.FirstName} ${crd1Model.MiddleName} ${crd1Model.LastName}";
+                              GeneralData.contactPersonId =
+                                  crd1Model.ID.toString();
+                            }
+                          });
+                        }));
                   }),
-
               getDisabledTextField(
                   controller: _contactPersonName,
                   labelText: 'Person Name',

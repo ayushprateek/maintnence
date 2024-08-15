@@ -6,17 +6,18 @@ String dateFormat = 'dd-MM-yyyy';
 
 String getFormattedDate(DateTime? now) {
   if (now == null) {
-   return '';
+    return '';
   } else {
     DateFormat formatter = DateFormat(dateFormat);
     String formatted = formatter.format(now);
     return formatted;
   }
 }
+
 String formatTimeOfDay(TimeOfDay timeOfDay) {
   final now = DateTime.now();
   final dateTime =
-  DateTime(now.year, now.month, now.day, timeOfDay.hour, timeOfDay.minute);
+      DateTime(now.year, now.month, now.day, timeOfDay.hour, timeOfDay.minute);
   final formattedTime = DateFormat.jm().format(dateTime);
   return formattedTime;
 }
@@ -30,6 +31,7 @@ String getFormattedDateAndTime(DateTime? now) {
   String formatted = "";
   return formatted;
 }
+
 DateTime getDateAndTimeFromString(String? now) {
   if (now == null || now == '') {
     return DateTime.parse("1900-01-01");

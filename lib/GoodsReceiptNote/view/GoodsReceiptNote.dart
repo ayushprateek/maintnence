@@ -138,7 +138,9 @@ class _JobCardState extends State<ViewGoodsRecepitNote> {
                 preferredSize: Size.fromHeight(50.0),
               ),
               title: getHeadingText(
-                  text: "View Goods Receipt Note", color: headColor, fontSize: 20)),
+                  text: "View Goods Receipt Note",
+                  color: headColor,
+                  fontSize: 20)),
           body: TabBarView(
             children: [
               GeneralData(),

@@ -22,10 +22,6 @@ String googleAPiKey =
 String prefix = "http://103.146.242.248:6006/"; //DEVELOPMENT
 //http://103.146.242.248:6005/ DEVELOPMENT WEBSITE
 
-
-
-
-
 // String prefix = "http://103.191.130.12:7000/";//MANSA
 // http://103.191.130.12:7001/ MANSA WEBSITE
 
@@ -38,8 +34,8 @@ String credentials = '';
 const batchSize = 1000;
 
 Codec<String, String> stringToBase64 = utf8.fuse(base64);
-String secretKey='IDH3FUSuifhiu4HUIFhsgu98fjeiujfU5H8fuishf8h84hfuishgusheg';
-String encoded = stringToBase64.encode(credentials+secretKey);
+String secretKey = 'IDH3FUSuifhiu4HUIFhsgu98fjeiujfU5H8fuishf8h84hfuishgusheg';
+String encoded = stringToBase64.encode(credentials + secretKey);
 Map<String, String>? header = {
   'Authorization': 'Basic $encoded',
   "content-type": "application/json",
@@ -48,7 +44,7 @@ Map<String, String>? header = {
 
 setHeader() {
   credentials = getCredentials();
-  String encoded = stringToBase64.encode(credentials+secretKey);
+  String encoded = stringToBase64.encode(credentials + secretKey);
   header = {
     'Authorization': 'Basic $encoded',
     "content-type": "application/json",

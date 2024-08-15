@@ -67,36 +67,36 @@ class EditItems extends StatefulWidget {
 
 class _EditCheckListState extends State<EditItems> {
   final TextEditingController _truckNo =
-  TextEditingController(text: EditItems.truckNo);
+      TextEditingController(text: EditItems.truckNo);
   final TextEditingController _routeName =
-  TextEditingController(text: EditItems.routeName);
+      TextEditingController(text: EditItems.routeName);
   final TextEditingController _deptName =
-  TextEditingController(text: EditItems.deptName);
+      TextEditingController(text: EditItems.deptName);
   final TextEditingController _itemName =
-  TextEditingController(text: EditItems.itemName);
+      TextEditingController(text: EditItems.itemName);
   final TextEditingController _toWhs =
-  TextEditingController(text: EditItems.toWhsName);
+      TextEditingController(text: EditItems.toWhsName);
   final TextEditingController _consumptionQty =
-  TextEditingController(text: EditItems.consumptionQty);
+      TextEditingController(text: EditItems.consumptionQty);
   final TextEditingController _uomCode =
-  TextEditingController(text: EditItems.uomCode);
+      TextEditingController(text: EditItems.uomCode);
   final TextEditingController _uomName =
-  TextEditingController(text: EditItems.uomName);
+      TextEditingController(text: EditItems.uomName);
   final TextEditingController _driverName =
-  TextEditingController(text: EditItems.driverName);
+      TextEditingController(text: EditItems.driverName);
   final TextEditingController _price =
-  TextEditingController(text: EditItems.price);
+      TextEditingController(text: EditItems.price);
   final TextEditingController _mtv = TextEditingController(text: EditItems.mtv);
   final TextEditingController _taxCode =
-  TextEditingController(text: EditItems.taxCode);
+      TextEditingController(text: EditItems.taxCode);
   final TextEditingController _taxRate =
-  TextEditingController(text: EditItems.taxRate);
+      TextEditingController(text: EditItems.taxRate);
   final TextEditingController _lineDiscount =
-  TextEditingController(text: EditItems.lineDiscount);
+      TextEditingController(text: EditItems.lineDiscount);
   final TextEditingController _lineTotal =
-  TextEditingController(text: EditItems.lineTotal);
+      TextEditingController(text: EditItems.lineTotal);
   final TextEditingController _tripTransId =
-  TextEditingController(text: EditItems.tripTransId);
+      TextEditingController(text: EditItems.tripTransId);
   bool isSet = false;
 
   @override
@@ -175,7 +175,7 @@ class _EditCheckListState extends State<EditItems> {
                           enableLookup: true,
                           onLookupPressed: () {
                             Get.to(() => TripExecutionLookup(
-                                onSelection: (OPOTRE opotre) {
+                                    onSelection: (OPOTRE opotre) {
                                   setState(() {
                                     _tripTransId.text = opotre.TransId ?? '';
                                   });
@@ -194,14 +194,14 @@ class _EditCheckListState extends State<EditItems> {
                           enableLookup: true,
                           onLookupPressed: () {
                             Get.to(
-                                    () => WarehouseLookup(onSelection: (OWHS owhs) {
-                                  setState(() {
-                                    EditItems.toWhsName =
-                                        _toWhs.text = owhs.WhsName ?? '';
-                                    EditItems.toWhsCode =
-                                        owhs.WhsCode ?? '';
-                                  });
-                                }));
+                                () => WarehouseLookup(onSelection: (OWHS owhs) {
+                                      setState(() {
+                                        EditItems.toWhsName =
+                                            _toWhs.text = owhs.WhsName ?? '';
+                                        EditItems.toWhsCode =
+                                            owhs.WhsCode ?? '';
+                                      });
+                                    }));
                           }),
                       getTextField(
                         controller: _consumptionQty,
@@ -260,13 +260,13 @@ class _EditCheckListState extends State<EditItems> {
                           enableLookup: true,
                           onLookupPressed: () {
                             Get.to(
-                                    () => RouteLookup(onSelected: (ROUTModel rout) {
-                                  setState(() {
-                                    EditItems.routeCode = rout.RouteCode;
-                                    EditItems.routeName = _routeName.text =
-                                        rout.RouteName ?? '';
-                                  });
-                                }));
+                                () => RouteLookup(onSelected: (ROUTModel rout) {
+                                      setState(() {
+                                        EditItems.routeCode = rout.RouteCode;
+                                        EditItems.routeName = _routeName.text =
+                                            rout.RouteName ?? '';
+                                      });
+                                    }));
                           }),
                       getDisabledTextField(
                           controller: _deptName,
@@ -304,14 +304,14 @@ class _EditCheckListState extends State<EditItems> {
                           enableLookup: true,
                           onLookupPressed: () {
                             Get.to(
-                                    () => TaxLookup(onSelected: (OTAXModel oudp) {
-                                  setState(() {
-                                    EditItems.taxCode =
-                                        _taxCode.text = oudp.TaxCode;
-                                    EditItems.taxRate = _taxRate.text =
-                                        oudp.Rate.toStringAsFixed(2);
-                                  });
-                                }));
+                                () => TaxLookup(onSelected: (OTAXModel oudp) {
+                                      setState(() {
+                                        EditItems.taxCode =
+                                            _taxCode.text = oudp.TaxCode;
+                                        EditItems.taxRate = _taxRate.text =
+                                            oudp.Rate.toStringAsFixed(2);
+                                      });
+                                    }));
                           }),
                       getDisabledTextField(
                         controller: _taxRate,
@@ -356,7 +356,7 @@ class _EditCheckListState extends State<EditItems> {
                                     getErrorSnackBar(
                                         "Consumption Quantity must be numeric");
                                   } else if (double.parse(
-                                      _consumptionQty.text) <=
+                                          _consumptionQty.text) <=
                                       0.0) {
                                     getErrorSnackBar(
                                         "Consumption Quantity can not be less that or equal to 0");
@@ -365,8 +365,8 @@ class _EditCheckListState extends State<EditItems> {
                                   } else {
                                     if (EditItems.isUpdating) {
                                       for (int i = 0;
-                                      i < ItemDetails.items.length;
-                                      i++)
+                                          i < ItemDetails.items.length;
+                                          i++)
                                         if (EditItems.itemCode ==
                                             ItemDetails.items[i].ItemCode) {
                                           IMGDI1 mncld1 = IMGDI1(
@@ -375,11 +375,11 @@ class _EditCheckListState extends State<EditItems> {
                                             TransId: EditItems.transId,
                                             RowId: ItemDetails.items[i].RowId,
                                             ItemCode:
-                                            EditItems.itemCode.toString() ??
-                                                '',
+                                                EditItems.itemCode.toString() ??
+                                                    '',
                                             ItemName:
-                                            EditItems.itemName.toString() ??
-                                                '',
+                                                EditItems.itemName.toString() ??
+                                                    '',
                                             UOM: EditItems.uomCode.toString() ??
                                                 '',
                                             DeptCode: EditItems.deptCode,
@@ -423,9 +423,9 @@ class _EditCheckListState extends State<EditItems> {
                                         TransId: EditItems.transId,
                                         RowId: ItemDetails.items.length,
                                         ItemCode:
-                                        EditItems.itemCode.toString() ?? '',
+                                            EditItems.itemCode.toString() ?? '',
                                         ItemName:
-                                        EditItems.itemName.toString() ?? '',
+                                            EditItems.itemName.toString() ?? '',
                                         UOM: EditItems.uomCode.toString() ?? '',
                                         DeptCode: EditItems.deptCode,
                                         DeptName: EditItems.deptName,

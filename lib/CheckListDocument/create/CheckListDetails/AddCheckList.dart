@@ -11,7 +11,6 @@ import 'package:maintenance/Component/GetTextField.dart';
 import 'package:maintenance/Component/SnackbarComponent.dart';
 import 'package:maintenance/Sync/SyncModels/OITM.dart';
 
-
 class AddCheckList extends StatefulWidget {
   @override
   _AddCheckListState createState() => _AddCheckListState();
@@ -67,10 +66,8 @@ class _AddCheckListState extends State<AddCheckList> {
                       flex: 3,
                       child: getTextFieldWithoutLookup(
                         controller: _query,
-                        onChanged: (val){
-                          setState(() {
-
-                          });
+                        onChanged: (val) {
+                          setState(() {});
                         },
                         labelText: 'Search',
                         suffixIcon: IconButton(
@@ -129,10 +126,8 @@ class _AddCheckListState extends State<AddCheckList> {
             ),
             FutureBuilder(
                 future: retrieveOITMForSearch(
-                    query: _query.text,
-                    limit: _currentMax),
-                builder: (context,
-                    AsyncSnapshot<List<OITMModel>> snapshot) {
+                    query: _query.text, limit: _currentMax),
+                builder: (context, AsyncSnapshot<List<OITMModel>> snapshot) {
                   if (!snapshot.hasData) return Container();
                   if (snapshot.data?.isEmpty == true) {
                     return AlertDialog(
@@ -230,12 +225,14 @@ class _AddCheckListState extends State<AddCheckList> {
                                             " is already added");
                                   } else {
                                     ClearCheckListDoc.clearEditCheckList();
-                                    EditCheckList.transId=GeneralData.transId;
-                                    EditCheckList.itemCode=snapshot.data![index].ItemCode;
-                                    EditCheckList.itemName=snapshot.data![index].ItemName;
-                                    EditCheckList.requiredDate=getFormattedDate(DateTime.now());
-                                    Get.to(()=>EditCheckList());
-
+                                    EditCheckList.transId = GeneralData.transId;
+                                    EditCheckList.itemCode =
+                                        snapshot.data![index].ItemCode;
+                                    EditCheckList.itemName =
+                                        snapshot.data![index].ItemName;
+                                    EditCheckList.requiredDate =
+                                        getFormattedDate(DateTime.now());
+                                    Get.to(() => EditCheckList());
                                   }
                                 },
                                 child: Container(

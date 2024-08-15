@@ -21,7 +21,9 @@ class _ItemDetailsState extends State<ItemDetails> {
     return SingleChildScrollView(
       child: Column(
         children: [
-          const SizedBox(height: 25,),
+          const SizedBox(
+            height: 25,
+          ),
           Padding(
             padding: const EdgeInsets.only(left: 8.0, right: 8, bottom: 8),
             child: Container(
@@ -64,21 +66,16 @@ class _ItemDetailsState extends State<ItemDetails> {
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Row(
-                              crossAxisAlignment:
-                                  CrossAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Expanded(
                                   flex: 8,
                                   child: Column(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
-
                                       Padding(
                                         padding: const EdgeInsets.only(
-                                            left: 8.0,
-                                            right: 8.0,
-                                            top: 4.0),
+                                            left: 8.0, right: 8.0, top: 4.0),
                                         child: Align(
                                           alignment: Alignment.topLeft,
                                           child: Text.rich(
@@ -87,7 +84,8 @@ class _ItemDetailsState extends State<ItemDetails> {
                                                 getPoppinsTextSpanHeading(
                                                     text: 'Item'),
                                                 getPoppinsTextSpanDetails(
-                                                    text: mnjcd1.ItemCode??''),
+                                                    text:
+                                                        mnjcd1.ItemCode ?? ''),
                                               ],
                                             ),
                                           ),
@@ -95,9 +93,7 @@ class _ItemDetailsState extends State<ItemDetails> {
                                       ),
                                       Padding(
                                         padding: const EdgeInsets.only(
-                                            left: 8.0,
-                                            right: 8.0,
-                                            top: 4.0),
+                                            left: 8.0, right: 8.0, top: 4.0),
                                         child: Align(
                                           alignment: Alignment.topLeft,
                                           child: Text.rich(
@@ -106,7 +102,8 @@ class _ItemDetailsState extends State<ItemDetails> {
                                                 getPoppinsTextSpanHeading(
                                                     text: 'Quantity'),
                                                 getPoppinsTextSpanDetails(
-                                                    text: mnjcd1.Quantity?.toStringAsFixed(2)),
+                                                    text: mnjcd1.Quantity
+                                                        ?.toStringAsFixed(2)),
                                               ],
                                             ),
                                           ),
@@ -114,9 +111,7 @@ class _ItemDetailsState extends State<ItemDetails> {
                                       ),
                                       Padding(
                                         padding: const EdgeInsets.only(
-                                            left: 8.0,
-                                            right: 8.0,
-                                            top: 4.0),
+                                            left: 8.0, right: 8.0, top: 4.0),
                                         child: Align(
                                           alignment: Alignment.topLeft,
                                           child: Text.rich(
@@ -125,7 +120,7 @@ class _ItemDetailsState extends State<ItemDetails> {
                                                 getPoppinsTextSpanHeading(
                                                     text: 'UOM'),
                                                 getPoppinsTextSpanDetails(
-                                                    text: mnjcd1.UOM??''),
+                                                    text: mnjcd1.UOM ?? ''),
                                               ],
                                             ),
                                           ),
@@ -142,15 +137,13 @@ class _ItemDetailsState extends State<ItemDetails> {
                                             children: [
                                               Checkbox(
                                                 value: mnjcd1.IsFromStock,
-                                                onChanged: (bool? value) {
-                                                 
-                                                },
+                                                onChanged: (bool? value) {},
                                               ),
                                               Expanded(
                                                   child: getPoppinsText(
                                                       text: 'From Stock',
-                                                      textAlign: TextAlign
-                                                          .start)),
+                                                      textAlign:
+                                                          TextAlign.start)),
                                             ],
                                           ),
                                         ),
@@ -162,20 +155,17 @@ class _ItemDetailsState extends State<ItemDetails> {
                                           height: 20,
                                           child: Row(
                                             mainAxisAlignment:
-                                            MainAxisAlignment.start,
+                                                MainAxisAlignment.start,
                                             children: [
                                               Checkbox(
-                                                value:
-                                                mnjcd1.IsConsumption,
-                                                onChanged: (bool? value) {
-
-                                                },
+                                                value: mnjcd1.IsConsumption,
+                                                onChanged: (bool? value) {},
                                               ),
                                               Expanded(
                                                   child: getPoppinsText(
                                                       text: 'Consumption',
-                                                      textAlign: TextAlign
-                                                          .start)),
+                                                      textAlign:
+                                                          TextAlign.start)),
                                             ],
                                           ),
                                         ),
@@ -186,10 +176,8 @@ class _ItemDetailsState extends State<ItemDetails> {
                                 Expanded(
                                   flex: 8,
                                   child: Column(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
-
                                       Padding(
                                         padding: const EdgeInsets.only(
                                             top: 4.0, bottom: 4),
@@ -201,35 +189,30 @@ class _ItemDetailsState extends State<ItemDetails> {
                                             children: [
                                               Checkbox(
                                                 value: mnjcd1.IsRequest,
-                                                onChanged: (bool? value) {
-
-                                                },
+                                                onChanged: (bool? value) {},
                                               ),
                                               Expanded(
                                                   child: getPoppinsText(
                                                       text: 'Request',
-                                                      textAlign: TextAlign
-                                                          .start)),
+                                                      textAlign:
+                                                          TextAlign.start)),
                                             ],
                                           ),
                                         ),
                                       ),
-
                                       Padding(
                                         padding: const EdgeInsets.only(
-                                            left: 8.0,
-                                            right: 8.0,
-                                            top: 4.0),
+                                            left: 8.0, right: 8.0, top: 4.0),
                                         child: Align(
                                           alignment: Alignment.topLeft,
                                           child: Text.rich(
                                             TextSpan(
                                               children: [
                                                 getPoppinsTextSpanHeading(
-                                                    text:
-                                                        'Supplier'),
+                                                    text: 'Supplier'),
                                                 getPoppinsTextSpanDetails(
-                                                    text: mnjcd1.SupplierName??''),
+                                                    text: mnjcd1.SupplierName ??
+                                                        ''),
                                               ],
                                             ),
                                           ),
@@ -237,19 +220,17 @@ class _ItemDetailsState extends State<ItemDetails> {
                                       ),
                                       Padding(
                                         padding: const EdgeInsets.only(
-                                            left: 8.0,
-                                            right: 8.0,
-                                            top: 4.0),
+                                            left: 8.0, right: 8.0, top: 4.0),
                                         child: Align(
                                           alignment: Alignment.topLeft,
                                           child: Text.rich(
                                             TextSpan(
                                               children: [
                                                 getPoppinsTextSpanHeading(
-                                                    text:
-                                                        'Required Date'),
+                                                    text: 'Required Date'),
                                                 getPoppinsTextSpanDetails(
-                                                    text: getFormattedDate(mnjcd1.RequestDate)),
+                                                    text: getFormattedDate(
+                                                        mnjcd1.RequestDate)),
                                               ],
                                             ),
                                           ),

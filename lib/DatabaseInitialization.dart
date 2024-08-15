@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:maintenance/Component/LogFileFunctions.dart';
 import 'package:maintenance/Database/DatabaseHandler.dart';
 import 'package:maintenance/main.dart';
@@ -12,15 +11,15 @@ import 'package:xml/xml.dart' as xml;
 Future<Database> initializeDB(BuildContext? context) async {
   String path = await getDatabasesPath();
 
-
   String? str = localStorage?.getString('tableScript');
   Map m = jsonDecode(str ?? '');
   // print(m);
   // String xmlString = m['MaintenanceTableCreationScript'];
   String maintenanceCommonTableScript = m['MaintenanceCommonTableScript'];
   String maintenanceMasterTableScript = m['MaintenanceMasterTableScript'];
-  String maintenanceTransactionTableCreationScript = m['MaintenanceTransactionTableCreationScript'];
-  String xmlString='''
+  String maintenanceTransactionTableCreationScript =
+      m['MaintenanceTransactionTableCreationScript'];
+  String xmlString = '''
       <data>
       $maintenanceCommonTableScript
       $maintenanceMasterTableScript
@@ -53,7 +52,9 @@ Future<Database> initializeDB(BuildContext? context) async {
               .execute(e.findElements("create_statement").first.innerText);
         } catch (e) {
           writeToLogFile(
-              text: e.toString(), fileName: StackTrace.current.toString(), lineNo: 141);
+              text: e.toString(),
+              fileName: StackTrace.current.toString(),
+              lineNo: 141);
           print(e.toString());
         }
       }).toList();

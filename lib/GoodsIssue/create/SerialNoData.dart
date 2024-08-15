@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 class SerialNoData extends StatefulWidget {
   //todo:
   const SerialNoData({super.key});
@@ -13,7 +14,9 @@ class _SerialNoDataState extends State<SerialNoData> {
     return SingleChildScrollView(
       child: Column(
         children: [
-          const SizedBox(height: 265,)
+          const SizedBox(
+            height: 265,
+          )
         ],
       ),
     );

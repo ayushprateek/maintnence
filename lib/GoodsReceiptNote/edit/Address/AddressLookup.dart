@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:maintenance/Component/AddressModel.dart';
 import 'package:maintenance/Component/CustomColor.dart';
 import 'package:maintenance/Component/CustomFont.dart';
-import 'package:maintenance/Database/DatabaseHandler.dart';
 import 'package:maintenance/DatabaseInitialization.dart';
 import 'package:maintenance/GoodsReceiptNote/edit/Address/BillingAddress.dart';
 import 'package:maintenance/GoodsReceiptNote/edit/Address/ShippingAddress.dart';
+import 'package:maintenance/GoodsReceiptNote/edit/GeneralData.dart';
 import 'package:maintenance/GoodsReceiptNote/edit/GoodsReceiptNote.dart';
 import 'package:sqflite/sqlite_api.dart';
-import 'package:maintenance/GoodsReceiptNote/edit/GeneralData.dart';
+
 class AddressLookup extends StatefulWidget {
   bool shippingAddress = false;
 
@@ -23,15 +23,15 @@ class AddressLookup extends StatefulWidget {
 class _AddressLookupState extends State<AddressLookup> {
   Future<List<AddressModel>> retrieveCRD2(BuildContext context) async {
     final Database db = await initializeDB(context);
-    final List<Map<String, Object?>> queryResult = await db.query('CRD2',
-        where: "Code = ? ", whereArgs: [GeneralData.cardCode]);
+    final List<Map<String, Object?>> queryResult = await db
+        .query('CRD2', where: "Code = ? ", whereArgs: [GeneralData.cardCode]);
     return queryResult.map((e) => AddressModel.fromMap(e)).toList();
   }
 
   Future<List<AddressModel>> retrieveCRD3(BuildContext context) async {
     final Database db = await initializeDB(context);
-    final List<Map<String, Object?>> queryResult = await db.query('CRD3',
-        where: "Code = ? ", whereArgs: [GeneralData.cardCode]);
+    final List<Map<String, Object?>> queryResult = await db
+        .query('CRD3', where: "Code = ? ", whereArgs: [GeneralData.cardCode]);
     return queryResult.map((e) => AddressModel.fromMap(e)).toList();
   }
 

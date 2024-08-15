@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 class BatchNoData extends StatefulWidget {
   //todo:
   const BatchNoData({super.key});
@@ -13,7 +14,9 @@ class _BatchNoDataState extends State<BatchNoData> {
     return SingleChildScrollView(
       child: Column(
         children: [
-          const SizedBox(height: 265,)
+          const SizedBox(
+            height: 265,
+          )
         ],
       ),
     );

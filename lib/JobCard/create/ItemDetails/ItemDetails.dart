@@ -52,7 +52,7 @@ class _ItemDetailsState extends State<ItemDetails> {
                   // } else
                   //   Navigator.push(context,
                   //       MaterialPageRoute(builder: ((context) => AddItems())));
-                  Get.to(()=>AddItem());
+                  Get.to(() => AddItem());
                 },
               ),
             ),
@@ -83,30 +83,32 @@ class _ItemDetailsState extends State<ItemDetails> {
                         return Stack(
                           fit: StackFit.loose,
                           clipBehavior: Clip.none,
-
                           children: [
                             InkWell(
-                              onDoubleTap: () async{
+                              onDoubleTap: () async {
                                 ClearJobCardDoc.clearEditItems();
-                                List<OUOMModel> uomList=await retrieveOUOMById(null, 'UomCode = ?', [mnjcd1.UOM]);
-                                if(uomList.isNotEmpty)
-                                  {
-                                    EditJobCardItem.uomName=uomList[0].UomName;
-                                  }
+                                List<OUOMModel> uomList =
+                                    await retrieveOUOMById(
+                                        null, 'UomCode = ?', [mnjcd1.UOM]);
+                                if (uomList.isNotEmpty) {
+                                  EditJobCardItem.uomName = uomList[0].UomName;
+                                }
 
-                                EditJobCardItem.transId =
-                                    GeneralData.transId;
-                                EditJobCardItem.itemCode =
-                                    mnjcd1.ItemCode;
-                                EditJobCardItem.itemName =
-                                    mnjcd1.ItemName;
-                                EditJobCardItem.requiredDate = getFormattedDate(mnjcd1.RequestDate);
-                                EditJobCardItem.quantity = mnjcd1.Quantity?.toStringAsFixed(2);
+                                EditJobCardItem.transId = GeneralData.transId;
+                                EditJobCardItem.itemCode = mnjcd1.ItemCode;
+                                EditJobCardItem.itemName = mnjcd1.ItemName;
+                                EditJobCardItem.requiredDate =
+                                    getFormattedDate(mnjcd1.RequestDate);
+                                EditJobCardItem.quantity =
+                                    mnjcd1.Quantity?.toStringAsFixed(2);
                                 EditJobCardItem.uomCode = mnjcd1.UOM;
-                                EditJobCardItem.supplierCode = mnjcd1.SupplierCode;
-                                EditJobCardItem.supplierName = mnjcd1.SupplierName;
+                                EditJobCardItem.supplierCode =
+                                    mnjcd1.SupplierCode;
+                                EditJobCardItem.supplierName =
+                                    mnjcd1.SupplierName;
                                 EditJobCardItem.fromStock = mnjcd1.IsFromStock;
-                                EditJobCardItem.consumption = mnjcd1.IsConsumption;
+                                EditJobCardItem.consumption =
+                                    mnjcd1.IsConsumption;
                                 EditJobCardItem.request = mnjcd1.IsRequest;
                                 EditJobCardItem.isUpdating = true;
                                 Get.to(() => EditJobCardItem());
@@ -139,7 +141,6 @@ class _ItemDetailsState extends State<ItemDetails> {
                                           mainAxisAlignment:
                                               MainAxisAlignment.start,
                                           children: [
-
                                             Padding(
                                               padding: const EdgeInsets.only(
                                                   left: 8.0,
@@ -153,7 +154,9 @@ class _ItemDetailsState extends State<ItemDetails> {
                                                       getPoppinsTextSpanHeading(
                                                           text: 'Item'),
                                                       getPoppinsTextSpanDetails(
-                                                          text: mnjcd1.ItemCode??''),
+                                                          text:
+                                                              mnjcd1.ItemCode ??
+                                                                  ''),
                                                     ],
                                                   ),
                                                 ),
@@ -172,7 +175,9 @@ class _ItemDetailsState extends State<ItemDetails> {
                                                       getPoppinsTextSpanHeading(
                                                           text: 'Quantity'),
                                                       getPoppinsTextSpanDetails(
-                                                          text: mnjcd1.Quantity?.toStringAsFixed(2)),
+                                                          text: mnjcd1.Quantity
+                                                              ?.toStringAsFixed(
+                                                                  2)),
                                                     ],
                                                   ),
                                                 ),
@@ -191,7 +196,8 @@ class _ItemDetailsState extends State<ItemDetails> {
                                                       getPoppinsTextSpanHeading(
                                                           text: 'UOM'),
                                                       getPoppinsTextSpanDetails(
-                                                          text: mnjcd1.UOM??''),
+                                                          text:
+                                                              mnjcd1.UOM ?? ''),
                                                     ],
                                                   ),
                                                 ),
@@ -232,16 +238,16 @@ class _ItemDetailsState extends State<ItemDetails> {
                                                 height: 20,
                                                 child: Row(
                                                   mainAxisAlignment:
-                                                  MainAxisAlignment.start,
+                                                      MainAxisAlignment.start,
                                                   children: [
                                                     Checkbox(
                                                       value:
-                                                      mnjcd1.IsConsumption,
+                                                          mnjcd1.IsConsumption,
                                                       onChanged: (bool? value) {
                                                         setState(() {
                                                           mnjcd1.IsConsumption =
-                                                          !mnjcd1
-                                                              .IsConsumption;
+                                                              !mnjcd1
+                                                                  .IsConsumption;
                                                         });
                                                       },
                                                     ),
@@ -263,7 +269,6 @@ class _ItemDetailsState extends State<ItemDetails> {
                                           mainAxisAlignment:
                                               MainAxisAlignment.start,
                                           children: [
-
                                             Padding(
                                               padding: const EdgeInsets.only(
                                                   top: 4.0, bottom: 4),
@@ -291,7 +296,6 @@ class _ItemDetailsState extends State<ItemDetails> {
                                                 ),
                                               ),
                                             ),
-
                                             Padding(
                                               padding: const EdgeInsets.only(
                                                   left: 8.0,
@@ -303,10 +307,11 @@ class _ItemDetailsState extends State<ItemDetails> {
                                                   TextSpan(
                                                     children: [
                                                       getPoppinsTextSpanHeading(
-                                                          text:
-                                                              'Supplier'),
+                                                          text: 'Supplier'),
                                                       getPoppinsTextSpanDetails(
-                                                          text: mnjcd1.SupplierName??''),
+                                                          text: mnjcd1
+                                                                  .SupplierName ??
+                                                              ''),
                                                     ],
                                                   ),
                                                 ),
@@ -326,7 +331,9 @@ class _ItemDetailsState extends State<ItemDetails> {
                                                           text:
                                                               'Required Date'),
                                                       getPoppinsTextSpanDetails(
-                                                          text: getFormattedDate(mnjcd1.RequestDate)),
+                                                          text: getFormattedDate(
+                                                              mnjcd1
+                                                                  .RequestDate)),
                                                     ],
                                                   ),
                                                 ),
@@ -347,54 +354,67 @@ class _ItemDetailsState extends State<ItemDetails> {
                                 child: IconButton(
                                     onPressed: () async {
                                       await showDialog(
-                                      barrierDismissible: false,
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return AlertDialog(
-                                          content: Container(
-                                            height: MediaQuery.of(context).size.height / 20,
-                                            width: MediaQuery.of(context).size.width / 1.5,
-                                            child: Text(
-                                              "Are you sure you want to delete this row?",
-                                              style: TextStyle(
-                                                  color: Colors.black, fontWeight: FontWeight.bold),
-                                            ),
-                                          ),
-                                          actions: [
-                                            MaterialButton(
-                                              // OPTIONAL BUTTON
-                                              shape: RoundedRectangleBorder(
-                                                borderRadius: BorderRadius.circular(40),
-                                              ),
-                                              color: barColor,
+                                        barrierDismissible: false,
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return AlertDialog(
+                                            content: Container(
+                                              height: MediaQuery.of(context)
+                                                      .size
+                                                      .height /
+                                                  20,
+                                              width: MediaQuery.of(context)
+                                                      .size
+                                                      .width /
+                                                  1.5,
                                               child: Text(
-                                                'No',
-                                                style: TextStyle(color: Colors.white),
+                                                "Are you sure you want to delete this row?",
+                                                style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontWeight:
+                                                        FontWeight.bold),
                                               ),
-                                              onPressed: () {
-                                                Navigator.pop(context);
-                                              },
                                             ),
-                                            MaterialButton(
-                                              // OPTIONAL BUTTON
-                                              shape: RoundedRectangleBorder(
-                                                borderRadius: BorderRadius.circular(40),
+                                            actions: [
+                                              MaterialButton(
+                                                // OPTIONAL BUTTON
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(40),
+                                                ),
+                                                color: barColor,
+                                                child: Text(
+                                                  'No',
+                                                  style: TextStyle(
+                                                      color: Colors.white),
+                                                ),
+                                                onPressed: () {
+                                                  Navigator.pop(context);
+                                                },
                                               ),
-                                              color: Colors.red,
-                                              child: Text(
-                                                'Yes',
-                                                style: TextStyle(color: Colors.white),
+                                              MaterialButton(
+                                                // OPTIONAL BUTTON
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(40),
+                                                ),
+                                                color: Colors.red,
+                                                child: Text(
+                                                  'Yes',
+                                                  style: TextStyle(
+                                                      color: Colors.white),
+                                                ),
+                                                onPressed: () async {
+                                                  ItemDetails.items
+                                                      .removeAt(index);
+                                                  Navigator.pop(context);
+                                                },
                                               ),
-                                              onPressed: () async {
-                                                ItemDetails.items.removeAt(index);
-                                                Navigator.pop(context);
-                                              },
-                                            ),
-                                          ],
-                                        );
-                                      },
-                                      ).then((value){
-                                        setState((){});
+                                            ],
+                                          );
+                                        },
+                                      ).then((value) {
+                                        setState(() {});
                                       });
                                     },
                                     icon: Icon(

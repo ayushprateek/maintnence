@@ -2,17 +2,11 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:maintenance/CheckListDocument/view/GeneralData.dart';
-import 'package:maintenance/Component/AnimatedDialogBox.dart';
 import 'package:maintenance/Component/AppConfig.dart';
 import 'package:maintenance/Component/CustomColor.dart';
 import 'package:maintenance/Component/CustomFont.dart';
-import 'package:maintenance/Component/CustomPickFile.dart';
 import 'package:maintenance/Component/CustomUrlLauncher.dart';
 import 'package:maintenance/Component/CustomViewImage.dart';
-import 'package:maintenance/Component/GetTextField.dart';
-import 'package:maintenance/Component/SnackbarComponent.dart';
 import 'package:maintenance/Sync/CustomURL.dart';
 import 'package:maintenance/Sync/SyncModels/MNCLD2.dart';
 
@@ -54,7 +48,6 @@ class _AttachmentsState extends State<Attachments> {
               const SizedBox(
                 height: 15,
               ),
-
               ListView.builder(
                   itemCount: Attachments.attachments.length,
                   shrinkWrap: true,

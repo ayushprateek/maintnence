@@ -140,10 +140,8 @@ class _BillingAddressState extends State<BillingAddress> {
                       onChanged: (value) {
                         BillingAddress.Addres = value;
                       },
-                      readOnly:false,
-                      onTap: () {
-
-                      },
+                      readOnly: false,
+                      onTap: () {},
                       decoration: new InputDecoration(
                         labelStyle: GoogleFonts.poppins(
                             fontSize: 14, fontWeight: FontWeight.w500),

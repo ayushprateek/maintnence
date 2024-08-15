@@ -383,8 +383,8 @@ class _SearchPurchaseOrderState extends State<SearchPurchaseOrder> {
                                             getPoppinsTextSpanHeading(
                                                 text: 'TransId'),
                                             getPoppinsTextSpanDetails(
-                                                text: snapshot.data![index]
-                                                        .TransId ??
+                                                text: snapshot
+                                                        .data![index].TransId ??
                                                     ''),
                                           ],
                                         ),
@@ -413,9 +413,8 @@ class _SearchPurchaseOrderState extends State<SearchPurchaseOrder> {
                                             getPoppinsTextSpanHeading(
                                                 text: 'Posting Date'),
                                             getPoppinsTextSpanDetails(
-                                                text: getFormattedDate(
-                                                    snapshot.data![index]
-                                                        .PostingDate)),
+                                                text: getFormattedDate(snapshot
+                                                    .data![index].PostingDate)),
                                           ],
                                         ),
                                       ),
@@ -425,9 +424,8 @@ class _SearchPurchaseOrderState extends State<SearchPurchaseOrder> {
                                             getPoppinsTextSpanHeading(
                                                 text: 'Valid Until'),
                                             getPoppinsTextSpanDetails(
-                                                text: getFormattedDate(
-                                                    snapshot.data![index]
-                                                        .ValidUntill)),
+                                                text: getFormattedDate(snapshot
+                                                    .data![index].ValidUntill)),
                                           ],
                                         ),
                                       ),
@@ -452,8 +450,8 @@ class _SearchPurchaseOrderState extends State<SearchPurchaseOrder> {
                                                                 .DocStatus ==
                                                             ""
                                                     ? ""
-                                                    : snapshot.data![index]
-                                                        .DocStatus
+                                                    : snapshot
+                                                        .data![index].DocStatus
                                                         .toString()),
                                           ],
                                         ),
@@ -486,28 +484,34 @@ class _SearchPurchaseOrderState extends State<SearchPurchaseOrder> {
                                 children: [
                                   Expanded(
                                       child: InkWell(
-                                        onTap: () {
-                                          navigateToPurchaseOrderDocument(
-                                              TransId: snapshot.data![index].TransId ?? '',isView: true);
-                                        },
-                                        child: getPoppinsText(
-                                            text: 'View',
-                                            color: barColor,
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 16),
-                                      )),
+                                    onTap: () {
+                                      navigateToPurchaseOrderDocument(
+                                          TransId:
+                                              snapshot.data![index].TransId ??
+                                                  '',
+                                          isView: true);
+                                    },
+                                    child: getPoppinsText(
+                                        text: 'View',
+                                        color: barColor,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 16),
+                                  )),
                                   Expanded(
                                       child: InkWell(
-                                        onTap: () {
-                                          navigateToPurchaseOrderDocument(
-                                              TransId: snapshot.data![index].TransId ?? '',isView: false);
-                                        },
-                                        child: getPoppinsText(
-                                            text: 'Edit',
-                                            color: Colors.red,
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 16),
-                                      )),
+                                    onTap: () {
+                                      navigateToPurchaseOrderDocument(
+                                          TransId:
+                                              snapshot.data![index].TransId ??
+                                                  '',
+                                          isView: false);
+                                    },
+                                    child: getPoppinsText(
+                                        text: 'Edit',
+                                        color: Colors.red,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 16),
+                                  )),
                                 ],
                               ),
                             ],

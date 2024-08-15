@@ -2,9 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:get/get.dart';
 import 'package:maintenance/Component/LogFileFunctions.dart';
-import 'package:maintenance/Component/NavogateToForm.dart';
 import 'package:maintenance/Sync/SyncModels/LITPL_OADM.dart';
 import 'package:maintenance/Sync/SyncModels/LITPL_OOAL.dart';
 import 'package:maintenance/main.dart';
@@ -19,7 +17,10 @@ void notificationTapBackground(NotificationResponse notificationResponse) {
     LITPL_OADM oadm = LITPL_OADM.fromJson(payload['LITPL_OADM']);
     //todo:
   } catch (e) {
-    writeToLogFile(text: e.toString(), fileName: StackTrace.current.toString(), lineNo: 141);
+    writeToLogFile(
+        text: e.toString(),
+        fileName: StackTrace.current.toString(),
+        lineNo: 141);
     print(e.toString());
   }
 }

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:maintenance/Component/LogFileFunctions.dart';
 import 'package:maintenance/DatabaseInitialization.dart';
 import 'package:sqflite/sqlite_api.dart';
@@ -70,7 +69,9 @@ class InsertItemModel {
       d = double.parse(str);
     } catch (e) {
       writeToLogFile(
-          text: e.toString(), fileName: StackTrace.current.toString(), lineNo: 141);
+          text: e.toString(),
+          fileName: StackTrace.current.toString(),
+          lineNo: 141);
     }
     return d;
   }

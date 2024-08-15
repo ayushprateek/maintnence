@@ -2,14 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:maintenance/Component/CustomColor.dart';
 import 'package:maintenance/Component/CustomFont.dart';
+import 'package:maintenance/GoodsReceiptNote/create/ItemDetails/AddItems.dart';
+import 'package:maintenance/GoodsReceiptNote/create/ItemDetails/EditItems.dart';
 import 'package:maintenance/Sync/SyncModels/OUOM.dart';
 import 'package:maintenance/Sync/SyncModels/OWHS.dart';
 import 'package:maintenance/Sync/SyncModels/PRPDN1.dart';
-import 'package:maintenance/GoodsReceiptNote/create/ItemDetails/AddItems.dart';
-import 'package:maintenance/GoodsReceiptNote/create/ItemDetails/EditItems.dart';
+
 class ItemDetails extends StatefulWidget {
   const ItemDetails({super.key});
-  static List<PRPDN1> items=[];
+
+  static List<PRPDN1> items = [];
 
   @override
   State<ItemDetails> createState() => _ItemDetailsState();
@@ -58,10 +60,10 @@ class _ItemDetailsState extends State<ItemDetails> {
               // decoration: ItemDetails.items.isNotEmpty
               decoration: true
                   ? BoxDecoration(
-                  border: Border.all(),
-                  borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(16),
-                      topRight: Radius.circular(16)))
+                      border: Border.all(),
+                      borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(16),
+                          topRight: Radius.circular(16)))
                   : null,
               child: SingleChildScrollView(
                 child: Column(
@@ -81,47 +83,54 @@ class _ItemDetailsState extends State<ItemDetails> {
                           clipBehavior: Clip.none,
                           children: [
                             InkWell(
-                              onDoubleTap: () async{
-                                EditItems.id=item.ID?.toString()??'';
-                                EditItems.truckNo=item.TruckNo;
-                                EditItems.tripTransId=item.TripTransId??'';
-                                EditItems.toWhsCode=item.WhsCode??'';
-                                EditItems.remarks=item.Remarks??'';
+                              onDoubleTap: () async {
+                                EditItems.id = item.ID?.toString() ?? '';
+                                EditItems.truckNo = item.TruckNo;
+                                EditItems.tripTransId = item.TripTransId ?? '';
+                                EditItems.toWhsCode = item.WhsCode ?? '';
+                                EditItems.remarks = item.Remarks ?? '';
                                 List<OWHS> wareHouseList =
                                     await retrieveOWHSById(
-                                    null, 'WhsCode = ?', [item.WhsCode]);
+                                        null, 'WhsCode = ?', [item.WhsCode]);
                                 if (wareHouseList.isNotEmpty) {
                                   EditItems.toWhsName =
                                       wareHouseList[0].WhsName;
                                 }
-                                EditItems.driverCode=item.DriverCode??'';
-                                EditItems.driverName=item.DriverName??'';
-                                EditItems.routeCode=item.RouteCode??'';
-                                EditItems.routeName=item.RouteName??'';
-                                EditItems.transId=item.TransId??'';
-                                EditItems.rowId=item.RowId?.toString()??'';
-                                EditItems.itemCode=item.ItemCode??'';
-                                EditItems.itemName=item.ItemName??'';
-                                EditItems.consumptionQty=item.Quantity?.toStringAsFixed(2)??'';
-                                EditItems.uomCode=item.UOM??'';
+                                EditItems.driverCode = item.DriverCode ?? '';
+                                EditItems.driverName = item.DriverName ?? '';
+                                EditItems.routeCode = item.RouteCode ?? '';
+                                EditItems.routeName = item.RouteName ?? '';
+                                EditItems.transId = item.TransId ?? '';
+                                EditItems.rowId = item.RowId?.toString() ?? '';
+                                EditItems.itemCode = item.ItemCode ?? '';
+                                EditItems.itemName = item.ItemName ?? '';
+                                EditItems.consumptionQty =
+                                    item.Quantity?.toStringAsFixed(2) ?? '';
+                                EditItems.uomCode = item.UOM ?? '';
                                 List<OUOMModel> uomList =
-                                await retrieveOUOMById(
-                                    null, 'UomCode = ?', [item.UOM]);
+                                    await retrieveOUOMById(
+                                        null, 'UomCode = ?', [item.UOM]);
                                 if (uomList.isNotEmpty) {
                                   EditItems.uomName = uomList[0].UomName;
                                 }
-                                EditItems.deptCode=item.DeptCode??'';
-                                EditItems.deptName=item.DeptName??'';
-                                EditItems.price=item.Price?.toStringAsFixed(2)??'';
-                                EditItems.mtv=item.MSP?.toStringAsFixed(2)??'';
-                                EditItems.taxCode=item.TaxCode??'';
-                                EditItems.taxRate=item.TaxRate?.toStringAsFixed(2)??'';
-                                EditItems.noOfPieces=item.NoOfPieces?.toStringAsFixed(2)??'';
-                                EditItems.lineDiscount=item.Discount?.toStringAsFixed(2)??'';
-                                EditItems.lineTotal=item.LineTotal?.toStringAsFixed(2)??'';
+                                EditItems.deptCode = item.DeptCode ?? '';
+                                EditItems.deptName = item.DeptName ?? '';
+                                EditItems.price =
+                                    item.Price?.toStringAsFixed(2) ?? '';
+                                EditItems.mtv =
+                                    item.MSP?.toStringAsFixed(2) ?? '';
+                                EditItems.taxCode = item.TaxCode ?? '';
+                                EditItems.taxRate =
+                                    item.TaxRate?.toStringAsFixed(2) ?? '';
+                                EditItems.noOfPieces =
+                                    item.NoOfPieces?.toStringAsFixed(2) ?? '';
+                                EditItems.lineDiscount =
+                                    item.Discount?.toStringAsFixed(2) ?? '';
+                                EditItems.lineTotal =
+                                    item.LineTotal?.toStringAsFixed(2) ?? '';
 
-                                EditItems.isUpdating =true;
-                                Get.to(()=>EditItems());
+                                EditItems.isUpdating = true;
+                                Get.to(() => EditItems());
                               },
                               child: Container(
                                 decoration: BoxDecoration(
@@ -143,13 +152,13 @@ class _ItemDetailsState extends State<ItemDetails> {
                                   padding: const EdgeInsets.all(8.0),
                                   child: Row(
                                     crossAxisAlignment:
-                                    CrossAxisAlignment.start,
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Expanded(
                                         flex: 8,
                                         child: Column(
                                           mainAxisAlignment:
-                                          MainAxisAlignment.start,
+                                              MainAxisAlignment.start,
                                           children: [
                                             Padding(
                                               padding: const EdgeInsets.only(
@@ -165,8 +174,8 @@ class _ItemDetailsState extends State<ItemDetails> {
                                                           text: 'TripTransId'),
                                                       getPoppinsTextSpanDetails(
                                                           text:
-                                                          item.TripTransId ??
-                                                              ''),
+                                                              item.TripTransId ??
+                                                                  ''),
                                                     ],
                                                   ),
                                                 ),
@@ -203,8 +212,7 @@ class _ItemDetailsState extends State<ItemDetails> {
                                                   TextSpan(
                                                     children: [
                                                       getPoppinsTextSpanHeading(
-                                                          text:
-                                                          'Warehouse'),
+                                                          text: 'Warehouse'),
                                                       getPoppinsTextSpanDetails(
                                                           text: item.WhsCode ??
                                                               ''),
@@ -227,8 +235,8 @@ class _ItemDetailsState extends State<ItemDetails> {
                                                           text: 'Quantity'),
                                                       getPoppinsTextSpanDetails(
                                                           text: item.Quantity
-                                                              ?.toStringAsFixed(
-                                                              2) ??
+                                                                  ?.toStringAsFixed(
+                                                                      2) ??
                                                               '0.00'),
                                                     ],
                                                   ),
@@ -288,8 +296,8 @@ class _ItemDetailsState extends State<ItemDetails> {
                                                           text: 'Driver'),
                                                       getPoppinsTextSpanDetails(
                                                           text:
-                                                          item.DriverName ??
-                                                              ''),
+                                                              item.DriverName ??
+                                                                  ''),
                                                     ],
                                                   ),
                                                 ),
@@ -308,8 +316,9 @@ class _ItemDetailsState extends State<ItemDetails> {
                                                       getPoppinsTextSpanHeading(
                                                           text: 'NoOfPieces'),
                                                       getPoppinsTextSpanDetails(
-                                                          text:
-                                                          item.NoOfPieces?.toStringAsFixed(2) ??
+                                                          text: item.NoOfPieces
+                                                                  ?.toStringAsFixed(
+                                                                      2) ??
                                                               ''),
                                                     ],
                                                   ),
@@ -323,9 +332,8 @@ class _ItemDetailsState extends State<ItemDetails> {
                                         flex: 8,
                                         child: Column(
                                           mainAxisAlignment:
-                                          MainAxisAlignment.start,
+                                              MainAxisAlignment.start,
                                           children: [
-
                                             Padding(
                                               padding: const EdgeInsets.only(
                                                   left: 8.0,
@@ -340,8 +348,8 @@ class _ItemDetailsState extends State<ItemDetails> {
                                                           text: 'Route'),
                                                       getPoppinsTextSpanDetails(
                                                           text:
-                                                          item.RouteName ??
-                                                              ''),
+                                                              item.RouteName ??
+                                                                  ''),
                                                     ],
                                                   ),
                                                 ),
@@ -381,8 +389,8 @@ class _ItemDetailsState extends State<ItemDetails> {
                                                           text: 'Info Price'),
                                                       getPoppinsTextSpanDetails(
                                                           text: item.Price
-                                                              ?.toStringAsFixed(
-                                                              2) ??
+                                                                  ?.toStringAsFixed(
+                                                                      2) ??
                                                               '0.00'),
                                                     ],
                                                   ),
@@ -423,8 +431,8 @@ class _ItemDetailsState extends State<ItemDetails> {
                                                           text: 'Tax Rate'),
                                                       getPoppinsTextSpanDetails(
                                                           text: item.TaxRate
-                                                              ?.toStringAsFixed(
-                                                              2) ??
+                                                                  ?.toStringAsFixed(
+                                                                      2) ??
                                                               '0.00'),
                                                     ],
                                                   ),
@@ -443,11 +451,11 @@ class _ItemDetailsState extends State<ItemDetails> {
                                                     children: [
                                                       getPoppinsTextSpanHeading(
                                                           text:
-                                                          'Line Discount'),
+                                                              'Line Discount'),
                                                       getPoppinsTextSpanDetails(
                                                           text: item.Discount
-                                                              ?.toStringAsFixed(
-                                                              2) ??
+                                                                  ?.toStringAsFixed(
+                                                                      2) ??
                                                               '0.00'),
                                                     ],
                                                   ),
@@ -468,8 +476,8 @@ class _ItemDetailsState extends State<ItemDetails> {
                                                           text: 'Line Total'),
                                                       getPoppinsTextSpanDetails(
                                                           text: item.LineTotal
-                                                              ?.toStringAsFixed(
-                                                              2) ??
+                                                                  ?.toStringAsFixed(
+                                                                      2) ??
                                                               ''),
                                                     ],
                                                   ),
@@ -516,12 +524,12 @@ class _ItemDetailsState extends State<ItemDetails> {
                                       return AlertDialog(
                                         content: Container(
                                           height: MediaQuery.of(context)
-                                              .size
-                                              .height /
+                                                  .size
+                                                  .height /
                                               20,
                                           width: MediaQuery.of(context)
-                                              .size
-                                              .width /
+                                                  .size
+                                                  .width /
                                               1.5,
                                           child: Text(
                                             "Are you sure you want to delete this row?",
@@ -535,7 +543,7 @@ class _ItemDetailsState extends State<ItemDetails> {
                                             // OPTIONAL BUTTON
                                             shape: RoundedRectangleBorder(
                                               borderRadius:
-                                              BorderRadius.circular(40),
+                                                  BorderRadius.circular(40),
                                             ),
                                             color: barColor,
                                             child: Text(
@@ -551,7 +559,7 @@ class _ItemDetailsState extends State<ItemDetails> {
                                             // OPTIONAL BUTTON
                                             shape: RoundedRectangleBorder(
                                               borderRadius:
-                                              BorderRadius.circular(40),
+                                                  BorderRadius.circular(40),
                                             ),
                                             color: Colors.red,
                                             child: Text(
@@ -567,10 +575,8 @@ class _ItemDetailsState extends State<ItemDetails> {
                                         ],
                                       );
                                     },
-                                  ).then((value){
-                                    setState(() {
-
-                                    });
+                                  ).then((value) {
+                                    setState(() {});
                                   });
                                 },
                                 child: Card(

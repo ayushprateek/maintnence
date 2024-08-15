@@ -172,7 +172,7 @@ class _TripExecutionLookupState extends State<TripExecutionLookup> {
                                   Expanded(
                                     child: Column(
                                       crossAxisAlignment:
-                                      CrossAxisAlignment.start,
+                                          CrossAxisAlignment.start,
                                       children: [
                                         Text.rich(
                                           TextSpan(
@@ -186,7 +186,6 @@ class _TripExecutionLookupState extends State<TripExecutionLookup> {
                                             ],
                                           ),
                                         ),
-                                        
                                         Text.rich(
                                           TextSpan(
                                             children: [
@@ -195,7 +194,7 @@ class _TripExecutionLookupState extends State<TripExecutionLookup> {
                                               getPoppinsTextSpanDetails(
                                                   text: displayNumberWithComma(
                                                       snapshot.data![index]
-                                                          .ApprovalStatus ??
+                                                              .ApprovalStatus ??
                                                           '')),
                                             ],
                                           ),
@@ -206,7 +205,7 @@ class _TripExecutionLookupState extends State<TripExecutionLookup> {
                                   Expanded(
                                     child: Column(
                                       crossAxisAlignment:
-                                      CrossAxisAlignment.start,
+                                          CrossAxisAlignment.start,
                                       children: [
                                         Text.rich(
                                           TextSpan(
@@ -215,8 +214,8 @@ class _TripExecutionLookupState extends State<TripExecutionLookup> {
                                                   text: 'WhsCode'),
                                               getPoppinsTextSpanDetails(
                                                   text: snapshot
-                                                      .data![index].WhsCode
-                                                      ?.toString() ??
+                                                          .data![index].WhsCode
+                                                          ?.toString() ??
                                                       ''),
                                             ],
                                           ),
@@ -228,7 +227,7 @@ class _TripExecutionLookupState extends State<TripExecutionLookup> {
                                                   text: 'PermanentTransId'),
                                               getPoppinsTextSpanDetails(
                                                   text: snapshot.data![index]
-                                                      .PermanentTransId ??
+                                                          .PermanentTransId ??
                                                       ""),
                                             ],
                                           ),
@@ -241,7 +240,7 @@ class _TripExecutionLookupState extends State<TripExecutionLookup> {
                                               getPoppinsTextSpanDetails(
                                                   text: displayNumberWithComma(
                                                       snapshot.data![index]
-                                                          .RouteName ??
+                                                              .RouteName ??
                                                           '')),
                                             ],
                                           ),

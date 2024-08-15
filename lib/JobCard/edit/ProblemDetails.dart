@@ -43,7 +43,8 @@ class _ProblemDetailsState extends State<ProblemDetails> {
                     ),
                     onPressed: () {
                       setState(() {
-                        ProblemDetails.list.add(MNJCD6(insertedIntoDatabase: false));
+                        ProblemDetails.list
+                            .add(MNJCD6(insertedIntoDatabase: false));
                       });
                     },
                   ),

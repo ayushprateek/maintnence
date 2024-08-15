@@ -77,7 +77,7 @@ Widget getNotSyncedDocumentIcon() {
                 snapshot.data?.toString() ?? '',
                 style: const TextStyle(color: Colors.white, fontSize: 10),
               ),
-              offset: Offset(6,-6),
+              offset: Offset(6, -6),
               child: Icon(Icons.sync, color: Colors.white),
               // child: getSVGIcon(path: bagIconPath),
             ));

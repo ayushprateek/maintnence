@@ -6,8 +6,6 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:maintenance/Sync/CustomURL.dart';
 
-
-
 PlacesModel placesModelFromJson(String str) =>
     PlacesModel.fromJson(json.decode(str));
 

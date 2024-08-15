@@ -42,8 +42,8 @@ class MNJCD7 {
         Remarks: json['Remarks'],
         CreateDate: DateTime.tryParse(json['CreateDate'].toString()),
         UpdateDate: DateTime.tryParse(json['UpdateDate'].toString()),
-    hasCreated: json['has_created'] == 1,
-    hasUpdated: json['has_updated'] == 1,
+        hasCreated: json['has_created'] == 1,
+        hasUpdated: json['has_updated'] == 1,
       );
 
   Map<String, dynamic> toJson() => {
@@ -54,8 +54,8 @@ class MNJCD7 {
         'Remarks': Remarks,
         'CreateDate': CreateDate?.toIso8601String(),
         'UpdateDate': UpdateDate?.toIso8601String(),
-    "has_created": hasCreated ? 1 : 0,
-    "has_updated": hasUpdated ? 1 : 0,
+        "has_created": hasCreated ? 1 : 0,
+        "has_updated": hasUpdated ? 1 : 0,
       };
 }
 

@@ -16,7 +16,7 @@ Widget getTextField(
     BuildContext? context,
     TextAlign? textAlign,
     FocusNode? focusNode,
-      Color? iconColor,
+    Color? iconColor,
     Function? onLookupPressed,
     bool enableLookup = false,
     TextDirection? textDirection,
@@ -99,7 +99,7 @@ Widget getTextField(
                   ? IconButton(
                       icon: Icon(
                         Icons.search,
-                        color: iconColor??barColor,
+                        color: iconColor ?? barColor,
                       ),
                       onPressed: onLookupPressed != null
                           ? onLookupPressed as Function()
@@ -110,7 +110,7 @@ Widget getTextField(
                   ? IconButton(
                       icon: Icon(
                         Icons.search,
-                        color:iconColor?? Colors.white,
+                        color: iconColor ?? Colors.white,
                       ),
                       onPressed: null,
                     )
@@ -178,13 +178,9 @@ Widget getTextFieldWithoutLookup(
               onEditingComplete: () {
                 // Your event handling code here
                 print('Editing complete');
-                if(onEditingComplete!=null)
-                  {
-                    onEditingComplete();
-
-                  }
-
-
+                if (onEditingComplete != null) {
+                  onEditingComplete();
+                }
               },
               obscureText: obscureText,
               inputFormatters: inputFormatters,
@@ -239,7 +235,7 @@ Widget getDateTextField(
     BuildContext? context,
     TextAlign? textAlign,
     FocusNode? focusNode,
-      Color? iconColor,
+    Color? iconColor,
     TextDirection? textDirection,
     Key? key,
     AutovalidateMode? autoValidateMode,
@@ -391,7 +387,7 @@ Widget getDateTextField(
                   ? IconButton(
                       icon: Icon(
                         Icons.search,
-                        color: iconColor??barColor,
+                        color: iconColor ?? barColor,
                       ),
                       onPressed: onLookupPressed != null
                           ? onLookupPressed as Function()
@@ -402,7 +398,7 @@ Widget getDateTextField(
                   ? IconButton(
                       icon: Icon(
                         Icons.search,
-                        color: iconColor??Colors.white,
+                        color: iconColor ?? Colors.white,
                       ),
                       onPressed: null,
                     )
@@ -441,8 +437,8 @@ Widget getDisabledTextField(
     int? maxLines,
     Function? onTap,
     int? maxLength,
-      Color? iconColor,
-      Color? labelColor,
+    Color? iconColor,
+    Color? labelColor,
     IconButton? iconButton,
     List<TextInputFormatter>? inputFormatters,
     double? height = 43,
@@ -468,7 +464,9 @@ Widget getDisabledTextField(
               inputFormatters: inputFormatters,
               decoration: new InputDecoration(
                 labelStyle: GoogleFonts.poppins(
-                    fontSize: 14, fontWeight: FontWeight.w500,color: labelColor??barColor),
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                    color: labelColor ?? barColor),
                 filled: true,
                 labelText: labelText,
                 suffixIcon: suffixIcon,
@@ -509,7 +507,7 @@ Widget getDisabledTextField(
                   ? IconButton(
                       icon: Icon(
                         Icons.search,
-                        color: iconColor??barColor,
+                        color: iconColor ?? barColor,
                       ),
                       onPressed: onLookupPressed != null
                           ? onLookupPressed as Function()
@@ -520,7 +518,7 @@ Widget getDisabledTextField(
                   ? IconButton(
                       icon: Icon(
                         Icons.search,
-                        color: iconColor??Colors.white,
+                        color: iconColor ?? Colors.white,
                       ),
                       onPressed: null,
                     )
@@ -634,7 +632,6 @@ Future<void> getTimePopup({
 }) async {
   TimeOfDay? pickedTime = await showTimePicker(
       context: context,
-
       initialTime: initialTime,
       builder: (BuildContext context, Widget? child) {
         return MediaQuery(
@@ -650,8 +647,9 @@ Future<void> getTimePopup({
 FilteringTextInputFormatter getDecimalRegEx() {
   return FilteringTextInputFormatter.allow(RegExp(r'[0-9]+[,.]{0,1}[0-9]*'));
 }
+
 FilteringTextInputFormatter getIntegerRegEx() {
-  return  FilteringTextInputFormatter.allow(RegExp(r'[0-9]'));
+  return FilteringTextInputFormatter.allow(RegExp(r'[0-9]'));
 }
 
 TextInputType getDecimalKeyboardType() {

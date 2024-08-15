@@ -9,12 +9,13 @@ void main() {
   );
 }
 
- List<Item> _items = [
+List<Item> _items = [
   Item(
     name: 'Tyre',
     totalPriceCents: 799,
     uid: '2',
-    imageProvider: NetworkImage('https://m.media-amazon.com/images/I/71iYxdZgElL._AC_UF1000,1000_QL80_.jpg'),
+    imageProvider: NetworkImage(
+        'https://m.media-amazon.com/images/I/71iYxdZgElL._AC_UF1000,1000_QL80_.jpg'),
   ),
   Item(
     name: 'Chicken Parmesan',
@@ -73,10 +74,10 @@ class _ExampleDragAndDropState extends State<ExampleDragAndDrop>
         title: Text(
           'Order Food',
           style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-            fontSize: 36,
-            color: const Color(0xFFF64209),
-            fontWeight: FontWeight.bold,
-          ),
+                fontSize: 36,
+                color: const Color(0xFFF64209),
+                fontWeight: FontWeight.bold,
+              ),
         ),
         backgroundColor: const Color(0xFFF7F7F7),
         elevation: 0,
@@ -97,10 +98,6 @@ class _ExampleDragAndDropState extends State<ExampleDragAndDrop>
       ),
     );
   }
-
-
-
-
 
   Widget _buildMenuList() {
     return ListView.separated(
@@ -165,7 +162,7 @@ class _ExampleDragAndDropState extends State<ExampleDragAndDrop>
             );
           },
           onAcceptWithDetails: (details) {
-            _items=_items.reversed.toList();
+            _items = _items.reversed.toList();
             _itemDroppedOnCustomerCart(
               item: details.data,
               customer: customer,
@@ -221,10 +218,10 @@ class CustomerCart extends StatelessWidget {
               Text(
                 customer.name,
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                  color: textColor,
-                  fontWeight:
-                  hasItems ? FontWeight.normal : FontWeight.bold,
-                ),
+                      color: textColor,
+                      fontWeight:
+                          hasItems ? FontWeight.normal : FontWeight.bold,
+                    ),
               ),
               Visibility(
                 visible: hasItems,
@@ -237,18 +234,18 @@ class CustomerCart extends StatelessWidget {
                     Text(
                       customer.formattedTotalItemPrice,
                       style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                        color: textColor,
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
+                            color: textColor,
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
                     ),
                     const SizedBox(height: 4),
                     Text(
                       '${customer.items.length} item${customer.items.length != 1 ? 's' : ''}',
                       style: Theme.of(context).textTheme.titleMedium!.copyWith(
-                        color: textColor,
-                        fontSize: 12,
-                      ),
+                            color: textColor,
+                            fontSize: 12,
+                          ),
                     ),
                   ],
                 ),
@@ -312,16 +309,16 @@ class MenuListItem extends StatelessWidget {
                   Text(
                     name,
                     style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      fontSize: 18,
-                    ),
+                          fontSize: 18,
+                        ),
                   ),
                   const SizedBox(height: 10),
                   Text(
                     price,
                     style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18,
-                    ),
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18,
+                        ),
                   ),
                 ],
               ),
@@ -374,10 +371,12 @@ class Item {
     required this.uid,
     required this.imageProvider,
   });
+
   final int totalPriceCents;
   final String name;
   final String uid;
   final ImageProvider imageProvider;
+
   String get formattedTotalItemPrice =>
       '\$${(totalPriceCents / 100.0).toStringAsFixed(2)}';
 }
@@ -395,7 +394,7 @@ class Customer {
 
   String get formattedTotalItemPrice {
     final totalPriceCents =
-    items.fold<int>(0, (prev, item) => prev + item.totalPriceCents);
+        items.fold<int>(0, (prev, item) => prev + item.totalPriceCents);
     return '\$${(totalPriceCents / 100.0).toStringAsFixed(2)}';
   }
 }

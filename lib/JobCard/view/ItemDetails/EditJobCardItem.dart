@@ -92,12 +92,13 @@ class _EditJobCardItemState extends State<EditJobCardItem> {
             const SizedBox(
               height: 20,
             ),
-
-
-            getDisabledTextField(controller: _itemName, labelText: 'Item Name',
+            getDisabledTextField(
+              controller: _itemName,
+              labelText: 'Item Name',
               onChanged: (val) {
-                EditJobCardItem.itemName  = val;
-              },),
+                EditJobCardItem.itemName = val;
+              },
+            ),
             getTextField(
               controller: _quantity,
               labelText: 'Quantity',
@@ -107,7 +108,6 @@ class _EditJobCardItemState extends State<EditJobCardItem> {
               keyboardType: getDecimalKeyboardType(),
               inputFormatters: [getDecimalRegEx()],
             ),
-
             getDisabledTextField(
                 controller: _uomName,
                 labelText: 'UOM',
@@ -122,22 +122,21 @@ class _EditJobCardItemState extends State<EditJobCardItem> {
                         });
                       }));
                 }),
-
             getDisabledTextField(
-                controller: _supplierName, labelText: 'Supplier',
+                controller: _supplierName,
+                labelText: 'Supplier',
                 enableLookup: true,
                 onLookupPressed: () {
                   Get.to(
-                          () => SupplierLookup(onSelected: (OCRDModel ocrdModel) {
-                        setState(() {
-                          EditJobCardItem.supplierCode =
-                              _supplierCode.text = ocrdModel.Code;
-                          EditJobCardItem.supplierName =
-                              _supplierName.text = ocrdModel.Name ?? '';
-                        });
-                      }));
+                      () => SupplierLookup(onSelected: (OCRDModel ocrdModel) {
+                            setState(() {
+                              EditJobCardItem.supplierCode =
+                                  _supplierCode.text = ocrdModel.Code;
+                              EditJobCardItem.supplierName =
+                                  _supplierName.text = ocrdModel.Name ?? '';
+                            });
+                          }));
                 }),
-
             getDateTextField(
                 controller: _requiredDate,
                 localCurrController: TextEditingController(),
@@ -216,26 +215,27 @@ class _EditJobCardItemState extends State<EditJobCardItem> {
                             getSuccessSnackBar("Check List Updated");
                           } else {
                             MNJCD1 mncld1 = MNJCD1(
-                              ID: int.tryParse(EditJobCardItem.id ?? ''),
-                              TransId: EditJobCardItem.transId,
-                              RowId: ItemDetails.items.length,
-                              ItemCode:
-                                  EditJobCardItem.itemCode.toString() ?? '',
-                              ItemName:
-                                  EditJobCardItem.itemName.toString() ?? '',
-                              UOM: EditJobCardItem.uomCode.toString() ?? '',
-                              IsFromStock: EditJobCardItem.fromStock,
-                              Quantity: double.tryParse(
-                                      EditJobCardItem.quantity.toString()) ??
-                                  0.0,
-                              SupplierCode:
-                                  EditJobCardItem.supplierCode.toString() ?? '',
-                              SupplierName:
-                                  EditJobCardItem.supplierName.toString() ?? '',
-                              IsConsumption: EditJobCardItem.consumption,
-                              IsRequest: EditJobCardItem.request,
-                              insertedIntoDatabase: false
-                            );
+                                ID: int.tryParse(EditJobCardItem.id ?? ''),
+                                TransId: EditJobCardItem.transId,
+                                RowId: ItemDetails.items.length,
+                                ItemCode:
+                                    EditJobCardItem.itemCode.toString() ?? '',
+                                ItemName:
+                                    EditJobCardItem.itemName.toString() ?? '',
+                                UOM: EditJobCardItem.uomCode.toString() ?? '',
+                                IsFromStock: EditJobCardItem.fromStock,
+                                Quantity: double.tryParse(
+                                        EditJobCardItem.quantity.toString()) ??
+                                    0.0,
+                                SupplierCode:
+                                    EditJobCardItem.supplierCode.toString() ??
+                                        '',
+                                SupplierName:
+                                    EditJobCardItem.supplierName.toString() ??
+                                        '',
+                                IsConsumption: EditJobCardItem.consumption,
+                                IsRequest: EditJobCardItem.request,
+                                insertedIntoDatabase: false);
                             ItemDetails.items.add(mncld1);
 
                             Get.offAll(() => ViewJobCard(1));

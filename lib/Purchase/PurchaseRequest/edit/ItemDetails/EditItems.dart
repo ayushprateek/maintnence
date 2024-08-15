@@ -28,8 +28,6 @@ import 'package:maintenance/Sync/SyncModels/OWHS.dart';
 import 'package:maintenance/Sync/SyncModels/PRPRQ1.dart';
 import 'package:maintenance/Sync/SyncModels/ROUT.dart';
 
-
-
 class EditItems extends StatefulWidget {
   static String? id;
   static String? truckNo;
@@ -73,42 +71,42 @@ class EditItems extends StatefulWidget {
 
 class _EditCheckListState extends State<EditItems> {
   final TextEditingController _truckNo =
-  TextEditingController(text: EditItems.truckNo);
+      TextEditingController(text: EditItems.truckNo);
   final TextEditingController _noOfPieces =
-  TextEditingController(text: EditItems.noOfPieces);
+      TextEditingController(text: EditItems.noOfPieces);
   final TextEditingController _remarks =
-  TextEditingController(text: EditItems.remarks);
+      TextEditingController(text: EditItems.remarks);
   final TextEditingController _tripTransId =
-  TextEditingController(text: EditItems.tripTransId);
+      TextEditingController(text: EditItems.tripTransId);
   final TextEditingController _routeName =
-  TextEditingController(text: EditItems.routeName);
+      TextEditingController(text: EditItems.routeName);
   final TextEditingController _deptName =
-  TextEditingController(text: EditItems.deptName);
+      TextEditingController(text: EditItems.deptName);
   final TextEditingController _itemName =
-  TextEditingController(text: EditItems.itemName);
+      TextEditingController(text: EditItems.itemName);
   final TextEditingController _toWhs =
-  TextEditingController(text: EditItems.toWhsName);
+      TextEditingController(text: EditItems.toWhsName);
   final TextEditingController _consumptionQty =
-  TextEditingController(text: EditItems.consumptionQty);
+      TextEditingController(text: EditItems.consumptionQty);
   final TextEditingController _uomCode =
-  TextEditingController(text: EditItems.uomCode);
+      TextEditingController(text: EditItems.uomCode);
   final TextEditingController _uomName =
-  TextEditingController(text: EditItems.uomName);
+      TextEditingController(text: EditItems.uomName);
   final TextEditingController _driverName =
-  TextEditingController(text: EditItems.driverName);
+      TextEditingController(text: EditItems.driverName);
   final TextEditingController _price =
-  TextEditingController(text: EditItems.price);
+      TextEditingController(text: EditItems.price);
   final TextEditingController _mtv = TextEditingController(text: EditItems.mtv);
   final TextEditingController _taxCode =
-  TextEditingController(text: EditItems.taxCode);
+      TextEditingController(text: EditItems.taxCode);
   final TextEditingController _taxRate =
-  TextEditingController(text: EditItems.taxRate);
+      TextEditingController(text: EditItems.taxRate);
   final TextEditingController _lineDiscount =
-  TextEditingController(text: EditItems.lineDiscount);
+      TextEditingController(text: EditItems.lineDiscount);
   final TextEditingController _lineTotal =
-  TextEditingController(text: EditItems.lineTotal);
+      TextEditingController(text: EditItems.lineTotal);
   final TextEditingController _supplierName =
-  TextEditingController(text: EditItems.supplierName);
+      TextEditingController(text: EditItems.supplierName);
 
   @override
   void initState() {
@@ -163,11 +161,11 @@ class _EditCheckListState extends State<EditItems> {
                 enableLookup: true,
                 onLookupPressed: () {
                   Get.to(() => TripLookup(onSelection: (OPOTRP oemp) {
-                    setState(() {
-                      EditItems.tripTransId =
-                          _tripTransId.text = oemp.TransId ?? '';
-                    });
-                  }));
+                        setState(() {
+                          EditItems.tripTransId =
+                              _tripTransId.text = oemp.TransId ?? '';
+                        });
+                      }));
                 }),
             getDisabledTextField(
               controller: _itemName,
@@ -182,13 +180,13 @@ class _EditCheckListState extends State<EditItems> {
                 enableLookup: true,
                 onLookupPressed: () {
                   Get.to(
-                          () => SupplierLookup(onSelected: (OCRDModel ocrdModel) {
-                        setState(() {
-                          EditItems.supplierCode = ocrdModel.Code;
-                          EditItems.supplierName =
-                              _supplierName.text = ocrdModel.Name ?? '';
-                        });
-                      }));
+                      () => SupplierLookup(onSelected: (OCRDModel ocrdModel) {
+                            setState(() {
+                              EditItems.supplierCode = ocrdModel.Code;
+                              EditItems.supplierName =
+                                  _supplierName.text = ocrdModel.Name ?? '';
+                            });
+                          }));
                 }),
             getDisabledTextField(
                 controller: _toWhs,
@@ -196,12 +194,12 @@ class _EditCheckListState extends State<EditItems> {
                 enableLookup: true,
                 onLookupPressed: () {
                   Get.to(() => WarehouseLookup(onSelection: (OWHS owhs) {
-                    setState(() {
-                      EditItems.toWhsName =
-                          _toWhs.text = owhs.WhsName ?? '';
-                      EditItems.toWhsCode = owhs.WhsCode ?? '';
-                    });
-                  }));
+                        setState(() {
+                          EditItems.toWhsName =
+                              _toWhs.text = owhs.WhsName ?? '';
+                          EditItems.toWhsCode = owhs.WhsCode ?? '';
+                        });
+                      }));
                 }),
             getTextField(
               controller: _noOfPieces,
@@ -229,11 +227,11 @@ class _EditCheckListState extends State<EditItems> {
                 enableLookup: true,
                 onLookupPressed: () {
                   Get.to(() => UOMLookup(onSelected: (OUOMModel ouomModel) {
-                    setState(() {
-                      EditItems.uomCode = _uomCode.text = ouomModel.UomCode;
-                      EditItems.uomName = _uomName.text = ouomModel.UomName;
-                    });
-                  }));
+                        setState(() {
+                          EditItems.uomCode = _uomCode.text = ouomModel.UomCode;
+                          EditItems.uomName = _uomName.text = ouomModel.UomName;
+                        });
+                      }));
                 }),
             getDisabledTextField(
                 controller: _truckNo,
@@ -241,10 +239,10 @@ class _EditCheckListState extends State<EditItems> {
                 enableLookup: true,
                 onLookupPressed: () {
                   Get.to(() => VehicleCodeLookup(onSelected: (OVCLModel ovcl) {
-                    setState(() {
-                      EditItems.truckNo = _truckNo.text = ovcl.Code ?? '';
-                    });
-                  }));
+                        setState(() {
+                          EditItems.truckNo = _truckNo.text = ovcl.Code ?? '';
+                        });
+                      }));
                 }),
             getDisabledTextField(
                 controller: _driverName,
@@ -252,12 +250,12 @@ class _EditCheckListState extends State<EditItems> {
                 enableLookup: true,
                 onLookupPressed: () {
                   Get.to(() => EmployeeLookup(onSelection: (OEMPModel oemp) {
-                    setState(() {
-                      EditItems.driverCode = oemp.Code;
-                      EditItems.driverName =
-                          _driverName.text = oemp.Name ?? '';
-                    });
-                  }));
+                        setState(() {
+                          EditItems.driverCode = oemp.Code;
+                          EditItems.driverName =
+                              _driverName.text = oemp.Name ?? '';
+                        });
+                      }));
                 }),
             getDisabledTextField(
                 controller: _routeName,
@@ -265,12 +263,12 @@ class _EditCheckListState extends State<EditItems> {
                 enableLookup: true,
                 onLookupPressed: () {
                   Get.to(() => RouteLookup(onSelected: (ROUTModel rout) {
-                    setState(() {
-                      EditItems.routeCode = rout.RouteCode;
-                      EditItems.routeName =
-                          _routeName.text = rout.RouteName ?? '';
-                    });
-                  }));
+                        setState(() {
+                          EditItems.routeCode = rout.RouteCode;
+                          EditItems.routeName =
+                              _routeName.text = rout.RouteName ?? '';
+                        });
+                      }));
                 }),
             getDisabledTextField(
                 controller: _deptName,
@@ -278,11 +276,11 @@ class _EditCheckListState extends State<EditItems> {
                 enableLookup: true,
                 onLookupPressed: () {
                   Get.to(() => DepartmentLookup(onSelection: (OUDP oudp) {
-                    setState(() {
-                      EditItems.deptCode = oudp.Code ?? '';
-                      EditItems.deptName = _deptName.text = oudp.Name ?? '';
-                    });
-                  }));
+                        setState(() {
+                          EditItems.deptCode = oudp.Code ?? '';
+                          EditItems.deptName = _deptName.text = oudp.Name ?? '';
+                        });
+                      }));
                 }),
             getTextField(
               controller: _price,
@@ -315,13 +313,13 @@ class _EditCheckListState extends State<EditItems> {
                 enableLookup: true,
                 onLookupPressed: () {
                   Get.to(() => TaxLookup(onSelected: (OTAXModel oudp) {
-                    setState(() {
-                      EditItems.taxCode = _taxCode.text = oudp.TaxCode;
-                      EditItems.taxRate =
-                          _taxRate.text = oudp.Rate.toStringAsFixed(2);
-                      calculate();
-                    });
-                  }));
+                        setState(() {
+                          EditItems.taxCode = _taxCode.text = oudp.TaxCode;
+                          EditItems.taxRate =
+                              _taxRate.text = oudp.Rate.toStringAsFixed(2);
+                          calculate();
+                        });
+                      }));
                 }),
             getDisabledTextField(
               controller: _taxRate,
@@ -395,7 +393,7 @@ class _EditCheckListState extends State<EditItems> {
                                   TruckNo: EditItems.truckNo,
                                   TaxCode: EditItems.taxCode,
                                   TaxRate:
-                                  double.tryParse(EditItems.taxRate ?? ''),
+                                      double.tryParse(EditItems.taxRate ?? ''),
                                   RouteCode: EditItems.routeCode,
                                   RouteName: EditItems.routeName,
                                   Quantity: double.tryParse(
@@ -433,7 +431,7 @@ class _EditCheckListState extends State<EditItems> {
                               SupplierName: EditItems.supplierName,
                               WhsCode: EditItems.toWhsCode,
                               Discount:
-                              double.tryParse(EditItems.lineDiscount ?? ''),
+                                  double.tryParse(EditItems.lineDiscount ?? ''),
                               DriverCode: EditItems.driverCode,
                               DriverName: EditItems.driverName,
                               TruckNo: EditItems.truckNo,
@@ -449,7 +447,7 @@ class _EditCheckListState extends State<EditItems> {
                               MSP: double.tryParse(EditItems.mtv ?? ''),
                               NoOfPieces: double.tryParse(_noOfPieces.text),
                               LineTotal:
-                              double.tryParse(EditItems.lineTotal ?? ''),
+                                  double.tryParse(EditItems.lineTotal ?? ''),
                               LineStatus: 'Open',
                               CreateDate: DateTime.now(),
                               insertedIntoDatabase: false,

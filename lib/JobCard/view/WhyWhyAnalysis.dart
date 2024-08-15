@@ -28,7 +28,6 @@ class _WhyWhyAnalysisState extends State<WhyWhyAnalysis> {
               const SizedBox(
                 height: 25,
               ),
-
               ListView.builder(
                   itemCount: WhyWhyAnalysis.list.length,
                   shrinkWrap: true,

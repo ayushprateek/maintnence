@@ -10,12 +10,10 @@ import 'package:maintenance/Sync/SyncModels/OCRD.dart';
 import 'package:maintenance/Sync/SyncModels/OITM.dart';
 import 'package:maintenance/Sync/SyncModels/OUOM.dart';
 
-
 class SupplierLookup extends StatefulWidget {
   Function(OCRDModel) onSelected;
-  SupplierLookup({
-    required this.onSelected
-  });
+
+  SupplierLookup({required this.onSelected});
 
   @override
   _SupplierLookupState createState() => _SupplierLookupState();
@@ -71,10 +69,8 @@ class _SupplierLookupState extends State<SupplierLookup> {
                       flex: 3,
                       child: getTextFieldWithoutLookup(
                         controller: _query,
-                        onChanged: (val){
-                          setState(() {
-
-                          });
+                        onChanged: (val) {
+                          setState(() {});
                         },
                         labelText: 'Search',
                         suffixIcon: IconButton(
@@ -133,10 +129,8 @@ class _SupplierLookupState extends State<SupplierLookup> {
             ),
             FutureBuilder(
                 future: retrieveSupplierForSearch(
-                    query: _query.text,
-                    limit: _currentMax),
-                builder: (context,
-                    AsyncSnapshot<List<OCRDModel>> snapshot) {
+                    query: _query.text, limit: _currentMax),
+                builder: (context, AsyncSnapshot<List<OCRDModel>> snapshot) {
                   if (!snapshot.hasData) return Container();
                   if (snapshot.data?.isEmpty == true) {
                     return AlertDialog(
@@ -203,11 +197,10 @@ class _SupplierLookupState extends State<SupplierLookup> {
                               return Container();
                             }
                             return InkWell(
-                              onDoubleTap: (){
+                              onDoubleTap: () {
                                 widget.onSelected(snapshot.data![index]);
                                 Get.back();
                               },
-
                               child: Container(
                                 decoration: BoxDecoration(
                                   color: Colors.white,
@@ -229,26 +222,28 @@ class _SupplierLookupState extends State<SupplierLookup> {
                                     children: [
                                       Flexible(
                                         child: Padding(
-                                          padding: const EdgeInsets.only(
-                                              left: 8.0),
+                                          padding:
+                                              const EdgeInsets.only(left: 8.0),
                                           child: Align(
                                             alignment: Alignment.topLeft,
                                             child: getHeadingText(
-                                              text: snapshot.data![index]
-                                                  .Code??"",
+                                              text:
+                                                  snapshot.data![index].Code ??
+                                                      "",
                                             ),
                                           ),
                                         ),
                                       ),
                                       Flexible(
                                         child: Padding(
-                                          padding: const EdgeInsets.only(
-                                              right: 8.0),
+                                          padding:
+                                              const EdgeInsets.only(right: 8.0),
                                           child: Align(
                                             alignment: Alignment.centerLeft,
                                             child: getSubHeadingText(
-                                              text: snapshot
-                                                  .data![index].Name??'',
+                                              text:
+                                                  snapshot.data![index].Name ??
+                                                      '',
                                             ),
                                           ),
                                         ),

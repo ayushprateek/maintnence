@@ -209,7 +209,6 @@ class _EditCheckListDocumentState extends State<EditCheckListDocument> {
               //GENERAL DATA
               MNOCLD generalData = GeneralData.getGeneralData();
 
-
               print(generalData.toJson());
               generalData
                   .toJson()
@@ -242,8 +241,7 @@ class _EditCheckListDocumentState extends State<EditCheckListDocument> {
                   qut1model.hasUpdated = true;
                   qut1model.UpdateDate = DateTime.now();
                   Map<String, Object?> map = qut1model.toJson();
-                  map.removeWhere(
-                          (key, value) => value == null || value == '');
+                  map.removeWhere((key, value) => value == null || value == '');
                   await database.update('MNCLD1', map,
                       where: 'TransId = ? AND RowId = ?',
                       whereArgs: [qut1model.TransId, qut1model.RowId]);
@@ -265,8 +263,7 @@ class _EditCheckListDocumentState extends State<EditCheckListDocument> {
                   qut1model.hasUpdated = true;
                   qut1model.UpdateDate = DateTime.now();
                   Map<String, Object?> map = qut1model.toJson();
-                  map.removeWhere(
-                          (key, value) => value == null || value == '');
+                  map.removeWhere((key, value) => value == null || value == '');
                   await database.update('MNCLD2', map,
                       where: 'TransId = ? AND RowId = ?',
                       whereArgs: [qut1model.TransId, qut1model.RowId]);

@@ -123,7 +123,7 @@ class _EditCheckListState extends State<EditItems> {
       }
       double lineTotal = roundToTwoDecimal(total_tax);
       lineTotal += roundToTwoDecimal(price * qty - discount);
-      EditItems.lineTotal=_lineTotal.text = lineTotal.toStringAsFixed(2);
+      EditItems.lineTotal = _lineTotal.text = lineTotal.toStringAsFixed(2);
       setState(() {});
     } catch (e) {
       writeToLogFile(
@@ -151,11 +151,11 @@ class _EditCheckListState extends State<EditItems> {
                 enableLookup: true,
                 onLookupPressed: () {
                   Get.to(() => TripLookup(onSelection: (OPOTRP oemp) {
-                    setState(() {
-                      EditItems.tripTransId =
-                          _tripTransId.text = oemp.TransId ?? '';
-                    });
-                  }));
+                        setState(() {
+                          EditItems.tripTransId =
+                              _tripTransId.text = oemp.TransId ?? '';
+                        });
+                      }));
                 }),
             getDisabledTextField(
                 controller: _itemName,
@@ -217,7 +217,7 @@ class _EditCheckListState extends State<EditItems> {
                 onLookupPressed: () {
                   Get.to(() => VehicleCodeLookup(onSelected: (OVCLModel ovcl) {
                         setState(() {
-                          EditItems.truckNo = _truckNo.text = ovcl.Code??'';
+                          EditItems.truckNo = _truckNo.text = ovcl.Code ?? '';
                         });
                       }));
                 }),

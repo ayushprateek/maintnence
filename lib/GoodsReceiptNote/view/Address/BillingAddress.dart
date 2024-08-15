@@ -3,12 +3,14 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:maintenance/Component/CustomColor.dart';
 import 'package:maintenance/Component/GetTextField.dart';
 import 'package:maintenance/Component/SnackbarComponent.dart';
-import 'package:maintenance/Sync/SyncModels/PRPDN3.dart';
 import 'package:maintenance/GoodsReceiptNote/view/GeneralData.dart';
 import 'package:maintenance/GoodsReceiptNote/view/GoodsReceiptNote.dart';
+import 'package:maintenance/Sync/SyncModels/PRPDN3.dart';
 import 'package:maps_launcher/maps_launcher.dart';
+
 class BillingAddress extends StatefulWidget {
   const BillingAddress({super.key});
+
   static bool validate() {
     bool succees = true;
     if (AddCode == "" || AddCode == null) {
@@ -63,32 +65,32 @@ class _BillingAddressState extends State<BillingAddress> {
           : BillingAddress.TransId.toString());
   TextEditingController RowId = TextEditingController(
       text:
-      BillingAddress.RowId == null ? "" : BillingAddress.RowId.toString());
+          BillingAddress.RowId == null ? "" : BillingAddress.RowId.toString());
   TextEditingController AddCode = TextEditingController(
       text: BillingAddress.AddCode == null
           ? ""
           : BillingAddress.AddCode.toString());
 
   TextEditingController CityName =
-  TextEditingController(text: BillingAddress.CityName);
+      TextEditingController(text: BillingAddress.CityName);
   TextEditingController CityCode = TextEditingController(
       text: BillingAddress.CityCode == null
           ? ""
           : BillingAddress.CityCode.toString());
   TextEditingController CountryName =
-  TextEditingController(text: BillingAddress.CountryName);
+      TextEditingController(text: BillingAddress.CountryName);
   TextEditingController CountryCode = TextEditingController(
       text: BillingAddress.CountryCode == null
           ? ""
           : BillingAddress.CountryCode.toString());
   TextEditingController StateName =
-  TextEditingController(text: BillingAddress.StateName);
+      TextEditingController(text: BillingAddress.StateName);
   TextEditingController StateCode = TextEditingController(
       text: BillingAddress.StateCode == null
           ? ""
           : BillingAddress.StateCode.toString());
   TextEditingController Addres =
-  TextEditingController(text: BillingAddress.Addres);
+      TextEditingController(text: BillingAddress.Addres);
   TextEditingController ID = TextEditingController(
       text: BillingAddress.ID == null ? "" : BillingAddress.ID.toString());
   TextEditingController Latitude = TextEditingController(
@@ -106,7 +108,7 @@ class _BillingAddressState extends State<BillingAddress> {
       padding: const EdgeInsets.only(left: 8.0, right: 8, bottom: 8, top: 20),
       child: Container(
         decoration: BoxDecoration(
-          // color: const Color(0XFFC46253),
+            // color: const Color(0XFFC46253),
             border: Border.all(),
             borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(16), topRight: Radius.circular(16))),
@@ -116,11 +118,11 @@ class _BillingAddressState extends State<BillingAddress> {
               height: 25,
             ),
             getDisabledTextField(
-                controller: AddCode,
-                labelText: 'Add Code*',
-                onChanged: (value) {
-                  BillingAddress.AddCode = value;
-                },
+              controller: AddCode,
+              labelText: 'Add Code*',
+              onChanged: (value) {
+                BillingAddress.AddCode = value;
+              },
             ),
             Padding(
               padding: const EdgeInsets.only(bottom: 6.0, left: 8, right: 8),

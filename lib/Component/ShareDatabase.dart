@@ -13,7 +13,6 @@ import 'package:maintenance/Component/SnackbarComponent.dart';
 import 'package:maintenance/Component/UploadImageToServer.dart';
 import 'package:maintenance/main.dart';
 
-
 class ShareDatabase extends StatefulWidget {
   const ShareDatabase({super.key});
 
@@ -22,7 +21,7 @@ class ShareDatabase extends StatefulWidget {
 }
 
 class _ShareDatabaseState extends State<ShareDatabase> {
-  bool _isLoading = false,_obscureText=true;
+  bool _isLoading = false, _obscureText = true;
   final TextEditingController _passwordController = TextEditingController();
 
   @override
@@ -86,7 +85,8 @@ class _ShareDatabaseState extends State<ShareDatabase> {
               children: titleRowWidgets,
             ),
             content: getTextFieldWithoutLookup(
-                controller: _passwordController, labelText: 'Password',
+              controller: _passwordController,
+              labelText: 'Password',
               obscureText: _obscureText,
               maxLines: 1,
               suffixIcon: IconButton(
@@ -95,9 +95,8 @@ class _ShareDatabaseState extends State<ShareDatabase> {
                       _obscureText = !_obscureText;
                     });
                   },
-                  icon: Icon(_obscureText
-                      ? Icons.visibility
-                      : Icons.visibility_off)),
+                  icon: Icon(
+                      _obscureText ? Icons.visibility : Icons.visibility_off)),
             ),
             actions: actions,
           );
@@ -106,8 +105,9 @@ class _ShareDatabaseState extends State<ShareDatabase> {
             title: Row(
               children: titleRowWidgets,
             ),
-            content:  getTextFieldWithoutLookup(
-              controller: _passwordController, labelText: 'Password',
+            content: getTextFieldWithoutLookup(
+              controller: _passwordController,
+              labelText: 'Password',
               obscureText: _obscureText,
               maxLines: 1,
               suffixIcon: IconButton(
@@ -116,9 +116,8 @@ class _ShareDatabaseState extends State<ShareDatabase> {
                       _obscureText = !_obscureText;
                     });
                   },
-                  icon: Icon(_obscureText
-                      ? Icons.visibility
-                      : Icons.visibility_off)),
+                  icon: Icon(
+                      _obscureText ? Icons.visibility : Icons.visibility_off)),
             ),
             actions: actions,
           );

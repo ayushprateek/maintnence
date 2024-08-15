@@ -1,5 +1,4 @@
 import 'package:maintenance/DatabaseInitialization.dart';
-import 'package:maintenance/main.dart';
 import 'package:sqflite/sqlite_api.dart';
 
 class AssignedItemsModel {
@@ -80,13 +79,13 @@ class AssignedItemsModel {
 }
 
 Future<List<AssignedItemsModel>> retrieveAssignedItems(
-    {
-      required String priceListCode,
-      String WhsCode='',
-      String? itemCode, int? limit,
-      String query=''}) async {
+    {required String priceListCode,
+    String WhsCode = '',
+    String? itemCode,
+    int? limit,
+    String query = ''}) async {
   final Database db = await initializeDB(null);
-  query='%$query%';
+  query = '%$query%';
   String str = '';
   if (priceListCode == '') {
     //REQUEST IS COMING FROM ADDITIONAL ITEM
@@ -100,8 +99,7 @@ inner join IWHS iwhs on oi.ItemCode=iwhs.ItemCode
 	and DATETIME('now') <=DATETIME(oms.EndDate) and oms.ItemCode='$itemCode'
 	LIMIT 1
       ''';
-  }
-  else if (itemCode == null) {
+  } else if (itemCode == null) {
     if (limit == null) {
       str = '''
       select distinct oi.ItemName,oms.*
@@ -126,8 +124,7 @@ from  OMSP  oms
 	limit $limit
       ''';
     }
-  }
-  else {
+  } else {
     str = '''
       select distinct oi.ItemName,oms.*
 ,(select UOM from IUOM where ItemCode=oms.ItemCode limit 1 ) as"UOM"

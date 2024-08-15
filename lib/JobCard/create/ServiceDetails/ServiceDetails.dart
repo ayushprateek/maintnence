@@ -3,9 +3,9 @@ import 'package:get/get.dart';
 import 'package:maintenance/Component/ClearTextFieldData.dart';
 import 'package:maintenance/Component/CustomColor.dart';
 import 'package:maintenance/Component/CustomFont.dart';
+import 'package:maintenance/JobCard/create/GeneralData.dart';
 import 'package:maintenance/JobCard/create/ServiceDetails/AddServiceItem.dart';
 import 'package:maintenance/JobCard/create/ServiceDetails/EditService.dart';
-import 'package:maintenance/JobCard/create/GeneralData.dart';
 import 'package:maintenance/Sync/SyncModels/MNJCD2.dart';
 
 class ServiceDetails extends StatefulWidget {
@@ -81,13 +81,14 @@ class _ServiceDetailsState extends State<ServiceDetails> {
                           clipBehavior: Clip.none,
                           children: [
                             InkWell(
-                              onDoubleTap: (){
+                              onDoubleTap: () {
                                 ClearJobCardDoc.clearEditService();
                                 EditService.serviceCode = mnjcd2.ServiceCode;
                                 EditService.serviceName = mnjcd2.ServiceName;
                                 EditService.supplierCode = mnjcd2.SupplierCode;
                                 EditService.supplierName = mnjcd2.SupplierName;
-                                EditService.infoPrice = mnjcd2.InfoPrice?.toStringAsFixed(2);
+                                EditService.infoPrice =
+                                    mnjcd2.InfoPrice?.toStringAsFixed(2);
                                 EditService.isSendable = mnjcd2.IsSendableItem;
                                 EditService.isUpdating = true;
                                 EditService.transId = GeneralData.transId;
@@ -154,8 +155,7 @@ class _ServiceDetailsState extends State<ServiceDetails> {
                                                   TextSpan(
                                                     children: [
                                                       getPoppinsTextSpanHeading(
-                                                          text:
-                                                              'Supplier'),
+                                                          text: 'Supplier'),
                                                       getPoppinsTextSpanDetails(
                                                           text: mnjcd2
                                                                   .SupplierName ??
@@ -297,7 +297,8 @@ class _ServiceDetailsState extends State<ServiceDetails> {
                                                 onPressed: () async {
                                                   Navigator.pop(context);
                                                   setState(() {
-                                                    ServiceDetails.items.removeAt(index);
+                                                    ServiceDetails.items
+                                                        .removeAt(index);
                                                   });
                                                 },
                                               ),

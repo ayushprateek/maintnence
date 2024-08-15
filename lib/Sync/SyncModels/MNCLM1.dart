@@ -6,7 +6,6 @@ import 'package:maintenance/Component/LogFileFunctions.dart';
 import 'package:maintenance/Component/SnackbarComponent.dart';
 import 'package:maintenance/DatabaseInitialization.dart';
 import 'package:maintenance/Sync/CustomURL.dart';
-import 'package:maintenance/Sync/DataSync.dart';
 import 'package:sqflite/sqlite_api.dart';
 
 class MNCLM1 {
@@ -41,7 +40,7 @@ class MNCLM1 {
   factory MNCLM1.fromJson(Map<String, dynamic> json) => MNCLM1(
         ID: int.tryParse(json['ID'].toString()) ?? 0,
         Code: json['Code'],
-    Attachment: json['Attachment'],
+        Attachment: json['Attachment'],
         RowId: int.tryParse(json['RowId'].toString()) ?? 0,
         ItemCode: json['ItemCode'],
         ItemName: json['ItemName'],

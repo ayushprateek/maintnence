@@ -1,6 +1,4 @@
-import 'package:get/get.dart';
 import 'package:maintenance/Component/GetFormattedDate.dart';
-import 'package:maintenance/Component/LogFileFunctions.dart';
 import 'package:maintenance/Sync/SyncModels/OCIN.dart';
 
 class CompanyDetails {

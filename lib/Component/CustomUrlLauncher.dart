@@ -1,4 +1,3 @@
-import 'package:get/get.dart';
 import 'package:maintenance/Component/LogFileFunctions.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -8,7 +7,10 @@ launchURL(String url) async {
       await launchUrl(Uri.parse(url), mode: LaunchMode.externalApplication);
     } else {}
   } catch (e) {
-    writeToLogFile(text: e.toString(), fileName: StackTrace.current.toString(), lineNo: 141);
+    writeToLogFile(
+        text: e.toString(),
+        fileName: StackTrace.current.toString(),
+        lineNo: 141);
   }
 }
 
@@ -21,7 +23,10 @@ void customLaunchURL(String url) async {
       launchUrl(uri, mode: LaunchMode.externalApplication);
     }
   } catch (e) {
-    writeToLogFile(text: e.toString(), fileName: StackTrace.current.toString(), lineNo: 141);
+    writeToLogFile(
+        text: e.toString(),
+        fileName: StackTrace.current.toString(),
+        lineNo: 141);
     print(e.toString());
   }
 }

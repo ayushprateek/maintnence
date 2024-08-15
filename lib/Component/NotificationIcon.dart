@@ -14,7 +14,10 @@ Widget getNotificationIcon() {
         if (!snapshot.hasData || snapshot.data!.length == 0) {
           return Padding(
               padding: const EdgeInsets.only(top: 17.5, bottom: 8, right: 20),
-              child: Icon(Icons.notifications,color: Colors.white,));
+              child: Icon(
+                Icons.notifications,
+                color: Colors.white,
+              ));
         }
         return InkWell(
           onTap: () {
@@ -39,7 +42,7 @@ Widget getNotificationIcon() {
                 //   end: -5.0,
                 //   bottom: 22,
                 // ),
-                child: Icon(Icons.notifications,color: Colors.white),
+                child: Icon(Icons.notifications, color: Colors.white),
                 // child: getSVGIcon(path: bagIconPath),
               )),
         );

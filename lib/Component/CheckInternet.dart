@@ -13,7 +13,10 @@ Future<bool> isInternetAvailable() async {
     return true;
     // return false;
   } catch (e) {
-    writeToLogFile(text: e.toString(), fileName: StackTrace.current.toString(), lineNo: 141);
+    writeToLogFile(
+        text: e.toString(),
+        fileName: StackTrace.current.toString(),
+        lineNo: 141);
     print(e.toString());
     return false;
   }

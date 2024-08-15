@@ -6,7 +6,6 @@ import 'package:maintenance/Component/LogFileFunctions.dart';
 import 'package:maintenance/Component/SnackbarComponent.dart';
 import 'package:maintenance/DatabaseInitialization.dart';
 import 'package:maintenance/Sync/CustomURL.dart';
-import 'package:maintenance/Sync/DataSync.dart';
 import 'package:sqflite/sqlite_api.dart';
 
 class OVCLModel {
@@ -177,8 +176,8 @@ String oVCLModelToJson(List<OVCLModel> data) =>
     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 Future<List<OVCLModel>> dataSyncOVCLModel() async {
-  var res = await http.get(
-      headers: header, Uri.parse(prefix + "OVCL" + postfix));
+  var res =
+      await http.get(headers: header, Uri.parse(prefix + "OVCL" + postfix));
   print(res.body);
   return oVCLModelFromJson(res.body);
 }
@@ -325,6 +324,7 @@ Future<List<OVCLModel>> retrieveOVCLModelById(
       await db.query('OVCL', where: str, whereArgs: l);
   return queryResult.map((e) => OVCLModel.fromJson(e)).toList();
 }
+
 //
 // Future<String> insertOVCLModelToServer(BuildContext? context,
 //     {String? TransId, int? id})

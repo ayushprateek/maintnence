@@ -91,6 +91,7 @@ Future<List<MNOCLT>> dataSyncMNOCLT() async {
   print(res.body);
   return mNOCLTFromJson(res.body);
 }
+
 Future<List<MNOCLT>> retrieveMNOCLTForSearch({
   int? limit,
   String? query,
@@ -101,6 +102,7 @@ Future<List<MNOCLT>> retrieveMNOCLTForSearch({
       'SELECT * FROM MNOCLT WHERE Code LIKE "$query" OR Name LIKE "$query" LIMIT $limit');
   return queryResult.map((e) => MNOCLT.fromJson(e)).toList();
 }
+
 Future<void> insertMNOCLT(Database db, {List? list}) async {
   if (postfix.toLowerCase().contains('all')) {
     await deleteMNOCLT(db);
@@ -282,11 +284,9 @@ Future<String> insertMNOCLTToServer(BuildContext? context,
           map["ID"] = model.ID;
           map["has_created"] = 0;
           var x = await db.update("MNOCLT", map,
-              where: "Code = ?",
-              whereArgs: [model.Code]);
+              where: "Code = ?", whereArgs: [model.Code]);
           print(x.toString());
-        } else
-        if (res.statusCode == 201 || res.statusCode == 500) {
+        } else if (res.statusCode == 201 || res.statusCode == 500) {
           sentSuccessInServer = true;
           if (res.statusCode == 201) {
             map['ID'] = jsonDecode(res.body)['ID'];

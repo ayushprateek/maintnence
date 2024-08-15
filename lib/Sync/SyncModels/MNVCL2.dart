@@ -1,12 +1,12 @@
-import 'package:maintenance/Component/LogFileFunctions.dart';
 import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:maintenance/Component/LogFileFunctions.dart';
 import 'package:maintenance/Component/SnackbarComponent.dart';
 import 'package:maintenance/DatabaseInitialization.dart';
 import 'package:maintenance/Sync/CustomURL.dart';
 import 'package:maintenance/Sync/DataSync.dart';
-import 'dart:convert';
 import 'package:sqflite/sqlite_api.dart';
 
 class MNVCL2 {
@@ -280,10 +280,9 @@ Future<String> insertMNVCL2ToServer(BuildContext? context,
           map["has_created"] = 0;
           var x = await db.update("MNVCL2", map,
               where: "Code = ? AND RowId = ?",
-              whereArgs: [model.Code,model.RowId]);
+              whereArgs: [model.Code, model.RowId]);
           print(x.toString());
-        } else
-        if (res.statusCode == 201 || res.statusCode == 500) {
+        } else if (res.statusCode == 201 || res.statusCode == 500) {
           sentSuccessInServer = true;
           if (res.statusCode == 201) {
             map['ID'] = jsonDecode(res.body)['ID'];

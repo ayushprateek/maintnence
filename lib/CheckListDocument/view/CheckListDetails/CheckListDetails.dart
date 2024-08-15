@@ -71,8 +71,7 @@ class _CheckListDetailsState extends State<CheckListDetails> {
                             child: Column(
                               children: [
                                 Row(
-                                  crossAxisAlignment:
-                                      CrossAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Expanded(
                                       flex: 8,
@@ -91,8 +90,7 @@ class _CheckListDetailsState extends State<CheckListDetails> {
                                                 TextSpan(
                                                   children: [
                                                     getPoppinsTextSpanHeading(
-                                                        text:
-                                                            'Equipment Code'),
+                                                        text: 'Equipment Code'),
                                                     getPoppinsTextSpanDetails(
                                                         text: mncld1
                                                                 .EquipmentCode ??
@@ -113,8 +111,7 @@ class _CheckListDetailsState extends State<CheckListDetails> {
                                                 TextSpan(
                                                   children: [
                                                     getPoppinsTextSpanHeading(
-                                                        text:
-                                                            'Description'),
+                                                        text: 'Description'),
                                                     getPoppinsTextSpanDetails(
                                                         text: mncld1
                                                                 .Description ??
@@ -137,8 +134,7 @@ class _CheckListDetailsState extends State<CheckListDetails> {
                                                     getPoppinsTextSpanHeading(
                                                         text: 'Item Name'),
                                                     getPoppinsTextSpanDetails(
-                                                        text: mncld1
-                                                                .ItemName ??
+                                                        text: mncld1.ItemName ??
                                                             ''),
                                                   ],
                                                 ),
@@ -190,8 +186,7 @@ class _CheckListDetailsState extends State<CheckListDetails> {
                                                     getPoppinsTextSpanHeading(
                                                         text: 'UOM'),
                                                     getPoppinsTextSpanDetails(
-                                                        text: mncld1.UOM ??
-                                                            ''),
+                                                        text: mncld1.UOM ?? ''),
                                                   ],
                                                 ),
                                               ),
@@ -207,18 +202,14 @@ class _CheckListDetailsState extends State<CheckListDetails> {
                                                     MainAxisAlignment.start,
                                                 children: [
                                                   Checkbox(
-                                                    value:
-                                                        mncld1.IsFromStock,
-                                                    onChanged:
-                                                        (bool? value) {},
+                                                    value: mncld1.IsFromStock,
+                                                    onChanged: (bool? value) {},
                                                   ),
                                                   Expanded(
                                                       child: getPoppinsText(
-                                                          text:
-                                                              'From Stock',
+                                                          text: 'From Stock',
                                                           textAlign:
-                                                              TextAlign
-                                                                  .start)),
+                                                              TextAlign.start)),
                                                 ],
                                               ),
                                             ),
@@ -233,18 +224,14 @@ class _CheckListDetailsState extends State<CheckListDetails> {
                                                     MainAxisAlignment.start,
                                                 children: [
                                                   Checkbox(
-                                                    value: mncld1
-                                                        .IsConsumption,
-                                                    onChanged:
-                                                        (bool? value) {},
+                                                    value: mncld1.IsConsumption,
+                                                    onChanged: (bool? value) {},
                                                   ),
                                                   Expanded(
                                                       child: getPoppinsText(
-                                                          text:
-                                                              'Consumption',
+                                                          text: 'Consumption',
                                                           textAlign:
-                                                              TextAlign
-                                                                  .start)),
+                                                              TextAlign.start)),
                                                 ],
                                               ),
                                             ),
@@ -260,15 +247,13 @@ class _CheckListDetailsState extends State<CheckListDetails> {
                                                 children: [
                                                   Checkbox(
                                                     value: mncld1.IsRequest,
-                                                    onChanged:
-                                                        (bool? value) {},
+                                                    onChanged: (bool? value) {},
                                                   ),
                                                   Expanded(
                                                       child: getPoppinsText(
                                                           text: 'Request',
                                                           textAlign:
-                                                              TextAlign
-                                                                  .start)),
+                                                              TextAlign.start)),
                                                 ],
                                               ),
                                             ),
@@ -307,8 +292,7 @@ class _CheckListDetailsState extends State<CheckListDetails> {
                                                 TextSpan(
                                                   children: [
                                                     getPoppinsTextSpanHeading(
-                                                        text:
-                                                            'Required Date'),
+                                                        text: 'Required Date'),
                                                     getPoppinsTextSpanDetails(
                                                         text: getFormattedDate(
                                                             mncld1
@@ -327,8 +311,7 @@ class _CheckListDetailsState extends State<CheckListDetails> {
                                   padding: const EdgeInsets.only(
                                       left: 8.0, right: 8.0, top: 4.0),
                                   child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
                                       Expanded(
                                           child: getPoppinsText(
@@ -343,9 +326,8 @@ class _CheckListDetailsState extends State<CheckListDetails> {
                                               mncld1.Attachment != '') {
                                             File? file =
                                                 await downloadFileFromServer(
-                                                    path:
-                                                        mncld1.Attachment ??
-                                                            '');
+                                                    path: mncld1.Attachment ??
+                                                        '');
                                             if (file != null) {
                                               Get.to(() => ViewImageFile(
                                                     file: file,
@@ -364,8 +346,7 @@ class _CheckListDetailsState extends State<CheckListDetails> {
                                           child: Text(
                                             "View",
                                             textAlign: TextAlign.start,
-                                            style:
-                                                TextStyle(color: barColor),
+                                            style: TextStyle(color: barColor),
                                           ),
                                         ),
                                       ))
@@ -404,11 +385,12 @@ class _CheckListDetailsState extends State<CheckListDetails> {
                                               textAlign: TextAlign.start,
                                               fontWeight: FontWeight.bold)),
                                       Expanded(
-                                          child: getDisabledTextFieldWithoutLookup(
-                                              controller: mncld1
-                                                  .consumptionQtyController,
-                                              height: 30,
-                                              labelText: '')),
+                                          child:
+                                              getDisabledTextFieldWithoutLookup(
+                                                  controller: mncld1
+                                                      .consumptionQtyController,
+                                                  height: 30,
+                                                  labelText: '')),
                                     ],
                                   ),
                                 ),

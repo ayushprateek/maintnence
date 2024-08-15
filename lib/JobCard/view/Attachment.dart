@@ -2,20 +2,10 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:maintenance/Component/AnimatedDialogBox.dart';
-import 'package:maintenance/Component/AppConfig.dart';
-import 'package:maintenance/Component/CustomColor.dart';
 import 'package:maintenance/Component/CustomFont.dart';
-import 'package:maintenance/Component/CustomPickFile.dart';
-import 'package:maintenance/Component/CustomUrlLauncher.dart';
-import 'package:maintenance/Component/CustomViewImage.dart';
 import 'package:maintenance/Component/DownloadFileFromServer.dart';
-import 'package:maintenance/Component/GetTextField.dart';
-import 'package:maintenance/Component/SnackbarComponent.dart';
-import 'package:maintenance/Sync/CustomURL.dart';
 import 'package:maintenance/Sync/SyncModels/MNJCD3.dart';
-import 'package:maintenance/JobCard/view/GeneralData.dart';
+
 class Attachments extends StatefulWidget {
   static List<MNJCD3> attachments = [];
   static String? attachment, docName, rowId, Remarks;
@@ -33,11 +23,11 @@ class Attachments extends StatefulWidget {
 class _AttachmentsState extends State<Attachments> {
   TextEditingController rowId = TextEditingController(text: Attachments.rowId);
   TextEditingController attachment =
-  TextEditingController(text: Attachments.attachment);
+      TextEditingController(text: Attachments.attachment);
   TextEditingController docName =
-  TextEditingController(text: Attachments.docName);
+      TextEditingController(text: Attachments.docName);
   TextEditingController Remarks =
-  TextEditingController(text: Attachments.Remarks);
+      TextEditingController(text: Attachments.Remarks);
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +44,6 @@ class _AttachmentsState extends State<Attachments> {
               const SizedBox(
                 height: 15,
               ),
-
               SizedBox(
                 height: 20,
               ),
@@ -63,10 +52,12 @@ class _AttachmentsState extends State<Attachments> {
                   shrinkWrap: true,
                   physics: ScrollPhysics(),
                   itemBuilder: (context, index) {
-                    if (Attachments.attachments.length > 3 && index<=3)
-                      {
-                        return SizedBox(height: 0,width: 0,);
-                      }
+                    if (Attachments.attachments.length > 3 && index <= 3) {
+                      return SizedBox(
+                        height: 0,
+                        width: 0,
+                      );
+                    }
                     return Container(
                       decoration: BoxDecoration(
                         color: Colors.white,
@@ -90,11 +81,9 @@ class _AttachmentsState extends State<Attachments> {
                             Text.rich(
                               TextSpan(
                                 children: [
-                                  getPoppinsTextSpanHeading(
-                                      text: 'Row ID'),
+                                  getPoppinsTextSpanHeading(text: 'Row ID'),
                                   getPoppinsTextSpanDetails(
-                                      text: Attachments
-                                          .attachments[index].RowId
+                                      text: Attachments.attachments[index].RowId
                                           .toString()),
                                 ],
                               ),
@@ -102,8 +91,7 @@ class _AttachmentsState extends State<Attachments> {
                             Text.rich(
                               TextSpan(
                                 children: [
-                                  getPoppinsTextSpanHeading(
-                                      text: 'Remarks'),
+                                  getPoppinsTextSpanHeading(text: 'Remarks'),
                                   getPoppinsTextSpanDetails(
                                       text: Attachments
                                           .attachments[index].Remarks
@@ -113,30 +101,34 @@ class _AttachmentsState extends State<Attachments> {
                             ),
                             Align(
                               alignment: Alignment.center,
-                              child
-                                  : FutureBuilder(
+                              child: FutureBuilder(
                                   future: downloadFileFromServer(
-                                      path: Attachments.attachments[index].Attachment ??
+                                      path: Attachments
+                                              .attachments[index].Attachment ??
                                           ''),
-                                  builder: (context, AsyncSnapshot<File?> snap) {
+                                  builder:
+                                      (context, AsyncSnapshot<File?> snap) {
                                     if (!snap.hasData || snap.data == null) {
                                       return Padding(
                                         padding: const EdgeInsets.all(8.0),
                                         child: ClipRRect(
-                                            borderRadius: BorderRadius.circular(25),
+                                            borderRadius:
+                                                BorderRadius.circular(25),
                                             child: SizedBox(
-                                                height: Get.height/5,
-                                                child: Image.asset('images/no_image.jpg'))),
+                                                height: Get.height / 5,
+                                                child: Image.asset(
+                                                    'images/no_image.jpg'))),
                                       );
                                     } else {
                                       return Padding(
                                         padding: const EdgeInsets.all(8.0),
                                         child: ClipRRect(
-                                          borderRadius: BorderRadius.circular(25),
+                                          borderRadius:
+                                              BorderRadius.circular(25),
                                           child: Image.file(
                                             snap.data!,
                                             fit: BoxFit.cover,
-                                            height: Get.height/5,
+                                            height: Get.height / 5,
                                           ),
                                         ),
                                       );

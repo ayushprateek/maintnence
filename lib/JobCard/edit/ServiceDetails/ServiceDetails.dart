@@ -179,8 +179,7 @@ class _ServiceDetailsState extends State<ServiceDetails> {
                                                   TextSpan(
                                                     children: [
                                                       getPoppinsTextSpanHeading(
-                                                          text:
-                                                              'Supplier'),
+                                                          text: 'Supplier'),
                                                       getPoppinsTextSpanDetails(
                                                           text: mnjcd2
                                                                   .SupplierName ??
@@ -322,7 +321,8 @@ class _ServiceDetailsState extends State<ServiceDetails> {
                                                 onPressed: () async {
                                                   Navigator.pop(context);
                                                   setState(() {
-                                                    ServiceDetails.items.removeAt(index);
+                                                    ServiceDetails.items
+                                                        .removeAt(index);
                                                   });
                                                 },
                                               ),

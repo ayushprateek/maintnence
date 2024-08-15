@@ -34,7 +34,7 @@ class _ItemDetailsState extends State<ItemDetails> {
                   ),
                 ),
                 onPressed: () {
-                  Get.to(()=>AddItems());
+                  Get.to(() => AddItems());
                   // if (GeneralData.customerCode?.isEmpty==true) {
                   //   getErrorSnackBar("Please select customer to continue");
                   // } else if (GeneralData.WhsCode?.isEmpty==true) {
@@ -160,8 +160,7 @@ class _ItemDetailsState extends State<ItemDetails> {
                                                   TextSpan(
                                                     children: [
                                                       getPoppinsTextSpanHeading(
-                                                          text:
-                                                              'TripTransId'),
+                                                          text: 'TripTransId'),
                                                       getPoppinsTextSpanDetails(
                                                           text:
                                                               item.TripTransId ??
@@ -202,11 +201,9 @@ class _ItemDetailsState extends State<ItemDetails> {
                                                   TextSpan(
                                                     children: [
                                                       getPoppinsTextSpanHeading(
-                                                          text:
-                                                              'To Warehouse'),
+                                                          text: 'To Warehouse'),
                                                       getPoppinsTextSpanDetails(
-                                                          text:
-                                                              item.ToWhsCode),
+                                                          text: item.ToWhsCode),
                                                     ],
                                                   ),
                                                 ),
@@ -247,8 +244,7 @@ class _ItemDetailsState extends State<ItemDetails> {
                                                       getPoppinsTextSpanHeading(
                                                           text: 'UOM'),
                                                       getPoppinsTextSpanDetails(
-                                                          text:
-                                                              item.UOM ?? ''),
+                                                          text: item.UOM ?? ''),
                                                     ],
                                                   ),
                                                 ),
@@ -267,9 +263,8 @@ class _ItemDetailsState extends State<ItemDetails> {
                                                       getPoppinsTextSpanHeading(
                                                           text: 'TruckNo'),
                                                       getPoppinsTextSpanDetails(
-                                                          text:
-                                                              item.TruckNo ??
-                                                                  ''),
+                                                          text: item.TruckNo ??
+                                                              ''),
                                                     ],
                                                   ),
                                                 ),
@@ -286,8 +281,7 @@ class _ItemDetailsState extends State<ItemDetails> {
                                                   TextSpan(
                                                     children: [
                                                       getPoppinsTextSpanHeading(
-                                                          text:
-                                                              'Driver'),
+                                                          text: 'Driver'),
                                                       getPoppinsTextSpanDetails(
                                                           text:
                                                               item.DriverName ??
@@ -340,9 +334,8 @@ class _ItemDetailsState extends State<ItemDetails> {
                                                       getPoppinsTextSpanHeading(
                                                           text: 'Dept'),
                                                       getPoppinsTextSpanDetails(
-                                                          text:
-                                                              item.DeptName ??
-                                                                  ''),
+                                                          text: item.DeptName ??
+                                                              ''),
                                                     ],
                                                   ),
                                                 ),
@@ -383,9 +376,8 @@ class _ItemDetailsState extends State<ItemDetails> {
                                                       getPoppinsTextSpanHeading(
                                                           text: 'Tax Code'),
                                                       getPoppinsTextSpanDetails(
-                                                          text:
-                                                              item.TaxCode ??
-                                                                  ''),
+                                                          text: item.TaxCode ??
+                                                              ''),
                                                     ],
                                                   ),
                                                 ),
@@ -542,10 +534,10 @@ class _ItemDetailsState extends State<ItemDetails> {
                         );
                       },
                     ),
-                    if(ItemDetails.items.isNotEmpty)
-                    SizedBox(
-                      height: MediaQuery.of(context).size.height / 10,
-                    )
+                    if (ItemDetails.items.isNotEmpty)
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height / 10,
+                      )
                   ],
                 ),
               ),

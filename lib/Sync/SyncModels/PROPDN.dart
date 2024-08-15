@@ -420,11 +420,9 @@ Future<String> insertPROPDNToServer(BuildContext? context,
             map["ID"] = model.ID;
             map["has_created"] = 0;
             var x = await db.update("PROPDN", map,
-                where: "TransId = ?",
-                whereArgs: [model.TransId]);
+                where: "TransId = ?", whereArgs: [model.TransId]);
             print(x.toString());
-          } else
-          if (res.statusCode == 201) {
+          } else if (res.statusCode == 201) {
             map['ID'] = jsonDecode(res.body)['ID'];
             final Database db = await initializeDB(context);
             // map=jsonDecode(res.body);

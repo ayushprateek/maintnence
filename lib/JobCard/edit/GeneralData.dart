@@ -137,57 +137,57 @@ class GeneralData extends StatefulWidget {
 
 class _GeneralDataState extends State<GeneralData> {
   final TextEditingController _permanentTransId =
-  TextEditingController(text: GeneralData.permanentTransId);
+      TextEditingController(text: GeneralData.permanentTransId);
   final TextEditingController _transId =
-  TextEditingController(text: GeneralData.transId);
+      TextEditingController(text: GeneralData.transId);
   final TextEditingController _docEntry =
-  TextEditingController(text: GeneralData.docEntry);
+      TextEditingController(text: GeneralData.docEntry);
   final TextEditingController _docNum =
-  TextEditingController(text: GeneralData.docNum);
+      TextEditingController(text: GeneralData.docNum);
   final TextEditingController _docStatus =
-  TextEditingController(text: GeneralData.docStatus);
+      TextEditingController(text: GeneralData.docStatus);
   final TextEditingController _approvalStatus =
-  TextEditingController(text: GeneralData.approvalStatus);
+      TextEditingController(text: GeneralData.approvalStatus);
   final TextEditingController _currentReading =
-  TextEditingController(text: GeneralData.currentReading);
+      TextEditingController(text: GeneralData.currentReading);
   final TextEditingController _difference =
-  TextEditingController(text: GeneralData.difference);
+      TextEditingController(text: GeneralData.difference);
   final TextEditingController _subject =
-  TextEditingController(text: GeneralData.subject);
+      TextEditingController(text: GeneralData.subject);
   final TextEditingController _resolution =
-  TextEditingController(text: GeneralData.resolution);
+      TextEditingController(text: GeneralData.resolution);
   final TextEditingController _checkListStatus =
-  TextEditingController(text: GeneralData.checkListStatus);
+      TextEditingController(text: GeneralData.checkListStatus);
   final TextEditingController _equipmentCode =
-  TextEditingController(text: GeneralData.equipmentCode);
+      TextEditingController(text: GeneralData.equipmentCode);
   final TextEditingController _equipmentName =
-  TextEditingController(text: GeneralData.equipmentName);
+      TextEditingController(text: GeneralData.equipmentName);
   final TextEditingController _checkListCode =
-  TextEditingController(text: GeneralData.checkListCode);
+      TextEditingController(text: GeneralData.checkListCode);
   final TextEditingController _checkListName =
-  TextEditingController(text: GeneralData.checkListName);
+      TextEditingController(text: GeneralData.checkListName);
   final TextEditingController _workCenterCode =
-  TextEditingController(text: GeneralData.workCenterCode);
+      TextEditingController(text: GeneralData.workCenterCode);
   final TextEditingController _workCenterName =
-  TextEditingController(text: GeneralData.workCenterName);
+      TextEditingController(text: GeneralData.workCenterName);
   final TextEditingController _openDate =
-  TextEditingController(text: GeneralData.openDate);
+      TextEditingController(text: GeneralData.openDate);
   final TextEditingController _closeDate =
-  TextEditingController(text: GeneralData.closeDate);
+      TextEditingController(text: GeneralData.closeDate);
   final TextEditingController _postingDate =
-  TextEditingController(text: GeneralData.postingDate);
+      TextEditingController(text: GeneralData.postingDate);
   final TextEditingController _validUntill =
-  TextEditingController(text: GeneralData.validUntill);
+      TextEditingController(text: GeneralData.validUntill);
   final TextEditingController _lastReadingDate =
-  TextEditingController(text: GeneralData.lastReadingDate);
+      TextEditingController(text: GeneralData.lastReadingDate);
   final TextEditingController _lastReading =
-  TextEditingController(text: GeneralData.lastReading);
+      TextEditingController(text: GeneralData.lastReading);
   final TextEditingController _assignedUserCode =
-  TextEditingController(text: GeneralData.assignedUserCode);
+      TextEditingController(text: GeneralData.assignedUserCode);
   final TextEditingController _assignedUserName =
-  TextEditingController(text: GeneralData.assignedUserName);
+      TextEditingController(text: GeneralData.assignedUserName);
   final TextEditingController _remarks =
-  TextEditingController(text: GeneralData.remarks);
+      TextEditingController(text: GeneralData.remarks);
 
   List<String> typeList = ['Preventive', 'Breakdown'];
 
@@ -254,15 +254,15 @@ class _GeneralDataState extends State<GeneralData> {
                     enableLookup: true,
                     onLookupPressed: () {
                       Get.to(() => EquipmentCodeLookup(
-                        onSelection: (OVCLModel ovcl) {
-                          setState(() {
-                            GeneralData.equipmentCode =
-                                _equipmentCode.text = ovcl.Code ?? '';
-                            GeneralData.equipmentName =
-                                _equipmentName.text = ovcl.Name ?? '';
-                          });
-                        },
-                      ));
+                            onSelection: (OVCLModel ovcl) {
+                              setState(() {
+                                GeneralData.equipmentCode =
+                                    _equipmentCode.text = ovcl.Code ?? '';
+                                GeneralData.equipmentName =
+                                    _equipmentName.text = ovcl.Name ?? '';
+                              });
+                            },
+                          ));
                     }),
               // getDisabledTextField(
               //     controller: _checkListCode,
@@ -278,15 +278,15 @@ class _GeneralDataState extends State<GeneralData> {
                     enableLookup: true,
                     onLookupPressed: () {
                       Get.to(() => CheckListCodeLookup(
-                        onSelection: (MNOCLT mnoclm) {
-                          setState(() {
-                            GeneralData.checkListCode =
-                                _checkListCode.text = mnoclm.Code ?? '';
-                            GeneralData.checkListName =
-                                _checkListName.text = mnoclm.Name ?? '';
-                          });
-                        },
-                      ));
+                            onSelection: (MNOCLT mnoclm) {
+                              setState(() {
+                                GeneralData.checkListCode =
+                                    _checkListCode.text = mnoclm.Code ?? '';
+                                GeneralData.checkListName =
+                                    _checkListName.text = mnoclm.Name ?? '';
+                              });
+                            },
+                          ));
                     }),
               // getDisabledTextField(
               //   controller: _workCenterCode,
@@ -305,15 +305,15 @@ class _GeneralDataState extends State<GeneralData> {
                   enableLookup: true,
                   onLookupPressed: () {
                     Get.to(() => WorkCenterLookup(
-                      onSelection: (MNOWCM mnowcm) {
-                        setState(() {
-                          GeneralData.workCenterCode =
-                              _workCenterCode.text = mnowcm.Code ?? '';
-                          GeneralData.workCenterName =
-                              _workCenterName.text = mnowcm.Name ?? '';
-                        });
-                      },
-                    ));
+                          onSelection: (MNOWCM mnowcm) {
+                            setState(() {
+                              GeneralData.workCenterCode =
+                                  _workCenterCode.text = mnowcm.Code ?? '';
+                              GeneralData.workCenterName =
+                                  _workCenterName.text = mnowcm.Name ?? '';
+                            });
+                          },
+                        ));
                   },
                 ),
               getDisabledTextField(

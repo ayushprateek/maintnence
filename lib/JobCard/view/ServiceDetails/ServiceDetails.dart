@@ -20,7 +20,9 @@ class _ServiceDetailsState extends State<ServiceDetails> {
     return SingleChildScrollView(
       child: Column(
         children: [
-          const SizedBox(height: 25,),
+          const SizedBox(
+            height: 25,
+          ),
           Padding(
             padding: const EdgeInsets.only(left: 8.0, right: 8, bottom: 8),
             child: Container(
@@ -63,20 +65,16 @@ class _ServiceDetailsState extends State<ServiceDetails> {
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Row(
-                              crossAxisAlignment:
-                                  CrossAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Expanded(
                                   flex: 8,
                                   child: Column(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
                                       Padding(
                                         padding: const EdgeInsets.only(
-                                            left: 8.0,
-                                            right: 8.0,
-                                            top: 4.0),
+                                            left: 8.0, right: 8.0, top: 4.0),
                                         child: Align(
                                           alignment: Alignment.topLeft,
                                           child: Text.rich(
@@ -85,8 +83,7 @@ class _ServiceDetailsState extends State<ServiceDetails> {
                                                 getPoppinsTextSpanHeading(
                                                     text: 'Service Name'),
                                                 getPoppinsTextSpanDetails(
-                                                    text: mnjcd2
-                                                            .ServiceName ??
+                                                    text: mnjcd2.ServiceName ??
                                                         ''),
                                               ],
                                             ),
@@ -95,20 +92,16 @@ class _ServiceDetailsState extends State<ServiceDetails> {
                                       ),
                                       Padding(
                                         padding: const EdgeInsets.only(
-                                            left: 8.0,
-                                            right: 8.0,
-                                            top: 4.0),
+                                            left: 8.0, right: 8.0, top: 4.0),
                                         child: Align(
                                           alignment: Alignment.topLeft,
                                           child: Text.rich(
                                             TextSpan(
                                               children: [
                                                 getPoppinsTextSpanHeading(
-                                                    text:
-                                                        'Supplier'),
+                                                    text: 'Supplier'),
                                                 getPoppinsTextSpanDetails(
-                                                    text: mnjcd2
-                                                            .SupplierName ??
+                                                    text: mnjcd2.SupplierName ??
                                                         ''),
                                               ],
                                             ),
@@ -121,14 +114,11 @@ class _ServiceDetailsState extends State<ServiceDetails> {
                                 Expanded(
                                   flex: 8,
                                   child: Column(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
                                       Padding(
                                         padding: const EdgeInsets.only(
-                                            left: 8.0,
-                                            right: 8.0,
-                                            top: 4.0),
+                                            left: 8.0, right: 8.0, top: 4.0),
                                         child: Align(
                                           alignment: Alignment.topLeft,
                                           child: FittedBox(
@@ -159,18 +149,14 @@ class _ServiceDetailsState extends State<ServiceDetails> {
                                                 MainAxisAlignment.start,
                                             children: [
                                               Checkbox(
-                                                value:
-                                                    mnjcd2.IsSendableItem,
-                                                onChanged: (bool? value) {
-
-                                                },
+                                                value: mnjcd2.IsSendableItem,
+                                                onChanged: (bool? value) {},
                                               ),
                                               Expanded(
                                                   child: getPoppinsText(
-                                                      text:
-                                                          'Is Sendable Item',
-                                                      textAlign: TextAlign
-                                                          .start)),
+                                                      text: 'Is Sendable Item',
+                                                      textAlign:
+                                                          TextAlign.start)),
                                             ],
                                           ),
                                         ),

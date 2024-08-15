@@ -384,11 +384,9 @@ Future<String> insertMNOJCDToServer(BuildContext? context,
           map["ID"] = model.ID;
           map["has_created"] = 0;
           var x = await db.update("MNOJCD", map,
-              where: "TransId = ?",
-              whereArgs: [model.TransId]);
+              where: "TransId = ?", whereArgs: [model.TransId]);
           print(x.toString());
-        } else
-        if (res.statusCode == 201 || res.statusCode == 500) {
+        } else if (res.statusCode == 201 || res.statusCode == 500) {
           sentSuccessInServer = true;
           if (res.statusCode == 201) {
             map['ID'] = jsonDecode(res.body)['ID'];

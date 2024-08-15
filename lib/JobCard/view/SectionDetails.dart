@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:maintenance/Component/CustomColor.dart';
 import 'package:maintenance/Component/GetTextField.dart';
 import 'package:maintenance/Sync/SyncModels/MNJCD7.dart';
 
@@ -28,7 +27,6 @@ class _SectionDetailsState extends State<SectionDetails> {
               const SizedBox(
                 height: 25,
               ),
-
               ListView.builder(
                   itemCount: SectionDetails.list.length,
                   shrinkWrap: true,
@@ -56,8 +54,7 @@ class _SectionDetailsState extends State<SectionDetails> {
                             padding: const EdgeInsets.all(8.0),
                             child: getDisabledTextFieldWithoutLookup(
                                 controller: TextEditingController(
-                                    text:
-                                        SectionDetails.list[index].Section),
+                                    text: SectionDetails.list[index].Section),
                                 onChanged: (val) {
                                   SectionDetails.list[index].Section = val;
                                 },
@@ -67,8 +64,7 @@ class _SectionDetailsState extends State<SectionDetails> {
                             padding: const EdgeInsets.all(8.0),
                             child: getDisabledTextFieldWithoutLookup(
                                 controller: TextEditingController(
-                                    text:
-                                        SectionDetails.list[index].Remarks),
+                                    text: SectionDetails.list[index].Remarks),
                                 onChanged: (val) {
                                   SectionDetails.list[index].Remarks = val;
                                 },

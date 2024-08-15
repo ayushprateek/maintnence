@@ -1,20 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:maintenance/CheckListDocument/create/CheckListDetails/CheckListDetails.dart';
-import 'package:maintenance/CheckListDocument/create/CheckListDetails/EditCheckList.dart';
 import 'package:maintenance/Component/CustomColor.dart';
 import 'package:maintenance/Component/CustomFont.dart';
 import 'package:maintenance/Component/GetTextField.dart';
-import 'package:maintenance/Component/SnackbarComponent.dart';
-import 'package:maintenance/Sync/SyncModels/OITM.dart';
 import 'package:maintenance/Sync/SyncModels/OUOM.dart';
-
 
 class UOMLookup extends StatefulWidget {
   Function(OUOMModel) onSelected;
-  UOMLookup({
-    required this.onSelected
-});
+
+  UOMLookup({required this.onSelected});
 
   @override
   _UOMLookupState createState() => _UOMLookupState();
@@ -70,10 +64,8 @@ class _UOMLookupState extends State<UOMLookup> {
                       flex: 3,
                       child: getTextFieldWithoutLookup(
                         controller: _query,
-                        onChanged: (val){
-                          setState(() {
-
-                          });
+                        onChanged: (val) {
+                          setState(() {});
                         },
                         labelText: 'Search',
                         suffixIcon: IconButton(
@@ -132,10 +124,8 @@ class _UOMLookupState extends State<UOMLookup> {
             ),
             FutureBuilder(
                 future: retrieveOUOMForSearch(
-                    query: _query.text,
-                    limit: _currentMax),
-                builder: (context,
-                    AsyncSnapshot<List<OUOMModel>> snapshot) {
+                    query: _query.text, limit: _currentMax),
+                builder: (context, AsyncSnapshot<List<OUOMModel>> snapshot) {
                   if (!snapshot.hasData) return Container();
                   if (snapshot.data?.isEmpty == true) {
                     return AlertDialog(
@@ -202,11 +192,10 @@ class _UOMLookupState extends State<UOMLookup> {
                               return Container();
                             }
                             return InkWell(
-                              onDoubleTap: (){
+                              onDoubleTap: () {
                                 widget.onSelected(snapshot.data![index]);
                                 Get.back();
                               },
-
                               child: Container(
                                 decoration: BoxDecoration(
                                   color: Colors.white,
@@ -228,26 +217,28 @@ class _UOMLookupState extends State<UOMLookup> {
                                     children: [
                                       Flexible(
                                         child: Padding(
-                                          padding: const EdgeInsets.only(
-                                              left: 8.0),
+                                          padding:
+                                              const EdgeInsets.only(left: 8.0),
                                           child: Align(
                                             alignment: Alignment.topLeft,
                                             child: getHeadingText(
-                                              text: snapshot.data![index]
-                                                  .UomCode??"",
+                                              text: snapshot
+                                                      .data![index].UomCode ??
+                                                  "",
                                             ),
                                           ),
                                         ),
                                       ),
                                       Flexible(
                                         child: Padding(
-                                          padding: const EdgeInsets.only(
-                                              right: 8.0),
+                                          padding:
+                                              const EdgeInsets.only(right: 8.0),
                                           child: Align(
                                             alignment: Alignment.centerLeft,
                                             child: getSubHeadingText(
                                               text: snapshot
-                                                  .data![index].UomName??'',
+                                                      .data![index].UomName ??
+                                                  '',
                                             ),
                                           ),
                                         ),

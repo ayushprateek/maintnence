@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:maintenance/Component/BackPressedWarning.dart';
 import 'package:maintenance/Component/ClearTextFieldData.dart';
@@ -14,11 +13,10 @@ import 'package:maintenance/Component/ShowLoader.dart';
 import 'package:maintenance/Component/SnackbarComponent.dart';
 import 'package:maintenance/Dashboard.dart';
 import 'package:maintenance/DatabaseInitialization.dart';
-import 'package:maintenance/Purchase/PurchaseOrder/edit/GeneralData.dart';
-import 'package:maintenance/Purchase/PurchaseOrder/edit/ItemDetails/ItemDetails.dart';
 import 'package:maintenance/Purchase/PurchaseOrder/edit/Address/BillingAddress.dart';
 import 'package:maintenance/Purchase/PurchaseOrder/edit/Address/ShippingAddress.dart';
-
+import 'package:maintenance/Purchase/PurchaseOrder/edit/GeneralData.dart';
+import 'package:maintenance/Purchase/PurchaseOrder/edit/ItemDetails/ItemDetails.dart';
 import 'package:maintenance/Sync/DataSync.dart';
 import 'package:maintenance/Sync/SyncModels/PROPOR.dart';
 import 'package:maintenance/Sync/SyncModels/PRPOR1.dart';
@@ -118,18 +116,18 @@ class _JobCardState extends State<EditPurchaseOrder> {
                         )),
                         Tab(
                             child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(
-                                "Shipping Address",
-                              ),
-                            )),
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            "Shipping Address",
+                          ),
+                        )),
                         Tab(
                             child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(
-                                "Billing Address",
-                              ),
-                            )),
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            "Billing Address",
+                          ),
+                        )),
                       ],
                     ),
                   ],

@@ -91,8 +91,10 @@ class _AttachmentsState extends State<Attachments> {
                               onPressed: () async {
                                 Attachments.imageFile =
                                     await customPickImage(ImageSource.camera);
-                                rowId.text=Attachments.attachments.length.toString();
-                                Attachments.attachment=attachment.text=Attachments.imageFile?.path??'';
+                                rowId.text =
+                                    Attachments.attachments.length.toString();
+                                Attachments.attachment = attachment.text =
+                                    Attachments.imageFile?.path ?? '';
 
                                 setState(() {});
                                 Get.back();
@@ -144,12 +146,17 @@ class _AttachmentsState extends State<Attachments> {
                         padding: const EdgeInsets.all(8.0),
                         child: Row(
                           children: [
-                            Icon(Icons.folder,color: folderColor,),
+                            Icon(
+                              Icons.folder,
+                              color: folderColor,
+                            ),
                             Flexible(
                                 child: Padding(
                               padding: const EdgeInsets.all(8.0),
-                              child: Text(Attachments.attachment ?? '',
-                              style: TextStyle(color: Colors.blue),),
+                              child: Text(
+                                Attachments.attachment ?? '',
+                                style: TextStyle(color: Colors.blue),
+                              ),
                             )),
                             IconButton(
                               icon: Icon(
@@ -223,16 +230,14 @@ class _AttachmentsState extends State<Attachments> {
                               if (Attachments.attachment != null &&
                                   Attachments.attachment != "") {
                                 setState(() {
-
-
                                   Attachments.attachments.add(MNCLD2(
-                                      ID: 0,
-                                      TransId: GeneralData.transId ?? "",
-                                      RowId: Attachments.attachments.length,
-                                      Attachment: Attachments.imageFile?.path,
-                                      Remarks: Remarks.text,
-                                      CreateDate: DateTime.now(),
-                                      ));
+                                    ID: 0,
+                                    TransId: GeneralData.transId ?? "",
+                                    RowId: Attachments.attachments.length,
+                                    Attachment: Attachments.imageFile?.path,
+                                    Remarks: Remarks.text,
+                                    CreateDate: DateTime.now(),
+                                  ));
                                   //Attachment.documentPaths.add(Attachments.attachment ?? "");
                                   // Attachment.documentPaths.add(
                                   //     Attachments.attachment ?? "");
@@ -241,10 +246,8 @@ class _AttachmentsState extends State<Attachments> {
                                   rowId.clear();
                                   attachment.clear();
                                   Remarks.clear();
-
                                 });
-                              }
-                              else {
+                              } else {
                                 getErrorSnackBar("Please select a document");
                               }
                             },

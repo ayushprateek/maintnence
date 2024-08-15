@@ -1,14 +1,13 @@
 import 'dart:convert';
 
 import 'package:geolocator/geolocator.dart';
-import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:maintenance/Component/CheckInternet.dart';
 import 'package:maintenance/Component/LogFileFunctions.dart';
 import 'package:maintenance/Sync/CustomURL.dart';
 
 Future<Position> getCurrentLocation() async {
-   await Geolocator.requestPermission();
+  await Geolocator.requestPermission();
   Position position = await Geolocator.getCurrentPosition();
   // Position position = await GeolocatorPlatform.instance
   //     .getCurrentPosition();
@@ -27,7 +26,10 @@ Future<String> getCurrentAddress() async {
       location = address.results[0].formattedAddress.toString();
     }
   } catch (e) {
-    writeToLogFile(text: e.toString(), fileName: StackTrace.current.toString(), lineNo: 141);
+    writeToLogFile(
+        text: e.toString(),
+        fileName: StackTrace.current.toString(),
+        lineNo: 141);
   }
   return location;
 }

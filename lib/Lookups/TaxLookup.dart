@@ -236,7 +236,8 @@ class _VehicleCodeLookupState extends State<TaxLookup> {
                                           child: Align(
                                             alignment: Alignment.centerLeft,
                                             child: getSubHeadingText(
-                                              text: snapshot.data![index].Rate.toStringAsFixed(2),
+                                              text: snapshot.data![index].Rate
+                                                  .toStringAsFixed(2),
                                             ),
                                           ),
                                         ),

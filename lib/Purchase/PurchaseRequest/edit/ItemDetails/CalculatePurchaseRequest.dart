@@ -1,6 +1,5 @@
 import 'package:maintenance/Component/CompanyDetails.dart';
 import 'package:maintenance/Component/IsNumeric.dart';
-import 'package:maintenance/Purchase/PurchaseRequest/edit/GeneralData.dart';
 import 'package:maintenance/Purchase/PurchaseRequest/edit/ItemDetails/ItemDetails.dart';
 import 'package:maintenance/Sync/SyncModels/PRPRQ1.dart';
 
@@ -11,27 +10,27 @@ void calculatePurchaseRequest() {
     double price = roundToTwoDecimal(prprq1.Price);
     double msp = roundToTwoDecimal(prprq1.MSP);
     discount += roundToTwoDecimal(prprq1.Discount);
-    sum +=
-        (roundToTwoDecimal(prprq1.Price)) * (roundToTwoDecimal(prprq1.Quantity));
+    sum += (roundToTwoDecimal(prprq1.Price)) *
+        (roundToTwoDecimal(prprq1.Quantity));
     double total_tax = 0.0;
     if (CompanyDetails.ocinModel?.IsMtv == true) {
       if (price > msp) {
         total_tax = (((roundToTwoDecimal(prprq1.Price)) *
-            (roundToTwoDecimal(prprq1.Quantity))) -
-            (roundToTwoDecimal(prprq1.Discount))) *
+                    (roundToTwoDecimal(prprq1.Quantity))) -
+                (roundToTwoDecimal(prprq1.Discount))) *
             (roundToTwoDecimal(prprq1.TaxRate)) /
             100;
       } else {
         total_tax = (((roundToTwoDecimal(prprq1.MSP)) *
-            (roundToTwoDecimal(prprq1.Quantity))) -
-            (roundToTwoDecimal(prprq1.Discount))) *
+                    (roundToTwoDecimal(prprq1.Quantity))) -
+                (roundToTwoDecimal(prprq1.Discount))) *
             (roundToTwoDecimal(prprq1.TaxRate)) /
             100;
       }
     } else {
       total_tax = (((roundToTwoDecimal(prprq1.Price)) *
-          (roundToTwoDecimal(prprq1.Quantity))) -
-          (roundToTwoDecimal(prprq1.Discount))) *
+                  (roundToTwoDecimal(prprq1.Quantity))) -
+              (roundToTwoDecimal(prprq1.Discount))) *
           (roundToTwoDecimal(prprq1.TaxRate)) /
           100;
     }

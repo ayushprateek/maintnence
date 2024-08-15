@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:maintenance/CheckListDocument/edit/CheckListDocument.dart';
-import 'package:maintenance/CheckListDocument/view/CheckListDocument.dart';
 import 'package:maintenance/Component/ClearTextFieldData.dart';
 import 'package:maintenance/Component/Common.dart';
 import 'package:maintenance/Component/CustomColor.dart';
@@ -386,8 +383,8 @@ class _SearchCheckListDocState extends State<SearchCheckListDoc> {
                                             getPoppinsTextSpanHeading(
                                                 text: 'TransId'),
                                             getPoppinsTextSpanDetails(
-                                                text: snapshot.data![index]
-                                                        .TransId ??
+                                                text: snapshot
+                                                        .data![index].TransId ??
                                                     ''),
                                           ],
                                         ),
@@ -416,9 +413,8 @@ class _SearchCheckListDocState extends State<SearchCheckListDoc> {
                                             getPoppinsTextSpanHeading(
                                                 text: 'Posting Date'),
                                             getPoppinsTextSpanDetails(
-                                                text: getFormattedDate(
-                                                    snapshot.data![index]
-                                                        .PostingDate)),
+                                                text: getFormattedDate(snapshot
+                                                    .data![index].PostingDate)),
                                           ],
                                         ),
                                       ),
@@ -428,9 +424,8 @@ class _SearchCheckListDocState extends State<SearchCheckListDoc> {
                                             getPoppinsTextSpanHeading(
                                                 text: 'Valid Until'),
                                             getPoppinsTextSpanDetails(
-                                                text: getFormattedDate(
-                                                    snapshot.data![index]
-                                                        .ValidUntill)),
+                                                text: getFormattedDate(snapshot
+                                                    .data![index].ValidUntill)),
                                           ],
                                         ),
                                       ),
@@ -455,8 +450,8 @@ class _SearchCheckListDocState extends State<SearchCheckListDoc> {
                                                                 .DocStatus ==
                                                             ""
                                                     ? ""
-                                                    : snapshot.data![index]
-                                                        .DocStatus
+                                                    : snapshot
+                                                        .data![index].DocStatus
                                                         .toString()),
                                           ],
                                         ),
@@ -491,7 +486,10 @@ class _SearchCheckListDocState extends State<SearchCheckListDoc> {
                                       child: InkWell(
                                     onTap: () {
                                       navigateToCheckListDocument(
-                                          TransId: snapshot.data![index].TransId ?? '',isView: true);
+                                          TransId:
+                                              snapshot.data![index].TransId ??
+                                                  '',
+                                          isView: true);
                                     },
                                     child: getPoppinsText(
                                         text: 'View',
@@ -503,7 +501,10 @@ class _SearchCheckListDocState extends State<SearchCheckListDoc> {
                                       child: InkWell(
                                     onTap: () {
                                       navigateToCheckListDocument(
-                                          TransId: snapshot.data![index].TransId ?? '',isView: false);
+                                          TransId:
+                                              snapshot.data![index].TransId ??
+                                                  '',
+                                          isView: false);
                                     },
                                     child: getPoppinsText(
                                         text: 'Edit',

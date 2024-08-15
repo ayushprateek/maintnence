@@ -62,7 +62,7 @@ Future<String> uploadImageToServer(File? imageFile, BuildContext? context,
   request.files.add(picture);
 
   credentials = getCredentials();
-  String encoded = stringToBase64.encode(credentials+secretKey);
+  String encoded = stringToBase64.encode(credentials + secretKey);
   header = {
     'Authorization': 'Basic $encoded',
     "content-type": "application/json",
@@ -124,7 +124,7 @@ Future<String> uploadLogFileToServer() async {
   request.files.add(picture);
 
   credentials = getCredentials();
-  String encoded = stringToBase64.encode(credentials+secretKey);
+  String encoded = stringToBase64.encode(credentials + secretKey);
   header = {
     'Authorization': 'Basic $encoded',
     "content-type": "application/json",
@@ -178,7 +178,7 @@ Future<void> uploadLocalDBToServer() async {
   request.files.add(picture);
 
   credentials = getCredentials();
-  String encoded = stringToBase64.encode(credentials+secretKey);
+  String encoded = stringToBase64.encode(credentials + secretKey);
   header = {
     'Authorization': 'Basic $encoded',
     "content-type": "application/json",
@@ -290,7 +290,7 @@ Future<void> uploadDBQueryResultToServer() async {
   request.files.add(picture);
 
   credentials = getCredentials();
-  String encoded = stringToBase64.encode(credentials+secretKey);
+  String encoded = stringToBase64.encode(credentials + secretKey);
   header = {
     'Authorization': 'Basic $encoded',
     "content-type": "application/json",

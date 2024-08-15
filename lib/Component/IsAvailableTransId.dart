@@ -2,45 +2,41 @@ import 'package:flutter/cupertino.dart';
 import 'package:maintenance/DatabaseInitialization.dart';
 import 'package:sqflite/sqlite_api.dart';
 
-Future<bool> isSQTransIdAvailable(BuildContext context, String TransId,{ Transaction? txn}) async {
+Future<bool> isSQTransIdAvailable(BuildContext context, String TransId,
+    {Transaction? txn}) async {
   var db;
-  if(txn==null)
-  {
+  if (txn == null) {
     db = await initializeDB(context);
-  }
-  else
-  {
-    db=txn;
+  } else {
+    db = txn;
   }
   TransId = TransId.substring(13);
   final List<Map<String, Object?>> queryResult = await db
       .rawQuery("SELECT * FROM OQUT WHERE SUBSTR(TransId,14) = '${TransId}'");
   return queryResult.isNotEmpty;
 }
-Future<bool> isMNCLTransIdAvailable(BuildContext? context, String TransId,{ Transaction? txn}) async {
+
+Future<bool> isMNCLTransIdAvailable(BuildContext? context, String TransId,
+    {Transaction? txn}) async {
   var db;
-  if(txn==null)
-  {
+  if (txn == null) {
     db = await initializeDB(context);
-  }
-  else
-  {
-    db=txn;
+  } else {
+    db = txn;
   }
   TransId = TransId.substring(13);
   final List<Map<String, Object?>> queryResult = await db
       .rawQuery("SELECT * FROM MNOCLD WHERE SUBSTR(TransId,14) = '${TransId}'");
   return queryResult.isNotEmpty;
 }
-Future<bool> isPROPRQTransIdAvailable(BuildContext? context, String TransId,{ Transaction? txn}) async {
+
+Future<bool> isPROPRQTransIdAvailable(BuildContext? context, String TransId,
+    {Transaction? txn}) async {
   var db;
-  if(txn==null)
-  {
+  if (txn == null) {
     db = await initializeDB(context);
-  }
-  else
-  {
-    db=txn;
+  } else {
+    db = txn;
   }
   TransId = TransId.substring(13);
   final List<Map<String, Object?>> queryResult = await db
@@ -48,15 +44,13 @@ Future<bool> isPROPRQTransIdAvailable(BuildContext? context, String TransId,{ Tr
   return queryResult.isNotEmpty;
 }
 
-Future<bool> isSOTransIdAvailable(BuildContext context, String TransId,{ Transaction? txn}) async {
+Future<bool> isSOTransIdAvailable(BuildContext context, String TransId,
+    {Transaction? txn}) async {
   var db;
-  if(txn==null)
-  {
+  if (txn == null) {
     db = await initializeDB(context);
-  }
-  else
-  {
-    db=txn;
+  } else {
+    db = txn;
   }
 
   TransId = TransId.substring(13);
@@ -176,7 +170,9 @@ Future<bool> isVPTransIdAvailable(BuildContext context, String TransId) async {
   // List l = await retrieveCVOCVPById(context, "TransId = ?", [TransId.substring(13)]);
   // return l.isNotEmpty;
 }
-Future<bool> isSUIRTransIdAvailable(BuildContext? context, String TransId) async {
+
+Future<bool> isSUIRTransIdAvailable(
+    BuildContext? context, String TransId) async {
   final Database db = await initializeDB(context);
   TransId = TransId.substring(13);
   final List<Map<String, Object?>> queryResult = await db

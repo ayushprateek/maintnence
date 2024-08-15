@@ -43,7 +43,8 @@ class _SectionDetailsState extends State<SectionDetails> {
                     ),
                     onPressed: () {
                       setState(() {
-                        SectionDetails.list.add(MNJCD7(insertedIntoDatabase: false));
+                        SectionDetails.list
+                            .add(MNJCD7(insertedIntoDatabase: false));
                       });
                     },
                   ),

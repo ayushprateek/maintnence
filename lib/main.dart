@@ -8,33 +8,24 @@ import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
-import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:maintenance/Component/AppConfig.dart';
-import 'package:maintenance/Component/ClearTextFieldData.dart';
 import 'package:maintenance/Component/CustomColor.dart';
-import 'package:maintenance/Component/CustomPickFile.dart';
 import 'package:maintenance/Component/GetCredentials.dart';
-import 'package:maintenance/Component/GetLastDocNum.dart';
-import 'package:maintenance/Component/IsAvailableTransId.dart';
-import 'package:maintenance/Component/IsValidAppVersion.dart';
 import 'package:maintenance/Component/LogFileFunctions.dart';
-import 'package:maintenance/Component/SnackbarComponent.dart';
 import 'package:maintenance/Dashboard.dart';
 import 'package:maintenance/LoginPage.dart';
-
 import 'package:maintenance/Sync/CustomURL.dart';
 import 'package:maintenance/Sync/DataSync.dart';
 import 'package:maintenance/Sync/SyncModels/ACT1.dart';
 import 'package:maintenance/Sync/SyncModels/OCIN.dart';
 import 'package:maintenance/Sync/SyncModels/OCINMetaData.dart';
 import 'package:maintenance/Sync/SyncModels/OUSR.dart';
-import 'package:maintenance/Sync/SyncModels/SUISU1.dart';
-
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:workmanager/workmanager.dart';
+
 // GoRouter _appRoute = GoRouter(routes: <RouteBase>[
 //   GoRoute(
 //     path: "/",
@@ -181,7 +172,10 @@ Future<void> main() async {
   try {
     localStorage = await SharedPreferences.getInstance();
   } catch (e) {
-    writeToLogFile(text: e.toString(), fileName: StackTrace.current.toString(), lineNo: 141);
+    writeToLogFile(
+        text: e.toString(),
+        fileName: StackTrace.current.toString(),
+        lineNo: 141);
     print(e.toString());
   }
 
@@ -200,10 +194,10 @@ Future<void> main() async {
       Uri.parse(
         prefix + 'ocin/metadata',
       ),
-
     );
     print(response.body);
-    OCINMetaDataModel ocinMetaDataModel=OCINMetaDataModel.fromJson(jsonDecode(response.body));
+    OCINMetaDataModel ocinMetaDataModel =
+        OCINMetaDataModel.fromJson(jsonDecode(response.body));
     List<OCINMetaDataModel> list = [ocinMetaDataModel];
     if (list.isNotEmpty) {
       OCINMetaDataModel ocinModel = list[0];
@@ -343,24 +337,25 @@ Future<void> main() async {
           debugShowCheckedModeBanner: false,
           // navigatorKey:globalKey,
           navigatorObservers: [routeObserver],
-          theme: ThemeData(primarySwatch: colorCustom, hintColor: barColor,
-          appBarTheme: AppBarTheme(
-            backgroundColor: barColor,
-            iconTheme: IconThemeData(
-              color: Colors.white,
-            ),
-            titleTextStyle: GoogleFonts.poppins(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-              color: Colors.white,
-            )
-          ),
-          buttonTheme: ButtonThemeData(
-            buttonColor: barColor,
-          ),
-          iconTheme: IconThemeData(
-            color: Colors.white,
-          )),
+          theme: ThemeData(
+              primarySwatch: colorCustom,
+              hintColor: barColor,
+              appBarTheme: AppBarTheme(
+                  backgroundColor: barColor,
+                  iconTheme: IconThemeData(
+                    color: Colors.white,
+                  ),
+                  titleTextStyle: GoogleFonts.poppins(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  )),
+              buttonTheme: ButtonThemeData(
+                buttonColor: barColor,
+              ),
+              iconTheme: IconThemeData(
+                color: Colors.white,
+              )),
 
           home: Provider<RouteObserver>(
             create: (_) => routeObserver,
@@ -402,7 +397,9 @@ class _MyAppState extends State<MyApp> {
     if (loginTime != null) {
       print(currentTime.difference(loginTime).inMinutes);
     }
-    if (loginTime == null || currentTime.difference(loginTime).inMinutes > (MobSessionTimoutMinute??45)) {
+    if (loginTime == null ||
+        currentTime.difference(loginTime).inMinutes >
+            (MobSessionTimoutMinute ?? 45)) {
       // setCredentials(credentials: '');
       Timer(
           Duration(milliseconds: 500),
@@ -411,16 +408,15 @@ class _MyAppState extends State<MyApp> {
     } else {
       String user = localStorage?.getString('user') ?? '';
       userModel = OUSRModel.fromJson(jsonDecode(user));
-      List<OUSRModel> ousrList=await retrieveOUSRById(null, 'UserCode = ?', [userModel.UserCode]);
-      if(ousrList.isNotEmpty)
-        {
-          userModel=ousrList[0];
-        }
+      List<OUSRModel> ousrList =
+          await retrieveOUSRById(null, 'UserCode = ?', [userModel.UserCode]);
+      if (ousrList.isNotEmpty) {
+        userModel = ousrList[0];
+      }
       Timer(
           Duration(milliseconds: 500),
-              () => Navigator.pushReplacement(context,
+          () => Navigator.pushReplacement(context,
               new MaterialPageRoute(builder: (context) => new Dashboard())));
-
     }
     // if (userModel.UserCode.isNotEmpty) {
     //   Timer(Duration(milliseconds: 500), () async {

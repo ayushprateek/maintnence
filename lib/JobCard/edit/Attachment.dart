@@ -12,9 +12,10 @@ import 'package:maintenance/Component/CustomUrlLauncher.dart';
 import 'package:maintenance/Component/CustomViewImage.dart';
 import 'package:maintenance/Component/GetTextField.dart';
 import 'package:maintenance/Component/SnackbarComponent.dart';
+import 'package:maintenance/JobCard/edit/GeneralData.dart';
 import 'package:maintenance/Sync/CustomURL.dart';
 import 'package:maintenance/Sync/SyncModels/MNJCD3.dart';
-import 'package:maintenance/JobCard/edit/GeneralData.dart';
+
 class Attachments extends StatefulWidget {
   static List<MNJCD3> attachments = [];
   static String? attachment, docName, rowId, Remarks;
@@ -32,11 +33,11 @@ class Attachments extends StatefulWidget {
 class _AttachmentsState extends State<Attachments> {
   TextEditingController rowId = TextEditingController(text: Attachments.rowId);
   TextEditingController attachment =
-  TextEditingController(text: Attachments.attachment);
+      TextEditingController(text: Attachments.attachment);
   TextEditingController docName =
-  TextEditingController(text: Attachments.docName);
+      TextEditingController(text: Attachments.docName);
   TextEditingController Remarks =
-  TextEditingController(text: Attachments.Remarks);
+      TextEditingController(text: Attachments.Remarks);
 
   @override
   Widget build(BuildContext context) {
@@ -68,99 +69,106 @@ class _AttachmentsState extends State<Attachments> {
                 },
               ),
               Attachments.attachment == null ||
-                  Attachments.attachment == "" ||
-                  Attachments.attachment == "null"
+                      Attachments.attachment == "" ||
+                      Attachments.attachment == "null"
                   ? getDisabledTextField(
-                controller: attachment,
-                labelText: 'File',
-                onChanged: (value) {
-                  Attachments.attachment = value;
-                },
-                onTap: () async {
-                  await AnimatedDialogBox.showScaleAlertBox(
-                      title: Center(child: Text("Upload Document")),
-                      // IF YOU WANT TO ADD
-                      context: context,
-                      firstButton: MaterialButton(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(40),
-                        ),
-                        color: Colors.white,
-                        child: Text('Camera'),
-                        onPressed: () async {
-                          Attachments.imageFile =
-                          await customPickImage(ImageSource.camera);
-                          rowId.text=Attachments.attachments.length.toString();
-                          Attachments.attachment=attachment.text=Attachments.imageFile?.path??'';
+                      controller: attachment,
+                      labelText: 'File',
+                      onChanged: (value) {
+                        Attachments.attachment = value;
+                      },
+                      onTap: () async {
+                        await AnimatedDialogBox.showScaleAlertBox(
+                            title: Center(child: Text("Upload Document")),
+                            // IF YOU WANT TO ADD
+                            context: context,
+                            firstButton: MaterialButton(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(40),
+                              ),
+                              color: Colors.white,
+                              child: Text('Camera'),
+                              onPressed: () async {
+                                Attachments.imageFile =
+                                    await customPickImage(ImageSource.camera);
+                                rowId.text =
+                                    Attachments.attachments.length.toString();
+                                Attachments.attachment = attachment.text =
+                                    Attachments.imageFile?.path ?? '';
 
-                          setState(() {});
-                          Get.back();
-                        },
-                      ),
-                      secondButton: MaterialButton(
-                        // FIRST BUTTON IS REQUIRED
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(40),
-                        ),
-                        color: barColor,
-                        child: Text(
-                          'Device storage',
-                          style: TextStyle(color: Colors.white),
-                        ),
-                        onPressed: () async {
-                          File? selectedFile =
-                          await customPickImage(ImageSource.gallery);
-                          Get.back();
-                        },
-                      ),
-                      icon: Icon(
-                        Icons.upload_rounded,
-                        color: barColor,
-                      ),
-                      // IF YOU WANT TO ADD ICON
-                      yourWidget: Container(
-                        child: Text('How do you want to upload?'),
-                      ));
-                },
-              )
+                                setState(() {});
+                                Get.back();
+                              },
+                            ),
+                            secondButton: MaterialButton(
+                              // FIRST BUTTON IS REQUIRED
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(40),
+                              ),
+                              color: barColor,
+                              child: Text(
+                                'Device storage',
+                                style: TextStyle(color: Colors.white),
+                              ),
+                              onPressed: () async {
+                                File? selectedFile =
+                                    await customPickImage(ImageSource.gallery);
+                                Get.back();
+                              },
+                            ),
+                            icon: Icon(
+                              Icons.upload_rounded,
+                              color: barColor,
+                            ),
+                            // IF YOU WANT TO ADD ICON
+                            yourWidget: Container(
+                              child: Text('How do you want to upload?'),
+                            ));
+                      },
+                    )
                   : InkWell(
-                onTap: () {
-                  if (Attachments.attachment != null) {
-                    if (Attachments.attachment!.contains(appPkg)) {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => CustomViewImage(
-                                  imageFile:
-                                  File(Attachments.attachment!))));
-                    } else {
-                      customLaunchURL(prefix +
-                          Attachments.attachment!.replaceAll("\\", "/"));
-                    }
-                  }
-                },
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    children: [
-                      Icon(Icons.folder,color: folderColor,),
-                      Flexible(
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text(Attachments.attachment ?? '',
-                              style: TextStyle(color: Colors.blue),),
-                          )),
-                      IconButton(
-                        icon: Icon(
-                          Icons.select_all,
-                          color: Colors.white,
+                      onTap: () {
+                        if (Attachments.attachment != null) {
+                          if (Attachments.attachment!.contains(appPkg)) {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => CustomViewImage(
+                                        imageFile:
+                                            File(Attachments.attachment!))));
+                          } else {
+                            customLaunchURL(prefix +
+                                Attachments.attachment!.replaceAll("\\", "/"));
+                          }
+                        }
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          children: [
+                            Icon(
+                              Icons.folder,
+                              color: folderColor,
+                            ),
+                            Flexible(
+                                child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(
+                                Attachments.attachment ?? '',
+                                style: TextStyle(color: Colors.blue),
+                              ),
+                            )),
+                            IconButton(
+                              icon: Icon(
+                                Icons.select_all,
+                                color: Colors.white,
+                              ),
+                              onPressed: null,
+                            ),
+                          ],
                         ),
-                        onPressed: null,
                       ),
-                    ],
-                  ),
-                ),
-              ),
+                    ),
               Row(
                 children: [
                   Spacer(),
@@ -222,8 +230,6 @@ class _AttachmentsState extends State<Attachments> {
                               if (Attachments.attachment != null &&
                                   Attachments.attachment != "") {
                                 setState(() {
-
-
                                   Attachments.attachments.add(MNJCD3(
                                     ID: 0,
                                     TransId: GeneralData.transId ?? "",
@@ -240,10 +246,8 @@ class _AttachmentsState extends State<Attachments> {
                                   rowId.clear();
                                   attachment.clear();
                                   Remarks.clear();
-
                                 });
-                              }
-                              else {
+                              } else {
                                 getErrorSnackBar("Please select a document");
                               }
                             },
@@ -352,18 +356,18 @@ class _AttachmentsState extends State<Attachments> {
                                       ),
                                       Flexible(
                                           child: Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: getPoppinsText(
-                                                text: Attachments.attachments[index]
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: getPoppinsText(
+                                            text: Attachments.attachments[index]
                                                     .Attachment ??
-                                                    '',
-                                                fontSize: 12,
-                                                textAlign: TextAlign.start,
-                                                color: Colors.blue,
-                                                fontWeight: FontWeight.w500,
-                                                decoration:
+                                                '',
+                                            fontSize: 12,
+                                            textAlign: TextAlign.start,
+                                            color: Colors.blue,
+                                            fontWeight: FontWeight.w500,
+                                            decoration:
                                                 TextDecoration.underline),
-                                          )),
+                                      )),
                                     ],
                                   ),
                                 ],
@@ -384,12 +388,12 @@ class _AttachmentsState extends State<Attachments> {
                                       return AlertDialog(
                                         content: Container(
                                           height: MediaQuery.of(context)
-                                              .size
-                                              .height /
+                                                  .size
+                                                  .height /
                                               20,
                                           width: MediaQuery.of(context)
-                                              .size
-                                              .width /
+                                                  .size
+                                                  .width /
                                               1.5,
                                           child: Text(
                                             "Are you sure you want to delete this row?",
@@ -403,7 +407,7 @@ class _AttachmentsState extends State<Attachments> {
                                             // OPTIONAL BUTTON
                                             shape: RoundedRectangleBorder(
                                               borderRadius:
-                                              BorderRadius.circular(40),
+                                                  BorderRadius.circular(40),
                                             ),
                                             color: barColor,
                                             child: Text(
@@ -419,7 +423,7 @@ class _AttachmentsState extends State<Attachments> {
                                             // OPTIONAL BUTTON
                                             shape: RoundedRectangleBorder(
                                               borderRadius:
-                                              BorderRadius.circular(40),
+                                                  BorderRadius.circular(40),
                                             ),
                                             color: Colors.red,
                                             child: Text(

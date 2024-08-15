@@ -58,7 +58,7 @@ class InternalRequestState extends State<InternalRequest> {
       Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(builder: (context) => Dashboard()),
-              (route) => false);
+          (route) => false);
     }
   }
 
@@ -127,7 +127,7 @@ class InternalRequestState extends State<InternalRequest> {
                     color: Colors.white,
                   ),
                   onPressed: () {
-                    Get.to(()=>SearchInternalRequest());
+                    Get.to(() => SearchInternalRequest());
                     //showSearch(context: context, delegate: SearchJobCard());
                     // Navigator.push(
                     //     context,
@@ -146,7 +146,7 @@ class InternalRequestState extends State<InternalRequest> {
                         ItemDetails.items.isNotEmpty) {
                       showBackPressedWarning(
                           text:
-                          'Your data is not saved. Are you sure you want to create new form?',
+                              'Your data is not saved. Are you sure you want to create new form?',
                           onBackPressed: () async {
                             goToNewInternalRequestDocument();
                           });

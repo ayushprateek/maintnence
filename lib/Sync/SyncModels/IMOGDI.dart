@@ -79,7 +79,7 @@ class IMOGDI {
     this.UpdateDate,
     this.ApprovedBy,
     this.Error,
-    this.IsPosted ,
+    this.IsPosted,
     this.DraftKey,
     this.Latitude,
     this.Longitude,

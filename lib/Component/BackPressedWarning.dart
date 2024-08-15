@@ -3,11 +3,8 @@ import 'package:get/get.dart';
 import 'package:maintenance/Component/CustomColor.dart';
 import 'package:maintenance/Dashboard.dart';
 
-
-showBackPressedWarning({required Function? onBackPressed,
-String? text}) {
-  try
-  {
+showBackPressedWarning({required Function? onBackPressed, String? text}) {
+  try {
     showDialog(
       barrierDismissible: false,
       context: Get.context!,
@@ -17,8 +14,10 @@ String? text}) {
             height: MediaQuery.of(context).size.height / 20,
             width: MediaQuery.of(context).size.width / 1.5,
             child: Text(
-              text??"Your data is not saved. Are you sure you want to go back?",
-              style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+              text ??
+                  "Your data is not saved. Are you sure you want to go back?",
+              style:
+                  TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
             ),
           ),
           actions: [
@@ -51,7 +50,7 @@ String? text}) {
                   Navigator.pushAndRemoveUntil(
                       context,
                       MaterialPageRoute(builder: (context) => Dashboard()),
-                          (route) => false);
+                      (route) => false);
                 }
               },
             ),
@@ -59,10 +58,5 @@ String? text}) {
         );
       },
     );
-  }
-  catch(e)
-  {
-
-  }
-
+  } catch (e) {}
 }

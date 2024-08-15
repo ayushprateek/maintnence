@@ -139,38 +139,38 @@ class GeneralData extends StatefulWidget {
 class _GeneralDataState extends State<GeneralData> {
   final TextEditingController _iD = TextEditingController(text: GeneralData.iD);
   final TextEditingController _transId =
-  TextEditingController(text: GeneralData.transId);
+      TextEditingController(text: GeneralData.transId);
   final TextEditingController _cardCode =
-  TextEditingController(text: GeneralData.cardCode);
+      TextEditingController(text: GeneralData.cardCode);
   final TextEditingController _cardName =
-  TextEditingController(text: GeneralData.cardName);
+      TextEditingController(text: GeneralData.cardName);
   final TextEditingController _refNo =
-  TextEditingController(text: GeneralData.refNo);
+      TextEditingController(text: GeneralData.refNo);
   final TextEditingController _contactPersonId =
-  TextEditingController(text: GeneralData.contactPersonId);
+      TextEditingController(text: GeneralData.contactPersonId);
   final TextEditingController _contactPersonName =
-  TextEditingController(text: GeneralData.contactPersonName);
+      TextEditingController(text: GeneralData.contactPersonName);
   final TextEditingController _mobileNo =
-  TextEditingController(text: GeneralData.mobileNo);
+      TextEditingController(text: GeneralData.mobileNo);
   final TextEditingController _postingDate =
-  TextEditingController(text: GeneralData.postingDate);
+      TextEditingController(text: GeneralData.postingDate);
   final TextEditingController _validUntill =
-  TextEditingController(text: GeneralData.validUntill);
+      TextEditingController(text: GeneralData.validUntill);
   final TextEditingController _currency =
-  TextEditingController(text: GeneralData.currency);
+      TextEditingController(text: GeneralData.currency);
   final TextEditingController _currRate =
-  TextEditingController(text: GeneralData.currRate);
+      TextEditingController(text: GeneralData.currRate);
 
   // final TextEditingController _paymentTermCode =
   //     TextEditingController(text: GeneralData.paymentTermCode);
   // final TextEditingController _paymentTermName =
   //     TextEditingController(text: GeneralData.paymentTermName);
   final TextEditingController _paymentTermDays =
-  TextEditingController(text: GeneralData.paymentTermDays);
+      TextEditingController(text: GeneralData.paymentTermDays);
   final TextEditingController _approvalStatus =
-  TextEditingController(text: GeneralData.approvalStatus);
+      TextEditingController(text: GeneralData.approvalStatus);
   final TextEditingController _docStatus =
-  TextEditingController(text: GeneralData.docStatus);
+      TextEditingController(text: GeneralData.docStatus);
 
   // final TextEditingController _rPTransId =
   //     TextEditingController(text: GeneralData.rPTransId);
@@ -191,12 +191,12 @@ class _GeneralDataState extends State<GeneralData> {
   // final TextEditingController _docTotal =
   //     TextEditingController(text: GeneralData.docTotal);
   final TextEditingController _permanentTransId =
-  TextEditingController(text: GeneralData.permanentTransId);
+      TextEditingController(text: GeneralData.permanentTransId);
 
   // final TextEditingController _docEntry =
   //     TextEditingController(text: GeneralData.docEntry);
   final TextEditingController _docNum =
-  TextEditingController(text: GeneralData.docNum);
+      TextEditingController(text: GeneralData.docNum);
 
   // final TextEditingController _createdBy =
   //     TextEditingController(text: GeneralData.createdBy);
@@ -215,12 +215,13 @@ class _GeneralDataState extends State<GeneralData> {
   // final TextEditingController _branchId =
   //     TextEditingController(text: GeneralData.branchId);
   final TextEditingController _remarks =
-  TextEditingController(text: GeneralData.remarks);
+      TextEditingController(text: GeneralData.remarks);
 
   // final TextEditingController _localDate =
   //     TextEditingController(text: GeneralData.localDate);
   final TextEditingController _whsCode =
-  TextEditingController(text: GeneralData.whsCode);
+      TextEditingController(text: GeneralData.whsCode);
+
   // final TextEditingController _objectCode =
   //     TextEditingController(text: GeneralData.objectCode);
   // final TextEditingController _error =
@@ -228,11 +229,12 @@ class _GeneralDataState extends State<GeneralData> {
   // final TextEditingController _postingAddress =
   //     TextEditingController(text: GeneralData.postingAddress);
   final TextEditingController _tripTransId =
-  TextEditingController(text: GeneralData.tripTransId);
+      TextEditingController(text: GeneralData.tripTransId);
+
   // final TextEditingController _deptCode =
   //     TextEditingController(text: GeneralData.deptCode);
   final TextEditingController _deptName =
-  TextEditingController(text: GeneralData.deptName);
+      TextEditingController(text: GeneralData.deptName);
 
   List<String> typeList = ['Preventive', 'Breakdown'];
   String type = 'Preventive';
@@ -241,7 +243,7 @@ class _GeneralDataState extends State<GeneralData> {
 
   Future<void> setAddress() async {
     List<CRD2Model> shipping =
-    await retrieveCRD2ById(context, "Code = ?", [GeneralData.cardCode]);
+        await retrieveCRD2ById(context, "Code = ?", [GeneralData.cardCode]);
     if (shipping.isNotEmpty) {
       ShippingAddress.RouteName = shipping[0].RouteName;
       ShippingAddress.RouteCode = shipping[0].RouteCode;
@@ -262,7 +264,7 @@ class _GeneralDataState extends State<GeneralData> {
     //SET FIRST BILLING ADDRESS --> CRD3 WHERE Code = ? CUSTOMER CODE
 
     List<CRD3Model> billing =
-    await retrieveCRD3ById(context, "Code = ?", [GeneralData.cardCode]);
+        await retrieveCRD3ById(context, "Code = ?", [GeneralData.cardCode]);
     if (billing.isNotEmpty) {
       BillingAddress.CityName = billing[0].CityName;
       BillingAddress.CityCode = billing[0].CityCode;
@@ -310,7 +312,6 @@ class _GeneralDataState extends State<GeneralData> {
               const SizedBox(
                 height: 25,
               ),
-
               getDisabledTextField(
                   controller: _transId,
                   labelText: 'Trans Id',
@@ -323,24 +324,26 @@ class _GeneralDataState extends State<GeneralData> {
                   enableLookup: true,
                   onLookupPressed: () {
                     Get.to(() => DepartmentLookup(
-                      onSelection: (OUDP oudp) {
-                        setState(() {
-                          GeneralData.deptCode = oudp.Code ?? '';
-                          GeneralData.deptName =
-                              _deptName.text = oudp.Name ?? '';
-                        });
-                      },
-                    ));
+                          onSelection: (OUDP oudp) {
+                            setState(() {
+                              GeneralData.deptCode = oudp.Code ?? '';
+                              GeneralData.deptName =
+                                  _deptName.text = oudp.Name ?? '';
+                            });
+                          },
+                        ));
                   }),
-              getDisabledTextField(controller: _tripTransId, labelText: 'TripTransId',
+              getDisabledTextField(
+                  controller: _tripTransId,
+                  labelText: 'TripTransId',
                   enableLookup: true,
                   onLookupPressed: () {
                     Get.to(() => TripLookup(onSelection: (OPOTRP oemp) {
-                      setState(() {
-                        GeneralData.tripTransId =
-                            _tripTransId.text = oemp.TransId ?? '';
-                      });
-                    }));
+                          setState(() {
+                            GeneralData.tripTransId =
+                                _tripTransId.text = oemp.TransId ?? '';
+                          });
+                        }));
                   }),
               getDisabledTextField(
                   controller: _cardName,
@@ -352,10 +355,14 @@ class _GeneralDataState extends State<GeneralData> {
                   onLookupPressed: () {
                     Get.to(() =>
                         SupplierLookup(onSelected: (OCRDModel ocrdModel) async {
-                          GeneralData.cardCode = _cardCode.text = ocrdModel.Code;
-                          GeneralData.paymentTermDays = _paymentTermDays.text = ocrdModel.PaymentTermDays.toString()??'';
-                          GeneralData.paymentTermName  = ocrdModel.PaymentTermName;
-                          GeneralData.paymentTermCode  = ocrdModel.PaymentTermCode;
+                          GeneralData.cardCode =
+                              _cardCode.text = ocrdModel.Code;
+                          GeneralData.paymentTermDays = _paymentTermDays.text =
+                              ocrdModel.PaymentTermDays.toString() ?? '';
+                          GeneralData.paymentTermName =
+                              ocrdModel.PaymentTermName;
+                          GeneralData.paymentTermCode =
+                              ocrdModel.PaymentTermCode;
                           GeneralData.cardName =
                               _cardName.text = ocrdModel.Name ?? '';
                           await setAddress();
@@ -383,7 +390,6 @@ class _GeneralDataState extends State<GeneralData> {
                   onChanged: (val) {
                     _validUntill.text = GeneralData.validUntill = val;
                   }),
-
               getDisabledTextField(
                   controller: _approvalStatus,
                   labelText: 'Approval Status',
@@ -408,22 +414,20 @@ class _GeneralDataState extends State<GeneralData> {
                   enableLookup: true,
                   onLookupPressed: () {
                     Get.to(() => WarehouseLookup(
-                      onSelection: (OWHS owhs) {
-                        setState(() {
-                          GeneralData.whsCode =
-                              _whsCode.text = owhs.WhsCode ?? '';
-                        });
-                      },
-                    ));
-                  }
-              ),
+                          onSelection: (OWHS owhs) {
+                            setState(() {
+                              GeneralData.whsCode =
+                                  _whsCode.text = owhs.WhsCode ?? '';
+                            });
+                          },
+                        ));
+                  }),
               getTextField(
                   controller: _refNo,
                   labelText: 'Ref. No',
                   onChanged: (val) {
                     GeneralData.refNo = val;
                   }),
-
               getTextField(
                   controller: _remarks,
                   labelText: 'Remarks',
@@ -438,14 +442,19 @@ class _GeneralDataState extends State<GeneralData> {
                   title: getHeadingText(text: "Details", color: headColor),
                   children: [
                     getDisabledTextField(
-                      controller: _permanentTransId, labelText: 'Permanent Trans Id',
+                      controller: _permanentTransId,
+                      labelText: 'Permanent Trans Id',
                       onChanged: (val) {
-                        GeneralData.permanentTransId  = val;
-                      },),
-                    getDisabledTextField(controller: _docNum, labelText: 'ERP Docnum',
+                        GeneralData.permanentTransId = val;
+                      },
+                    ),
+                    getDisabledTextField(
+                      controller: _docNum,
+                      labelText: 'ERP Docnum',
                       onChanged: (val) {
-                        GeneralData.docNum  = val;
-                      },),
+                        GeneralData.docNum = val;
+                      },
+                    ),
                     getDisabledTextField(
                         controller: _currency,
                         labelText: 'Currency',
@@ -459,11 +468,14 @@ class _GeneralDataState extends State<GeneralData> {
                           GeneralData.currRate = val;
                         }),
                     getDisabledTextField(
-                        controller: TextEditingController(), labelText: 'Local Date'),
+                        controller: TextEditingController(),
+                        labelText: 'Local Date'),
                   ],
                 ),
               ),
-              const SizedBox(height: 70,),
+              const SizedBox(
+                height: 70,
+              ),
             ],
           ),
         ),

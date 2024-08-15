@@ -117,12 +117,12 @@ class _BillingAddressState extends State<BillingAddress> {
               height: 25,
             ),
             getDisabledTextField(
-                controller: AddCode,
-                labelText: 'Add Code*',
-                onChanged: (value) {
-                  BillingAddress.AddCode = value;
-                },
-                ),
+              controller: AddCode,
+              labelText: 'Add Code*',
+              onChanged: (value) {
+                BillingAddress.AddCode = value;
+              },
+            ),
             Padding(
               padding: const EdgeInsets.only(bottom: 6.0, left: 8, right: 8),
               child: Row(

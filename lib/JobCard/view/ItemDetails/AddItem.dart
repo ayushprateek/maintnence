@@ -6,9 +6,9 @@ import 'package:maintenance/Component/CustomFont.dart';
 import 'package:maintenance/Component/GetFormattedDate.dart';
 import 'package:maintenance/Component/GetTextField.dart';
 import 'package:maintenance/Component/SnackbarComponent.dart';
-import 'package:maintenance/JobCard/view/ItemDetails/ItemDetails.dart';
-import 'package:maintenance/JobCard/view/ItemDetails/EditJobCardItem.dart';
 import 'package:maintenance/JobCard/view/GeneralData.dart';
+import 'package:maintenance/JobCard/view/ItemDetails/EditJobCardItem.dart';
+import 'package:maintenance/JobCard/view/ItemDetails/ItemDetails.dart';
 import 'package:maintenance/Sync/SyncModels/OITM.dart';
 
 class AddItem extends StatefulWidget {

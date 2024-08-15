@@ -1,4 +1,5 @@
 import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:maintenance/Component/LogFileFunctions.dart';
@@ -245,9 +246,7 @@ Future<String> insertMNOVCLToServer(BuildContext? context,
   String response = "";
   List<MNOVCL> list = await retrieveMNOVCLById(
       context,
-      TransId == null
-          ? DataSync.getInsertToServerStr()
-          : "Code = ?",
+      TransId == null ? DataSync.getInsertToServerStr() : "Code = ?",
       TransId == null ? DataSync.getInsertToServerList() : [TransId, id]);
   if (TransId != null) {
     list[0].ID = 0;
@@ -279,8 +278,7 @@ Future<String> insertMNOVCLToServer(BuildContext? context,
             map = jsonDecode(res.body);
             map["has_created"] = 0;
             var x = await db.update("MNOVCL", map,
-                where: "Code = ?",
-                whereArgs: [map["Code"]]);
+                where: "Code = ?", whereArgs: [map["Code"]]);
             print(x.toString());
           }
         }
@@ -322,8 +320,7 @@ Future<void> updateMNOVCLOnServer(BuildContext? context,
           final Database db = await initializeDB(context);
           map["has_updated"] = 0;
           var x = await db.update("MNOVCL", map,
-              where: "Code = ?",
-              whereArgs: [map["Code"]]);
+              where: "Code = ?", whereArgs: [map["Code"]]);
           print(x.toString());
         }
       }

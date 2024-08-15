@@ -418,7 +418,6 @@ class _GeneralDataState extends State<GeneralData> {
                 },
               ),
               if (Attachments.attachments.length > 3) ...[
-
                 SizedBox(
                   height: Get.height / 4,
                   child: ListView.builder(
@@ -441,7 +440,7 @@ class _GeneralDataState extends State<GeneralData> {
                             ],
                           ),
                           margin: const EdgeInsets.all(15),
-                          width: Get.width/2,
+                          width: Get.width / 2,
                           child: Padding(
                             padding: const EdgeInsets.all(8),
                             child: Column(
@@ -450,8 +449,7 @@ class _GeneralDataState extends State<GeneralData> {
                                 Text.rich(
                                   TextSpan(
                                     children: [
-                                      getPoppinsTextSpanHeading(
-                                          text: 'Row ID'),
+                                      getPoppinsTextSpanHeading(text: 'Row ID'),
                                       getPoppinsTextSpanDetails(
                                           text: Attachments
                                               .attachments[index].RowId
@@ -473,30 +471,35 @@ class _GeneralDataState extends State<GeneralData> {
                                 ),
                                 Align(
                                   alignment: Alignment.center,
-                                  child
-                                      : FutureBuilder(
+                                  child: FutureBuilder(
                                       future: downloadFileFromServer(
-                                          path: Attachments.attachments[index].Attachment ??
+                                          path: Attachments.attachments[index]
+                                                  .Attachment ??
                                               ''),
-                                      builder: (context, AsyncSnapshot<File?> snap) {
-                                        if (!snap.hasData || snap.data == null) {
+                                      builder:
+                                          (context, AsyncSnapshot<File?> snap) {
+                                        if (!snap.hasData ||
+                                            snap.data == null) {
                                           return Padding(
                                             padding: const EdgeInsets.all(8.0),
                                             child: ClipRRect(
-                                                borderRadius: BorderRadius.circular(25),
+                                                borderRadius:
+                                                    BorderRadius.circular(25),
                                                 child: SizedBox(
-                                                    height: Get.height/8,
-                                                    child: Image.asset('images/no_image.jpg'))),
+                                                    height: Get.height / 8,
+                                                    child: Image.asset(
+                                                        'images/no_image.jpg'))),
                                           );
                                         } else {
                                           return Padding(
                                             padding: const EdgeInsets.all(8.0),
                                             child: ClipRRect(
-                                              borderRadius: BorderRadius.circular(25),
+                                              borderRadius:
+                                                  BorderRadius.circular(25),
                                               child: Image.file(
                                                 snap.data!,
                                                 fit: BoxFit.cover,
-                                                height: Get.height/8,
+                                                height: Get.height / 8,
                                               ),
                                             ),
                                           );
@@ -509,18 +512,15 @@ class _GeneralDataState extends State<GeneralData> {
                         );
                         return InkWell(
                           onTap: () {
-                            String attachment = Attachments
-                                .attachments[index].Attachment ??
-                                '';
+                            String attachment =
+                                Attachments.attachments[index].Attachment ?? '';
                             if (attachment != "") {
                               if (attachment.contains(appPkg)) {
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) =>
-                                            CustomViewImage(
-                                                imageFile:
-                                                File(attachment))));
+                                        builder: (context) => CustomViewImage(
+                                            imageFile: File(attachment))));
                               } else {
                                 //todo:
                                 // customLaunchURL(
@@ -546,8 +546,7 @@ class _GeneralDataState extends State<GeneralData> {
                             child: Padding(
                               padding: const EdgeInsets.all(8),
                               child: Column(
-                                crossAxisAlignment:
-                                CrossAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text.rich(
                                     TextSpan(
@@ -568,15 +567,13 @@ class _GeneralDataState extends State<GeneralData> {
                                             text: 'Remarks'),
                                         getPoppinsTextSpanDetails(
                                             text: Attachments
-                                                .attachments[index]
-                                                .Remarks
+                                                .attachments[index].Remarks
                                                 .toString()),
                                       ],
                                     ),
                                   ),
                                   Row(
-                                    mainAxisAlignment:
-                                    MainAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
                                       Icon(
                                         Icons.folder,
@@ -584,20 +581,18 @@ class _GeneralDataState extends State<GeneralData> {
                                       ),
                                       Flexible(
                                           child: Padding(
-                                            padding:
-                                            const EdgeInsets.all(8.0),
-                                            child: getPoppinsText(
-                                                text: Attachments
-                                                    .attachments[index]
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: getPoppinsText(
+                                            text: Attachments.attachments[index]
                                                     .Attachment ??
-                                                    '',
-                                                fontSize: 12,
-                                                textAlign: TextAlign.start,
-                                                color: Colors.blue,
-                                                fontWeight: FontWeight.w500,
-                                                decoration:
+                                                '',
+                                            fontSize: 12,
+                                            textAlign: TextAlign.start,
+                                            color: Colors.blue,
+                                            fontWeight: FontWeight.w500,
+                                            decoration:
                                                 TextDecoration.underline),
-                                          )),
+                                      )),
                                     ],
                                   ),
                                 ],
@@ -636,7 +631,6 @@ class _GeneralDataState extends State<GeneralData> {
                         GeneralData.docEntry = val;
                       },
                     ),
-
                   ],
                 ),
               ),

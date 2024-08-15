@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:maintenance/Component/CustomColor.dart';
 import 'package:maintenance/Component/CustomFont.dart';
-import 'package:maintenance/GoodsIssue/view/ItemDetails/AddItems.dart';
 import 'package:maintenance/Sync/SyncModels/IMGDI1.dart';
-
 
 class ItemDetails extends StatefulWidget {
   const ItemDetails({super.key});
-  static List<IMGDI1> items=[];
+
+  static List<IMGDI1> items = [];
 
   @override
   State<ItemDetails> createState() => _ItemDetailsState();
@@ -20,7 +17,9 @@ class _ItemDetailsState extends State<ItemDetails> {
     return SingleChildScrollView(
       child: Column(
         children: [
-          const SizedBox(height: 30,),
+          const SizedBox(
+            height: 30,
+          ),
           Padding(
             padding: const EdgeInsets.only(left: 8.0, right: 8, bottom: 8),
             child: Container(
@@ -64,8 +63,7 @@ class _ItemDetailsState extends State<ItemDetails> {
                             child: Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: Row(
-                                crossAxisAlignment:
-                                    CrossAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Expanded(
                                     flex: 8,
@@ -75,9 +73,7 @@ class _ItemDetailsState extends State<ItemDetails> {
                                       children: [
                                         Padding(
                                           padding: const EdgeInsets.only(
-                                              left: 8.0,
-                                              right: 8.0,
-                                              top: 4.0),
+                                              left: 8.0, right: 8.0, top: 4.0),
                                           child: Align(
                                             alignment: Alignment.topLeft,
                                             child: Text.rich(
@@ -86,7 +82,8 @@ class _ItemDetailsState extends State<ItemDetails> {
                                                   getPoppinsTextSpanHeading(
                                                       text: 'TripTransId'),
                                                   getPoppinsTextSpanDetails(
-                                                      text: item.TripTransId??''),
+                                                      text: item.TripTransId ??
+                                                          ''),
                                                 ],
                                               ),
                                             ),
@@ -94,9 +91,7 @@ class _ItemDetailsState extends State<ItemDetails> {
                                         ),
                                         Padding(
                                           padding: const EdgeInsets.only(
-                                              left: 8.0,
-                                              right: 8.0,
-                                              top: 4.0),
+                                              left: 8.0, right: 8.0, top: 4.0),
                                           child: Align(
                                             alignment: Alignment.topLeft,
                                             child: Text.rich(
@@ -105,7 +100,8 @@ class _ItemDetailsState extends State<ItemDetails> {
                                                   getPoppinsTextSpanHeading(
                                                       text: 'Item'),
                                                   getPoppinsTextSpanDetails(
-                                                      text: item.ItemName??''),
+                                                      text:
+                                                          item.ItemName ?? ''),
                                                 ],
                                               ),
                                             ),
@@ -113,9 +109,7 @@ class _ItemDetailsState extends State<ItemDetails> {
                                         ),
                                         Padding(
                                           padding: const EdgeInsets.only(
-                                              left: 8.0,
-                                              right: 8.0,
-                                              top: 4.0),
+                                              left: 8.0, right: 8.0, top: 4.0),
                                           child: Align(
                                             alignment: Alignment.topLeft,
                                             child: Text.rich(
@@ -132,9 +126,7 @@ class _ItemDetailsState extends State<ItemDetails> {
                                         ),
                                         Padding(
                                           padding: const EdgeInsets.only(
-                                              left: 8.0,
-                                              right: 8.0,
-                                              top: 4.0),
+                                              left: 8.0, right: 8.0, top: 4.0),
                                           child: Align(
                                             alignment: Alignment.topLeft,
                                             child: Text.rich(
@@ -143,7 +135,10 @@ class _ItemDetailsState extends State<ItemDetails> {
                                                   getPoppinsTextSpanHeading(
                                                       text: 'Quantity'),
                                                   getPoppinsTextSpanDetails(
-                                                      text: item.Quantity?.toStringAsFixed(2)??'0.0'),
+                                                      text: item.Quantity
+                                                              ?.toStringAsFixed(
+                                                                  2) ??
+                                                          '0.0'),
                                                 ],
                                               ),
                                             ),
@@ -151,9 +146,7 @@ class _ItemDetailsState extends State<ItemDetails> {
                                         ),
                                         Padding(
                                           padding: const EdgeInsets.only(
-                                              left: 8.0,
-                                              right: 8.0,
-                                              top: 4.0),
+                                              left: 8.0, right: 8.0, top: 4.0),
                                           child: Align(
                                             alignment: Alignment.topLeft,
                                             child: Text.rich(
@@ -162,7 +155,7 @@ class _ItemDetailsState extends State<ItemDetails> {
                                                   getPoppinsTextSpanHeading(
                                                       text: 'UOM'),
                                                   getPoppinsTextSpanDetails(
-                                                      text: item.UOM??''),
+                                                      text: item.UOM ?? ''),
                                                 ],
                                               ),
                                             ),
@@ -170,19 +163,16 @@ class _ItemDetailsState extends State<ItemDetails> {
                                         ),
                                         Padding(
                                           padding: const EdgeInsets.only(
-                                              left: 8.0,
-                                              right: 8.0,
-                                              top: 4.0),
+                                              left: 8.0, right: 8.0, top: 4.0),
                                           child: Align(
                                             alignment: Alignment.topLeft,
                                             child: Text.rich(
                                               TextSpan(
                                                 children: [
                                                   getPoppinsTextSpanHeading(
-                                                      text:
-                                                      'TruckNo'),
+                                                      text: 'TruckNo'),
                                                   getPoppinsTextSpanDetails(
-                                                      text: item.TruckNo??''),
+                                                      text: item.TruckNo ?? ''),
                                                 ],
                                               ),
                                             ),
@@ -190,17 +180,14 @@ class _ItemDetailsState extends State<ItemDetails> {
                                         ),
                                         Padding(
                                           padding: const EdgeInsets.only(
-                                              left: 8.0,
-                                              right: 8.0,
-                                              top: 4.0),
+                                              left: 8.0, right: 8.0, top: 4.0),
                                           child: Align(
                                             alignment: Alignment.topLeft,
                                             child: Text.rich(
                                               TextSpan(
                                                 children: [
                                                   getPoppinsTextSpanHeading(
-                                                      text:
-                                                      'Driver'),
+                                                      text: 'Driver'),
                                                   getPoppinsTextSpanDetails(
                                                       text: item.DriverName),
                                                 ],
@@ -208,7 +195,6 @@ class _ItemDetailsState extends State<ItemDetails> {
                                             ),
                                           ),
                                         ),
-
                                       ],
                                     ),
                                   ),
@@ -218,21 +204,16 @@ class _ItemDetailsState extends State<ItemDetails> {
                                       mainAxisAlignment:
                                           MainAxisAlignment.start,
                                       children: [
-
-
                                         Padding(
                                           padding: const EdgeInsets.only(
-                                              left: 8.0,
-                                              right: 8.0,
-                                              top: 4.0),
+                                              left: 8.0, right: 8.0, top: 4.0),
                                           child: Align(
                                             alignment: Alignment.topLeft,
                                             child: Text.rich(
                                               TextSpan(
                                                 children: [
                                                   getPoppinsTextSpanHeading(
-                                                      text:
-                                                          'Route'),
+                                                      text: 'Route'),
                                                   getPoppinsTextSpanDetails(
                                                       text: item.RouteName),
                                                 ],
@@ -242,17 +223,14 @@ class _ItemDetailsState extends State<ItemDetails> {
                                         ),
                                         Padding(
                                           padding: const EdgeInsets.only(
-                                              left: 8.0,
-                                              right: 8.0,
-                                              top: 4.0),
+                                              left: 8.0, right: 8.0, top: 4.0),
                                           child: Align(
                                             alignment: Alignment.topLeft,
                                             child: Text.rich(
                                               TextSpan(
                                                 children: [
                                                   getPoppinsTextSpanHeading(
-                                                      text:
-                                                          'Dept'),
+                                                      text: 'Dept'),
                                                   getPoppinsTextSpanDetails(
                                                       text: item.DeptName),
                                                 ],
@@ -262,19 +240,19 @@ class _ItemDetailsState extends State<ItemDetails> {
                                         ),
                                         Padding(
                                           padding: const EdgeInsets.only(
-                                              left: 8.0,
-                                              right: 8.0,
-                                              top: 4.0),
+                                              left: 8.0, right: 8.0, top: 4.0),
                                           child: Align(
                                             alignment: Alignment.topLeft,
                                             child: Text.rich(
                                               TextSpan(
                                                 children: [
                                                   getPoppinsTextSpanHeading(
-                                                      text:
-                                                          'Price'),
+                                                      text: 'Price'),
                                                   getPoppinsTextSpanDetails(
-                                                      text: item.Price?.toStringAsFixed(2)??'0.0'),
+                                                      text: item.Price
+                                                              ?.toStringAsFixed(
+                                                                  2) ??
+                                                          '0.0'),
                                                 ],
                                               ),
                                             ),
@@ -282,19 +260,19 @@ class _ItemDetailsState extends State<ItemDetails> {
                                         ),
                                         Padding(
                                           padding: const EdgeInsets.only(
-                                              left: 8.0,
-                                              right: 8.0,
-                                              top: 4.0),
+                                              left: 8.0, right: 8.0, top: 4.0),
                                           child: Align(
                                             alignment: Alignment.topLeft,
                                             child: Text.rich(
                                               TextSpan(
                                                 children: [
                                                   getPoppinsTextSpanHeading(
-                                                      text:
-                                                          'Tax Rate'),
+                                                      text: 'Tax Rate'),
                                                   getPoppinsTextSpanDetails(
-                                                      text: item.TaxRate?.toStringAsFixed(2)??'0.0'),
+                                                      text: item.TaxRate
+                                                              ?.toStringAsFixed(
+                                                                  2) ??
+                                                          '0.0'),
                                                 ],
                                               ),
                                             ),
@@ -302,19 +280,19 @@ class _ItemDetailsState extends State<ItemDetails> {
                                         ),
                                         Padding(
                                           padding: const EdgeInsets.only(
-                                              left: 8.0,
-                                              right: 8.0,
-                                              top: 4.0),
+                                              left: 8.0, right: 8.0, top: 4.0),
                                           child: Align(
                                             alignment: Alignment.topLeft,
                                             child: Text.rich(
                                               TextSpan(
                                                 children: [
                                                   getPoppinsTextSpanHeading(
-                                                      text:
-                                                          'Line Discount'),
+                                                      text: 'Line Discount'),
                                                   getPoppinsTextSpanDetails(
-                                                      text: item.Discount?.toStringAsFixed(2)??''),
+                                                      text: item.Discount
+                                                              ?.toStringAsFixed(
+                                                                  2) ??
+                                                          ''),
                                                 ],
                                               ),
                                             ),
@@ -322,19 +300,19 @@ class _ItemDetailsState extends State<ItemDetails> {
                                         ),
                                         Padding(
                                           padding: const EdgeInsets.only(
-                                              left: 8.0,
-                                              right: 8.0,
-                                              top: 4.0),
+                                              left: 8.0, right: 8.0, top: 4.0),
                                           child: Align(
                                             alignment: Alignment.topLeft,
                                             child: Text.rich(
                                               TextSpan(
                                                 children: [
                                                   getPoppinsTextSpanHeading(
-                                                      text:
-                                                          'Line Total'),
+                                                      text: 'Line Total'),
                                                   getPoppinsTextSpanDetails(
-                                                      text: item.LineTotal?.toStringAsFixed(2)??'0.0'),
+                                                      text: item.LineTotal
+                                                              ?.toStringAsFixed(
+                                                                  2) ??
+                                                          '0.0'),
                                                 ],
                                               ),
                                             ),
@@ -350,10 +328,10 @@ class _ItemDetailsState extends State<ItemDetails> {
                         );
                       },
                     ),
-                    if(ItemDetails.items.isNotEmpty)
-                    SizedBox(
-                      height: MediaQuery.of(context).size.height / 10,
-                    )
+                    if (ItemDetails.items.isNotEmpty)
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height / 10,
+                      )
                   ],
                 ),
               ),

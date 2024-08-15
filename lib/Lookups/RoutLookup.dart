@@ -4,6 +4,7 @@ import 'package:maintenance/Component/CustomColor.dart';
 import 'package:maintenance/Component/CustomFont.dart';
 import 'package:maintenance/Component/GetTextField.dart';
 import 'package:maintenance/Sync/SyncModels/ROUT.dart';
+
 class RouteLookup extends StatefulWidget {
   Function(ROUTModel) onSelected;
 
@@ -217,12 +218,12 @@ class _VehicleCodeLookupState extends State<RouteLookup> {
                                       Flexible(
                                         child: Padding(
                                           padding:
-                                          const EdgeInsets.only(left: 8.0),
+                                              const EdgeInsets.only(left: 8.0),
                                           child: Align(
                                             alignment: Alignment.topLeft,
                                             child: getHeadingText(
-                                              text:
-                                              snapshot.data![index].RouteCode ??
+                                              text: snapshot
+                                                      .data![index].RouteCode ??
                                                   "",
                                             ),
                                           ),
@@ -231,12 +232,12 @@ class _VehicleCodeLookupState extends State<RouteLookup> {
                                       Flexible(
                                         child: Padding(
                                           padding:
-                                          const EdgeInsets.only(right: 8.0),
+                                              const EdgeInsets.only(right: 8.0),
                                           child: Align(
                                             alignment: Alignment.centerLeft,
                                             child: getSubHeadingText(
-                                              text:
-                                              snapshot.data![index].RouteName,
+                                              text: snapshot
+                                                  .data![index].RouteName,
                                             ),
                                           ),
                                         ),

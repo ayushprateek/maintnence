@@ -62,7 +62,7 @@ class _JobCardState extends State<GoodsRecepitNote> {
       Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(builder: (context) => Dashboard()),
-              (route) => false);
+          (route) => false);
     }
   }
 
@@ -146,7 +146,7 @@ class _JobCardState extends State<GoodsRecepitNote> {
                     color: Colors.white,
                   ),
                   onPressed: () {
-                    Get.to(()=>SearchGoodsReceiptNote());
+                    Get.to(() => SearchGoodsReceiptNote());
                     //showSearch(context: context, delegate: SearchJobCard());
                     // Navigator.push(
                     //     context,
@@ -165,7 +165,7 @@ class _JobCardState extends State<GoodsRecepitNote> {
                         ItemDetails.items.isNotEmpty) {
                       showBackPressedWarning(
                           text:
-                          'Your data is not saved. Are you sure you want to create new form?',
+                              'Your data is not saved. Are you sure you want to create new form?',
                           onBackPressed: () async {
                             goToNewGRNDocument();
                           });
@@ -328,8 +328,7 @@ class _JobCardState extends State<GoodsRecepitNote> {
                         whereArgs: [qut1model.TransId, qut1model.RowId]);
                   }
                 }
-              } 
-              else {
+              } else {
                 for (int i = 0; i < ItemDetails.items.length; i++) {
                   PRPDN1 qut1model = ItemDetails.items[i];
                   qut1model.ID = i;

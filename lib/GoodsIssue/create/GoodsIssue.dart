@@ -144,7 +144,7 @@ class _JobCardState extends State<GoodsIssue> {
                     color: Colors.white,
                   ),
                   onPressed: () {
-                    Get.to(()=>SearchGoodsIssue());
+                    Get.to(() => SearchGoodsIssue());
                     //showSearch(context: context, delegate: SearchJobCard());
                     // Navigator.push(
                     //     context,

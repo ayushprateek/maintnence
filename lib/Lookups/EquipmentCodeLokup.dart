@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:maintenance/CheckListDocument/create/CheckListDocument.dart';
-import 'package:maintenance/CheckListDocument/create/GeneralData.dart';
 import 'package:maintenance/Component/CustomColor.dart';
 import 'package:maintenance/Component/CustomFont.dart';
 import 'package:maintenance/Component/GetTextField.dart';
@@ -9,7 +7,8 @@ import 'package:maintenance/Sync/SyncModels/OVCL.dart';
 
 class EquipmentCodeLookup extends StatefulWidget {
   Function(OVCLModel) onSelection;
-   EquipmentCodeLookup({super.key,required this.onSelection});
+
+  EquipmentCodeLookup({super.key, required this.onSelection});
 
   @override
   State<EquipmentCodeLookup> createState() => _EquipmentCodeLookupState();
@@ -143,10 +142,9 @@ class _EquipmentCodeLookupState extends State<EquipmentCodeLookup> {
                           return Container();
                         }
                         return InkWell(
-                          onDoubleTap: (){
+                          onDoubleTap: () {
                             widget.onSelection(snapshot.data![index]);
                             Get.back();
-
                           },
                           child: Container(
                             decoration: BoxDecoration(
@@ -166,52 +164,50 @@ class _EquipmentCodeLookupState extends State<EquipmentCodeLookup> {
                             child: Padding(
                               padding: const EdgeInsets.all(8),
                               child: Column(
-                                crossAxisAlignment:
-                                CrossAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
                                   Row(
                                     crossAxisAlignment:
-                                    CrossAxisAlignment.start,
-                                    mainAxisAlignment:
-                                    MainAxisAlignment.start,
+                                        CrossAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
                                       Expanded(
                                           child: Column(
-                                            crossAxisAlignment:
+                                        crossAxisAlignment:
                                             CrossAxisAlignment.start,
-                                            children: [
-                                              Text.rich(
-                                                TextSpan(
-                                                  children: [
-                                                    getPoppinsTextSpanHeading(
-                                                        text: 'Code'),
-                                                    getPoppinsTextSpanDetails(
-                                                        text: snapshot
-                                                            .data![index].Code),
-                                                  ],
-                                                ),
-                                              ),
-                                            ],
-                                          )),
+                                        children: [
+                                          Text.rich(
+                                            TextSpan(
+                                              children: [
+                                                getPoppinsTextSpanHeading(
+                                                    text: 'Code'),
+                                                getPoppinsTextSpanDetails(
+                                                    text: snapshot
+                                                        .data![index].Code),
+                                              ],
+                                            ),
+                                          ),
+                                        ],
+                                      )),
                                       Expanded(
                                           child: Column(
-                                            crossAxisAlignment:
+                                        crossAxisAlignment:
                                             CrossAxisAlignment.start,
-                                            children: [
-                                              Text.rich(
-                                                TextSpan(
-                                                  children: [
-                                                    getPoppinsTextSpanHeading(
-                                                        text: 'Name'),
-                                                    getPoppinsTextSpanDetails(
-                                                        text: snapshot
-                                                            .data![index].Code),
-                                                  ],
-                                                ),
-                                              ),
-                                            ],
-                                          )),
+                                        children: [
+                                          Text.rich(
+                                            TextSpan(
+                                              children: [
+                                                getPoppinsTextSpanHeading(
+                                                    text: 'Name'),
+                                                getPoppinsTextSpanDetails(
+                                                    text: snapshot
+                                                        .data![index].Code),
+                                              ],
+                                            ),
+                                          ),
+                                        ],
+                                      )),
                                     ],
                                   ),
                                 ],

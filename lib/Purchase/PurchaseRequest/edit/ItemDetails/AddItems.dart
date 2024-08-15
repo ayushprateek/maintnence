@@ -9,6 +9,7 @@ import 'package:maintenance/Sync/SyncModels/OITM.dart';
 import 'package:maintenance/Purchase/PurchaseRequest/edit/ItemDetails/ItemDetails.dart';
 import 'package:maintenance/Purchase/PurchaseRequest/edit/ItemDetails/EditItems.dart';
 import 'package:maintenance/Purchase/PurchaseRequest/edit/GeneralData.dart';
+
 class AddItems extends StatefulWidget {
   @override
   _AddItemsState createState() => _AddItemsState();
@@ -193,24 +194,24 @@ class _AddItemsState extends State<AddItems> {
                             }
                             if (_query.text.isNotEmpty
                                 ? (snapshot.data![index].ItemCode
-                                .toString()
-                                .toUpperCase()
-                                .contains(_query.text
-                                .toString()
-                                .toUpperCase()) ||
-                                snapshot.data![index].ItemName
-                                    .toString()
-                                    .toUpperCase()
-                                    .contains(_query.text
-                                    .toString()
-                                    .toUpperCase()))
+                                        .toString()
+                                        .toUpperCase()
+                                        .contains(_query.text
+                                            .toString()
+                                            .toUpperCase()) ||
+                                    snapshot.data![index].ItemName
+                                        .toString()
+                                        .toUpperCase()
+                                        .contains(_query.text
+                                            .toString()
+                                            .toUpperCase()))
                                 : true) {
                               return InkWell(
                                 onDoubleTap: () {
                                   bool isAdded = false;
                                   for (int i = 0;
-                                  i < ItemDetails.items.length;
-                                  i++) {
+                                      i < ItemDetails.items.length;
+                                      i++) {
                                     if (snapshot.data![index].ItemCode ==
                                         ItemDetails.items[i].ItemCode) {
                                       isAdded = true;
@@ -222,8 +223,10 @@ class _AddItemsState extends State<AddItems> {
                                         snapshot.data![index].ItemName +
                                             " is already added");
                                   } else {
-                                    ClearPurchaseRequestDocument.clearEditItems();
-                                    EditItems.tripTransId = GeneralData.tripTransId;
+                                    ClearPurchaseRequestDocument
+                                        .clearEditItems();
+                                    EditItems.tripTransId =
+                                        GeneralData.tripTransId;
                                     EditItems.toWhsCode = GeneralData.whsCode;
                                     EditItems.deptCode = GeneralData.deptCode;
                                     EditItems.deptName = GeneralData.deptName;
@@ -262,13 +265,13 @@ class _AddItemsState extends State<AddItems> {
                                               alignment: Alignment.topLeft,
                                               child: getHeadingText(
                                                 text: snapshot.data![index]
-                                                    .ItemCode
-                                                    .toString() ==
-                                                    ""
+                                                            .ItemCode
+                                                            .toString() ==
+                                                        ""
                                                     ? "ABC"
                                                     : snapshot
-                                                    .data![index].ItemCode
-                                                    .toString(),
+                                                        .data![index].ItemCode
+                                                        .toString(),
                                               ),
                                             ),
                                           ),

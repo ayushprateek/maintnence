@@ -33,7 +33,6 @@ import 'package:maintenance/Sync/SyncModels/MNCLD3.dart';
 import 'package:maintenance/Sync/SyncModels/MNJCD1.dart';
 import 'package:maintenance/Sync/SyncModels/MNJCD2.dart';
 import 'package:maintenance/Sync/SyncModels/MNJCD3.dart';
-import 'package:maintenance/Sync/SyncModels/MNJCD4.dart';
 import 'package:maintenance/Sync/SyncModels/MNJCD5.dart';
 import 'package:maintenance/Sync/SyncModels/MNJCD6.dart';
 import 'package:maintenance/Sync/SyncModels/MNJCD7.dart';
@@ -424,12 +423,18 @@ class _DataSyncState extends State<DataSync> {
         await setRequiredData();
 
         int num = await retrieveNotSyncedDocument();
-        if (num == 0 &&(await isInternetAvailable())) {
+        if (num == 0 && (await isInternetAvailable())) {
           List<Widget> titleRowWidgets = [
             getHeadingText(
                 text: 'Data sync completed', color: barColor, fontSize: 16),
-            const SizedBox(width: 4,),
-            Icon(Icons.check_circle,color: Colors.green,)];
+            const SizedBox(
+              width: 4,
+            ),
+            Icon(
+              Icons.check_circle,
+              color: Colors.green,
+            )
+          ];
           List<Widget> actions = [
             Container(
                 width: MediaQuery.of(context).size.width,
@@ -449,14 +454,14 @@ class _DataSyncState extends State<DataSync> {
                               context,
                               MaterialPageRoute(
                                   builder: (context) => Dashboard()),
-                                  (route) => false);
+                              (route) => false);
                         } else {
                           Navigator.pop(context);
                           await isValidAppVersion();
                         }
                       },
                       child: getHeadingText(
-                        text: isFirstTimeSync?'Go to Dashboard':'Go Back',
+                        text: isFirstTimeSync ? 'Go to Dashboard' : 'Go Back',
                         color: barColor,
                       ),
                     ),
@@ -486,16 +491,20 @@ class _DataSyncState extends State<DataSync> {
               }
             },
           );
-        }
-        else {
+        } else {
           setState(() {
             _currentStep = 0;
           });
           List<Widget> titleRowWidgets = [
             getHeadingText(
                 text: 'Sync Not completed', color: Colors.red, fontSize: 16),
-            const SizedBox(width: 4,),
-            Icon(Icons.error,color: Colors.red,)
+            const SizedBox(
+              width: 4,
+            ),
+            Icon(
+              Icons.error,
+              color: Colors.red,
+            )
           ];
           List<Widget> actions = [
             Container(
@@ -507,7 +516,6 @@ class _DataSyncState extends State<DataSync> {
                     Expanded(
                       child: TextButton(
                         onPressed: () async {
-
                           Navigator.pop(context);
                           if (widget.isComingFromLogin) {
                             LoginPage.hasSynced = true;
@@ -515,19 +523,18 @@ class _DataSyncState extends State<DataSync> {
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => Dashboard()),
-                                    (route) => false);
+                                (route) => false);
                           } else {
                             Navigator.pop(context);
                             await isValidAppVersion();
                           }
                         },
                         child: getHeadingText(
-                          text: isFirstTimeSync?'Go to Dashboard':'Go Back',
+                          text: isFirstTimeSync ? 'Go to Dashboard' : 'Go Back',
                           color: barColor,
                         ),
                       ),
                     ),
-
                     Expanded(
                       child: TextButton(
                         onPressed: () {
@@ -552,7 +559,6 @@ class _DataSyncState extends State<DataSync> {
                         ),
                       ),
                     ),
-
                   ],
                 )),
           ];
@@ -576,13 +582,12 @@ class _DataSyncState extends State<DataSync> {
                   content: Row(
                     children: [
                       Text("$num ",
-                          style:TextStyle(
-                              color:Colors.red,
+                          style: TextStyle(
+                              color: Colors.red,
                               fontSize: 22,
                               decoration: TextDecoration.underline,
                               decorationColor: Colors.red,
-                              fontWeight: FontWeight.bold
-                          )),
+                              fontWeight: FontWeight.bold)),
                       Text("record(s) not synced with server"),
                     ],
                   ),
@@ -593,30 +598,30 @@ class _DataSyncState extends State<DataSync> {
           );
         }
         getSuccessSnackBar("Data Sync Completed");
-        // if (DataSync.isSyncSuccessful) {
-        //   if (widget.isComingFromLogin) {
-        //     LoginPage.hasSynced = true;
-        //     Navigator.pushAndRemoveUntil(
-        //         context,
-        //         MaterialPageRoute(builder: (context) => Dashboard()),
-        //         (route) => false);
-        //   } else {
-        //     await isValidAppVersion();
-        //     // if(isAppVersionValid!=RxBool(true)){
-        //     //   Get.offAll(() => LoginPage());
-        //     //   // showUpdateAppAlertDialog();
-        //     //   return;
-        //     // }
-        //     Navigator.pop(context);
-        //   }
-        // }
-        // else {
-        //   getErrorSnackBar("Data Sync could not Complete");
-        //
-        //   setState(() {
-        //     _currentStep = 0;
-        //   });
-        // }
+      // if (DataSync.isSyncSuccessful) {
+      //   if (widget.isComingFromLogin) {
+      //     LoginPage.hasSynced = true;
+      //     Navigator.pushAndRemoveUntil(
+      //         context,
+      //         MaterialPageRoute(builder: (context) => Dashboard()),
+      //         (route) => false);
+      //   } else {
+      //     await isValidAppVersion();
+      //     // if(isAppVersionValid!=RxBool(true)){
+      //     //   Get.offAll(() => LoginPage());
+      //     //   // showUpdateAppAlertDialog();
+      //     //   return;
+      //     // }
+      //     Navigator.pop(context);
+      //   }
+      // }
+      // else {
+      //   getErrorSnackBar("Data Sync could not Complete");
+      //
+      //   setState(() {
+      //     _currentStep = 0;
+      //   });
+      // }
     }
   }
 

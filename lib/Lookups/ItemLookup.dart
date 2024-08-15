@@ -193,22 +193,20 @@ class _AddItemState extends State<AddItem> {
                             }
                             if (_query.text.isNotEmpty
                                 ? (snapshot.data![index].ItemCode
-                                .toString()
-                                .toUpperCase()
-                                .contains(_query.text
-                                .toString()
-                                .toUpperCase()) ||
-                                snapshot.data![index].ItemName
-                                    .toString()
-                                    .toUpperCase()
-                                    .contains(_query.text
-                                    .toString()
-                                    .toUpperCase()))
+                                        .toString()
+                                        .toUpperCase()
+                                        .contains(_query.text
+                                            .toString()
+                                            .toUpperCase()) ||
+                                    snapshot.data![index].ItemName
+                                        .toString()
+                                        .toUpperCase()
+                                        .contains(_query.text
+                                            .toString()
+                                            .toUpperCase()))
                                 : true) {
                               return InkWell(
-                                onDoubleTap: () {
-
-                                },
+                                onDoubleTap: () {},
                                 child: Container(
                                   decoration: BoxDecoration(
                                     color: Colors.white,
@@ -236,13 +234,13 @@ class _AddItemState extends State<AddItem> {
                                               alignment: Alignment.topLeft,
                                               child: getHeadingText(
                                                 text: snapshot.data![index]
-                                                    .ItemCode
-                                                    .toString() ==
-                                                    ""
+                                                            .ItemCode
+                                                            .toString() ==
+                                                        ""
                                                     ? "ABC"
                                                     : snapshot
-                                                    .data![index].ItemCode
-                                                    .toString(),
+                                                        .data![index].ItemCode
+                                                        .toString(),
                                               ),
                                             ),
                                           ),

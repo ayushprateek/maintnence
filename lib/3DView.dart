@@ -23,6 +23,7 @@ class MyApp extends StatelessWidget {
 
 class View3DModel extends StatefulWidget {
   const View3DModel({super.key, required this.title});
+
   final String title;
 
   @override
@@ -75,11 +76,11 @@ class _View3DModelState extends State<View3DModel> {
           FloatingActionButton.small(
             onPressed: () async {
               List<String> availableAnimations =
-              await controller.getAvailableAnimations();
+                  await controller.getAvailableAnimations();
               print(
                   'Animations : $availableAnimations -- Length : ${availableAnimations.length}');
               chosenAnimation =
-              await showPickerDialog(availableAnimations, chosenAnimation);
+                  await showPickerDialog(availableAnimations, chosenAnimation);
               controller.playAnimation(animationName: chosenAnimation);
             },
             child: const Icon(Icons.format_list_bulleted_outlined),
@@ -90,11 +91,11 @@ class _View3DModelState extends State<View3DModel> {
           FloatingActionButton.small(
             onPressed: () async {
               List<String> availableTextures =
-              await controller.getAvailableTextures();
+                  await controller.getAvailableTextures();
               print(
                   'Textures : $availableTextures -- Length : ${availableTextures.length}');
               chosenTexture =
-              await showPickerDialog(availableTextures, chosenTexture);
+                  await showPickerDialog(availableTextures, chosenTexture);
               controller.setTexture(textureName: chosenTexture ?? '');
             },
             child: const Icon(Icons.list_alt_rounded),

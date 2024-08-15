@@ -10,8 +10,8 @@ import 'package:maintenance/Sync/SyncModels/MNOCLT.dart';
 
 class CheckListCodeLookup extends StatefulWidget {
   Function(MNOCLT) onSelection;
-   CheckListCodeLookup({super.key,
-  required this.onSelection});
+
+  CheckListCodeLookup({super.key, required this.onSelection});
 
   @override
   State<CheckListCodeLookup> createState() => _CheckListCodeLookupState();
@@ -191,8 +191,7 @@ class _CheckListCodeLookupState extends State<CheckListCodeLookup> {
                             }
                             return InkWell(
                               onDoubleTap: () {
-
-                               widget.onSelection(snapshot.data![index]);
+                                widget.onSelection(snapshot.data![index]);
                                 Get.back();
                               },
                               child: Container(

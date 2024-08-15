@@ -5,32 +5,22 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:maintenance/3DView.dart';
-import 'package:maintenance/CheckListDocument/create/CheckListDocument.dart';
 import 'package:maintenance/Component/AppConfig.dart';
 import 'package:maintenance/Component/CheckInternet.dart';
 import 'package:maintenance/Component/ClearTextFieldData.dart';
 import 'package:maintenance/Component/CustomColor.dart';
 import 'package:maintenance/Component/CustomFont.dart';
-import 'package:maintenance/Component/GetLastDocNum.dart';
 import 'package:maintenance/Component/IsAPIWorking.dart';
-import 'package:maintenance/Component/IsAvailableTransId.dart';
 import 'package:maintenance/Component/IsValidAppVersion.dart';
 import 'package:maintenance/Component/LogFileFunctions.dart';
 import 'package:maintenance/Component/MenuDescription.dart';
 import 'package:maintenance/Component/SnackbarComponent.dart';
-import 'package:maintenance/DrangAndDropItem.dart';
-import 'package:maintenance/GoodsIssue/create/GoodsIssue.dart';
-import 'package:maintenance/GoodsReceiptNote/create/GoodsReceiptNote.dart';
-import 'package:maintenance/InternalRequest/create/InternalRequest.dart';
-import 'package:maintenance/JobCard/create/JobCard.dart';
-import 'package:maintenance/Purchase/PurchaseRequest/create/PurchaseRequest.dart';
 import 'package:maintenance/Sync/DataSync.dart';
 import 'package:maintenance/Sync/SyncModels/ORTU.dart';
 import 'package:maintenance/zzzz.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 import '../main.dart';
-import 'package:maintenance/CheckListDocument/create/GeneralData.dart' as checkListGenData;
 
 class CustomDrawer extends StatefulWidget {
   static bool hasEnabledLocation = false;
@@ -89,21 +79,19 @@ class _CustomDrawerState extends State<CustomDrawer> {
                             'Check List Document',
                             style: TextStyle(color: Colors.white),
                           ),
-                          leading:
-                              Icon(MdiIcons.account, color: Colors.white),
+                          leading: Icon(MdiIcons.account, color: Colors.white),
                           trailing: Icon(Icons.keyboard_arrow_right,
                               color: Colors.white),
                         ),
                         ListTile(
-                          onTap: (){
+                          onTap: () {
                             goToNewJobCardDocument();
                           },
                           title: Text(
                             'Job Card',
                             style: TextStyle(color: Colors.white),
                           ),
-                          leading:
-                              Icon(MdiIcons.account, color: Colors.white),
+                          leading: Icon(MdiIcons.account, color: Colors.white),
                           trailing: Icon(Icons.keyboard_arrow_right,
                               color: Colors.white),
                         ),
@@ -120,15 +108,14 @@ class _CustomDrawerState extends State<CustomDrawer> {
                       ),
                       children: [
                         ListTile(
-                          onTap: (){
+                          onTap: () {
                             goToNewGoodsIssueDocument();
                           },
                           title: Text(
                             'Goods Issue',
                             style: TextStyle(color: Colors.white),
                           ),
-                          leading:
-                              Icon(MdiIcons.account, color: Colors.white),
+                          leading: Icon(MdiIcons.account, color: Colors.white),
                           trailing: Icon(Icons.keyboard_arrow_right,
                               color: Colors.white),
                         ),
@@ -146,54 +133,50 @@ class _CustomDrawerState extends State<CustomDrawer> {
                       ),
                       children: [
                         ListTile(
-                          onTap: (){
+                          onTap: () {
                             goToNewPurchaseRequestDocument();
                           },
                           title: Text(
                             'Purchase Request',
                             style: TextStyle(color: Colors.white),
                           ),
-                          leading:
-                              Icon(MdiIcons.account, color: Colors.white),
+                          leading: Icon(MdiIcons.account, color: Colors.white),
                           trailing: Icon(Icons.keyboard_arrow_right,
                               color: Colors.white),
                         ),
                         ListTile(
-                          onTap: (){
+                          onTap: () {
                             goToNewPurchaseOrderDocument();
                           },
                           title: Text(
                             'Purchase Order',
                             style: TextStyle(color: Colors.white),
                           ),
-                          leading:
-                              Icon(MdiIcons.account, color: Colors.white),
+                          leading: Icon(MdiIcons.account, color: Colors.white),
                           trailing: Icon(Icons.keyboard_arrow_right,
                               color: Colors.white),
                         ),
                         ListTile(
-                          onTap: (){
+                          onTap: () {
                             goToNewGRNDocument();
                           },
                           title: Text(
                             'Goods Receipt Note',
                             style: TextStyle(color: Colors.white),
                           ),
-                          leading:
-                              Icon(MdiIcons.account, color: Colors.white),
+                          leading: Icon(MdiIcons.account, color: Colors.white),
                           trailing: Icon(Icons.keyboard_arrow_right,
                               color: Colors.white),
                         ),
                         ListTile(
-                          onTap: (){
+                          onTap: () {
                             goToNewInternalRequestDocument();
                           },
                           title: Text(
                             'Internal Request',
                             style: TextStyle(color: Colors.white),
                           ),
-                          leading:
-                              Icon(MdiIcons.account, color: Colors.white),
+                          leading: Icon(MdiIcons.account, color: Colors.white),
                           trailing: Icon(Icons.keyboard_arrow_right,
                               color: Colors.white),
                         ),
@@ -451,8 +434,10 @@ class _CustomDrawerState extends State<CustomDrawer> {
                     ),
                   ),
                   InkWell(
-                    onTap: (){
-                      Get.to(()=>View3DModel(title: 'View 3D Model',));
+                    onTap: () {
+                      Get.to(() => View3DModel(
+                            title: 'View 3D Model',
+                          ));
                     },
                     child: ListTile(
                       title: Text(
@@ -479,8 +464,8 @@ class _CustomDrawerState extends State<CustomDrawer> {
                   //   ),
                   // ),
                   InkWell(
-                    onTap: (){
-                      Get.to(()=>DragDemo( ));
+                    onTap: () {
+                      Get.to(() => DragDemo());
                     },
                     child: ListTile(
                       title: Text(

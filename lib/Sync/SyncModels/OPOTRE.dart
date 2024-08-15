@@ -6,7 +6,6 @@ import 'package:maintenance/Component/LogFileFunctions.dart';
 import 'package:maintenance/Component/SnackbarComponent.dart';
 import 'package:maintenance/DatabaseInitialization.dart';
 import 'package:maintenance/Sync/CustomURL.dart';
-import 'package:maintenance/Sync/DataSync.dart';
 import 'package:sqflite/sqlite_api.dart';
 
 class OPOTRE {
@@ -162,6 +161,7 @@ Future<List<OPOTRE>> dataSyncOPOTRE() async {
   print(res.body);
   return oPOTREFromJson(res.body);
 }
+
 Future<List<OPOTRE>> retrieveOPOTREForDisplay(
     {String dbQuery = '', int limit = 15, bool isCompetitor = false}) async {
   final Database db = await initializeDB(null);
@@ -173,6 +173,7 @@ Future<List<OPOTRE>> retrieveOPOTREForDisplay(
   final List<Map<String, Object?>> queryResult = await db.rawQuery(searchQuery);
   return queryResult.map((e) => OPOTRE.fromJson(e)).toList();
 }
+
 Future<void> insertOPOTRE(Database db, {List? list}) async {
   if (postfix.toLowerCase().contains('all')) {
     await deleteOPOTRE(db);

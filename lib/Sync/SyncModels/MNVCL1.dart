@@ -268,10 +268,9 @@ Future<String> insertMNVCL1ToServer(BuildContext? context,
           map["has_created"] = 0;
           var x = await db.update("MNVCL1", map,
               where: "Code = ? AND RowId = ?",
-              whereArgs: [model.Code,model.RowId]);
+              whereArgs: [model.Code, model.RowId]);
           print(x.toString());
-        } else
-        if (res.statusCode == 201 || res.statusCode == 500) {
+        } else if (res.statusCode == 201 || res.statusCode == 500) {
           sentSuccessInServer = true;
           if (res.statusCode == 201) {
             map['ID'] = jsonDecode(res.body)['ID'];

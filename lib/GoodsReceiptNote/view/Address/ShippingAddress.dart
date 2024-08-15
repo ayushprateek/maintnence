@@ -126,12 +126,12 @@ class _ShippingAddressState extends State<ShippingAddress> {
                 height: 25,
               ),
               getDisabledTextField(
-                  controller: AddCode,
-                  labelText: 'Add Code*',
-                  onChanged: (value) {
-                    ShippingAddress.AddCode = value;
-                  },
-                  ),
+                controller: AddCode,
+                labelText: 'Add Code*',
+                onChanged: (value) {
+                  ShippingAddress.AddCode = value;
+                },
+              ),
               Padding(
                 padding: const EdgeInsets.only(bottom: 6.0, left: 8, right: 8),
                 child: Row(
@@ -250,5 +250,4 @@ class _ShippingAddressState extends State<ShippingAddress> {
       ),
     );
   }
-
 }

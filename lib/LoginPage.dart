@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+
 import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -18,7 +19,6 @@ import 'package:maintenance/DatabaseInitialization.dart';
 import 'package:maintenance/Sync/CustomURL.dart';
 import 'package:maintenance/Sync/DataSync.dart';
 import 'package:maintenance/Sync/SyncModels/OUSR.dart';
-
 import 'package:maintenance/main.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -71,8 +71,10 @@ class _LoginPageState extends State<LoginPage> {
       syncDate = getDataSyncDate();
       DateTime now = DateTime.now();
       if (syncDate != null && syncDate?.day != now.day) {
-        Get.to(() => DataSync('/GetData',
-            isComingFromLogin: false,));
+        Get.to(() => DataSync(
+              '/GetData',
+              isComingFromLogin: false,
+            ));
       } else {
         setState(() {});
       }
@@ -311,7 +313,6 @@ class _LoginPageState extends State<LoginPage> {
                         builder: (context) => new DataSync(
                               "/GetAll",
                               isComingFromLogin: true,
-
                             ))));
           } else {
             getErrorSnackBar('Invalid username/password');
@@ -418,7 +419,7 @@ class _LoginPageState extends State<LoginPage> {
 
   Future<bool> validateCredentialsOnline() async {
     credentials = '${username.text}:${password.text}';
-    String encoded = stringToBase64.encode(credentials+secretKey);
+    String encoded = stringToBase64.encode(credentials + secretKey);
     header = {
       'Authorization': 'Basic $encoded',
       "content-type": "application/json",
@@ -446,7 +447,7 @@ class _LoginPageState extends State<LoginPage> {
   validateCredentialsOffline() async {
     String hashedPassword = getHashedPassword();
     credentials = '${username.text}:${password.text}';
-    String encoded = stringToBase64.encode(credentials+secretKey);
+    String encoded = stringToBase64.encode(credentials + secretKey);
     header = {
       'Authorization': 'Basic $encoded',
       "content-type": "application/json",

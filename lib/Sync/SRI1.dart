@@ -178,7 +178,7 @@ Future<void> insertSRI1(Database db, {List? list}) async {
           batch.update("SRI1", element,
               where:
                   "OSRIID = ? AND RowId = ? AND ifnull(has_created,0) <> ? AND ifnull(has_updated,0) <> ?",
-              whereArgs: [element["OSRIID"],element["RowId"], 1, 1]);
+              whereArgs: [element["OSRIID"], element["RowId"], 1, 1]);
         } catch (e) {
           writeToLogFile(
               text: e.toString(),

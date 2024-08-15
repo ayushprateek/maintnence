@@ -21,13 +21,12 @@ Future<void> writeToLogFile(
   await CompanyDetails.loadCompanyDetails();
   final directory = await getExternalStorageDirectory();
   String? filePath = localStorage?.getString(logFileName);
-  if (filePath == null||filePath == '') {
+  if (filePath == null || filePath == '') {
     ///FIRST LOG
     ///CREATE LOG FILE
     String companyName =
         CompanyDetails.ocinModel?.CompanyName?.split(' ')[0] ?? '';
-    filePath =
-        '${companyName}_${userModel.UserCode}';
+    filePath = '${companyName}_${userModel.UserCode}';
     localStorage?.setString(logFileName, filePath);
   }
   File file = File(
@@ -66,7 +65,7 @@ Future<String> readLogFile() async {
   try {
     final directory = await getExternalStorageDirectory();
     String? filePath = localStorage?.getString(logFileName);
-    if (filePath == null||filePath == '') {
+    if (filePath == null || filePath == '') {
       return '';
     }
     File file = File(

@@ -6,9 +6,9 @@ import 'package:maintenance/Component/CustomFont.dart';
 import 'package:maintenance/Component/GetFormattedDate.dart';
 import 'package:maintenance/Component/GetTextField.dart';
 import 'package:maintenance/Component/SnackbarComponent.dart';
-import 'package:maintenance/JobCard/create/ItemDetails/ItemDetails.dart';
-import 'package:maintenance/JobCard/create/ItemDetails/EditJobCardItem.dart';
 import 'package:maintenance/JobCard/create/GeneralData.dart';
+import 'package:maintenance/JobCard/create/ItemDetails/EditJobCardItem.dart';
+import 'package:maintenance/JobCard/create/ItemDetails/ItemDetails.dart';
 import 'package:maintenance/Sync/SyncModels/OITM.dart';
 
 class AddItem extends StatefulWidget {
@@ -225,7 +225,8 @@ class _AddItemState extends State<AddItem> {
                                             " is already added");
                                   } else {
                                     ClearJobCardDoc.clearEditItems();
-                                    EditJobCardItem.transId = GeneralData.transId;
+                                    EditJobCardItem.transId =
+                                        GeneralData.transId;
                                     EditJobCardItem.isUpdating = false;
                                     EditJobCardItem.itemCode =
                                         snapshot.data![index].ItemCode;

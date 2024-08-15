@@ -5,9 +5,9 @@ import 'package:maintenance/Component/CustomColor.dart';
 import 'package:maintenance/Component/CustomFont.dart';
 import 'package:maintenance/Component/GetTextField.dart';
 import 'package:maintenance/Component/SnackbarComponent.dart';
+import 'package:maintenance/JobCard/edit/GeneralData.dart';
 import 'package:maintenance/JobCard/edit/ServiceDetails/EditService.dart';
 import 'package:maintenance/JobCard/edit/ServiceDetails/ServiceDetails.dart';
-import 'package:maintenance/JobCard/edit/GeneralData.dart';
 import 'package:maintenance/Sync/SyncModels/OITM.dart';
 
 class AddServiceItem extends StatefulWidget {
@@ -222,14 +222,11 @@ class _AddServiceItemState extends State<AddServiceItem> {
                                     getErrorSnackBar(
                                         snapshot.data![index].ItemName +
                                             " is already added");
-                                  }
-                                  else
-                                  {
+                                  } else {
                                     ClearJobCardDoc.clearEditService();
                                     EditService.serviceCode =
                                         snapshot.data![index].ItemCode;
-                                    EditService.transId =
-                                        GeneralData.transId;
+                                    EditService.transId = GeneralData.transId;
                                     EditService.serviceName =
                                         snapshot.data![index].ItemName;
                                     Get.to(() => EditService());

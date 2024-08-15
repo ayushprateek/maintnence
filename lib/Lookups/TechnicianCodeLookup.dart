@@ -1,17 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:maintenance/CheckListDocument/create/CheckListDocument.dart';
-import 'package:maintenance/CheckListDocument/create/GeneralData.dart';
 import 'package:maintenance/Component/CustomColor.dart';
 import 'package:maintenance/Component/CustomFont.dart';
 import 'package:maintenance/Component/GetTextField.dart';
-import 'package:maintenance/Sync/SyncModels/MNOWCM.dart';
 import 'package:maintenance/Sync/SyncModels/OEMP.dart';
 
 class TechnicianCodeLookup extends StatefulWidget {
   Function(OEMPModel) onSelection;
-   TechnicianCodeLookup({super.key,
-   required this.onSelection});
+
+  TechnicianCodeLookup({super.key, required this.onSelection});
 
   @override
   State<TechnicianCodeLookup> createState() => _TechnicianCodeLookupState();
@@ -172,45 +169,45 @@ class _TechnicianCodeLookupState extends State<TechnicianCodeLookup> {
                                 children: [
                                   Row(
                                     crossAxisAlignment:
-                                    CrossAxisAlignment.start,
+                                        CrossAxisAlignment.start,
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
                                       Expanded(
                                           child: Column(
-                                            crossAxisAlignment:
+                                        crossAxisAlignment:
                                             CrossAxisAlignment.start,
-                                            children: [
-                                              Text.rich(
-                                                TextSpan(
-                                                  children: [
-                                                    getPoppinsTextSpanHeading(
-                                                        text: 'Code'),
-                                                    getPoppinsTextSpanDetails(
-                                                        text: snapshot
-                                                            .data![index].Code),
-                                                  ],
-                                                ),
-                                              ),
-                                            ],
-                                          )),
+                                        children: [
+                                          Text.rich(
+                                            TextSpan(
+                                              children: [
+                                                getPoppinsTextSpanHeading(
+                                                    text: 'Code'),
+                                                getPoppinsTextSpanDetails(
+                                                    text: snapshot
+                                                        .data![index].Code),
+                                              ],
+                                            ),
+                                          ),
+                                        ],
+                                      )),
                                       Expanded(
                                           child: Column(
-                                            crossAxisAlignment:
+                                        crossAxisAlignment:
                                             CrossAxisAlignment.start,
-                                            children: [
-                                              Text.rich(
-                                                TextSpan(
-                                                  children: [
-                                                    getPoppinsTextSpanHeading(
-                                                        text: 'Name'),
-                                                    getPoppinsTextSpanDetails(
-                                                        text: snapshot
-                                                            .data![index].Name),
-                                                  ],
-                                                ),
-                                              ),
-                                            ],
-                                          )),
+                                        children: [
+                                          Text.rich(
+                                            TextSpan(
+                                              children: [
+                                                getPoppinsTextSpanHeading(
+                                                    text: 'Name'),
+                                                getPoppinsTextSpanDetails(
+                                                    text: snapshot
+                                                        .data![index].Name),
+                                              ],
+                                            ),
+                                          ),
+                                        ],
+                                      )),
                                     ],
                                   ),
                                 ],
