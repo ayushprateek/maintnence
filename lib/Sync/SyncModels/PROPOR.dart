@@ -6,7 +6,6 @@ import 'package:maintenance/Component/LogFileFunctions.dart';
 import 'package:maintenance/Component/SnackbarComponent.dart';
 import 'package:maintenance/DatabaseInitialization.dart';
 import 'package:maintenance/Sync/CustomURL.dart';
-import 'package:maintenance/Sync/DataSync.dart';
 import 'package:sqflite/sqlite_api.dart';
 
 class PROPOR {
@@ -55,6 +54,8 @@ class PROPOR {
   String? TripTransId;
   String? DeptCode;
   String? DeptName;
+  bool hasCreated;
+  bool hasUpdated;
 
   PROPOR({
     this.ID,
@@ -102,6 +103,8 @@ class PROPOR {
     this.TripTransId,
     this.DeptCode,
     this.DeptName,
+    this.hasCreated = false,
+    this.hasUpdated = false,
   });
 
   factory PROPOR.fromJson(Map<String, dynamic> json) => PROPOR(
@@ -136,6 +139,8 @@ class PROPOR {
         UpdateDate: DateTime.tryParse(json['UpdateDate'].toString()),
         ApprovedBy: json['ApprovedBy']?.toString() ?? '',
         Error: json['Error']?.toString() ?? '',
+        hasCreated: json['has_created'] == 1,
+        hasUpdated: json['has_updated'] == 1,
         IsPosted:
             json['IsPosted'] is bool ? json['IsPosted'] : json['IsPosted'] == 1,
         DraftKey: json['DraftKey']?.toString() ?? '',
@@ -199,6 +204,8 @@ class PROPOR {
         'TripTransId': TripTransId,
         'DeptCode': DeptCode,
         'DeptName': DeptName,
+        "has_created": hasCreated ? 1 : 0,
+        "has_updated": hasUpdated ? 1 : 0,
       };
 }
 
@@ -213,6 +220,17 @@ Future<List<PROPOR>> dataSyncPROPOR() async {
       await http.get(headers: header, Uri.parse(prefix + "PROPOR" + postfix));
   print(res.body);
   return pROPORFromJson(res.body);
+}
+
+Future<List<PROPOR>> retrievePROPORForSearch({
+  int? limit,
+  String? query,
+}) async {
+  query = "%$query%";
+  final Database db = await initializeDB(null);
+  final List<Map<String, Object?>> queryResult =
+      await db.rawQuery("SELECT * FROM PROPOR WHERE TransId LIKE '$query'");
+  return queryResult.map((e) => PROPOR.fromJson(e)).toList();
 }
 
 Future<void> insertPROPOR(Database db, {List? list}) async {
