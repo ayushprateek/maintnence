@@ -160,6 +160,20 @@ class _CustomDrawerState extends State<CustomDrawer> {
                         ),
                         ListTile(
                           onTap: (){
+                            // goToNewPurchaseRequestDocument();
+                            //todo:
+                          },
+                          title: Text(
+                            'Purchase Order',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                          leading:
+                              Icon(MdiIcons.account, color: Colors.white),
+                          trailing: Icon(Icons.keyboard_arrow_right,
+                              color: Colors.white),
+                        ),
+                        ListTile(
+                          onTap: (){
                             goToNewGRNDocument();
                           },
                           title: Text(

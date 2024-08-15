@@ -28,12 +28,12 @@ import 'package:maintenance/Sync/SyncModels/OWHS.dart';
 import 'package:maintenance/Sync/SyncModels/PRPRQ1.dart';
 import 'package:maintenance/Sync/SyncModels/ROUT.dart';
 
-
-
 class EditItems extends StatefulWidget {
   static String? id;
   static String? truckNo;
   static String? tripTransId;
+  static String? remarks;
+  static String? noOfPieces;
   static String? toWhsCode;
   static String? toWhsName;
   static String? driverCode;
@@ -72,6 +72,10 @@ class EditItems extends StatefulWidget {
 class _EditCheckListState extends State<EditItems> {
   final TextEditingController _truckNo =
       TextEditingController(text: EditItems.truckNo);
+  final TextEditingController _noOfPieces =
+      TextEditingController(text: EditItems.noOfPieces);
+  final TextEditingController _remarks =
+      TextEditingController(text: EditItems.remarks);
   final TextEditingController _tripTransId =
       TextEditingController(text: EditItems.tripTransId);
   final TextEditingController _routeName =
@@ -108,6 +112,7 @@ class _EditCheckListState extends State<EditItems> {
   void initState() {
     super.initState();
   }
+
   void calculate() {
     try {
       double qty = roundToTwoDecimal(double.tryParse(_consumptionQty.text));
@@ -128,7 +133,7 @@ class _EditCheckListState extends State<EditItems> {
       }
       double lineTotal = roundToTwoDecimal(total_tax);
       lineTotal += roundToTwoDecimal(price * qty - discount);
-      EditItems.lineTotal=_lineTotal.text = lineTotal.toStringAsFixed(2);
+      EditItems.lineTotal = _lineTotal.text = lineTotal.toStringAsFixed(2);
       setState(() {});
     } catch (e) {
       writeToLogFile(
@@ -137,6 +142,7 @@ class _EditCheckListState extends State<EditItems> {
           lineNo: 141);
     }
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -150,18 +156,17 @@ class _EditCheckListState extends State<EditItems> {
               height: 20,
             ),
             getDisabledTextField(
-              controller: _tripTransId,
-              labelText: 'Trip ',
+                controller: _tripTransId,
+                labelText: 'Trip ',
                 enableLookup: true,
                 onLookupPressed: () {
                   Get.to(() => TripLookup(onSelection: (OPOTRP oemp) {
-                    setState(() {
-                      EditItems.tripTransId =
-                          _tripTransId.text = oemp.TransId ?? '';
-                    });
-                  }));
-                }
-            ),
+                        setState(() {
+                          EditItems.tripTransId =
+                              _tripTransId.text = oemp.TransId ?? '';
+                        });
+                      }));
+                }),
             getDisabledTextField(
               controller: _itemName,
               labelText: 'Item ',
@@ -197,6 +202,16 @@ class _EditCheckListState extends State<EditItems> {
                       }));
                 }),
             getTextField(
+              controller: _noOfPieces,
+              labelText: 'No Of Pieces',
+              onChanged: (val) {
+                calculate();
+                EditItems.noOfPieces = val;
+              },
+              keyboardType: getDecimalKeyboardType(),
+              inputFormatters: [getDecimalRegEx()],
+            ),
+            getTextField(
               controller: _consumptionQty,
               labelText: 'Consumption Qty',
               onChanged: (val) {
@@ -225,7 +240,7 @@ class _EditCheckListState extends State<EditItems> {
                 onLookupPressed: () {
                   Get.to(() => VehicleCodeLookup(onSelected: (OVCLModel ovcl) {
                         setState(() {
-                          EditItems.truckNo = _truckNo.text = ovcl.Code??'';
+                          EditItems.truckNo = _truckNo.text = ovcl.Code ?? '';
                         });
                       }));
                 }),
@@ -276,6 +291,14 @@ class _EditCheckListState extends State<EditItems> {
               },
               keyboardType: getDecimalKeyboardType(),
               inputFormatters: [getDecimalRegEx()],
+            ),
+            getTextField(
+              controller: _remarks,
+              labelText: 'Remarks',
+              onChanged: (val) {
+                EditItems.remarks = val;
+                calculate();
+              },
             ),
             getDisabledTextField(
               controller: _mtv,
@@ -350,15 +373,51 @@ class _EditCheckListState extends State<EditItems> {
                             for (int i = 0; i < ItemDetails.items.length; i++)
                               if (EditItems.itemCode ==
                                   ItemDetails.items[i].ItemCode) {
-                                ItemDetails.items[i].UOM = EditItems.uomCode;
-                                //todo: updating
+                                ItemDetails.items[i] = PRPRQ1(
+                                  ID: int.tryParse(EditItems.id ?? ''),
+                                  TransId: EditItems.transId,
+                                  RowId: ItemDetails.items[i].RowId,
+                                  ItemCode: EditItems.itemCode.toString() ?? '',
+                                  ItemName: EditItems.itemName.toString() ?? '',
+                                  UOM: EditItems.uomCode.toString() ?? '',
+                                  DeptCode: EditItems.deptCode,
+                                  DeptName: EditItems.deptName,
+                                  TripTransId: EditItems.tripTransId,
+                                  SupplierCode: EditItems.supplierCode,
+                                  SupplierName: EditItems.supplierName,
+                                  WhsCode: EditItems.toWhsCode,
+                                  Discount: double.tryParse(
+                                      EditItems.lineDiscount ?? ''),
+                                  DriverCode: EditItems.driverCode,
+                                  DriverName: EditItems.driverName,
+                                  TruckNo: EditItems.truckNo,
+                                  TaxCode: EditItems.taxCode,
+                                  TaxRate:
+                                      double.tryParse(EditItems.taxRate ?? ''),
+                                  RouteCode: EditItems.routeCode,
+                                  RouteName: EditItems.routeName,
+                                  Quantity: double.tryParse(
+                                      EditItems.consumptionQty ?? ''),
+                                  Price: double.tryParse(EditItems.price ?? ''),
+                                  OpenQty: double.tryParse(
+                                      EditItems.consumptionQty ?? ''),
+                                  MSP: double.tryParse(EditItems.mtv ?? ''),
+                                  NoOfPieces: double.tryParse(_noOfPieces.text),
+                                  LineTotal: double.tryParse(
+                                      EditItems.lineTotal ?? ''),
+                                  LineStatus: 'Open',
+                                  Remarks: _remarks.text,
+                                  CreateDate: DateTime.now(),
+                                  insertedIntoDatabase: false,
+                                );
                               }
 
                             Get.offAll(() => PurchaseRequest(1));
 
-                            getSuccessSnackBar("Check List Updated");
+                            getSuccessSnackBar("Purchase Request Updated");
                           } else {
                             PRPRQ1 mncld1 = PRPRQ1(
+                              Remarks: _remarks.text,
                               ID: int.tryParse(EditItems.id ?? ''),
                               TransId: EditItems.transId,
                               RowId: ItemDetails.items.length,
@@ -386,6 +445,7 @@ class _EditCheckListState extends State<EditItems> {
                               OpenQty: double.tryParse(
                                   EditItems.consumptionQty ?? ''),
                               MSP: double.tryParse(EditItems.mtv ?? ''),
+                              NoOfPieces: double.tryParse(_noOfPieces.text),
                               LineTotal:
                                   double.tryParse(EditItems.lineTotal ?? ''),
                               LineStatus: 'Open',

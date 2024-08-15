@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:maintenance/Component/CustomColor.dart';
 import 'package:maintenance/Component/CustomFont.dart';
-import 'package:maintenance/Component/SnackbarComponent.dart';
 import 'package:maintenance/Purchase/PurchaseRequest/edit/ItemDetails/AddItems.dart';
 import 'package:maintenance/Purchase/PurchaseRequest/edit/ItemDetails/EditItems.dart';
-import 'package:maintenance/Purchase/PurchaseRequest/edit/PurchaseRequest.dart';
+import 'package:maintenance/Sync/SyncModels/OUOM.dart';
+import 'package:maintenance/Sync/SyncModels/OWHS.dart';
 import 'package:maintenance/Sync/SyncModels/PRPRQ1.dart';
 
 class ItemDetails extends StatefulWidget {
@@ -83,71 +83,90 @@ class _ItemDetailsState extends State<ItemDetails> {
                           clipBehavior: Clip.none,
                           children: [
                             InkWell(
-                              onDoubleTap: () {
-                                if (isSelectedAndCancelled() ||
-                                    isSalesQuotationDocClosed()) {
-                                  getErrorSnackBar(
-                                      "This Document is already cancelled / closed");
-                                } else {
-                                  EditItems.isInserted = ItemDetails.items[index].insertedIntoDatabase;
-                                  EditItems.isUpdating =true;
-                                  EditItems.id = ItemDetails.items[index].ID?.toString();
-                                  EditItems.tripTransId = ItemDetails.items[index].TripTransId??'';
-                                  EditItems.supplierCode = ItemDetails.items[index].SupplierCode??'';
-                                  EditItems.supplierName =ItemDetails.items[index].SupplierName?? '';
-                                  EditItems.truckNo = ItemDetails.items[index].TruckNo??'';
-                                  EditItems.toWhsCode = ItemDetails.items[index].WhsCode??'';
-                                  EditItems.toWhsName = '';
-                                  EditItems.driverCode = ItemDetails.items[index].DriverCode??'';
-                                  EditItems.driverName = ItemDetails.items[index].DriverName??'';
-                                  EditItems.routeCode = ItemDetails.items[index].RouteCode??'';
-                                  EditItems.routeName = ItemDetails.items[index].RouteName??'';
-                                  EditItems.transId = ItemDetails.items[index].TransId??'';
-                                  EditItems.rowId = ItemDetails.items[index].RowId?.toString()??'';
-                                  EditItems.itemCode = ItemDetails.items[index].ItemCode??'';
-                                  EditItems.itemName = ItemDetails.items[index].ItemName??'';
-                                  EditItems.consumptionQty = ItemDetails.items[index].Quantity?.toString()??'';
-                                  EditItems.uomCode = ItemDetails.items[index].UOM??'';
-                                  EditItems.uomName = '';
-                                  EditItems.deptCode = ItemDetails.items[index].DeptCode??'';
-                                  EditItems.deptName = ItemDetails.items[index].DeptName??'';
-                                  EditItems.price = ItemDetails.items[index].Price?.toStringAsFixed(2)??'';
-                                  EditItems.mtv = ItemDetails.items[index].MSP?.toStringAsFixed(2)??'';
-                                  EditItems.taxCode = ItemDetails.items[index].TaxCode??'';
-                                  EditItems.taxRate = ItemDetails.items[index].TaxRate?.toStringAsFixed(2)??'';
-                                  EditItems.lineDiscount = ItemDetails.items[index].Discount?.toStringAsFixed(2)??'';
-                                  EditItems.lineTotal = ItemDetails.items[index].LineTotal?.toStringAsFixed(2)??'';
-                                  
-                                  
-                                  Get.to(()=>EditItems());
-                                  // Navigator.push(
-                                  //     context,
-                                  //     MaterialPageRoute(
-                                  //         builder: ((context) => EditItems(
-                                  //             ItemDetails.items[index].ID ?? 0,
-                                  //             1,
-                                  //             ItemDetails.items[index].WhsCode ??
-                                  //                 '',
-                                  //             ItemDetails.items[index].TransId ??
-                                  //                 '',
-                                  //             ItemDetails.items[index].ItemCode ??
-                                  //                 '',
-                                  //             ItemDetails.items[index].ItemName ??
-                                  //                 '',
-                                  //             ItemDetails.items[index].UOM ?? '',
-                                  //             ItemDetails.items[index].TaxCode ??
-                                  //                 '',
-                                  //             ItemDetails.items[index].Quantity ??
-                                  //                 0.0,
-                                  //             ItemDetails.items[index].Price ?? 0.0,
-                                  //             ItemDetails.items[index].TaxRate ??
-                                  //                 0.0,
-                                  //             ItemDetails.items[index].Discount ??
-                                  //                 0.0,
-                                  //             ItemDetails.items[index].LineTotal ??
-                                  //                 0.0,
-                                  //             true))));
+                              onDoubleTap: () async {
+                                EditItems.isInserted = ItemDetails
+                                    .items[index].insertedIntoDatabase;
+                                EditItems.isUpdating = true;
+                                EditItems.id =
+                                    ItemDetails.items[index].ID?.toString();
+                                EditItems.noOfPieces = ItemDetails
+                                        .items[index].NoOfPieces
+                                        ?.toStringAsFixed(2) ??
+                                    '';
+                                EditItems.remarks =
+                                    ItemDetails.items[index].Remarks ?? '';
+                                EditItems.tripTransId =
+                                    ItemDetails.items[index].TripTransId ?? '';
+                                EditItems.supplierCode =
+                                    ItemDetails.items[index].SupplierCode ?? '';
+                                EditItems.supplierName =
+                                    ItemDetails.items[index].SupplierName ?? '';
+                                EditItems.truckNo =
+                                    ItemDetails.items[index].TruckNo ?? '';
+                                EditItems.toWhsCode =
+                                    ItemDetails.items[index].WhsCode ?? '';
+                                List<OWHS> wareHouseList =
+                                    await retrieveOWHSById(
+                                        null, 'WhsCode = ?', [item.WhsCode]);
+                                if (wareHouseList.isNotEmpty) {
+                                  EditItems.toWhsName =
+                                      wareHouseList[0].WhsName;
                                 }
+                                EditItems.driverCode =
+                                    ItemDetails.items[index].DriverCode ?? '';
+                                EditItems.driverName =
+                                    ItemDetails.items[index].DriverName ?? '';
+                                EditItems.routeCode =
+                                    ItemDetails.items[index].RouteCode ?? '';
+                                EditItems.routeName =
+                                    ItemDetails.items[index].RouteName ?? '';
+                                EditItems.transId =
+                                    ItemDetails.items[index].TransId ?? '';
+                                EditItems.rowId = ItemDetails.items[index].RowId
+                                        ?.toString() ??
+                                    '';
+                                EditItems.itemCode =
+                                    ItemDetails.items[index].ItemCode ?? '';
+                                EditItems.itemName =
+                                    ItemDetails.items[index].ItemName ?? '';
+                                EditItems.consumptionQty = ItemDetails
+                                        .items[index].Quantity
+                                        ?.toString() ??
+                                    '';
+                                EditItems.uomCode =
+                                    ItemDetails.items[index].UOM ?? '';
+                                List<OUOMModel> uomList =
+                                    await retrieveOUOMById(
+                                        null, 'UomCode = ?', [item.UOM]);
+                                if (uomList.isNotEmpty) {
+                                  EditItems.uomName = uomList[0].UomName;
+                                }
+                                EditItems.deptCode =
+                                    ItemDetails.items[index].DeptCode ?? '';
+                                EditItems.deptName =
+                                    ItemDetails.items[index].DeptName ?? '';
+                                EditItems.price = ItemDetails.items[index].Price
+                                        ?.toStringAsFixed(2) ??
+                                    '';
+                                EditItems.mtv = ItemDetails.items[index].MSP
+                                        ?.toStringAsFixed(2) ??
+                                    '';
+                                EditItems.taxCode =
+                                    ItemDetails.items[index].TaxCode ?? '';
+                                EditItems.taxRate = ItemDetails
+                                        .items[index].TaxRate
+                                        ?.toStringAsFixed(2) ??
+                                    '';
+                                EditItems.lineDiscount = ItemDetails
+                                        .items[index].Discount
+                                        ?.toStringAsFixed(2) ??
+                                    '';
+                                EditItems.lineTotal = ItemDetails
+                                        .items[index].LineTotal
+                                        ?.toStringAsFixed(2) ??
+                                    '';
+
+                                Get.to(() => EditItems());
                               },
                               child: Container(
                                 decoration: BoxDecoration(
@@ -198,7 +217,6 @@ class _ItemDetailsState extends State<ItemDetails> {
                                                 ),
                                               ),
                                             ),
-
                                             Padding(
                                               padding: const EdgeInsets.only(
                                                   left: 8.0,
@@ -230,8 +248,7 @@ class _ItemDetailsState extends State<ItemDetails> {
                                                   TextSpan(
                                                     children: [
                                                       getPoppinsTextSpanHeading(
-                                                          text:
-                                                              'Supplier'),
+                                                          text: 'Supplier'),
                                                       getPoppinsTextSpanDetails(
                                                           text:
                                                               item.SupplierName ??
@@ -252,8 +269,7 @@ class _ItemDetailsState extends State<ItemDetails> {
                                                   TextSpan(
                                                     children: [
                                                       getPoppinsTextSpanHeading(
-                                                          text:
-                                                              'Warehouse'),
+                                                          text: 'Warehouse'),
                                                       getPoppinsTextSpanDetails(
                                                           text: item.WhsCode ??
                                                               ''),
@@ -317,6 +333,28 @@ class _ItemDetailsState extends State<ItemDetails> {
                                                           text: 'TruckNo'),
                                                       getPoppinsTextSpanDetails(
                                                           text: item.TruckNo ??
+                                                              ''),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  left: 8.0,
+                                                  right: 8.0,
+                                                  top: 4.0),
+                                              child: Align(
+                                                alignment: Alignment.topLeft,
+                                                child: Text.rich(
+                                                  TextSpan(
+                                                    children: [
+                                                      getPoppinsTextSpanHeading(
+                                                          text: 'NoOfPieces'),
+                                                      getPoppinsTextSpanDetails(
+                                                          text: item.NoOfPieces
+                                                                  ?.toStringAsFixed(
+                                                                      2) ??
                                                               ''),
                                                     ],
                                                   ),
@@ -503,6 +541,26 @@ class _ItemDetailsState extends State<ItemDetails> {
                                                 ),
                                               ),
                                             ),
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  left: 8.0,
+                                                  right: 8.0,
+                                                  top: 4.0),
+                                              child: Align(
+                                                alignment: Alignment.topLeft,
+                                                child: Text.rich(
+                                                  TextSpan(
+                                                    children: [
+                                                      getPoppinsTextSpanHeading(
+                                                          text: 'Remarks'),
+                                                      getPoppinsTextSpanDetails(
+                                                          text: item.Remarks ??
+                                                              ''),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
                                           ],
                                         ),
                                       ),
@@ -574,10 +632,8 @@ class _ItemDetailsState extends State<ItemDetails> {
                                         ],
                                       );
                                     },
-                                  ).then((value){
-                                    setState(() {
-
-                                    });
+                                  ).then((value) {
+                                    setState(() {});
                                   });
                                 },
                                 child: Card(

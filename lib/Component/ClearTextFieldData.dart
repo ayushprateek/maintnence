@@ -114,6 +114,8 @@ import 'package:maintenance/Purchase/PurchaseRequest/create/PurchaseRequest.dart
 //------------------------------ EDIT PURCHASE REQUEST IMPORTS------------
 import 'package:maintenance/Purchase/PurchaseRequest/edit/GeneralData.dart'
 as editPurchaseGenData;
+import 'package:maintenance/Purchase/PurchaseRequest/edit/ItemDetails/ItemDetails.dart'
+as editPurchaseItemDetails;
 import 'package:maintenance/Purchase/PurchaseRequest/edit/ItemDetails/EditItems.dart'
 as editGrnEditItems;
 import 'package:maintenance/Purchase/PurchaseRequest/edit/PurchaseRequest.dart'  as editPurchaseGenData;
@@ -124,6 +126,8 @@ import 'package:maintenance/Purchase/PurchaseRequest/edit/PurchaseRequest.dart';
 //------------------------------ VIEW PURCHASE REQUEST IMPORTS------------
 import 'package:maintenance/Purchase/PurchaseRequest/view/GeneralData.dart'
     as viewPurchaseGenData;
+import 'package:maintenance/Purchase/PurchaseRequest/view/ItemDetails/ItemDetails.dart'
+as viewPurchaseItemDetails;
 import 'package:maintenance/Purchase/PurchaseRequest/view/PurchaseRequest.dart';
 import 'package:maintenance/Sync/SyncModels/IMGDI1.dart';
 import 'package:maintenance/Sync/SyncModels/IMOGDI.dart';
@@ -1170,6 +1174,8 @@ class ClearPurchaseRequestDocument {
   }
 
   static clearEditItems() {
+    createPurchaseEditItems.EditItems.noOfPieces = '';
+    createPurchaseEditItems.EditItems.remarks = '';
     createPurchaseEditItems.EditItems.id = '';
     createPurchaseEditItems.EditItems.tripTransId = '';
     createPurchaseEditItems.EditItems.supplierCode = '';
@@ -1237,7 +1243,7 @@ navigateToPurchaseRequestDocument(
       ClearPurchaseRequestDocument.setViewPurchaseRequestTextFields(
           data: list[0]);
     }
-    createPurchaseItemDetails.ItemDetails.items =
+    viewPurchaseItemDetails.ItemDetails.items =
         await retrievePRPRQ1ById(null, 'TransId = ?', [TransId]);
 
     Get.offAll(() => ViewPurchaseRequest(0));
@@ -1248,7 +1254,7 @@ navigateToPurchaseRequestDocument(
       ClearPurchaseRequestDocument.setEditPurchaseRequestTextFields(
           data: list[0]);
     }
-    createPurchaseItemDetails.ItemDetails.items =
+    editPurchaseItemDetails.ItemDetails.items =
         await retrievePRPRQ1ById(null, 'TransId = ?', [TransId]);
 
     Get.offAll(() => EditPurchaseRequest(0));
