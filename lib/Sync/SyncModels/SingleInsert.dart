@@ -31,7 +31,7 @@ class SingleInsert {
   List<MNCLD1>? mnjcd1S;
   List<MNJCD2>? mnjcd2S;
   List<MNCLD2>? mnjcd3S;
-  List<MNJCD4>? mnjcd4S;
+  // List<MNJCD4>? mnjcd4S;
   List<IMOGDI>? imogdIs;
   List<IMGDI1>? imgdi1S;
   List<PROPRQ>? proprQs;
@@ -52,7 +52,7 @@ class SingleInsert {
     this.mnjcd1S,
     this.mnjcd2S,
     this.mnjcd3S,
-    this.mnjcd4S,
+    // this.mnjcd4S,
     this.imogdIs,
     this.imgdi1S,
     this.proprQs,
@@ -74,7 +74,7 @@ class SingleInsert {
     mnjcd1S: json["MNJCD1s"] == null ? [] : List<MNCLD1>.from(json["MNJCD1s"]!.map((x) => MNCLD1.fromJson(x))),
     mnjcd2S: json["MNJCD2s"] == null ? [] : List<MNJCD2>.from(json["MNJCD2s"]!.map((x) => MNJCD2.fromJson(x))),
     mnjcd3S: json["MNJCD3s"] == null ? [] : List<MNCLD2>.from(json["MNJCD3s"]!.map((x) => MNCLD2.fromJson(x))),
-    mnjcd4S: json["MNJCD4s"] == null ? [] : List<MNJCD4>.from(json["MNJCD4s"]!.map((x) => MNJCD4.fromJson(x))),
+    // mnjcd4S: json["MNJCD4s"] == null ? [] : List<MNJCD4>.from(json["MNJCD4s"]!.map((x) => MNJCD4.fromJson(x))),
     imogdIs: json["IMOGDIs"] == null ? [] : List<IMOGDI>.from(json["IMOGDIs"]!.map((x) => IMOGDI.fromJson(x))),
     imgdi1S: json["IMGDI1s"] == null ? [] : List<IMGDI1>.from(json["IMGDI1s"]!.map((x) => IMGDI1.fromJson(x))),
     proprQs: json["PROPRQs"] == null ? [] : List<PROPRQ>.from(json["PROPRQs"]!.map((x) => PROPRQ.fromJson(x))),
@@ -96,7 +96,7 @@ class SingleInsert {
     "MNJCD1s": mnjcd1S == null ? [] : List<dynamic>.from(mnjcd1S!.map((x) => x.toJson())),
     "MNJCD2s": mnjcd2S == null ? [] : List<dynamic>.from(mnjcd2S!.map((x) => x.toJson())),
     "MNJCD3s": mnjcd3S == null ? [] : List<dynamic>.from(mnjcd3S!.map((x) => x.toJson())),
-    "MNJCD4s": mnjcd4S == null ? [] : List<dynamic>.from(mnjcd4S!.map((x) => x.toJson())),
+    // "MNJCD4s": mnjcd4S == null ? [] : List<dynamic>.from(mnjcd4S!.map((x) => x.toJson())),
     "IMOGDIs": imogdIs == null ? [] : List<dynamic>.from(imogdIs!.map((x) => x.toJson())),
     "IMGDI1s": imgdi1S == null ? [] : List<dynamic>.from(imgdi1S!.map((x) => x.toJson())),
     "PROPRQs": proprQs == null ? [] : List<dynamic>.from(proprQs!.map((x) => x.toJson())),

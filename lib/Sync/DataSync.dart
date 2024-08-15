@@ -129,7 +129,7 @@ class _DataSyncState extends State<DataSync> {
     await insertMNJCD1ToServer(null);
     await insertMNJCD2ToServer(null);
     await insertMNJCD3ToServer(null);
-    await insertMNJCD4ToServer(null);
+    // await insertMNJCD4ToServer(null);
 
     ///Goods Issue
 
@@ -179,7 +179,7 @@ class _DataSyncState extends State<DataSync> {
     await updateMNJCD1OnServer(null);
     await updateMNJCD2OnServer(null);
     await updateMNJCD3OnServer(null);
-    await updateMNJCD4OnServer(null);
+    // await updateMNJCD4OnServer(null);
     setState(() {
       _currentStep = 6;
     });
