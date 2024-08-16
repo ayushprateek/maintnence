@@ -440,22 +440,6 @@ class _CustomDrawerState extends State<CustomDrawer> {
                           Icon(Icons.keyboard_arrow_right, color: Colors.white),
                     ),
                   ),
-                  InkWell(
-                    onTap: () {
-                      Get.to(() => View3DModel(
-                            title: 'View 3D Model',
-                          ));
-                    },
-                    child: ListTile(
-                      title: Text(
-                        'View 3D Model',
-                        style: TextStyle(color: headColor),
-                      ),
-                      leading: Icon(Icons.sync, color: Colors.white),
-                      trailing:
-                          Icon(Icons.keyboard_arrow_right, color: Colors.white),
-                    ),
-                  ),
                   // InkWell(
                   //   onTap: (){
                   //     Get.to(()=>ExampleDragAndDrop( ));
@@ -470,20 +454,37 @@ class _CustomDrawerState extends State<CustomDrawer> {
                   //         Icon(Icons.keyboard_arrow_right, color: Colors.white),
                   //   ),
                   // ),
-                  InkWell(
-                    onTap: () {
-                      Get.to(() => DragDemo());
-                    },
-                    child: ListTile(
-                      title: Text(
-                        'DragDemo',
-                        style: TextStyle(color: headColor),
-                      ),
-                      leading: Icon(Icons.sync, color: Colors.white),
-                      trailing:
-                          Icon(Icons.keyboard_arrow_right, color: Colors.white),
-                    ),
-                  ),
+                  // InkWell(
+                  //   onTap: () {
+                  //     Get.to(() => View3DModel(
+                  //           title: 'View 3D Model',
+                  //         ));
+                  //   },
+                  //   child: ListTile(
+                  //     title: Text(
+                  //       'View 3D Model',
+                  //       style: TextStyle(color: headColor),
+                  //     ),
+                  //     leading: Icon(Icons.sync, color: Colors.white),
+                  //     trailing:
+                  //         Icon(Icons.keyboard_arrow_right, color: Colors.white),
+                  //   ),
+                  // ),
+                  //
+                  // InkWell(
+                  //   onTap: () {
+                  //     Get.to(() => DragDemo());
+                  //   },
+                  //   child: ListTile(
+                  //     title: Text(
+                  //       'DragDemo',
+                  //       style: TextStyle(color: headColor),
+                  //     ),
+                  //     leading: Icon(Icons.sync, color: Colors.white),
+                  //     trailing:
+                  //         Icon(Icons.keyboard_arrow_right, color: Colors.white),
+                  //   ),
+                  // ),
                   // InkWell(
                   //   onTap: (){
                   //     Get.to(()=>ImageSwapPage( ));
