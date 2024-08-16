@@ -1,23 +1,27 @@
+///------------------------------ CREATE ------------------------------
+///------------------------------ OTHER ------------------------------
 import 'package:get/get.dart';
 import 'package:maintenance/CheckListDocument/create/Attachments.dart'
-    as checkListAttachments;
+    as createAttachments;
 import 'package:maintenance/CheckListDocument/create/CheckListDetails/CheckListDetails.dart'
-    as checkListCreateDetails;
+    as createCheckListDetails;
 import 'package:maintenance/CheckListDocument/create/CheckListDetails/EditCheckList.dart'
-    as editCheckList;
+    as createEditCheckList;
 import 'package:maintenance/CheckListDocument/create/CheckListDocument.dart';
 import 'package:maintenance/CheckListDocument/create/GeneralData.dart'
-    as createCheckListDoc;
+    as createGeneralData;
+///------------------------------ EDIT ------------------------------
 import 'package:maintenance/CheckListDocument/edit/CheckListDetails/CheckListDetails.dart'
-    as checkListEditDetails;
+    as editCheckListDetails;
 import 'package:maintenance/CheckListDocument/edit/CheckListDocument.dart';
 import 'package:maintenance/CheckListDocument/edit/GeneralData.dart'
-    as editCheckListDoc;
+    as editGeneralData;
+///------------------------------ VIEW ------------------------------
 import 'package:maintenance/CheckListDocument/view/CheckListDetails/CheckListDetails.dart'
-    as checkListViewDetails;
+    as viewCheckListDetails;
 import 'package:maintenance/CheckListDocument/view/CheckListDocument.dart';
 import 'package:maintenance/CheckListDocument/view/GeneralData.dart'
-    as viewCheckListDoc;
+    as viewGeneralData;
 import 'package:maintenance/Component/GetFormattedDate.dart';
 import 'package:maintenance/Component/GetLastDocNum.dart';
 import 'package:maintenance/Component/IsAvailableTransId.dart';
@@ -25,256 +29,449 @@ import 'package:maintenance/Sync/SyncModels/MNCLD1.dart';
 import 'package:maintenance/Sync/SyncModels/MNOCLD.dart';
 import 'package:maintenance/main.dart';
 
-class ClearCheckListDoc {
-  static clearEditCheckList() {
-    editCheckList.EditCheckList.id = '';
-    editCheckList.EditCheckList.description = '';
-    editCheckList.EditCheckList.transId = '';
-    editCheckList.EditCheckList.rowId = '';
-    editCheckList.EditCheckList.itemCode = '';
-    editCheckList.EditCheckList.itemName = '';
-    editCheckList.EditCheckList.consumptionQty = '';
-    editCheckList.EditCheckList.uomCode = '';
-    editCheckList.EditCheckList.uomName = '';
-    editCheckList.EditCheckList.supplierName = '';
-    editCheckList.EditCheckList.supplierCode = '';
-    editCheckList.EditCheckList.userRemarks = '';
-    editCheckList.EditCheckList.requiredDate = '';
-    editCheckList.EditCheckList.remark = '';
-    editCheckList.EditCheckList.isChecked = false;
-    editCheckList.EditCheckList.fromStock = false;
-    editCheckList.EditCheckList.consumption = false;
-    editCheckList.EditCheckList.request = false;
-    editCheckList.EditCheckList.isUpdating = false;
-  }
-
-  static clearCheckListDocTextFields() {
+class ClearCreateCheckListDoc {
+  static clearGeneralData() {
     CheckListDocument.numOfTabs.value = 3;
-    createCheckListDoc.GeneralData.iD = '';
-    createCheckListDoc.GeneralData.permanentTransId = '';
-    createCheckListDoc.GeneralData.transId = '';
-    createCheckListDoc.GeneralData.docEntry = '';
-    createCheckListDoc.GeneralData.docNum = '';
-    createCheckListDoc.GeneralData.canceled = '';
-    createCheckListDoc.GeneralData.docStatus = 'Open';
-    createCheckListDoc.GeneralData.approvalStatus = 'Pending';
-    createCheckListDoc.GeneralData.checkListStatus = 'WIP';
-    createCheckListDoc.GeneralData.tyreMaintenance = 'No';
-    createCheckListDoc.GeneralData.objectCode = '';
-    createCheckListDoc.GeneralData.equipmentCode = '';
-    createCheckListDoc.GeneralData.equipmentName = '';
-    createCheckListDoc.GeneralData.checkListCode = '';
-    createCheckListDoc.GeneralData.checkListName = '';
-    createCheckListDoc.GeneralData.workCenterCode = '';
-    createCheckListDoc.GeneralData.workCenterName = '';
-    createCheckListDoc.GeneralData.openDate = getFormattedDate(DateTime.now());
-    createCheckListDoc.GeneralData.closeDate = getFormattedDate(DateTime.now());
-    createCheckListDoc.GeneralData.postingDate =
+    createGeneralData.GeneralData.iD = '';
+    createGeneralData.GeneralData.permanentTransId = '';
+    createGeneralData.GeneralData.transId = '';
+    createGeneralData.GeneralData.docEntry = '';
+    createGeneralData.GeneralData.docNum = '';
+    createGeneralData.GeneralData.canceled = '';
+    createGeneralData.GeneralData.docStatus = 'Open';
+    createGeneralData.GeneralData.approvalStatus = 'Pending';
+    createGeneralData.GeneralData.checkListStatus = 'WIP';
+    createGeneralData.GeneralData.tyreMaintenance = 'No';
+    createGeneralData.GeneralData.objectCode = '';
+    createGeneralData.GeneralData.equipmentCode = '';
+    createGeneralData.GeneralData.equipmentName = '';
+    createGeneralData.GeneralData.checkListCode = '';
+    createGeneralData.GeneralData.checkListName = '';
+    createGeneralData.GeneralData.workCenterCode = '';
+    createGeneralData.GeneralData.workCenterName = '';
+    createGeneralData.GeneralData.openDate = getFormattedDate(DateTime.now());
+    createGeneralData.GeneralData.closeDate = getFormattedDate(DateTime.now());
+    createGeneralData.GeneralData.postingDate =
         getFormattedDate(DateTime.now());
-    createCheckListDoc.GeneralData.validUntill =
+    createGeneralData.GeneralData.validUntill =
         getFormattedDate(DateTime.now().add(Duration(days: 7)));
-    createCheckListDoc.GeneralData.lastReadingDate =
+    createGeneralData.GeneralData.lastReadingDate =
         getFormattedDate(DateTime.now());
-    createCheckListDoc.GeneralData.lastReading = '';
-    createCheckListDoc.GeneralData.assignedUserCode = '';
-    createCheckListDoc.GeneralData.assignedUserName = '';
-    createCheckListDoc.GeneralData.mNJCTransId = '';
-    createCheckListDoc.GeneralData.remarks = '';
-    createCheckListDoc.GeneralData.createdBy = '';
-    createCheckListDoc.GeneralData.updatedBy = '';
-    createCheckListDoc.GeneralData.branchId = '';
-    createCheckListDoc.GeneralData.createDate =
-        getFormattedDate(DateTime.now());
-    createCheckListDoc.GeneralData.updateDate =
-        getFormattedDate(DateTime.now());
-    createCheckListDoc.GeneralData.currentReading = '';
-    createCheckListDoc.GeneralData.isConsumption = false;
-    createCheckListDoc.GeneralData.isRequest = false;
-    createCheckListDoc.GeneralData.isSelected = false;
-    createCheckListDoc.GeneralData.hasCreated = false;
-    createCheckListDoc.GeneralData.hasUpdated = false;
+    createGeneralData.GeneralData.lastReading = '';
+    createGeneralData.GeneralData.assignedUserCode = '';
+    createGeneralData.GeneralData.assignedUserName = '';
+    createGeneralData.GeneralData.mNJCTransId = '';
+    createGeneralData.GeneralData.remarks = '';
+    createGeneralData.GeneralData.createdBy = '';
+    createGeneralData.GeneralData.updatedBy = '';
+    createGeneralData.GeneralData.branchId = '';
+    createGeneralData.GeneralData.createDate = getFormattedDate(DateTime.now());
+    createGeneralData.GeneralData.updateDate = getFormattedDate(DateTime.now());
+    createGeneralData.GeneralData.currentReading = '';
+    createGeneralData.GeneralData.isConsumption = false;
+    createGeneralData.GeneralData.isRequest = false;
+    createGeneralData.GeneralData.isSelected = false;
+    createGeneralData.GeneralData.hasCreated = false;
+    createGeneralData.GeneralData.hasUpdated = false;
   }
 
-  static setCreateCheckListDocTextFields({required MNOCLD mnocld}) {
+  static clearEditCheckList() {
+    createEditCheckList.EditCheckList.id = '';
+    createEditCheckList.EditCheckList.description = '';
+    createEditCheckList.EditCheckList.transId = '';
+    createEditCheckList.EditCheckList.rowId = '';
+    createEditCheckList.EditCheckList.itemCode = '';
+    createEditCheckList.EditCheckList.itemName = '';
+    createEditCheckList.EditCheckList.consumptionQty = '';
+    createEditCheckList.EditCheckList.uomCode = '';
+    createEditCheckList.EditCheckList.uomName = '';
+    createEditCheckList.EditCheckList.supplierName = '';
+    createEditCheckList.EditCheckList.supplierCode = '';
+    createEditCheckList.EditCheckList.userRemarks = '';
+    createEditCheckList.EditCheckList.requiredDate = '';
+    createEditCheckList.EditCheckList.remark = '';
+    createEditCheckList.EditCheckList.isChecked = false;
+    createEditCheckList.EditCheckList.fromStock = false;
+    createEditCheckList.EditCheckList.consumption = false;
+    createEditCheckList.EditCheckList.request = false;
+    createEditCheckList.EditCheckList.isUpdating = false;
+  }
+
+  static setGeneralData({required MNOCLD mnocld}) {
     CheckListDocument.numOfTabs.value = 3;
-    createCheckListDoc.GeneralData.iD = mnocld.ID?.toString() ?? '0';
-    createCheckListDoc.GeneralData.permanentTransId =
+    createGeneralData.GeneralData.iD = mnocld.ID?.toString() ?? '0';
+    createGeneralData.GeneralData.permanentTransId =
         mnocld.PermanentTransId ?? "";
-    createCheckListDoc.GeneralData.transId = mnocld.TransId ?? '';
-    createCheckListDoc.GeneralData.docEntry = mnocld.DocEntry?.toString() ?? '';
-    createCheckListDoc.GeneralData.docNum = mnocld.DocNum ?? '';
-    createCheckListDoc.GeneralData.canceled = mnocld.Canceled ?? '';
-    createCheckListDoc.GeneralData.docStatus = mnocld.DocStatus ?? 'Open';
-    createCheckListDoc.GeneralData.approvalStatus =
+    createGeneralData.GeneralData.transId = mnocld.TransId ?? '';
+    createGeneralData.GeneralData.docEntry = mnocld.DocEntry?.toString() ?? '';
+    createGeneralData.GeneralData.docNum = mnocld.DocNum ?? '';
+    createGeneralData.GeneralData.canceled = mnocld.Canceled ?? '';
+    createGeneralData.GeneralData.docStatus = mnocld.DocStatus ?? 'Open';
+    createGeneralData.GeneralData.approvalStatus =
         mnocld.ApprovalStatus ?? 'Pending';
-    createCheckListDoc.GeneralData.checkListStatus =
+    createGeneralData.GeneralData.checkListStatus =
         mnocld.CheckListStatus ?? 'WIP';
-    createCheckListDoc.GeneralData.tyreMaintenance = 'No';
-    createCheckListDoc.GeneralData.objectCode = mnocld.ObjectCode ?? '';
-    createCheckListDoc.GeneralData.equipmentCode = mnocld.EquipmentCode ?? '';
-    createCheckListDoc.GeneralData.equipmentName = mnocld.EquipmentName ?? '';
-    createCheckListDoc.GeneralData.checkListCode = mnocld.CheckListCode ?? '';
-    createCheckListDoc.GeneralData.checkListName = mnocld.CheckListName ?? '';
-    createCheckListDoc.GeneralData.workCenterCode = mnocld.WorkCenterCode ?? '';
-    createCheckListDoc.GeneralData.workCenterName = mnocld.WorkCenterName ?? '';
-    createCheckListDoc.GeneralData.openDate = getFormattedDate(mnocld.OpenDate);
-    createCheckListDoc.GeneralData.closeDate =
+    createGeneralData.GeneralData.tyreMaintenance = 'No';
+    createGeneralData.GeneralData.objectCode = mnocld.ObjectCode ?? '';
+    createGeneralData.GeneralData.equipmentCode = mnocld.EquipmentCode ?? '';
+    createGeneralData.GeneralData.equipmentName = mnocld.EquipmentName ?? '';
+    createGeneralData.GeneralData.checkListCode = mnocld.CheckListCode ?? '';
+    createGeneralData.GeneralData.checkListName = mnocld.CheckListName ?? '';
+    createGeneralData.GeneralData.workCenterCode = mnocld.WorkCenterCode ?? '';
+    createGeneralData.GeneralData.workCenterName = mnocld.WorkCenterName ?? '';
+    createGeneralData.GeneralData.openDate = getFormattedDate(mnocld.OpenDate);
+    createGeneralData.GeneralData.closeDate =
         getFormattedDate(mnocld.CloseDate);
-    createCheckListDoc.GeneralData.postingDate =
+    createGeneralData.GeneralData.postingDate =
         getFormattedDate(mnocld.PostingDate);
-    createCheckListDoc.GeneralData.validUntill =
+    createGeneralData.GeneralData.validUntill =
         getFormattedDate(mnocld.ValidUntill);
-    createCheckListDoc.GeneralData.lastReadingDate =
+    createGeneralData.GeneralData.lastReadingDate =
         getFormattedDate(mnocld.LastReadingDate);
-    createCheckListDoc.GeneralData.lastReading = mnocld.LastReading ?? '';
-    createCheckListDoc.GeneralData.assignedUserCode =
+    createGeneralData.GeneralData.lastReading = mnocld.LastReading ?? '';
+    createGeneralData.GeneralData.assignedUserCode =
         mnocld.AssignedUserCode ?? '';
-    createCheckListDoc.GeneralData.assignedUserName =
+    createGeneralData.GeneralData.assignedUserName =
         mnocld.AssignedUserName ?? '';
-    createCheckListDoc.GeneralData.mNJCTransId = mnocld.MNJCTransId ?? '';
-    createCheckListDoc.GeneralData.remarks = mnocld.Remarks ?? '';
-    createCheckListDoc.GeneralData.createdBy = mnocld.CreatedBy ?? '';
-    createCheckListDoc.GeneralData.updatedBy = mnocld.UpdatedBy ?? '';
-    createCheckListDoc.GeneralData.branchId = mnocld.BranchId ?? '';
-    createCheckListDoc.GeneralData.createDate =
+    createGeneralData.GeneralData.mNJCTransId = mnocld.MNJCTransId ?? '';
+    createGeneralData.GeneralData.remarks = mnocld.Remarks ?? '';
+    createGeneralData.GeneralData.createdBy = mnocld.CreatedBy ?? '';
+    createGeneralData.GeneralData.updatedBy = mnocld.UpdatedBy ?? '';
+    createGeneralData.GeneralData.branchId = mnocld.BranchId ?? '';
+    createGeneralData.GeneralData.createDate =
         getFormattedDate(mnocld.CreateDate);
-    createCheckListDoc.GeneralData.updateDate =
+    createGeneralData.GeneralData.updateDate =
         getFormattedDate(mnocld.UpdateDate);
-    createCheckListDoc.GeneralData.currentReading = mnocld.CurrentReading ?? '';
-    createCheckListDoc.GeneralData.isConsumption =
-        mnocld.IsConsumption ?? false;
-    createCheckListDoc.GeneralData.isRequest = mnocld.IsRequest ?? false;
-    createCheckListDoc.GeneralData.isSelected = true;
-    createCheckListDoc.GeneralData.hasCreated = mnocld.hasCreated;
-    createCheckListDoc.GeneralData.hasUpdated = mnocld.hasUpdated;
+    createGeneralData.GeneralData.currentReading = mnocld.CurrentReading ?? '';
+    createGeneralData.GeneralData.isConsumption = mnocld.IsConsumption ?? false;
+    createGeneralData.GeneralData.isRequest = mnocld.IsRequest ?? false;
+    createGeneralData.GeneralData.isSelected = true;
+    createGeneralData.GeneralData.hasCreated = mnocld.hasCreated;
+    createGeneralData.GeneralData.hasUpdated = mnocld.hasUpdated;
   }
 
-  static setViewCheckListDocTextFields({required MNOCLD mnocld}) {
+  static clearCheckListAttachments() {
+    createAttachments.Attachments.attachments.clear();
+    createAttachments.Attachments.imageFile = null;
+    createAttachments.Attachments.attachment = '';
+    createAttachments.Attachments.docName = '';
+    createAttachments.Attachments.rowId = '';
+    createAttachments.Attachments.Remarks = '';
+  }
+}
+
+class ClearEditCheckListDoc {
+  static clearGeneralData() {
     CheckListDocument.numOfTabs.value = 3;
-    viewCheckListDoc.GeneralData.iD = mnocld.ID?.toString() ?? '0';
-    viewCheckListDoc.GeneralData.permanentTransId =
+    editGeneralData.GeneralData.iD = '';
+    editGeneralData.GeneralData.permanentTransId = '';
+    editGeneralData.GeneralData.transId = '';
+    editGeneralData.GeneralData.docEntry = '';
+    editGeneralData.GeneralData.docNum = '';
+    editGeneralData.GeneralData.canceled = '';
+    editGeneralData.GeneralData.docStatus = 'Open';
+    editGeneralData.GeneralData.approvalStatus = 'Pending';
+    editGeneralData.GeneralData.checkListStatus = 'WIP';
+    editGeneralData.GeneralData.tyreMaintenance = 'No';
+    editGeneralData.GeneralData.objectCode = '';
+    editGeneralData.GeneralData.equipmentCode = '';
+    editGeneralData.GeneralData.equipmentName = '';
+    editGeneralData.GeneralData.checkListCode = '';
+    editGeneralData.GeneralData.checkListName = '';
+    editGeneralData.GeneralData.workCenterCode = '';
+    editGeneralData.GeneralData.workCenterName = '';
+    editGeneralData.GeneralData.openDate = getFormattedDate(DateTime.now());
+    editGeneralData.GeneralData.closeDate = getFormattedDate(DateTime.now());
+    editGeneralData.GeneralData.postingDate = getFormattedDate(DateTime.now());
+    editGeneralData.GeneralData.validUntill =
+        getFormattedDate(DateTime.now().add(Duration(days: 7)));
+    editGeneralData.GeneralData.lastReadingDate =
+        getFormattedDate(DateTime.now());
+    editGeneralData.GeneralData.lastReading = '';
+    editGeneralData.GeneralData.assignedUserCode = '';
+    editGeneralData.GeneralData.assignedUserName = '';
+    editGeneralData.GeneralData.mNJCTransId = '';
+    editGeneralData.GeneralData.remarks = '';
+    editGeneralData.GeneralData.createdBy = '';
+    editGeneralData.GeneralData.updatedBy = '';
+    editGeneralData.GeneralData.branchId = '';
+    editGeneralData.GeneralData.createDate = getFormattedDate(DateTime.now());
+    editGeneralData.GeneralData.updateDate = getFormattedDate(DateTime.now());
+    editGeneralData.GeneralData.currentReading = '';
+    editGeneralData.GeneralData.isConsumption = false;
+    editGeneralData.GeneralData.isRequest = false;
+    editGeneralData.GeneralData.isSelected = false;
+    editGeneralData.GeneralData.hasCreated = false;
+    editGeneralData.GeneralData.hasUpdated = false;
+  }
+
+  static setGeneralData({required MNOCLD mnocld}) {
+    CheckListDocument.numOfTabs.value = 3;
+    editGeneralData.GeneralData.iD = mnocld.ID?.toString() ?? '0';
+    editGeneralData.GeneralData.permanentTransId =
         mnocld.PermanentTransId ?? "";
-    viewCheckListDoc.GeneralData.transId = mnocld.TransId ?? '';
-    viewCheckListDoc.GeneralData.docEntry = mnocld.DocEntry?.toString() ?? '';
-    viewCheckListDoc.GeneralData.docNum = mnocld.DocNum ?? '';
-    viewCheckListDoc.GeneralData.canceled = mnocld.Canceled ?? '';
-    viewCheckListDoc.GeneralData.docStatus = mnocld.DocStatus ?? 'Open';
-    viewCheckListDoc.GeneralData.approvalStatus =
+    editGeneralData.GeneralData.transId = mnocld.TransId ?? '';
+    editGeneralData.GeneralData.docEntry = mnocld.DocEntry?.toString() ?? '';
+    editGeneralData.GeneralData.docNum = mnocld.DocNum ?? '';
+    editGeneralData.GeneralData.canceled = mnocld.Canceled ?? '';
+    editGeneralData.GeneralData.docStatus = mnocld.DocStatus ?? 'Open';
+    editGeneralData.GeneralData.approvalStatus =
         mnocld.ApprovalStatus ?? 'Pending';
-    viewCheckListDoc.GeneralData.checkListStatus =
+    editGeneralData.GeneralData.checkListStatus =
         mnocld.CheckListStatus ?? 'WIP';
-    viewCheckListDoc.GeneralData.tyreMaintenance = 'No';
-    viewCheckListDoc.GeneralData.objectCode = mnocld.ObjectCode ?? '';
-    viewCheckListDoc.GeneralData.equipmentCode = mnocld.EquipmentCode ?? '';
-    viewCheckListDoc.GeneralData.equipmentName = mnocld.EquipmentName ?? '';
-    viewCheckListDoc.GeneralData.checkListCode = mnocld.CheckListCode ?? '';
-    viewCheckListDoc.GeneralData.checkListName = mnocld.CheckListName ?? '';
-    viewCheckListDoc.GeneralData.workCenterCode = mnocld.WorkCenterCode ?? '';
-    viewCheckListDoc.GeneralData.workCenterName = mnocld.WorkCenterName ?? '';
-    viewCheckListDoc.GeneralData.openDate = getFormattedDate(mnocld.OpenDate);
-    viewCheckListDoc.GeneralData.closeDate = getFormattedDate(mnocld.CloseDate);
-    viewCheckListDoc.GeneralData.postingDate =
+    editGeneralData.GeneralData.tyreMaintenance = 'No';
+    editGeneralData.GeneralData.objectCode = mnocld.ObjectCode ?? '';
+    editGeneralData.GeneralData.equipmentCode = mnocld.EquipmentCode ?? '';
+    editGeneralData.GeneralData.equipmentName = mnocld.EquipmentName ?? '';
+    editGeneralData.GeneralData.checkListCode = mnocld.CheckListCode ?? '';
+    editGeneralData.GeneralData.checkListName = mnocld.CheckListName ?? '';
+    editGeneralData.GeneralData.workCenterCode = mnocld.WorkCenterCode ?? '';
+    editGeneralData.GeneralData.workCenterName = mnocld.WorkCenterName ?? '';
+    editGeneralData.GeneralData.openDate = getFormattedDate(mnocld.OpenDate);
+    editGeneralData.GeneralData.closeDate = getFormattedDate(mnocld.CloseDate);
+    editGeneralData.GeneralData.postingDate =
         getFormattedDate(mnocld.PostingDate);
-    viewCheckListDoc.GeneralData.validUntill =
+    editGeneralData.GeneralData.validUntill =
         getFormattedDate(mnocld.ValidUntill);
-    viewCheckListDoc.GeneralData.lastReadingDate =
+    editGeneralData.GeneralData.lastReadingDate =
         getFormattedDate(mnocld.LastReadingDate);
-    viewCheckListDoc.GeneralData.lastReading = mnocld.LastReading ?? '';
-    viewCheckListDoc.GeneralData.assignedUserCode =
+    editGeneralData.GeneralData.lastReading = mnocld.LastReading ?? '';
+    editGeneralData.GeneralData.assignedUserCode =
         mnocld.AssignedUserCode ?? '';
-    viewCheckListDoc.GeneralData.assignedUserName =
+    editGeneralData.GeneralData.assignedUserName =
         mnocld.AssignedUserName ?? '';
-    viewCheckListDoc.GeneralData.mNJCTransId = mnocld.MNJCTransId ?? '';
-    viewCheckListDoc.GeneralData.remarks = mnocld.Remarks ?? '';
-    viewCheckListDoc.GeneralData.createdBy = mnocld.CreatedBy ?? '';
-    viewCheckListDoc.GeneralData.updatedBy = mnocld.UpdatedBy ?? '';
-    viewCheckListDoc.GeneralData.branchId = mnocld.BranchId ?? '';
-    viewCheckListDoc.GeneralData.createDate =
+    editGeneralData.GeneralData.mNJCTransId = mnocld.MNJCTransId ?? '';
+    editGeneralData.GeneralData.remarks = mnocld.Remarks ?? '';
+    editGeneralData.GeneralData.createdBy = mnocld.CreatedBy ?? '';
+    editGeneralData.GeneralData.updatedBy = mnocld.UpdatedBy ?? '';
+    editGeneralData.GeneralData.branchId = mnocld.BranchId ?? '';
+    editGeneralData.GeneralData.createDate =
         getFormattedDate(mnocld.CreateDate);
-    viewCheckListDoc.GeneralData.updateDate =
+    editGeneralData.GeneralData.updateDate =
         getFormattedDate(mnocld.UpdateDate);
-    viewCheckListDoc.GeneralData.currentReading = mnocld.CurrentReading ?? '';
-    viewCheckListDoc.GeneralData.isConsumption = mnocld.IsConsumption ?? false;
-    viewCheckListDoc.GeneralData.isRequest = mnocld.IsRequest ?? false;
-    viewCheckListDoc.GeneralData.isSelected = true;
-    viewCheckListDoc.GeneralData.hasCreated = mnocld.hasCreated;
-    viewCheckListDoc.GeneralData.hasUpdated = mnocld.hasUpdated;
+    editGeneralData.GeneralData.currentReading = mnocld.CurrentReading ?? '';
+    editGeneralData.GeneralData.isConsumption = mnocld.IsConsumption ?? false;
+    editGeneralData.GeneralData.isRequest = mnocld.IsRequest ?? false;
+    editGeneralData.GeneralData.isSelected = true;
+    editGeneralData.GeneralData.hasCreated = mnocld.hasCreated;
+    editGeneralData.GeneralData.hasUpdated = mnocld.hasUpdated;
   }
 
   static setEditCheckListDocTextFields({required MNOCLD mnocld}) {
     CheckListDocument.numOfTabs.value = 3;
-    editCheckListDoc.GeneralData.iD = mnocld.ID?.toString() ?? '0';
-    editCheckListDoc.GeneralData.permanentTransId =
+    editGeneralData.GeneralData.iD = mnocld.ID?.toString() ?? '0';
+    editGeneralData.GeneralData.permanentTransId =
         mnocld.PermanentTransId ?? "";
-    editCheckListDoc.GeneralData.transId = mnocld.TransId ?? '';
-    editCheckListDoc.GeneralData.docEntry = mnocld.DocEntry?.toString() ?? '';
-    editCheckListDoc.GeneralData.docNum = mnocld.DocNum ?? '';
-    editCheckListDoc.GeneralData.canceled = mnocld.Canceled ?? '';
-    editCheckListDoc.GeneralData.docStatus = mnocld.DocStatus ?? 'Open';
-    editCheckListDoc.GeneralData.approvalStatus =
+    editGeneralData.GeneralData.transId = mnocld.TransId ?? '';
+    editGeneralData.GeneralData.docEntry = mnocld.DocEntry?.toString() ?? '';
+    editGeneralData.GeneralData.docNum = mnocld.DocNum ?? '';
+    editGeneralData.GeneralData.canceled = mnocld.Canceled ?? '';
+    editGeneralData.GeneralData.docStatus = mnocld.DocStatus ?? 'Open';
+    editGeneralData.GeneralData.approvalStatus =
         mnocld.ApprovalStatus ?? 'Pending';
-    editCheckListDoc.GeneralData.checkListStatus =
+    editGeneralData.GeneralData.checkListStatus =
         mnocld.CheckListStatus ?? 'WIP';
-    editCheckListDoc.GeneralData.tyreMaintenance = 'No';
-    editCheckListDoc.GeneralData.objectCode = mnocld.ObjectCode ?? '';
-    editCheckListDoc.GeneralData.equipmentCode = mnocld.EquipmentCode ?? '';
-    editCheckListDoc.GeneralData.equipmentName = mnocld.EquipmentName ?? '';
-    editCheckListDoc.GeneralData.checkListCode = mnocld.CheckListCode ?? '';
-    editCheckListDoc.GeneralData.checkListName = mnocld.CheckListName ?? '';
-    editCheckListDoc.GeneralData.workCenterCode = mnocld.WorkCenterCode ?? '';
-    editCheckListDoc.GeneralData.workCenterName = mnocld.WorkCenterName ?? '';
-    editCheckListDoc.GeneralData.openDate = getFormattedDate(mnocld.OpenDate);
-    editCheckListDoc.GeneralData.closeDate = getFormattedDate(mnocld.CloseDate);
-    editCheckListDoc.GeneralData.postingDate =
+    editGeneralData.GeneralData.tyreMaintenance = 'No';
+    editGeneralData.GeneralData.objectCode = mnocld.ObjectCode ?? '';
+    editGeneralData.GeneralData.equipmentCode = mnocld.EquipmentCode ?? '';
+    editGeneralData.GeneralData.equipmentName = mnocld.EquipmentName ?? '';
+    editGeneralData.GeneralData.checkListCode = mnocld.CheckListCode ?? '';
+    editGeneralData.GeneralData.checkListName = mnocld.CheckListName ?? '';
+    editGeneralData.GeneralData.workCenterCode = mnocld.WorkCenterCode ?? '';
+    editGeneralData.GeneralData.workCenterName = mnocld.WorkCenterName ?? '';
+    editGeneralData.GeneralData.openDate = getFormattedDate(mnocld.OpenDate);
+    editGeneralData.GeneralData.closeDate = getFormattedDate(mnocld.CloseDate);
+    editGeneralData.GeneralData.postingDate =
         getFormattedDate(mnocld.PostingDate);
-    editCheckListDoc.GeneralData.validUntill =
+    editGeneralData.GeneralData.validUntill =
         getFormattedDate(mnocld.ValidUntill);
-    editCheckListDoc.GeneralData.lastReadingDate =
+    editGeneralData.GeneralData.lastReadingDate =
         getFormattedDate(mnocld.LastReadingDate);
-    editCheckListDoc.GeneralData.lastReading = mnocld.LastReading ?? '';
-    editCheckListDoc.GeneralData.assignedUserCode =
+    editGeneralData.GeneralData.lastReading = mnocld.LastReading ?? '';
+    editGeneralData.GeneralData.assignedUserCode =
         mnocld.AssignedUserCode ?? '';
-    editCheckListDoc.GeneralData.assignedUserName =
+    editGeneralData.GeneralData.assignedUserName =
         mnocld.AssignedUserName ?? '';
-    editCheckListDoc.GeneralData.mNJCTransId = mnocld.MNJCTransId ?? '';
-    editCheckListDoc.GeneralData.remarks = mnocld.Remarks ?? '';
-    editCheckListDoc.GeneralData.createdBy = mnocld.CreatedBy ?? '';
-    editCheckListDoc.GeneralData.updatedBy = mnocld.UpdatedBy ?? '';
-    editCheckListDoc.GeneralData.branchId = mnocld.BranchId ?? '';
-    editCheckListDoc.GeneralData.createDate =
+    editGeneralData.GeneralData.mNJCTransId = mnocld.MNJCTransId ?? '';
+    editGeneralData.GeneralData.remarks = mnocld.Remarks ?? '';
+    editGeneralData.GeneralData.createdBy = mnocld.CreatedBy ?? '';
+    editGeneralData.GeneralData.updatedBy = mnocld.UpdatedBy ?? '';
+    editGeneralData.GeneralData.branchId = mnocld.BranchId ?? '';
+    editGeneralData.GeneralData.createDate =
         getFormattedDate(mnocld.CreateDate);
-    editCheckListDoc.GeneralData.updateDate =
+    editGeneralData.GeneralData.updateDate =
         getFormattedDate(mnocld.UpdateDate);
-    editCheckListDoc.GeneralData.currentReading = mnocld.CurrentReading ?? '';
-    editCheckListDoc.GeneralData.isConsumption = mnocld.IsConsumption ?? false;
-    editCheckListDoc.GeneralData.isRequest = mnocld.IsRequest ?? false;
-    editCheckListDoc.GeneralData.isSelected = true;
-    editCheckListDoc.GeneralData.hasCreated = mnocld.hasCreated;
-    editCheckListDoc.GeneralData.hasUpdated = mnocld.hasUpdated;
+    editGeneralData.GeneralData.currentReading = mnocld.CurrentReading ?? '';
+    editGeneralData.GeneralData.isConsumption = mnocld.IsConsumption ?? false;
+    editGeneralData.GeneralData.isRequest = mnocld.IsRequest ?? false;
+    editGeneralData.GeneralData.isSelected = true;
+    editGeneralData.GeneralData.hasCreated = mnocld.hasCreated;
+    editGeneralData.GeneralData.hasUpdated = mnocld.hasUpdated;
+  }
+}
+
+class ClearViewCheckListDoc {
+  static clearGeneralData() {
+    CheckListDocument.numOfTabs.value = 3;
+    viewGeneralData.GeneralData.iD = '';
+    viewGeneralData.GeneralData.permanentTransId = '';
+    viewGeneralData.GeneralData.transId = '';
+    viewGeneralData.GeneralData.docEntry = '';
+    viewGeneralData.GeneralData.docNum = '';
+    viewGeneralData.GeneralData.canceled = '';
+    viewGeneralData.GeneralData.docStatus = 'Open';
+    viewGeneralData.GeneralData.approvalStatus = 'Pending';
+    viewGeneralData.GeneralData.checkListStatus = 'WIP';
+    viewGeneralData.GeneralData.tyreMaintenance = 'No';
+    viewGeneralData.GeneralData.objectCode = '';
+    viewGeneralData.GeneralData.equipmentCode = '';
+    viewGeneralData.GeneralData.equipmentName = '';
+    viewGeneralData.GeneralData.checkListCode = '';
+    viewGeneralData.GeneralData.checkListName = '';
+    viewGeneralData.GeneralData.workCenterCode = '';
+    viewGeneralData.GeneralData.workCenterName = '';
+    viewGeneralData.GeneralData.openDate = getFormattedDate(DateTime.now());
+    viewGeneralData.GeneralData.closeDate = getFormattedDate(DateTime.now());
+    viewGeneralData.GeneralData.postingDate = getFormattedDate(DateTime.now());
+    viewGeneralData.GeneralData.validUntill =
+        getFormattedDate(DateTime.now().add(Duration(days: 7)));
+    viewGeneralData.GeneralData.lastReadingDate =
+        getFormattedDate(DateTime.now());
+    viewGeneralData.GeneralData.lastReading = '';
+    viewGeneralData.GeneralData.assignedUserCode = '';
+    viewGeneralData.GeneralData.assignedUserName = '';
+    viewGeneralData.GeneralData.mNJCTransId = '';
+    viewGeneralData.GeneralData.remarks = '';
+    viewGeneralData.GeneralData.createdBy = '';
+    viewGeneralData.GeneralData.updatedBy = '';
+    viewGeneralData.GeneralData.branchId = '';
+    viewGeneralData.GeneralData.createDate = getFormattedDate(DateTime.now());
+    viewGeneralData.GeneralData.updateDate = getFormattedDate(DateTime.now());
+    viewGeneralData.GeneralData.currentReading = '';
+    viewGeneralData.GeneralData.isConsumption = false;
+    viewGeneralData.GeneralData.isRequest = false;
+    viewGeneralData.GeneralData.isSelected = false;
+    viewGeneralData.GeneralData.hasCreated = false;
+    viewGeneralData.GeneralData.hasUpdated = false;
   }
 
-  static clearCheckListAttachments() {
-    checkListAttachments.Attachments.attachments.clear();
-    checkListAttachments.Attachments.imageFile = null;
-    checkListAttachments.Attachments.attachment = '';
-    checkListAttachments.Attachments.docName = '';
-    checkListAttachments.Attachments.rowId = '';
-    checkListAttachments.Attachments.Remarks = '';
+  static setGeneralData({required MNOCLD mnocld}) {
+    CheckListDocument.numOfTabs.value = 3;
+    viewGeneralData.GeneralData.iD = mnocld.ID?.toString() ?? '0';
+    viewGeneralData.GeneralData.permanentTransId =
+        mnocld.PermanentTransId ?? "";
+    viewGeneralData.GeneralData.transId = mnocld.TransId ?? '';
+    viewGeneralData.GeneralData.docEntry = mnocld.DocEntry?.toString() ?? '';
+    viewGeneralData.GeneralData.docNum = mnocld.DocNum ?? '';
+    viewGeneralData.GeneralData.canceled = mnocld.Canceled ?? '';
+    viewGeneralData.GeneralData.docStatus = mnocld.DocStatus ?? 'Open';
+    viewGeneralData.GeneralData.approvalStatus =
+        mnocld.ApprovalStatus ?? 'Pending';
+    viewGeneralData.GeneralData.checkListStatus =
+        mnocld.CheckListStatus ?? 'WIP';
+    viewGeneralData.GeneralData.tyreMaintenance = 'No';
+    viewGeneralData.GeneralData.objectCode = mnocld.ObjectCode ?? '';
+    viewGeneralData.GeneralData.equipmentCode = mnocld.EquipmentCode ?? '';
+    viewGeneralData.GeneralData.equipmentName = mnocld.EquipmentName ?? '';
+    viewGeneralData.GeneralData.checkListCode = mnocld.CheckListCode ?? '';
+    viewGeneralData.GeneralData.checkListName = mnocld.CheckListName ?? '';
+    viewGeneralData.GeneralData.workCenterCode = mnocld.WorkCenterCode ?? '';
+    viewGeneralData.GeneralData.workCenterName = mnocld.WorkCenterName ?? '';
+    viewGeneralData.GeneralData.openDate = getFormattedDate(mnocld.OpenDate);
+    viewGeneralData.GeneralData.closeDate = getFormattedDate(mnocld.CloseDate);
+    viewGeneralData.GeneralData.postingDate =
+        getFormattedDate(mnocld.PostingDate);
+    viewGeneralData.GeneralData.validUntill =
+        getFormattedDate(mnocld.ValidUntill);
+    viewGeneralData.GeneralData.lastReadingDate =
+        getFormattedDate(mnocld.LastReadingDate);
+    viewGeneralData.GeneralData.lastReading = mnocld.LastReading ?? '';
+    viewGeneralData.GeneralData.assignedUserCode =
+        mnocld.AssignedUserCode ?? '';
+    viewGeneralData.GeneralData.assignedUserName =
+        mnocld.AssignedUserName ?? '';
+    viewGeneralData.GeneralData.mNJCTransId = mnocld.MNJCTransId ?? '';
+    viewGeneralData.GeneralData.remarks = mnocld.Remarks ?? '';
+    viewGeneralData.GeneralData.createdBy = mnocld.CreatedBy ?? '';
+    viewGeneralData.GeneralData.updatedBy = mnocld.UpdatedBy ?? '';
+    viewGeneralData.GeneralData.branchId = mnocld.BranchId ?? '';
+    viewGeneralData.GeneralData.createDate =
+        getFormattedDate(mnocld.CreateDate);
+    viewGeneralData.GeneralData.updateDate =
+        getFormattedDate(mnocld.UpdateDate);
+    viewGeneralData.GeneralData.currentReading = mnocld.CurrentReading ?? '';
+    viewGeneralData.GeneralData.isConsumption = mnocld.IsConsumption ?? false;
+    viewGeneralData.GeneralData.isRequest = mnocld.IsRequest ?? false;
+    viewGeneralData.GeneralData.isSelected = true;
+    viewGeneralData.GeneralData.hasCreated = mnocld.hasCreated;
+    viewGeneralData.GeneralData.hasUpdated = mnocld.hasUpdated;
+  }
+
+  static setViewCheckListDocTextFields({required MNOCLD mnocld}) {
+    CheckListDocument.numOfTabs.value = 3;
+    viewGeneralData.GeneralData.iD = mnocld.ID?.toString() ?? '0';
+    viewGeneralData.GeneralData.permanentTransId =
+        mnocld.PermanentTransId ?? "";
+    viewGeneralData.GeneralData.transId = mnocld.TransId ?? '';
+    viewGeneralData.GeneralData.docEntry = mnocld.DocEntry?.toString() ?? '';
+    viewGeneralData.GeneralData.docNum = mnocld.DocNum ?? '';
+    viewGeneralData.GeneralData.canceled = mnocld.Canceled ?? '';
+    viewGeneralData.GeneralData.docStatus = mnocld.DocStatus ?? 'Open';
+    viewGeneralData.GeneralData.approvalStatus =
+        mnocld.ApprovalStatus ?? 'Pending';
+    viewGeneralData.GeneralData.checkListStatus =
+        mnocld.CheckListStatus ?? 'WIP';
+    viewGeneralData.GeneralData.tyreMaintenance = 'No';
+    viewGeneralData.GeneralData.objectCode = mnocld.ObjectCode ?? '';
+    viewGeneralData.GeneralData.equipmentCode = mnocld.EquipmentCode ?? '';
+    viewGeneralData.GeneralData.equipmentName = mnocld.EquipmentName ?? '';
+    viewGeneralData.GeneralData.checkListCode = mnocld.CheckListCode ?? '';
+    viewGeneralData.GeneralData.checkListName = mnocld.CheckListName ?? '';
+    viewGeneralData.GeneralData.workCenterCode = mnocld.WorkCenterCode ?? '';
+    viewGeneralData.GeneralData.workCenterName = mnocld.WorkCenterName ?? '';
+    viewGeneralData.GeneralData.openDate = getFormattedDate(mnocld.OpenDate);
+    viewGeneralData.GeneralData.closeDate = getFormattedDate(mnocld.CloseDate);
+    viewGeneralData.GeneralData.postingDate =
+        getFormattedDate(mnocld.PostingDate);
+    viewGeneralData.GeneralData.validUntill =
+        getFormattedDate(mnocld.ValidUntill);
+    viewGeneralData.GeneralData.lastReadingDate =
+        getFormattedDate(mnocld.LastReadingDate);
+    viewGeneralData.GeneralData.lastReading = mnocld.LastReading ?? '';
+    viewGeneralData.GeneralData.assignedUserCode =
+        mnocld.AssignedUserCode ?? '';
+    viewGeneralData.GeneralData.assignedUserName =
+        mnocld.AssignedUserName ?? '';
+    viewGeneralData.GeneralData.mNJCTransId = mnocld.MNJCTransId ?? '';
+    viewGeneralData.GeneralData.remarks = mnocld.Remarks ?? '';
+    viewGeneralData.GeneralData.createdBy = mnocld.CreatedBy ?? '';
+    viewGeneralData.GeneralData.updatedBy = mnocld.UpdatedBy ?? '';
+    viewGeneralData.GeneralData.branchId = mnocld.BranchId ?? '';
+    viewGeneralData.GeneralData.createDate =
+        getFormattedDate(mnocld.CreateDate);
+    viewGeneralData.GeneralData.updateDate =
+        getFormattedDate(mnocld.UpdateDate);
+    viewGeneralData.GeneralData.currentReading = mnocld.CurrentReading ?? '';
+    viewGeneralData.GeneralData.isConsumption = mnocld.IsConsumption ?? false;
+    viewGeneralData.GeneralData.isRequest = mnocld.IsRequest ?? false;
+    viewGeneralData.GeneralData.isSelected = true;
+    viewGeneralData.GeneralData.hasCreated = mnocld.hasCreated;
+    viewGeneralData.GeneralData.hasUpdated = mnocld.hasUpdated;
   }
 }
 
 goToNewCheckListDocument() async {
-  await ClearCheckListDoc.clearCheckListDocTextFields();
-  await ClearCheckListDoc.clearEditCheckList();
-  await ClearCheckListDoc.clearCheckListAttachments();
-  checkListCreateDetails.CheckListDetails.items.clear();
+  await ClearCreateCheckListDoc.clearGeneralData();
+  await ClearCreateCheckListDoc.clearEditCheckList();
+  await ClearCreateCheckListDoc.clearCheckListAttachments();
+  createCheckListDetails.CheckListDetails.items.clear();
 
   getLastDocNum("MNCL", null).then((snapshot) async {
     int DocNum = snapshot[0].DocNumber - 1;
 
     do {
       DocNum += 1;
-      createCheckListDoc.GeneralData.transId =
+      createGeneralData.GeneralData.transId =
           DateTime.now().millisecondsSinceEpoch.toString() +
               "U0" +
               userModel.ID.toString() +
@@ -283,8 +480,8 @@ goToNewCheckListDocument() async {
               "/" +
               DocNum.toString();
     } while (await isMNCLTransIdAvailable(
-        null, createCheckListDoc.GeneralData.transId ?? ""));
-    print(createCheckListDoc.GeneralData.transId);
+        null, createGeneralData.GeneralData.transId ?? ""));
+    print(createGeneralData.GeneralData.transId);
 
     Get.offAll(() => CheckListDocument(0));
   });
@@ -296,18 +493,18 @@ navigateToCheckListDocument(
     List<MNOCLD> list =
         await retrieveMNOCLDById(null, 'TransId = ?', [TransId]);
     if (list.isNotEmpty) {
-      ClearCheckListDoc.setViewCheckListDocTextFields(mnocld: list[0]);
+      ClearViewCheckListDoc.setViewCheckListDocTextFields(mnocld: list[0]);
     }
-    checkListViewDetails.CheckListDetails.items =
+    viewCheckListDetails.CheckListDetails.items =
         await retrieveMNCLD1ById(null, 'TransId = ?', [TransId]);
     Get.offAll(() => ViewCheckListDocument(0));
   } else {
     List<MNOCLD> list =
         await retrieveMNOCLDById(null, 'TransId = ?', [TransId]);
     if (list.isNotEmpty) {
-      ClearCheckListDoc.setEditCheckListDocTextFields(mnocld: list[0]);
+      ClearEditCheckListDoc.setEditCheckListDocTextFields(mnocld: list[0]);
     }
-    checkListEditDetails.CheckListDetails.items =
+    editCheckListDetails.CheckListDetails.items =
         await retrieveMNCLD1ById(null, 'TransId = ?', [TransId]);
     Get.offAll(() => EditCheckListDocument(0));
   }

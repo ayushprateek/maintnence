@@ -225,7 +225,7 @@ class _AddCheckListState extends State<AddCheckList> {
                                         snapshot.data![index].ItemName +
                                             " is already added");
                                   } else {
-                                    ClearCheckListDoc.clearEditCheckList();
+                                    ClearCreateCheckListDoc.clearEditCheckList();
                                     EditCheckList.transId = GeneralData.transId;
                                     EditCheckList.itemCode =
                                         snapshot.data![index].ItemCode;

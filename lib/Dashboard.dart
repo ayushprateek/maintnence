@@ -214,9 +214,9 @@ WHERE
   }
 
   setCheckListData({required MaintenanceItemsQueryModel dashboardItem}) async {
-    await ClearCheckListDoc.clearCheckListDocTextFields();
-    await ClearCheckListDoc.clearEditCheckList();
-    await ClearCheckListDoc.clearCheckListAttachments();
+    await ClearCreateCheckListDoc.clearGeneralData();
+    await ClearCreateCheckListDoc.clearEditCheckList();
+    await ClearCreateCheckListDoc.clearCheckListAttachments();
     checkListDetails.CheckListDetails.items.clear();
     Database db = await initializeDB(null);
     await getLastDocNum("MNCL", null).then((snapshot) async {
