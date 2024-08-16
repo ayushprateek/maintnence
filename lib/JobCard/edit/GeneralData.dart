@@ -21,6 +21,8 @@ class GeneralData extends StatefulWidget {
   static bool isSelected = false, hasCreated = false, hasUpdated = false;
 
   static String? iD;
+  //todo: clear TripTransId while opening
+  static String? TripTransId;
   static String? permanentTransId;
   static String? transId;
   static String? docEntry;
@@ -95,6 +97,7 @@ class GeneralData extends StatefulWidget {
       TransId: transId,
       Subject: subject,
       Resolution: resolution,
+      TripTransId:TripTransId,
 
       //todo:
       // DocNum: docNum ?? '',

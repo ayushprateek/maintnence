@@ -14,6 +14,7 @@ class MNOJCD {
   String? PermanentTransId;
   int? DocEntry;
   int? DocNum;
+  String? TripTransId;
   String? TransId;
   String? Canceled;
   String? ObjectCode;
@@ -55,6 +56,7 @@ class MNOJCD {
     this.DocEntry,
     this.DocNum,
     this.TransId,
+    this.TripTransId,
     this.Canceled,
     this.ObjectCode,
     this.ApprovalStatus,
@@ -95,6 +97,7 @@ class MNOJCD {
         PermanentTransId: json['PermanentTransId']?.toString() ?? '',
         DocEntry: int.tryParse(json['DocEntry'].toString()) ?? 0,
         DocNum: int.tryParse(json['DocNum'].toString()) ?? 0,
+    TripTransId: json['TripTransId']?.toString() ?? '',
         TransId: json['TransId']?.toString() ?? '',
         Canceled: json['Canceled']?.toString() ?? '',
         ObjectCode: json['ObjectCode']?.toString() ?? '',
@@ -140,6 +143,7 @@ class MNOJCD {
   Map<String, dynamic> toJson() => {
         'ID': ID,
         'PermanentTransId': PermanentTransId,
+        'TripTransId': TripTransId,
         'DocEntry': DocEntry,
         'DocNum': DocNum,
         'TransId': TransId,
