@@ -61,6 +61,48 @@ class ClearCreateInternalRequestDocument {
     createInternalGenData.GeneralData.hasCreated = false;
     createInternalGenData.GeneralData.hasUpdated = false;
   }
+  static setGeneralData({
+    required PROITR data
+}) {
+    createInternalGenData.GeneralData.iD = data.ID?.toString();
+    createInternalGenData.GeneralData.transId = data.TransId;
+    createInternalGenData.GeneralData.requestedCode = data.RequestedCode;
+    createInternalGenData.GeneralData.requestedName = data.RequestedName;
+    createInternalGenData.GeneralData.refNo = data.RefNo;
+    createInternalGenData.GeneralData.mobileNo = data.MobileNo;
+    createInternalGenData.GeneralData.postingDate =
+        getFormattedDate(data.PostingDate);
+    createInternalGenData.GeneralData.validUntill =
+        getFormattedDate(data.ValidUntill);
+    createInternalGenData.GeneralData.currency = data.Currency;
+    createInternalGenData.GeneralData.currRate = data.CurrRate?.toStringAsFixed(2);
+    createInternalGenData.GeneralData.approvalStatus = data.ApprovalStatus;
+    createInternalGenData.GeneralData.docStatus = data.DocStatus;
+    createInternalGenData.GeneralData.permanentTransId = data.PermanentTransId;
+    createInternalGenData.GeneralData.docEntry = data.DocEntry?.toString();
+    createInternalGenData.GeneralData.docNum = data.DocNum;
+    createInternalGenData.GeneralData.createdBy = data.CreatedBy;
+
+    createInternalGenData.GeneralData.approvedBy = data.ApprovedBy;
+    createInternalGenData.GeneralData.error = data.Error;
+    createInternalGenData.GeneralData.isPosted = data.IsPosted;
+    createInternalGenData.GeneralData.draftKey = data.DraftKey;
+    createInternalGenData.GeneralData.latitude = data.Latitude;
+    createInternalGenData.GeneralData.longitude = data.Longitude;
+    createInternalGenData.GeneralData.objectCode = data.ObjectCode;
+    createInternalGenData.GeneralData.fromWhsCode = data.FromWhsCode;
+    createInternalGenData.GeneralData.toWhsCode = data.ToWhsCode;
+    createInternalGenData.GeneralData.remarks = data.Remarks;
+    createInternalGenData.GeneralData.branchId = data.BranchId;
+    createInternalGenData.GeneralData.updatedBy = data.UpdatedBy;
+    createInternalGenData.GeneralData.postingAddress = data.PostingAddress;
+    createInternalGenData.GeneralData.tripTransId = data.TripTransId;
+    createInternalGenData.GeneralData.deptCode = data.DeptCode;
+    createInternalGenData.GeneralData.deptName = data.DeptName;
+    createInternalGenData.GeneralData.isSelected = false;
+    createInternalGenData.GeneralData.hasCreated = false;
+    createInternalGenData.GeneralData.hasUpdated = false;
+  }
 
   static setGeneralDataTextFields({required PROITR data}) {
     createInternalGenData.GeneralData.iD = data.ID?.toString() ?? '';

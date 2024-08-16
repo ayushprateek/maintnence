@@ -103,6 +103,61 @@ class ClearGoodsIssueDocument {
     goodsIssueCreateGenData.GeneralData.hasUpdated = false;
   }
 
+  static setGeneralData({required IMOGDI imogdi}) {
+    goodsIssueCreateGenData.GeneralData.iD = imogdi.ID?.toString();
+    goodsIssueCreateGenData.GeneralData.transId = imogdi.TransId;
+    goodsIssueCreateGenData.GeneralData.priceListCode = '';
+    goodsIssueCreateGenData.GeneralData.requestedCode = imogdi.RequestedCode;
+    goodsIssueCreateGenData.GeneralData.requestedName = imogdi.RequestedName;
+    goodsIssueCreateGenData.GeneralData.refNo = imogdi.RefNo;
+    goodsIssueCreateGenData.GeneralData.mobileNo = imogdi.MobileNo;
+    goodsIssueCreateGenData.GeneralData.postingDate =
+        getFormattedDate(imogdi.PostingDate);
+    goodsIssueCreateGenData.GeneralData.validUntill =
+        getFormattedDate(imogdi.ValidUntill);
+    goodsIssueCreateGenData.GeneralData.currency = imogdi.Currency;
+    goodsIssueCreateGenData.GeneralData.currRate =
+        imogdi.CurrRate?.toStringAsFixed(2);
+    goodsIssueCreateGenData.GeneralData.approvalStatus = imogdi.ApprovalStatus;
+    goodsIssueCreateGenData.GeneralData.docStatus = imogdi.DocStatus;
+    goodsIssueCreateGenData.GeneralData.totBDisc =
+        imogdi.TotBDisc?.toStringAsFixed(2);
+    goodsIssueCreateGenData.GeneralData.discPer =
+        imogdi.DiscPer?.toStringAsFixed(2);
+    goodsIssueCreateGenData.GeneralData.discVal =
+        imogdi.DiscVal?.toStringAsFixed(2);
+    goodsIssueCreateGenData.GeneralData.taxVal =
+        imogdi.TaxVal?.toStringAsFixed(2);
+    goodsIssueCreateGenData.GeneralData.docTotal =
+        imogdi.DocTotal?.toStringAsFixed(2);
+    goodsIssueCreateGenData.GeneralData.permanentTransId =
+        imogdi.PermanentTransId;
+    goodsIssueCreateGenData.GeneralData.docEntry = imogdi.DocEntry?.toString();
+    goodsIssueCreateGenData.GeneralData.docNum = imogdi.DocNum;
+    goodsIssueCreateGenData.GeneralData.createdBy = imogdi.CreatedBy;
+    goodsIssueCreateGenData.GeneralData.createDate =
+        getFormattedDate(imogdi.CreateDate);
+    goodsIssueCreateGenData.GeneralData.updateDate =
+        getFormattedDate(imogdi.UpdateDate);
+    goodsIssueCreateGenData.GeneralData.approvedBy = imogdi.ApprovedBy;
+    goodsIssueCreateGenData.GeneralData.error = imogdi.Error;
+    goodsIssueCreateGenData.GeneralData.isPosted = imogdi.IsPosted;
+    goodsIssueCreateGenData.GeneralData.draftKey = imogdi.DraftKey;
+    goodsIssueCreateGenData.GeneralData.latitude = imogdi.Latitude;
+    goodsIssueCreateGenData.GeneralData.longitude = imogdi.Longitude;
+    goodsIssueCreateGenData.GeneralData.objectCode = imogdi.ObjectCode;
+    goodsIssueCreateGenData.GeneralData.toWhsCode = imogdi.ToWhsCode;
+    goodsIssueCreateGenData.GeneralData.remarks = imogdi.Remarks;
+    goodsIssueCreateGenData.GeneralData.branchId = imogdi.BranchId;
+    goodsIssueCreateGenData.GeneralData.updatedBy = imogdi.UpdatedBy;
+    goodsIssueCreateGenData.GeneralData.postingAddress = imogdi.PostingAddress;
+    goodsIssueCreateGenData.GeneralData.tripTransId = imogdi.TripTransId;
+    goodsIssueCreateGenData.GeneralData.deptCode = imogdi.DeptCode;
+    goodsIssueCreateGenData.GeneralData.deptName = imogdi.DeptName;
+    goodsIssueCreateGenData.GeneralData.isSelected = true;
+    goodsIssueCreateGenData.GeneralData.hasCreated = imogdi.hasCreated;
+    goodsIssueCreateGenData.GeneralData.hasUpdated = imogdi.hasUpdated;
+  }
   static setViewData({required IMOGDI imogdi}) {
     goodsIssueViewGenData.GeneralData.iD = imogdi.ID?.toString();
     goodsIssueViewGenData.GeneralData.transId = imogdi.TransId;
@@ -269,3 +324,5 @@ goToNewGoodsIssueDocument() async {
     Get.offAll(() => GoodsIssue(0));
   });
 }
+
+

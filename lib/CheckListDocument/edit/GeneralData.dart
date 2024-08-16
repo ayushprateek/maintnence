@@ -44,6 +44,7 @@ class GeneralData extends StatefulWidget {
   static String? lastReadingDate;
   static String? lastReading;
   static String? assignedUserCode;
+  static String? tripTransId;
   static String? assignedUserName;
   static String? mNJCTransId;
   static String? remarks;
@@ -90,6 +91,7 @@ class GeneralData extends StatefulWidget {
     return MNOCLD(
       ID: int.tryParse(iD ?? ''),
       TransId: transId,
+      TripTransId:tripTransId,
       DocNum: docNum ?? '',
       PermanentTransId: permanentTransId ?? '',
       PostingDate: getDateFromString(postingDate ?? ""),

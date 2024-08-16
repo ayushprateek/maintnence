@@ -13,6 +13,7 @@ class GeneralData extends StatefulWidget {
   static bool isSelected = false, hasCreated = false, hasUpdated = false;
 
   static String? iD;
+  static String? TripTransId;
   static String? permanentTransId;
   static String? transId;
   static String? docEntry;
@@ -80,6 +81,7 @@ class GeneralData extends StatefulWidget {
   static MNOCLD getGeneralData() {
     return MNOCLD(
       ID: int.tryParse(iD ?? ''),
+      TripTransId: TripTransId,
       TransId: transId,
       DocNum: docNum ?? '',
       PermanentTransId: permanentTransId ?? '',

@@ -290,6 +290,40 @@ class _CheckListDetailsState extends State<CheckListDetails> {
                                                       children: [
                                                         Checkbox(
                                                           value: mncld1
+                                                              .IsChecked,
+                                                          onChanged:
+                                                              (bool? value) {
+                                                            setState(() {
+                                                              mncld1.IsChecked =
+                                                                  !mncld1
+                                                                      .IsChecked;
+                                                            });
+                                                          },
+                                                        ),
+                                                        Expanded(
+                                                            child: getPoppinsText(
+                                                                text:
+                                                                    'Is Checked',
+                                                                textAlign:
+                                                                    TextAlign
+                                                                        .start)),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ),
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.only(
+                                                          top: 4.0, bottom: 4),
+                                                  child: SizedBox(
+                                                    height: 20,
+                                                    child: Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        Checkbox(
+                                                          value: mncld1
                                                               .IsFromStock,
                                                           onChanged:
                                                               (bool? value) {

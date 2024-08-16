@@ -32,6 +32,7 @@ import 'package:maintenance/main.dart';
 class ClearCreateCheckListDoc {
   static clearGeneralData() {
     CheckListDocument.numOfTabs.value = 3;
+    createGeneralData.GeneralData.TripTransId = '';
     createGeneralData.GeneralData.iD = '';
     createGeneralData.GeneralData.permanentTransId = '';
     createGeneralData.GeneralData.transId = '';
@@ -102,6 +103,7 @@ class ClearCreateCheckListDoc {
     createGeneralData.GeneralData.iD = mnocld.ID?.toString() ?? '0';
     createGeneralData.GeneralData.permanentTransId =
         mnocld.PermanentTransId ?? "";
+    createGeneralData.GeneralData.TripTransId = mnocld.TripTransId ?? '';
     createGeneralData.GeneralData.transId = mnocld.TransId ?? '';
     createGeneralData.GeneralData.docEntry = mnocld.DocEntry?.toString() ?? '';
     createGeneralData.GeneralData.docNum = mnocld.DocNum ?? '';
@@ -164,6 +166,7 @@ class ClearEditCheckListDoc {
   static clearGeneralData() {
     CheckListDocument.numOfTabs.value = 3;
     editGeneralData.GeneralData.iD = '';
+    editGeneralData.GeneralData.tripTransId = '';
     editGeneralData.GeneralData.permanentTransId = '';
     editGeneralData.GeneralData.transId = '';
     editGeneralData.GeneralData.docEntry = '';
@@ -210,6 +213,7 @@ class ClearEditCheckListDoc {
     editGeneralData.GeneralData.iD = mnocld.ID?.toString() ?? '0';
     editGeneralData.GeneralData.permanentTransId =
         mnocld.PermanentTransId ?? "";
+    editGeneralData.GeneralData.tripTransId = mnocld.TripTransId ?? '';
     editGeneralData.GeneralData.transId = mnocld.TransId ?? '';
     editGeneralData.GeneralData.docEntry = mnocld.DocEntry?.toString() ?? '';
     editGeneralData.GeneralData.docNum = mnocld.DocNum ?? '';
@@ -314,6 +318,7 @@ class ClearViewCheckListDoc {
   static clearGeneralData() {
     CheckListDocument.numOfTabs.value = 3;
     viewGeneralData.GeneralData.iD = '';
+    viewGeneralData.GeneralData.TripTransId = '';
     viewGeneralData.GeneralData.permanentTransId = '';
     viewGeneralData.GeneralData.transId = '';
     viewGeneralData.GeneralData.docEntry = '';
@@ -360,6 +365,7 @@ class ClearViewCheckListDoc {
     viewGeneralData.GeneralData.iD = mnocld.ID?.toString() ?? '0';
     viewGeneralData.GeneralData.permanentTransId =
         mnocld.PermanentTransId ?? "";
+    viewGeneralData.GeneralData.TripTransId = mnocld.TripTransId ?? '';
     viewGeneralData.GeneralData.transId = mnocld.TransId ?? '';
     viewGeneralData.GeneralData.docEntry = mnocld.DocEntry?.toString() ?? '';
     viewGeneralData.GeneralData.docNum = mnocld.DocNum ?? '';

@@ -31,7 +31,8 @@ Future<bool> isMNCLTransIdAvailable(BuildContext? context, String TransId,
 }
 
 Future<bool> isPROPRQTransIdAvailable(BuildContext? context, String TransId,
-    {Transaction? txn}) async {
+    {Transaction? txn})
+async {
   var db;
   if (txn == null) {
     db = await initializeDB(context);
@@ -41,6 +42,21 @@ Future<bool> isPROPRQTransIdAvailable(BuildContext? context, String TransId,
   TransId = TransId.substring(13);
   final List<Map<String, Object?>> queryResult = await db
       .rawQuery("SELECT * FROM PROPRQ WHERE SUBSTR(TransId,14) = '${TransId}'");
+  return queryResult.isNotEmpty;
+}
+
+Future<bool> isPROITRTransIdAvailable(BuildContext? context, String TransId,
+    {Transaction? txn})
+async {
+  var db;
+  if (txn == null) {
+    db = await initializeDB(context);
+  } else {
+    db = txn;
+  }
+  TransId = TransId.substring(13);
+  final List<Map<String, Object?>> queryResult = await db
+      .rawQuery("SELECT * FROM PROITR WHERE SUBSTR(TransId,14) = '${TransId}'");
   return queryResult.isNotEmpty;
 }
 

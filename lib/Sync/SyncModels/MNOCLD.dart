@@ -12,6 +12,7 @@ import 'package:sqflite/sqlite_api.dart';
 class MNOCLD {
   int? ID;
   String? PermanentTransId;
+  String? TripTransId;
   String? TransId;
   int? DocEntry;
   String? DocNum;
@@ -50,6 +51,7 @@ class MNOCLD {
   MNOCLD({
     this.ID,
     this.PermanentTransId,
+    this.TripTransId,
     this.TransId,
     this.DocEntry,
     this.DocNum,
@@ -89,6 +91,7 @@ class MNOCLD {
   factory MNOCLD.fromJson(Map<String, dynamic> json) => MNOCLD(
         ID: int.tryParse(json['ID'].toString()) ?? 0,
         PermanentTransId: json['PermanentTransId']?.toString() ?? '',
+    TripTransId: json['TripTransId']?.toString() ?? '',
         TransId: json['TransId']?.toString() ?? '',
         DocEntry: int.tryParse(json['DocEntry'].toString()) ?? 0,
         DocNum: json['DocNum']?.toString() ?? '',
@@ -131,6 +134,7 @@ class MNOCLD {
 
   Map<String, dynamic> toJson() => {
         'ID': ID,
+        'TripTransId': TripTransId,
         'PermanentTransId': PermanentTransId,
         'TransId': TransId,
         'DocEntry': DocEntry,

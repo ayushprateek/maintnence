@@ -193,6 +193,34 @@ class _CheckListDetailsState extends State<CheckListDetails> {
                                             ),
                                           ),
                                           Padding(
+                                            padding:
+                                            const EdgeInsets.only(
+                                                top: 4.0, bottom: 4),
+                                            child: SizedBox(
+                                              height: 20,
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                MainAxisAlignment
+                                                    .start,
+                                                children: [
+                                                  Checkbox(
+                                                    value: mncld1
+                                                        .IsChecked,
+                                                    onChanged:
+                                                        (bool? value) {},
+                                                  ),
+                                                  Expanded(
+                                                      child: getPoppinsText(
+                                                          text:
+                                                          'Is Checked',
+                                                          textAlign:
+                                                          TextAlign
+                                                              .start)),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                          Padding(
                                             padding: const EdgeInsets.only(
                                                 top: 4.0, bottom: 4),
                                             child: SizedBox(

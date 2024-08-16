@@ -28,7 +28,7 @@ import 'package:maintenance/Sync/SyncModels/PRPRQ1.dart';
 import 'package:maintenance/main.dart';
 
 class ClearPurchaseRequestDocument {
-  static clearGeneralDataTextFields() {
+  static clearGeneralData() {
     createPurchaseGenData.GeneralData.iD = '';
     createPurchaseGenData.GeneralData.transId = '';
     createPurchaseGenData.GeneralData.refNo = '';
@@ -65,6 +65,50 @@ class ClearPurchaseRequestDocument {
     createPurchaseGenData.GeneralData.deptName = '';
     createPurchaseGenData.GeneralData.requestedCode = '';
     createPurchaseGenData.GeneralData.requestedName = '';
+
+    createPurchaseGenData.GeneralData.isPosted = false;
+    createPurchaseGenData.GeneralData.isConsumption = false;
+    createPurchaseGenData.GeneralData.isRequest = false;
+  }
+  static setGeneralData({
+    required PROPRQ data
+}) {
+    createPurchaseGenData.GeneralData.iD = data.ID?.toString();
+    createPurchaseGenData.GeneralData.transId = data.TransId;
+    createPurchaseGenData.GeneralData.refNo = data.RefNo;
+    createPurchaseGenData.GeneralData.mobileNo = data.MobileNo;
+    createPurchaseGenData.GeneralData.postingDate =
+        getFormattedDate(data.PostingDate);
+    createPurchaseGenData.GeneralData.validUntill =
+        getFormattedDate(data.ValidUntill);
+    createPurchaseGenData.GeneralData.approvalStatus = data.ApprovalStatus;
+    createPurchaseGenData.GeneralData.docStatus = data.DocStatus;
+    createPurchaseGenData.GeneralData.permanentTransId = data.PermanentTransId;
+    createPurchaseGenData.GeneralData.docEntry = data.DocEntry?.toString();
+    createPurchaseGenData.GeneralData.docNum = data.DocNum;
+    createPurchaseGenData.GeneralData.createdBy = data.CreatedBy;
+    createPurchaseGenData.GeneralData.createDate = getFormattedDate(data.CreateDate);
+    createPurchaseGenData.GeneralData.updateDate = getFormattedDate(data.UpdateDate);
+    createPurchaseGenData.GeneralData.approvedBy = data.ApprovedBy;
+    createPurchaseGenData.GeneralData.error = data.Error;
+    createPurchaseGenData.GeneralData.isSelected = false;
+    createPurchaseGenData.GeneralData.hasCreated = false;
+    createPurchaseGenData.GeneralData.hasUpdated = false;
+    createPurchaseGenData.GeneralData.isPosted = data.IsPosted??false;
+    createPurchaseGenData.GeneralData.draftKey = data.DraftKey;
+    createPurchaseGenData.GeneralData.latitude = data.Latitude;
+    createPurchaseGenData.GeneralData.longitude = data.Longitude;
+    createPurchaseGenData.GeneralData.objectCode = data.ObjectCode;
+    createPurchaseGenData.GeneralData.whsCode = data.WhsCode;
+    createPurchaseGenData.GeneralData.remarks = data.Remarks;
+    createPurchaseGenData.GeneralData.branchId = data.BranchId;
+    createPurchaseGenData.GeneralData.updatedBy = data.UpdatedBy;
+    createPurchaseGenData.GeneralData.postingAddress = data.PostingAddress;
+    createPurchaseGenData.GeneralData.tripTransId = data.TripTransId;
+    createPurchaseGenData.GeneralData.deptCode = data.DeptCode;
+    createPurchaseGenData.GeneralData.deptName = data.DeptName;
+    createPurchaseGenData.GeneralData.requestedCode = data.RequestedCode;
+    createPurchaseGenData.GeneralData.requestedName = data.RequestedName;
 
     createPurchaseGenData.GeneralData.isPosted = false;
     createPurchaseGenData.GeneralData.isConsumption = false;
@@ -237,7 +281,7 @@ class ClearPurchaseRequestDocument {
 }
 
 goToNewPurchaseRequestDocument() async {
-  await ClearPurchaseRequestDocument.clearGeneralDataTextFields();
+  await ClearPurchaseRequestDocument.clearGeneralData();
   await ClearPurchaseRequestDocument.clearEditItems();
   createPurchaseItemDetails.ItemDetails.items.clear();
 
