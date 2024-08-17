@@ -142,8 +142,8 @@ class _DragDemoState extends State<DragDemo> with TickerProviderStateMixin {
                                 key: _draggableKey,
                                 borderRadius: BorderRadius.circular(12),
                                 child: SizedBox(
-                                  height: 150,
-                                  width: 150,
+                                  height: 50,
+                                  width: 50,
                                   child: Opacity(
                                     opacity: 0.85,
                                     child: Image.network(
@@ -161,14 +161,17 @@ class _DragDemoState extends State<DragDemo> with TickerProviderStateMixin {
                           );
                         },
                         onAcceptWithDetails: (details) {
-                          print('received $index $details');
-                          //TODO: FOLLOWING IS THE SWAP PRODUCT LOGIC
-                          ///_items[details.index]=url;
-                          ///_items[index]=details.data?.toString()??_items[index];
-                          setState(() {
-                            _items[index] =
-                                details.data?.toString() ?? _items[index];
-                          });
+                          int oldIndex = -1;
+                          for (int i = 0; i < _items.length; i++) {
+                            if (_items[i] == details.data) {
+                              oldIndex = i;
+                              break;
+                            }
+                          }
+                          _items[oldIndex] = url;
+                          _items[index] =
+                              details.data?.toString() ?? _items[index];
+                          setState(() {});
                         },
                       );
                     },

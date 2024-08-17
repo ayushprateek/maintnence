@@ -471,20 +471,20 @@ class _CustomDrawerState extends State<CustomDrawer> {
                   //   ),
                   // ),
                   //
-                  // InkWell(
-                  //   onTap: () {
-                  //     Get.to(() => DragDemo());
-                  //   },
-                  //   child: ListTile(
-                  //     title: Text(
-                  //       'DragDemo',
-                  //       style: TextStyle(color: headColor),
-                  //     ),
-                  //     leading: Icon(Icons.sync, color: Colors.white),
-                  //     trailing:
-                  //         Icon(Icons.keyboard_arrow_right, color: Colors.white),
-                  //   ),
-                  // ),
+                  InkWell(
+                    onTap: () {
+                      Get.to(() => DragDemo());
+                    },
+                    child: ListTile(
+                      title: Text(
+                        'DragDemo',
+                        style: TextStyle(color: headColor),
+                      ),
+                      leading: Icon(Icons.sync, color: Colors.white),
+                      trailing:
+                          Icon(Icons.keyboard_arrow_right, color: Colors.white),
+                    ),
+                  ),
                   // InkWell(
                   //   onTap: (){
                   //     Get.to(()=>ImageSwapPage( ));
