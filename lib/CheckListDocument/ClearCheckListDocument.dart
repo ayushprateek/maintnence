@@ -22,6 +22,7 @@ import 'package:maintenance/CheckListDocument/view/CheckListDetails/CheckListDet
 import 'package:maintenance/CheckListDocument/view/CheckListDocument.dart';
 import 'package:maintenance/CheckListDocument/view/GeneralData.dart'
     as viewGeneralData;
+import 'package:maintenance/Component/GenerateTransId.dart';
 import 'package:maintenance/Component/GetFormattedDate.dart';
 import 'package:maintenance/Component/GetLastDocNum.dart';
 import 'package:maintenance/Component/IsAvailableTransId.dart';
@@ -471,6 +472,9 @@ goToNewCheckListDocument() async {
   await ClearCreateCheckListDoc.clearEditCheckList();
   await ClearCreateCheckListDoc.clearCheckListAttachments();
   createCheckListDetails.CheckListDetails.items.clear();
+  String TransId=await GenerateTransId.getTransId(tableName: 'MNOCLD',
+  docName: 'MNCL');
+  print(TransId);
 
   getLastDocNum("MNCL", null).then((snapshot) async {
     int DocNum = snapshot[0].DocNumber - 1;
