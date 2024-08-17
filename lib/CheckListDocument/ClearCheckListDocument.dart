@@ -475,26 +475,8 @@ goToNewCheckListDocument() async {
   String TransId=await GenerateTransId.getTransId(tableName: 'MNOCLD',
   docName: 'MNCL');
   print(TransId);
-
-  getLastDocNum("MNCL", null).then((snapshot) async {
-    int DocNum = snapshot[0].DocNumber - 1;
-
-    do {
-      DocNum += 1;
-      createGeneralData.GeneralData.transId =
-          DateTime.now().millisecondsSinceEpoch.toString() +
-              "U0" +
-              userModel.ID.toString() +
-              "_" +
-              snapshot[0].DocName +
-              "/" +
-              DocNum.toString();
-    } while (await isMNCLTransIdAvailable(
-        null, createGeneralData.GeneralData.transId ?? ""));
-    print(createGeneralData.GeneralData.transId);
-
-    Get.offAll(() => CheckListDocument(0));
-  });
+  createGeneralData.GeneralData.transId =TransId;
+  Get.offAll(() => CheckListDocument(0));
 }
 
 navigateToCheckListDocument(

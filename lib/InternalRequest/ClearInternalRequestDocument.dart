@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:maintenance/Component/GenerateTransId.dart';
 import 'package:maintenance/Component/GetFormattedDate.dart';
 import 'package:maintenance/Component/GetLastDocNum.dart';
 import 'package:maintenance/Component/IsAvailableTransId.dart';
@@ -423,23 +424,9 @@ goToNewInternalRequestDocument() async {
   await ClearCreateInternalRequestDocument.clearGeneralDataTextFields();
   await ClearCreateInternalRequestDocument.clearEditItems();
   createInternalItemDetails.ItemDetails.items.clear();
-  getLastDocNum("PRST", null).then((snapshot) async {
-    int DocNum = snapshot[0].DocNumber - 1;
-    do {
-      DocNum += 1;
-      createInternalGenData.GeneralData.transId =
-          DateTime.now().millisecondsSinceEpoch.toString() +
-              "U0" +
-              userModel.ID.toString() +
-              "_" +
-              snapshot[0].DocName +
-              "/" +
-              DocNum.toString();
-    } while (await isPROPRQTransIdAvailable(
-        null, createInternalGenData.GeneralData.transId ?? ""));
-    print(createInternalGenData.GeneralData.transId);
-    Get.offAll(() => InternalRequest(0));
-  });
+  String TransId = await GenerateTransId.getTransId(tableName: 'PROPDN', docName: 'PRGR');
+  createInternalGenData.GeneralData.transId = TransId;
+  Get.offAll(() => InternalRequest(0));
 }
 
 navigateToInternalRequestDocument(

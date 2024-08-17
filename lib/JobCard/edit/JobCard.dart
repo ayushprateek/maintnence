@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:maintenance/Component/BackPressedWarning.dart';
 import 'package:maintenance/Component/CustomColor.dart';
 import 'package:maintenance/Component/CustomFont.dart';
+import 'package:maintenance/Component/GenerateTransId.dart';
 import 'package:maintenance/Component/GetCurrentLocation.dart';
 import 'package:maintenance/Component/GetLastDocNum.dart';
 import 'package:maintenance/Component/IsAvailableTransId.dart';
@@ -114,23 +115,7 @@ class _EditJobCardState extends State<EditJobCard> {
           'Unable to Create Purchase Request. Please ensure Item, Qty is valid and you have selected atleast one Item!');
       return;
     }
-
-    String TransId = '';
-    List<GetLastDocNum> list = await getLastDocNum("PR", null);
-    if (list.isNotEmpty) {
-      int DocNum = list[0].DocNumber - 1;
-
-      do {
-        DocNum += 1;
-        TransId = DateTime.now().millisecondsSinceEpoch.toString() +
-            "U0" +
-            userModel.ID.toString() +
-            "_" +
-            list[0].DocName +
-            "/" +
-            DocNum.toString();
-      } while (await isPROPRQTransIdAvailable(null, TransId));
-    }
+    String TransId = await GenerateTransId.getTransId(tableName: 'PROPRQ', docName: 'PR');
     print(TransId);
     ClearPurchaseRequestDocument.setGeneralData(
         data: PROPRQ(
@@ -174,22 +159,8 @@ class _EditJobCardState extends State<EditJobCard> {
       return;
     }
 
-    String TransId = '';
-    List<GetLastDocNum> list = await getLastDocNum("PR", null);
-    if (list.isNotEmpty) {
-      int DocNum = list[0].DocNumber - 1;
+    String TransId = await GenerateTransId.getTransId(tableName: 'PROITR', docName: 'PRIR');
 
-      do {
-        DocNum += 1;
-        TransId = DateTime.now().millisecondsSinceEpoch.toString() +
-            "U0" +
-            userModel.ID.toString() +
-            "_" +
-            list[0].DocName +
-            "/" +
-            DocNum.toString();
-      } while (await isPROITRTransIdAvailable(null, TransId));
-    }
     print(TransId);
     ClearCreateInternalRequestDocument.setGeneralData(
         data: PROITR(
@@ -234,22 +205,7 @@ class _EditJobCardState extends State<EditJobCard> {
       return;
     }
 
-    String TransId = '';
-    List<GetLastDocNum> list = await getLastDocNum("MNGI", null);
-    if (list.isNotEmpty) {
-      int DocNum = list[0].DocNumber - 1;
-
-      do {
-        DocNum += 1;
-        TransId = DateTime.now().millisecondsSinceEpoch.toString() +
-            "U0" +
-            userModel.ID.toString() +
-            "_" +
-            list[0].DocName +
-            "/" +
-            DocNum.toString();
-      } while (await isMNCLTransIdAvailable(null, TransId));
-    }
+    String TransId = await GenerateTransId.getTransId(tableName: 'IMOGDI', docName: 'MNGI');
     print(TransId);
     ClearGoodsIssueDocument.setGeneralData(
         imogdi: IMOGDI(

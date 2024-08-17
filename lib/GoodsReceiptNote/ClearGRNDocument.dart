@@ -1,5 +1,6 @@
 //------------------------------CREATE GOODS RECEIPT NOTES------------
 import 'package:get/get.dart';
+import 'package:maintenance/Component/GenerateTransId.dart';
 import 'package:maintenance/Component/GetFormattedDate.dart';
 import 'package:maintenance/Component/GetLastDocNum.dart';
 import 'package:maintenance/Component/IsAvailableTransId.dart';
@@ -835,26 +836,11 @@ goToNewGRNDocument() async {
   await ClearGRNDocument.clearBillingAddressTextFields();
   await ClearGRNDocument.clearShippingAddressTextFields();
   createGrnItemDetails.ItemDetails.items.clear();
+  String TransId =
+  await GenerateTransId.getTransId(tableName: 'PROPDN', docName: 'PRGR');
+  createGrnGenData.GeneralData.transId = TransId;
 
-  getLastDocNum("PR", null).then((snapshot) async {
-    int DocNum = snapshot[0].DocNumber - 1;
-
-    do {
-      DocNum += 1;
-      createGrnGenData.GeneralData.transId =
-          DateTime.now().millisecondsSinceEpoch.toString() +
-              "U0" +
-              userModel.ID.toString() +
-              "_" +
-              snapshot[0].DocName +
-              "GR" +
-              "/" +
-              DocNum.toString();
-    } while (await isPROPRQTransIdAvailable(
-        null, createGrnGenData.GeneralData.transId ?? ""));
-    print(createGrnGenData.GeneralData.transId);
-    Get.offAll(() => GoodsRecepitNote(0));
-  });
+  Get.offAll(() => GoodsRecepitNote(0));
 }
 
 navigateToGoodsReceiptNoteDocument(

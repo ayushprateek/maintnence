@@ -1,5 +1,6 @@
 //---------------------------------CREATE JOB CARD IMPORTS
 import 'package:get/get.dart';
+import 'package:maintenance/Component/GenerateTransId.dart';
 import 'package:maintenance/Component/GetFormattedDate.dart';
 import 'package:maintenance/Component/GetLastDocNum.dart';
 import 'package:maintenance/Component/IsAvailableTransId.dart';
@@ -302,25 +303,9 @@ goToNewJobCardDocument() async {
   await ClearJobCardDoc.clearGeneralData();
   jcdCreateItemDetails.ItemDetails.items.clear();
   jcdCreateServiceDetails.ServiceDetails.items.clear();
-  getLastDocNum("MNJC", null).then((snapshot) async {
-    int DocNum = snapshot[0].DocNumber - 1;
-
-    do {
-      DocNum += 1;
-      jcdCreateGenData.GeneralData.transId =
-          DateTime.now().millisecondsSinceEpoch.toString() +
-              "U0" +
-              userModel.ID.toString() +
-              "_" +
-              snapshot[0].DocName +
-              "/" +
-              DocNum.toString();
-    } while (await isMNCLTransIdAvailable(
-        null, jcdCreateGenData.GeneralData.transId ?? ""));
-    print(jcdCreateGenData.GeneralData.transId);
-
-    Get.offAll(() => JobCard(0));
-  });
+  String TransId = await GenerateTransId.getTransId(tableName: 'MNOJCD', docName: 'MNJC');
+  jcdCreateGenData.GeneralData.transId=TransId;
+  Get.offAll(() => JobCard(0));
 }
 
 navigateToJobCardDocument(

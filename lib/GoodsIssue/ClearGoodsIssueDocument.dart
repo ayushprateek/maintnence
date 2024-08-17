@@ -1,28 +1,26 @@
 //------------------------------ CREATE GOODS ISSUE IMPORTS------------
 import 'package:get/get.dart';
+import 'package:maintenance/Component/GenerateTransId.dart';
 import 'package:maintenance/Component/GetFormattedDate.dart';
-import 'package:maintenance/Component/GetLastDocNum.dart';
-import 'package:maintenance/Component/IsAvailableTransId.dart';
 import 'package:maintenance/GoodsIssue/create/GeneralData.dart'
-as goodsIssueCreateGenData;
+    as goodsIssueCreateGenData;
 import 'package:maintenance/GoodsIssue/create/GoodsIssue.dart';
 import 'package:maintenance/GoodsIssue/create/ItemDetails/EditItems.dart'
-as goodsIssueCreateEditItems;
+    as goodsIssueCreateEditItems;
 import 'package:maintenance/GoodsIssue/create/ItemDetails/ItemDetails.dart'
-as goodsIssueCreateDetails;
+    as goodsIssueCreateDetails;
 //------------------------------ EDIT GOODS ISSUE IMPORTS------------
 import 'package:maintenance/GoodsIssue/edit/GeneralData.dart'
-as goodsIssueEditGenData;
+    as goodsIssueEditGenData;
 import 'package:maintenance/GoodsIssue/edit/GoodsIssue.dart';
 import 'package:maintenance/GoodsIssue/edit/ItemDetails/ItemDetails.dart'
-as goodsIssueEditDetails;
+    as goodsIssueEditDetails;
 //------------------------------ VIEW GOODS ISSUE IMPORTS------------
 import 'package:maintenance/GoodsIssue/view/GeneralData.dart'
-as goodsIssueViewGenData;
+    as goodsIssueViewGenData;
 import 'package:maintenance/GoodsIssue/view/GoodsIssue.dart';
 import 'package:maintenance/GoodsIssue/view/ItemDetails/ItemDetails.dart'
-as goodsIssueViewDetails;
-
+    as goodsIssueViewDetails;
 import 'package:maintenance/Sync/SyncModels/IMGDI1.dart';
 import 'package:maintenance/Sync/SyncModels/IMOGDI.dart';
 import 'package:maintenance/main.dart';
@@ -158,6 +156,7 @@ class ClearGoodsIssueDocument {
     goodsIssueCreateGenData.GeneralData.hasCreated = imogdi.hasCreated;
     goodsIssueCreateGenData.GeneralData.hasUpdated = imogdi.hasUpdated;
   }
+
   static setViewData({required IMOGDI imogdi}) {
     goodsIssueViewGenData.GeneralData.iD = imogdi.ID?.toString();
     goodsIssueViewGenData.GeneralData.transId = imogdi.TransId;
@@ -303,26 +302,10 @@ goToNewGoodsIssueDocument() async {
   await ClearGoodsIssueDocument.clearGeneralDataTextFields();
   await ClearGoodsIssueDocument.clearEditItems();
   goodsIssueCreateDetails.ItemDetails.items.clear();
+  String TransId =
+      await GenerateTransId.getTransId(tableName: 'IMOGDI', docName: 'MNGI');
+  print(TransId);
 
-  getLastDocNum("MNGI", null).then((snapshot) async {
-    int DocNum = snapshot[0].DocNumber - 1;
-
-    do {
-      DocNum += 1;
-      goodsIssueCreateGenData.GeneralData.transId =
-          DateTime.now().millisecondsSinceEpoch.toString() +
-              "U0" +
-              userModel.ID.toString() +
-              "_" +
-              snapshot[0].DocName +
-              "/" +
-              DocNum.toString();
-    } while (await isMNCLTransIdAvailable(
-        null, goodsIssueCreateGenData.GeneralData.transId ?? ""));
-    print(goodsIssueCreateGenData.GeneralData.transId);
-
-    Get.offAll(() => GoodsIssue(0));
-  });
+  goodsIssueCreateGenData.GeneralData.transId = TransId;
+  Get.offAll(() => GoodsIssue(0));
 }
-
-

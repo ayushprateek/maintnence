@@ -1,5 +1,6 @@
 //------------------------------ CREATE PURCHASE ORDER IMPORTS------------
 import 'package:get/get.dart';
+import 'package:maintenance/Component/GenerateTransId.dart';
 import 'package:maintenance/Component/GetFormattedDate.dart';
 import 'package:maintenance/Component/GetLastDocNum.dart';
 import 'package:maintenance/Component/IsAvailableTransId.dart';
@@ -473,26 +474,9 @@ goToNewPurchaseOrderDocument() async {
   await ClearPurchaseOrderDocument.clearBillingAddressTextFields();
   createPurchaseOrderItemDetails.ItemDetails.items.clear();
 
-  getLastDocNum("PROR", null).then((snapshot) async {
-    int DocNum = snapshot[0].DocNumber - 1;
-
-    do {
-      DocNum += 1;
-      createPurchaseOrderGenData.GeneralData.transId =
-          DateTime.now().millisecondsSinceEpoch.toString() +
-              "U0" +
-              userModel.ID.toString() +
-              "_" +
-              snapshot[0].DocName +
-              "PR" +
-              "/" +
-              DocNum.toString();
-    } while (await isPROPRQTransIdAvailable(
-        null, createPurchaseOrderGenData.GeneralData.transId ?? ""));
-    print(createPurchaseOrderGenData.GeneralData.transId);
-
-    Get.offAll(() => PurchaseOrder(0));
-  });
+  String TransId = await GenerateTransId.getTransId(tableName: 'PROPOR', docName: 'PROR');
+  createPurchaseOrderGenData.GeneralData.transId=TransId;
+  Get.offAll(() => PurchaseOrder(0));
 }
 
 navigateToPurchaseOrderDocument(

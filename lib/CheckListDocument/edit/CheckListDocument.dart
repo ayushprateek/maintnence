@@ -9,9 +9,8 @@ import 'package:maintenance/CheckListDocument/edit/GeneralData.dart';
 import 'package:maintenance/Component/BackPressedWarning.dart';
 import 'package:maintenance/Component/CustomColor.dart';
 import 'package:maintenance/Component/CustomFont.dart';
+import 'package:maintenance/Component/GenerateTransId.dart';
 import 'package:maintenance/Component/GetCurrentLocation.dart';
-import 'package:maintenance/Component/GetLastDocNum.dart';
-import 'package:maintenance/Component/IsAvailableTransId.dart';
 import 'package:maintenance/Component/LogFileFunctions.dart';
 import 'package:maintenance/Component/MenuDescription.dart';
 import 'package:maintenance/Component/Mode.dart';
@@ -109,23 +108,8 @@ class _EditCheckListDocumentState extends State<EditCheckListDocument> {
           'Unable to Create Purchase Request. Please ensure Item, Qty is valid and you have selected atleast one Item!');
       return;
     }
-
-    String TransId = '';
-    List<GetLastDocNum> list = await getLastDocNum("PR", null);
-    if (list.isNotEmpty) {
-      int DocNum = list[0].DocNumber - 1;
-
-      do {
-        DocNum += 1;
-        TransId = DateTime.now().millisecondsSinceEpoch.toString() +
-            "U0" +
-            userModel.ID.toString() +
-            "_" +
-            list[0].DocName +
-            "/" +
-            DocNum.toString();
-      } while (await isPROPRQTransIdAvailable(null, TransId));
-    }
+    String TransId =
+        await GenerateTransId.getTransId(tableName: 'PROPDN', docName: 'PRGR');
     print(TransId);
     ClearPurchaseRequestDocument.setGeneralData(
         data: PROPRQ(
@@ -169,22 +153,8 @@ class _EditCheckListDocumentState extends State<EditCheckListDocument> {
       return;
     }
 
-    String TransId = '';
-    List<GetLastDocNum> list = await getLastDocNum("PR", null);
-    if (list.isNotEmpty) {
-      int DocNum = list[0].DocNumber - 1;
-
-      do {
-        DocNum += 1;
-        TransId = DateTime.now().millisecondsSinceEpoch.toString() +
-            "U0" +
-            userModel.ID.toString() +
-            "_" +
-            list[0].DocName +
-            "/" +
-            DocNum.toString();
-      } while (await isPROITRTransIdAvailable(null, TransId));
-    }
+    String TransId =
+        await GenerateTransId.getTransId(tableName: 'PROITR', docName: 'PRIR');
     print(TransId);
     ClearCreateInternalRequestDocument.setGeneralData(
         data: PROITR(
@@ -229,22 +199,8 @@ class _EditCheckListDocumentState extends State<EditCheckListDocument> {
       return;
     }
 
-    String TransId = '';
-    List<GetLastDocNum> list = await getLastDocNum("MNGI", null);
-    if (list.isNotEmpty) {
-      int DocNum = list[0].DocNumber - 1;
-
-      do {
-        DocNum += 1;
-        TransId = DateTime.now().millisecondsSinceEpoch.toString() +
-            "U0" +
-            userModel.ID.toString() +
-            "_" +
-            list[0].DocName +
-            "/" +
-            DocNum.toString();
-      } while (await isMNCLTransIdAvailable(null, TransId));
-    }
+    String TransId =
+        await GenerateTransId.getTransId(tableName: 'IMOGDI', docName: 'MNGI');
     print(TransId);
     ClearGoodsIssueDocument.setGeneralData(
         imogdi: IMOGDI(

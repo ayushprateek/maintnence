@@ -12,16 +12,13 @@ import 'package:maintenance/CheckListDocument/create/GeneralData.dart'
     as checkListGenData;
 import 'package:maintenance/Component/AppConfig.dart';
 import 'package:maintenance/Component/CheckInternet.dart';
-
 import 'package:maintenance/Component/CompanyDetails.dart';
 import 'package:maintenance/Component/CustomColor.dart';
 import 'package:maintenance/Component/CustomDrawer.dart';
 import 'package:maintenance/Component/CustomFont.dart';
+import 'package:maintenance/Component/GenerateTransId.dart';
 import 'package:maintenance/Component/GetCurrentLocation.dart';
 import 'package:maintenance/Component/GetFormattedDate.dart';
-import 'package:maintenance/Component/GetLastDocNum.dart';
-import 'package:maintenance/Component/IsAPIWorking.dart';
-import 'package:maintenance/Component/IsAvailableTransId.dart';
 import 'package:maintenance/Component/IsValidAppVersion.dart';
 import 'package:maintenance/Component/NotSyncDocument.dart';
 import 'package:maintenance/Component/NotificationIcon.dart';
@@ -38,6 +35,8 @@ import 'package:maintenance/Sync/SyncModels/MNOWCM.dart';
 import 'package:maintenance/main.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:sqflite/sqflite.dart';
+
+import 'Component/IsAPIWorking.dart';
 
 class Dashboard extends StatefulWidget {
   static var address;
@@ -219,23 +218,10 @@ WHERE
     await ClearCreateCheckListDoc.clearCheckListAttachments();
     checkListDetails.CheckListDetails.items.clear();
     Database db = await initializeDB(null);
-    await getLastDocNum("MNCL", null).then((snapshot) async {
-      int DocNum = snapshot[0].DocNumber - 1;
-
-      do {
-        DocNum += 1;
-        checkListGenData.GeneralData.transId =
-            DateTime.now().millisecondsSinceEpoch.toString() +
-                "U0" +
-                userModel.ID.toString() +
-                "_" +
-                snapshot[0].DocName +
-                "/" +
-                DocNum.toString();
-      } while (await isMNCLTransIdAvailable(
-          null, checkListGenData.GeneralData.transId ?? ""));
-      print(checkListGenData.GeneralData.transId);
-    });
+    String TransId =
+        await GenerateTransId.getTransId(tableName: 'MNOCLD', docName: 'MNCL');
+    print(TransId);
+    checkListGenData.GeneralData.transId = TransId;
 
     try {
       // make it come from session instead of query param
