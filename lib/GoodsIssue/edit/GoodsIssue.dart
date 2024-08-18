@@ -154,9 +154,7 @@ class _JobCardState extends State<EditGoodsIssue> {
         if (!EditGoodsIssue.saveButtonPressed) {
           EditGoodsIssue.saveButtonPressed = true;
           showLoader(context);
-          Position pos = await getCurrentLocation();
-          print(pos.latitude.toString());
-          print(pos.longitude.toString());
+          
           String str = 'TransId = ?';
 
           String? data = GeneralData.transId;

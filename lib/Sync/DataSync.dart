@@ -14,6 +14,7 @@ import 'package:maintenance/Component/CustomColor.dart';
 import 'package:maintenance/Component/CustomFont.dart';
 import 'package:maintenance/Component/GetCredentials.dart';
 import 'package:maintenance/Component/GetCurrentLocation.dart';
+import 'package:maintenance/Component/GetLiveLocation.dart';
 import 'package:maintenance/Component/IsValidAppVersion.dart';
 import 'package:maintenance/Component/LogFileFunctions.dart';
 import 'package:maintenance/Component/NotSyncDocument.dart';
@@ -1142,15 +1143,15 @@ Future<void> updateLocationInBackground() async {
     return;
   }
 
-  Position pos = await getCurrentLocation();
+  
   Database db = await initializeDB(null);
   OECLOModel oecloModel = OECLOModel(
       ID: 0,
       UserCode: userCode,
       CreateDate: DateTime.now(),
       // Time: DateTime.now(),
-      Latitude: pos.latitude.toString(),
-      Longitude: pos.longitude.toString(),
+      Latitude: CustomLiveLocation.currentLocation?.latitude.toString()??'',
+      Longitude: CustomLiveLocation.currentLocation?.longitude.toString()??'',
       UpdateDate: DateTime.now(),
       CreatedBy: userModel.UserCode,
       BranchId: userModel.BranchId.toString(),

@@ -19,6 +19,7 @@ import 'package:maintenance/Component/CustomFont.dart';
 import 'package:maintenance/Component/GenerateTransId.dart';
 import 'package:maintenance/Component/GetCurrentLocation.dart';
 import 'package:maintenance/Component/GetFormattedDate.dart';
+import 'package:maintenance/Component/GetLiveLocation.dart';
 import 'package:maintenance/Component/IsValidAppVersion.dart';
 import 'package:maintenance/Component/NotSyncDocument.dart';
 import 'package:maintenance/Component/NotificationIcon.dart';
@@ -78,14 +79,14 @@ class _DashboardState extends State<Dashboard> {
       print('Dialog dismissed. Perform your task here.');
       isLoading = false;
     });
-    Position pos = await getCurrentLocation();
+    await CustomLiveLocation.getLiveLocation();
     if (isLoading) {
       Navigator.pop(context);
     }
-    if (pos.latitude == 0.0) {
+    if (CustomLiveLocation.currentLocation==null) {
       CustomDrawer.hasEnabledLocation = false;
       getErrorSnackBar("Allow the app to access your location");
-    } else {
+    }  else {
       if (Platform.isAndroid) {
         CustomDrawer.hasEnabledLocation = true;
         // var methodChannel = MethodChannel("LITSales");

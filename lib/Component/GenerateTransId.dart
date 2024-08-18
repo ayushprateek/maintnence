@@ -38,7 +38,8 @@ class GenerateTransId {
   static Future<bool> isTransIdAvailable(
       {required String TransId,
       required String tableName,
-      Transaction? txn}) async {
+      Transaction? txn})
+  async {
     var db;
     if (txn == null) {
       db = await initializeDB(null);
@@ -50,4 +51,13 @@ class GenerateTransId {
         "SELECT * FROM $tableName WHERE SUBSTR(TransId,14) = '${TransId}'");
     return queryResult.isNotEmpty;
   }
+
+  static updateDonNum({
+    required String docName,
+})async{
+    Database db=await initializeDB(null);
+    await db.rawQuery("UPDATE DOCN SET DocNumber=DocNumber+1 WHERE DocName='$docName'");
+  }
+
+
 }

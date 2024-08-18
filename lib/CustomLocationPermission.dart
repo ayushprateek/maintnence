@@ -6,7 +6,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:maintenance/Component/AppConfig.dart';
 import 'package:maintenance/Component/CustomColor.dart';
 import 'package:maintenance/Component/CustomDrawer.dart';
-import 'package:maintenance/Component/GetCurrentLocation.dart';
+import 'package:maintenance/Component/GetLiveLocation.dart';
 import 'package:maintenance/Component/SnackbarComponent.dart';
 import 'package:maintenance/main.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -51,10 +51,10 @@ class _CustomLocationPermissionState extends State<CustomLocationPermission> {
           );
         },
       );
-      Position pos = await getCurrentLocation();
+
       Navigator.pop(context);
 
-      if (pos.latitude == 0.0) {
+      if (CustomLiveLocation.currentLocation?.latitude == 0.0) {
         CustomDrawer.hasEnabledLocation = false;
 
         getErrorSnackBar("Allow the app to access your location");

@@ -285,9 +285,7 @@ class _JobCardState extends State<JobCard> {
         if (!JobCard.saveButtonPressed) {
           JobCard.saveButtonPressed = true;
           showLoader(context);
-          Position pos = await getCurrentLocation();
-          print(pos.latitude.toString());
-          print(pos.longitude.toString());
+          
           String str = 'TransId = ?';
 
           final Database db = await initializeDB(context);

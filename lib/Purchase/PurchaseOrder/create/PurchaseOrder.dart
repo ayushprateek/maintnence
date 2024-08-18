@@ -7,6 +7,7 @@ import 'package:maintenance/Component/BackPressedWarning.dart';
 import 'package:maintenance/Component/CustomColor.dart';
 import 'package:maintenance/Component/CustomFont.dart';
 import 'package:maintenance/Component/GetCurrentLocation.dart';
+import 'package:maintenance/Component/GetLiveLocation.dart';
 import 'package:maintenance/Component/LogFileFunctions.dart';
 import 'package:maintenance/Component/MenuDescription.dart';
 import 'package:maintenance/Component/Mode.dart';
@@ -209,9 +210,7 @@ class _JobCardState extends State<PurchaseOrder> {
         if (!PurchaseOrder.saveButtonPressed) {
           PurchaseOrder.saveButtonPressed = true;
           showLoader(context);
-          Position pos = await getCurrentLocation();
-          print(pos.latitude.toString());
-          print(pos.longitude.toString());
+          
           String str = 'TransId = ?';
 
           String? data = GeneralData.transId;
@@ -274,9 +273,9 @@ class _JobCardState extends State<PurchaseOrder> {
               generalData.CreatedBy = userModel.UserCode;
               generalData.BranchId = userModel.BranchId.toString();
               generalData.hasCreated = true;
-              Position pos = await getCurrentLocation();
-              generalData.Latitude = pos.latitude.toString();
-              generalData.Longitude = pos.longitude.toString();
+              
+              generalData.Latitude = CustomLiveLocation.currentLocation?.latitude.toString();
+              generalData.Longitude = CustomLiveLocation.currentLocation?.longitude.toString();
               await database.insert('PROPOR', generalData.toJson());
 
               //ITEM DETAILS

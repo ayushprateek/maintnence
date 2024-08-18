@@ -1,28 +1,30 @@
 import 'dart:convert';
 
-import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
 import 'package:maintenance/Component/CheckInternet.dart';
+import 'package:maintenance/Component/GetLiveLocation.dart';
 import 'package:maintenance/Component/LogFileFunctions.dart';
 import 'package:maintenance/Sync/CustomURL.dart';
 
-Future<Position> getCurrentLocation() async {
-  await Geolocator.requestPermission();
-  Position position = await Geolocator.getCurrentPosition();
-  // Position position = await GeolocatorPlatform.instance
-  //     .getCurrentPosition();
-
-  return position;
-}
+// Future<Position> getCurrentLocation() async {
+//   await Geolocator.requestPermission();
+//   Position position = await Geolocator.getCurrentPosition();
+//   // Position position = await GeolocatorPlatform.instance
+//   //     .getCurrentPosition();
+//
+//   return position;
+// }
 
 Future<String> getCurrentAddress() async {
-  Position position = await getCurrentLocation();
+  // Position position = await getCurrentLocation();
   String location = "";
 
   try {
-    if (await isInternetAvailable()) {
-      ReverseGeoCodingModel address =
-          await reverseGeoCoding(position.latitude, position.longitude);
+    if (CustomLiveLocation.currentLocation != null &&
+        (await isInternetAvailable())) {
+      ReverseGeoCodingModel address = await reverseGeoCoding(
+          CustomLiveLocation.currentLocation!.latitude!,
+          CustomLiveLocation.currentLocation!.longitude!);
       location = address.results[0].formattedAddress.toString();
     }
   } catch (e) {

@@ -155,9 +155,7 @@ class EditInternalRequestState extends State<EditInternalRequest> {
         if (!EditInternalRequest.saveButtonPressed) {
           EditInternalRequest.saveButtonPressed = true;
           showLoader(context);
-          Position pos = await getCurrentLocation();
-          print(pos.latitude.toString());
-          print(pos.longitude.toString());
+          
           String str = 'TransId = ?';
 
           String? data = GeneralData.transId;

@@ -12,6 +12,7 @@ import 'package:maintenance/Component/BackPressedWarning.dart';
 
 import 'package:maintenance/Component/CustomColor.dart';
 import 'package:maintenance/Component/CustomFont.dart';
+import 'package:maintenance/Component/GenerateTransId.dart';
 import 'package:maintenance/Component/GetCurrentLocation.dart';
 import 'package:maintenance/Component/LogFileFunctions.dart';
 import 'package:maintenance/Component/ShowLoader.dart';
@@ -261,12 +262,7 @@ class _CheckListDocumentState extends State<CheckListDocument> {
         if (!CheckListDocument.saveButtonPressed) {
           CheckListDocument.saveButtonPressed = true;
           showLoader(context);
-          Position pos = await getCurrentLocation();
-          print(pos.latitude.toString());
-          print(pos.longitude.toString());
-          String str = 'TransId = ?';
 
-          String? data = GeneralData.transId;
 
           final Database db = await initializeDB(context);
           try {
@@ -358,6 +354,7 @@ class _CheckListDocumentState extends State<CheckListDocument> {
                 }
               }
             });
+            await GenerateTransId.updateDonNum(docName: 'MNCL');
             goToNewCheckListDocument();
           } catch (e) {
             writeToLogFile(

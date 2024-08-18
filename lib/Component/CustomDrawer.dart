@@ -763,9 +763,9 @@ class _CustomDrawerState extends State<CustomDrawer> {
                   // InkWell(
                   //   onTap: () async {
                   //    Position pos=await  getCurrentLocation();
-                  //    getErrorSnackBar( pos.longitude.toString()+" "+pos.latitude.toString());
-                  //    print(pos.longitude.toString());
-                  //    print(pos.latitude.toString());
+                  //    getErrorSnackBar( CustomLiveLocation.currentLocation?.longitude.toString()+" "+CustomLiveLocation.currentLocation?.latitude.toString());
+                  //    print(CustomLiveLocation.currentLocation?.longitude.toString());
+                  //    print(CustomLiveLocation.currentLocation?.latitude.toString());
                   //   },
                   //   child: ListTile(
                   //     title: Text('get location'),
