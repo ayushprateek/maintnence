@@ -347,9 +347,7 @@ class _EditCheckListDocumentState extends State<EditCheckListDocument> {
           EditCheckListDocument.saveButtonPressed = true;
           showLoader(context);
           
-          String str = 'TransId = ?';
 
-          String? data = GeneralData.transId;
 
           final Database db = await initializeDB(context);
           try {
@@ -370,7 +368,7 @@ class _EditCheckListDocumentState extends State<EditCheckListDocument> {
               Map<String, Object?> map = generalData.toJson();
               map.removeWhere((key, value) => value == null || value == '');
               await database
-                  .update('MNOCLD', map, where: str, whereArgs: [data]);
+                  .update('MNOCLD', map, where: 'TransId = ?', whereArgs: [GeneralData.transId]);
 
               //ITEM DETAILS
               print("Item Details ");

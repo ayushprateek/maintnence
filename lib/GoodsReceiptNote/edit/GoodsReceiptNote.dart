@@ -177,9 +177,7 @@ class _JobCardState extends State<EditGoodsRecepitNote> {
           EditGoodsRecepitNote.saveButtonPressed = true;
           showLoader(context);
           
-          String str = 'TransId = ?';
-
-          String? data = GeneralData.transId;
+          
 
           final Database db = await initializeDB(context);
           try {
@@ -238,7 +236,7 @@ class _JobCardState extends State<EditGoodsRecepitNote> {
               Map<String, Object?> map = generalData.toJson();
               map.removeWhere((key, value) => value == null || value == '');
               await database
-                  .update('PROPDN', map, where: str, whereArgs: [data]);
+                  .update('PROPDN', map, where: 'TransId = ?', whereArgs: [GeneralData.transId]);
               getSuccessSnackBar("Sales Quotation Updated Successfully");
 
               //ITEM DETAILS
@@ -273,7 +271,7 @@ class _JobCardState extends State<EditGoodsRecepitNote> {
               shippingMap
                   .removeWhere((key, value) => value == null || value == '');
               await database
-                  .update('PRPDN2', shippingMap, where: str, whereArgs: [data]);
+                  .update('PRPDN2', shippingMap, where: 'TransId = ?', whereArgs: [GeneralData.transId]);
               getSuccessSnackBar("Sales Quotation Updated Successfully");
               //BILLING ADDRESS
               PRPDN3 billingAddress = BillingAddress.getBillingAddress();
@@ -284,7 +282,7 @@ class _JobCardState extends State<EditGoodsRecepitNote> {
               billingMap
                   .removeWhere((key, value) => value == null || value == '');
               await database
-                  .update('PRPDN3', billingMap, where: str, whereArgs: [data]);
+                  .update('PRPDN3', billingMap, where: 'TransId = ?', whereArgs: [GeneralData.transId]);
               getSuccessSnackBar("Sales Quotation Updated Successfully");
             });
             goToNewGRNDocument();

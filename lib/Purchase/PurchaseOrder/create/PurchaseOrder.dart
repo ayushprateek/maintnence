@@ -211,9 +211,7 @@ class _JobCardState extends State<PurchaseOrder> {
           PurchaseOrder.saveButtonPressed = true;
           showLoader(context);
           
-          String str = 'TransId = ?';
 
-          String? data = GeneralData.transId;
 
           final Database db = await initializeDB(context);
           try {

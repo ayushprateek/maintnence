@@ -365,9 +365,7 @@ class _EditJobCardState extends State<EditJobCard> {
           EditJobCard.saveButtonPressed = true;
           showLoader(context);
           
-          String str = 'TransId = ?';
-
-          String? data = GeneralData.transId;
+          
 
           final Database db = await initializeDB(context);
           try {
@@ -387,7 +385,7 @@ class _EditJobCardState extends State<EditJobCard> {
               Map<String, Object?> map = generalData.toJson();
               map.removeWhere((key, value) => value == null || value == '');
               await database
-                  .update('MNOJCD', map, where: str, whereArgs: [data]);
+                  .update('MNOJCD', map, where: 'TransId = ?', whereArgs: [GeneralData.transId]);
 
               //ITEM DETAILS
               print("Item Details ");

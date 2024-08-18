@@ -193,9 +193,7 @@ class _JobCardState extends State<PurchaseRequest> {
           PurchaseRequest.saveButtonPressed = true;
           showLoader(context);
           
-          String str = 'TransId = ?';
 
-          String? data = GeneralData.transId;
 
           final Database db = await initializeDB(context);
           try {

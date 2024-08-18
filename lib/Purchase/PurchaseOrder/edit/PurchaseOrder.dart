@@ -172,9 +172,7 @@ class _JobCardState extends State<EditPurchaseOrder> {
           EditPurchaseOrder.saveButtonPressed = true;
           showLoader(context);
           
-          String str = 'TransId = ?';
-
-          String? data = GeneralData.transId;
+          
 
           final Database db = await initializeDB(context);
           try {
@@ -233,7 +231,7 @@ class _JobCardState extends State<EditPurchaseOrder> {
               Map<String, Object?> map = generalData.toJson();
               map.removeWhere((key, value) => value == null || value == '');
               await database
-                  .update('PROPOR', map, where: str, whereArgs: [data]);
+                  .update('PROPOR', map, where: 'TransId = ?', whereArgs: [GeneralData.transId]);
               getSuccessSnackBar("Sales Quotation Updated Successfully");
 
               //ITEM DETAILS

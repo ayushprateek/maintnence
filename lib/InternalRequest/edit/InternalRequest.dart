@@ -156,9 +156,7 @@ class EditInternalRequestState extends State<EditInternalRequest> {
           EditInternalRequest.saveButtonPressed = true;
           showLoader(context);
           
-          String str = 'TransId = ?';
-
-          String? data = GeneralData.transId;
+          
 
           final Database db = await initializeDB(context);
           try {
@@ -218,7 +216,7 @@ class EditInternalRequestState extends State<EditInternalRequest> {
               Map<String, Object?> map = generalData.toJson();
               map.removeWhere((key, value) => value == null || value == '');
               await database
-                  .update('PROITR', map, where: str, whereArgs: [data]);
+                  .update('PROITR', map, where: 'TransId = ?', whereArgs: [GeneralData.transId]);
               getSuccessSnackBar("Sales Quotation Updated Successfully");
 
               //ITEM DETAILS
