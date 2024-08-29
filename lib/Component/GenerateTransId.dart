@@ -53,10 +53,32 @@ class GenerateTransId {
   }
 
   static updateDonNum({
+    required String tableName,
     required String docName,
 })async{
     Database db=await initializeDB(null);
-    await db.rawQuery("UPDATE DOCN SET DocNumber=DocNumber+1 WHERE DocName='$docName'");
+    String user = localStorage?.getString('user') ?? '';
+    userModel = OUSRModel.fromJson(jsonDecode(user));
+    List<GetLastDocNum> list = await getLastDocNum(docName, null);
+    String TransId = '';
+    int DocNum=0;
+
+    if (list.isNotEmpty) {
+       DocNum = list[0].DocNumber - 1;
+
+      do {
+        DocNum += 1;
+        TransId = DateTime.now().millisecondsSinceEpoch.toString() +
+            "U0" +
+            userModel.ID.toString() +
+            "_" +
+            list[0].DocName +
+            "/" +
+            DocNum.toString();
+      } while (
+      await isTransIdAvailable(TransId: TransId, tableName: tableName));
+    }
+    await db.rawQuery("UPDATE DOCN SET DocNumber=$DocNum WHERE DocName='$docName'");
   }
 
 

@@ -354,7 +354,7 @@ class _CheckListDocumentState extends State<CheckListDocument> {
                 }
               }
             });
-            await GenerateTransId.updateDonNum(docName: 'MNCL');
+            await GenerateTransId.updateDonNum(docName: 'MNCL',tableName: 'MNOCLD');
             goToNewCheckListDocument();
           } catch (e) {
             writeToLogFile(
