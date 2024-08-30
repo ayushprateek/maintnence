@@ -1,8 +1,10 @@
 import 'dart:io';
+import 'dart:ui' as ui;
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:maintenance/3DView.dart';
 import 'package:maintenance/CheckListDocument/ClearCheckListDocument.dart';
@@ -24,6 +26,7 @@ import 'package:maintenance/Purchase/PurchaseOrder/ClearPurchaseOrder.dart';
 import 'package:maintenance/Purchase/PurchaseRequest/ClearPurchaseRequest.dart';
 import 'package:maintenance/Sync/DataSync.dart';
 import 'package:maintenance/Sync/SyncModels/ORTU.dart';
+import 'package:maintenance/zztest.dart';
 import 'package:maintenance/zzzz.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
@@ -478,6 +481,22 @@ class _CustomDrawerState extends State<CustomDrawer> {
                     child: ListTile(
                       title: Text(
                         'DragDemo',
+                        style: TextStyle(color: headColor),
+                      ),
+                      leading: Icon(Icons.sync, color: Colors.white),
+                      trailing:
+                          Icon(Icons.keyboard_arrow_right, color: Colors.white),
+                    ),
+                  ),
+                  InkWell(
+                    onTap: () async{
+                      final ByteData data = await rootBundle.load('images/tyre.jpg');
+                      ui.Image _image = await decodeImageFromList(data.buffer.asUint8List());
+                      Get.to(() => TruckDescription(image: _image,));
+                    },
+                    child: ListTile(
+                      title: Text(
+                        'TruckDescription',
                         style: TextStyle(color: headColor),
                       ),
                       leading: Icon(Icons.sync, color: Colors.white),

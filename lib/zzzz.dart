@@ -136,20 +136,17 @@ class _DragDemoState extends State<DragDemo> with TickerProviderStateMixin {
                           return LongPressDraggable(
                             data: url,
                             dragAnchorStrategy: pointerDragAnchorStrategy,
-                            feedback: FractionalTranslation(
-                              translation: const Offset(-0.5, -0.5),
-                              child: ClipRRect(
-                                key: _draggableKey,
-                                borderRadius: BorderRadius.circular(12),
-                                child: SizedBox(
-                                  height: 50,
-                                  width: 50,
-                                  child: Opacity(
-                                    opacity: 0.85,
-                                    child: Image.network(
-                                      url,
-                                      fit: BoxFit.cover,
-                                    ),
+                            feedback: ClipRRect(
+                              key: _draggableKey,
+                              borderRadius: BorderRadius.circular(12),
+                              child: SizedBox(
+                                height: 50,
+                                width: 50,
+                                child: Opacity(
+                                  opacity: 0.85,
+                                  child: Image.network(
+                                    url,
+                                    fit: BoxFit.cover,
                                   ),
                                 ),
                               ),
