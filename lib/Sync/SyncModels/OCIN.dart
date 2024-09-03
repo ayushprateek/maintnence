@@ -63,6 +63,7 @@ class OCINModel {
     this.OrganizationLogoUrl,
     this.OrganizationBackgroundUrl,
     this.NoOfWhyAnalysis,
+    this.DefaultAttachment,
     // this.DBUploadPsw,
     this.IsAdditionalDeposit = false,
   });
@@ -71,6 +72,7 @@ class OCINModel {
   int? NoOfWhyAnalysis;
   int? MobSessionTimoutMinute;
   int? MobSyncTimeMinute;
+  String? DefaultAttachment;
   String? ConfigNumberStep;
   String? NHIMANumber;
   String? NAPSANumber;
@@ -128,6 +130,7 @@ class OCINModel {
         MinMobileBuildNo:
             int.tryParse(json["MinMobileBuildNo"].toString()) ?? 0,
         CompanyName: json["CompanyName"] ?? "",
+    DefaultAttachment: json["DefaultAttachment"] ?? "",
         CreateDate: DateTime.tryParse(json["CreateDate"].toString()) ??
             DateTime.parse("1900-01-01"),
         UpdateDate: DateTime.tryParse(json["UpdateDate"].toString()) ??
@@ -196,6 +199,7 @@ class OCINModel {
         "MobSessionTimoutMinute": MobSessionTimoutMinute,
         "MobSyncTimeMinute": MobSyncTimeMinute,
         "LicenseNumber": LicenseNumber,
+        "DefaultAttachment": DefaultAttachment,
         "MapRange": MapRange,
         "CompanyName": CompanyName,
         "CreateDate": CreateDate?.toIso8601String(),
