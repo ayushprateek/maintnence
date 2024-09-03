@@ -11,6 +11,7 @@ import 'package:maintenance/Sync/SyncModels/DOC1.dart';
 import 'package:maintenance/Sync/SyncModels/DOCN.dart';
 import 'package:maintenance/Sync/SyncModels/EXR1.dart';
 import 'package:maintenance/Sync/SyncModels/MNCLM1.dart';
+import 'package:maintenance/Sync/SyncModels/MNEQG3.dart';
 import 'package:maintenance/Sync/SyncModels/MNEQG1.dart';
 import 'package:maintenance/Sync/SyncModels/MNEQG2.dart';
 import 'package:maintenance/Sync/SyncModels/MNOCLM.dart';
@@ -122,6 +123,7 @@ class GetAllMaster1 {
     this.mnowcm,
     this.mneqg1,
     this.mneqg2,
+    this.mneqg3,
     this.mnoclt,
     this.mnoeqg,
     this.mnovcl,
@@ -188,6 +190,7 @@ class GetAllMaster1 {
   List<MNOWCM>? mnowcm;
   List<MNEQG1>? mneqg1;
   List<MNEQG2>? mneqg2;
+  List<MNEQG3>? mneqg3;
   List<MNOCLT>? mnoclt;
   List<MNOEQG>? mnoeqg;
   List<MNOVCL>? mnovcl;
@@ -292,6 +295,8 @@ class GetAllMaster1 {
             List<MNEQG1>.from(json["MNEQG1"].map((x) => MNEQG1.fromJson(x))),
         mneqg2:
             List<MNEQG2>.from(json["MNEQG2"].map((x) => MNEQG2.fromJson(x))),
+    mneqg3:
+            List<MNEQG3>.from(json["MNEQG3"].map((x) => MNEQG3.fromJson(x))),
         mnoclt:
             List<MNOCLT>.from(json["MNOCLT"].map((x) => MNOCLT.fromJson(x))),
         mnoeqg:
@@ -369,6 +374,7 @@ class GetAllMaster1 {
         "MNOWCM": List<dynamic>.from(mnowcm ?? [].map((x) => x.toJson())),
         "MNEQG1": List<dynamic>.from(mneqg1 ?? [].map((x) => x.toJson())),
         "MNEQG2": List<dynamic>.from(mneqg2 ?? [].map((x) => x.toJson())),
+        "MNEQG3": List<dynamic>.from(mneqg3 ?? [].map((x) => x.toJson())),
         "MNOCLT": List<dynamic>.from(mnoclt ?? [].map((x) => x.toJson())),
         "MNOEQG": List<dynamic>.from(mnoeqg ?? [].map((x) => x.toJson())),
         "MNOVCL": List<dynamic>.from(mnovcl ?? [].map((x) => x.toJson())),
@@ -538,6 +544,7 @@ class GetAllMaster1 {
     await insertMNOWCM(db, list: getAll.mnowcm);
     await insertMNEQG1(db, list: getAll.mneqg1);
     await insertMNEQG2(db, list: getAll.mneqg2);
+    await insertMNEQG3(db, list: getAll.mneqg3);
     await insertMNOCLT(db, list: getAll.mnoclt);
     await insertMNOEQG(db, list: getAll.mnoeqg);
     await insertMNOVCL(db, list: getAll.mnovcl);
