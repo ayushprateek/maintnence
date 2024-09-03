@@ -62,11 +62,13 @@ class OCINModel {
     this.MinMobileBuildNo,
     this.OrganizationLogoUrl,
     this.OrganizationBackgroundUrl,
+    this.NoOfWhyAnalysis,
     // this.DBUploadPsw,
     this.IsAdditionalDeposit = false,
   });
 
   int? ID;
+  int? NoOfWhyAnalysis;
   int? MobSessionTimoutMinute;
   int? MobSyncTimeMinute;
   String? ConfigNumberStep;
@@ -118,6 +120,7 @@ class OCINModel {
 
   factory OCINModel.fromJson(Map<String, dynamic> json) => OCINModel(
         ID: int.tryParse(json["ID"].toString()) ?? 0,
+    NoOfWhyAnalysis: int.tryParse(json["NoOfWhyAnalysis"].toString()) ?? 0,
         MobSessionTimoutMinute:
             int.tryParse(json["MobSessionTimoutMinute"].toString()) ?? 0,
         MobSyncTimeMinute:
@@ -182,6 +185,7 @@ class OCINModel {
 
   Map<String, dynamic> toJson() => {
         "ID": ID,
+        "NoOfWhyAnalysis": NoOfWhyAnalysis,
         "OrganizationBackgroundUrl": OrganizationBackgroundUrl,
         "OrganizationLogoUrl": OrganizationLogoUrl,
         "ConfigNumberStep": ConfigNumberStep,
