@@ -63,7 +63,7 @@ class Transaction1 {
     this.mnjcd3,
     this.mnjcd5,
     this.mnjcd6,
-    this.mnjcd7,
+    // this.mnjcd7,
     this.mnojcd,
     this.opcna1,
     this.opcna2,
@@ -111,7 +111,7 @@ class Transaction1 {
   List<MNJCD3>? mnjcd3;
   List<MNJCD5>? mnjcd5;
   List<MNJCD6>? mnjcd6;
-  List<MNJCD7>? mnjcd7;
+  // List<MNJCD7>? mnjcd7;
 
   // List<MNJCD4>? mnjcd4;
   List<MNOJCD>? mnojcd;
@@ -256,8 +256,8 @@ class Transaction1 {
             List<MNJCD5>.from(json["MNJCD5"].map((x) => MNJCD5.fromJson(x))),
         mnjcd6:
             List<MNJCD6>.from(json["MNJCD6"].map((x) => MNJCD6.fromJson(x))),
-        mnjcd7:
-            List<MNJCD7>.from(json["MNJCD7"].map((x) => MNJCD7.fromJson(x))),
+        // mnjcd7:
+        //     List<MNJCD7>.from(json["MNJCD7"].map((x) => MNJCD7.fromJson(x))),
         mnojcd:
             List<MNOJCD>.from(json["MNOJCD"].map((x) => MNOJCD.fromJson(x))),
         opcna1:
@@ -382,7 +382,7 @@ class Transaction1 {
         "MNJCD3": List<dynamic>.from(mnjcd3 ?? [].map((x) => x.toJson())),
         "MNJCD5": List<dynamic>.from(mnjcd5 ?? [].map((x) => x.toJson())),
         "MNJCD6": List<dynamic>.from(mnjcd6 ?? [].map((x) => x.toJson())),
-        "MNJCD7": List<dynamic>.from(mnjcd7 ?? [].map((x) => x.toJson())),
+        // "MNJCD7": List<dynamic>.from(mnjcd7 ?? [].map((x) => x.toJson())),
         "MNOJCD": List<dynamic>.from(mnojcd ?? [].map((x) => x.toJson())),
         "OPCNA1": List<dynamic>.from(opcna1 ?? [].map((x) => x.toJson())),
         "OPCNA2": List<dynamic>.from(opcna2 ?? [].map((x) => x.toJson())),
@@ -465,7 +465,7 @@ class Transaction1 {
     await insertMNJCD3(db, list: transactions.mnjcd3);
     await insertMNJCD5(db, list: transactions.mnjcd5);
     await insertMNJCD6(db, list: transactions.mnjcd6);
-    await insertMNJCD7(db, list: transactions.mnjcd7);
+    // await insertMNJCD7(db, list: transactions.mnjcd7);
     await insertIMOGDI(db, list: transactions.imogdi);
     await insertIMGDI1(db, list: transactions.imgdi1);
     // await insertMNJCD4(db, list: transactions.mnjcd4);

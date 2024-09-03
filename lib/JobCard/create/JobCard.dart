@@ -417,20 +417,20 @@ class _JobCardState extends State<JobCard> {
                   await database.insert('MNJCD6', qut1model.toJson());
                 }
               }
-              for (int i = 0; i < SectionDetails.list.length; i++) {
-                MNJCD7 qut1model = SectionDetails.list[i];
-                qut1model.ID = i;
-                qut1model.RowId = i;
-                qut1model.hasCreated = true;
-                qut1model.CreateDate = DateTime.now();
-
-                if (!qut1model.insertedIntoDatabase) {
-                  qut1model.CreateDate = DateTime.now();
-                  qut1model.UpdateDate = DateTime.now();
-
-                  await database.insert('MNJCD7', qut1model.toJson());
-                }
-              }
+              // for (int i = 0; i < SectionDetails.list.length; i++) {
+              //   MNJCD7 qut1model = SectionDetails.list[i];
+              //   qut1model.ID = i;
+              //   qut1model.RowId = i;
+              //   qut1model.hasCreated = true;
+              //   qut1model.CreateDate = DateTime.now();
+              //
+              //   if (!qut1model.insertedIntoDatabase) {
+              //     qut1model.CreateDate = DateTime.now();
+              //     qut1model.UpdateDate = DateTime.now();
+              //
+              //     await database.insert('MNJCD7', qut1model.toJson());
+              //   }
+              // }
             });
             goToNewJobCardDocument();
           } catch (e) {

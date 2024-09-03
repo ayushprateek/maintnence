@@ -499,26 +499,26 @@ class _EditJobCardState extends State<EditJobCard> {
                       whereArgs: [qut1model.TransId, qut1model.RowId]);
                 }
               }
-              for (int i = 0; i < SectionDetails.list.length; i++) {
-                MNJCD7 qut1model = SectionDetails.list[i];
-                qut1model.ID = i;
-                qut1model.RowId = i;
-
-                if (!qut1model.insertedIntoDatabase) {
-                  qut1model.hasCreated = true;
-                  qut1model.CreateDate = DateTime.now();
-                  qut1model.UpdateDate = DateTime.now();
-
-                  await database.insert('MNJCD7', qut1model.toJson());
-                } else {
-                  qut1model.hasUpdated = true;
-                  qut1model.UpdateDate = DateTime.now();
-
-                  await database.update('MNJCD7', qut1model.toJson(),
-                      where: 'TransId = ? AND RowId = ?',
-                      whereArgs: [qut1model.TransId, qut1model.RowId]);
-                }
-              }
+              // for (int i = 0; i < SectionDetails.list.length; i++) {
+              //   MNJCD7 qut1model = SectionDetails.list[i];
+              //   qut1model.ID = i;
+              //   qut1model.RowId = i;
+              //
+              //   if (!qut1model.insertedIntoDatabase) {
+              //     qut1model.hasCreated = true;
+              //     qut1model.CreateDate = DateTime.now();
+              //     qut1model.UpdateDate = DateTime.now();
+              //
+              //     await database.insert('MNJCD7', qut1model.toJson());
+              //   } else {
+              //     qut1model.hasUpdated = true;
+              //     qut1model.UpdateDate = DateTime.now();
+              //
+              //     await database.update('MNJCD7', qut1model.toJson(),
+              //         where: 'TransId = ? AND RowId = ?',
+              //         whereArgs: [qut1model.TransId, qut1model.RowId]);
+              //   }
+              // }
             });
             goToNewJobCardDocument();
           } catch (e) {

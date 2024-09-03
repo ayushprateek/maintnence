@@ -326,8 +326,8 @@ navigateToJobCardDocument(
         await retrieveMNJCD5ById(null, 'Code = ?', [TransId]);
     jcdViewProblemDetails.ProblemDetails.list =
         await retrieveMNJCD6ById(null, 'TransId = ?', [TransId]);
-    jcdViewSectionDetails.SectionDetails.list =
-        await retrieveMNJCD7ById(null, 'TransId = ?', [TransId]);
+    // jcdViewSectionDetails.SectionDetails.list =
+    //     await retrieveMNJCD7ById(null, 'TransId = ?', [TransId]);
 
     Get.offAll(() => ViewJobCard(0));
   } else {
@@ -347,8 +347,8 @@ navigateToJobCardDocument(
         await retrieveMNJCD5ById(null, 'Code = ?', [TransId]);
     jcdEditProblemDetails.ProblemDetails.list =
         await retrieveMNJCD6ById(null, 'TransId = ?', [TransId]);
-    jcdEditSectionDetails.SectionDetails.list =
-        await retrieveMNJCD7ById(null, 'TransId = ?', [TransId]);
+    // jcdEditSectionDetails.SectionDetails.list =
+    //     await retrieveMNJCD7ById(null, 'TransId = ?', [TransId]);
 
     Get.offAll(() => EditJobCard(0));
   }
