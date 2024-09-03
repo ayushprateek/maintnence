@@ -15,6 +15,8 @@ class MNJCD6 {
   int? RowId;
   String? Problem;
   String? SubProblem;
+  String? SubSection;
+  String? Section;
   DateTime? CreateDate;
   DateTime? UpdateDate;
   bool hasCreated;
@@ -26,7 +28,9 @@ class MNJCD6 {
     this.TransId,
     this.RowId,
     this.Problem,
+    this.Section,
     this.SubProblem,
+    this.SubSection,
     this.CreateDate,
     this.UpdateDate,
     this.hasCreated = false,
@@ -39,7 +43,9 @@ class MNJCD6 {
         TransId: json['TransId'],
         RowId: int.tryParse(json['RowId'].toString()) ?? 0,
         Problem: json['Problem'],
+        Section: json['Section'],
         SubProblem: json['SubProblem'],
+        SubSection: json['SubSection'],
         CreateDate: DateTime.tryParse(json['CreateDate'].toString()),
         UpdateDate: DateTime.tryParse(json['UpdateDate'].toString()),
         hasCreated: json['has_created'] == 1,
@@ -51,7 +57,9 @@ class MNJCD6 {
         'TransId': TransId,
         'RowId': RowId,
         'Problem': Problem,
+        'Section': Section,
         'SubProblem': SubProblem,
+        'SubSection': SubSection,
         'CreateDate': CreateDate?.toIso8601String(),
         'UpdateDate': UpdateDate?.toIso8601String(),
         "has_created": hasCreated ? 1 : 0,
