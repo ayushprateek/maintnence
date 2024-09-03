@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -9,140 +10,88 @@ import 'package:maintenance/Sync/CustomURL.dart';
 import 'package:maintenance/Sync/DataSync.dart';
 import 'package:sqflite/sqlite_api.dart';
 
-class MNJCD1 {
+class MNEQG3 {
   int? ID;
-  String? TransId;
+  String? Code;
   int? RowId;
-  String? ItemCode;
-  String? ItemName;
-  double? Quantity;
-  String? UOM;
-  bool IsFromStock;
-  String? SupplierCode;
-  String? SupplierName;
-  DateTime? RequestDate;
-  String? MNGITransId;
-  int? MNGIRowId;
-  String? PRTransId;
-  int? PRRowId;
-  String? MNITTransId;
-  int? MNITRowId;
+  String? Problem;
+  String? SubProblem;
   DateTime? CreateDate;
   DateTime? UpdateDate;
-  bool IsConsumption;
-  bool IsRequest;
-  bool hasCreated;
-  bool hasUpdated;
-  bool insertedIntoDatabase;
+  String? Section;
+  String? SubSection;
+  bool? hasCreated;
+  bool? hasUpdated;
 
-  MNJCD1({
+  MNEQG3({
     this.ID,
-    this.TransId,
+    this.Code,
     this.RowId,
-    this.ItemCode,
-    this.ItemName,
-    this.Quantity,
-    this.UOM,
-    this.IsFromStock = false,
-    this.SupplierCode,
-    this.SupplierName,
-    this.RequestDate,
-    this.MNGITransId,
-    this.MNGIRowId,
-    this.PRTransId,
-    this.PRRowId,
-    this.MNITTransId,
-    this.MNITRowId,
+    this.Problem,
+    this.SubProblem,
     this.CreateDate,
     this.UpdateDate,
-    this.IsConsumption = false,
-    this.IsRequest = false,
-    this.hasCreated = false,
-    this.hasUpdated = false,
-    this.insertedIntoDatabase = true,
+    this.Section,
+    this.SubSection,
+    this.hasCreated,
+    this.hasUpdated,
   });
 
-  factory MNJCD1.fromJson(Map<String, dynamic> json) => MNJCD1(
+  factory MNEQG3.fromJson(Map<String, dynamic> json) => MNEQG3(
         ID: int.tryParse(json['ID'].toString()) ?? 0,
-        TransId: json['TransId']?.toString() ?? '',
+        Code: json['Code'],
         RowId: int.tryParse(json['RowId'].toString()) ?? 0,
-        ItemCode: json['ItemCode']?.toString() ?? '',
-        ItemName: json['ItemName']?.toString() ?? '',
-        Quantity: double.tryParse(json['Quantity'].toString()) ?? 0.0,
-        UOM: json['UOM']?.toString() ?? '',
-        IsFromStock: json['IsFromStock'] is bool
-            ? json['IsFromStock']
-            : json['IsFromStock'] == 1,
-        SupplierCode: json['SupplierCode']?.toString() ?? '',
-        SupplierName: json['SupplierName']?.toString() ?? '',
-        RequestDate: DateTime.tryParse(json['RequestDate'].toString()),
-        MNGITransId: json['MNGITransId']?.toString() ?? '',
-        MNGIRowId: int.tryParse(json['MNGIRowId'].toString()) ?? 0,
-        PRTransId: json['PRTransId']?.toString() ?? '',
-        PRRowId: int.tryParse(json['PRRowId'].toString()) ?? 0,
-        MNITTransId: json['MNITTransId']?.toString() ?? '',
-        MNITRowId: int.tryParse(json['MNITRowId'].toString()) ?? 0,
+        Problem: json['Problem'],
+        SubProblem: json['SubProblem'],
         CreateDate: DateTime.tryParse(json['CreateDate'].toString()),
         UpdateDate: DateTime.tryParse(json['UpdateDate'].toString()),
-        IsConsumption: json['IsConsumption'] is bool
-            ? json['IsConsumption']
-            : json['IsConsumption'] == 1,
-        IsRequest: json['IsRequest'] is bool
-            ? json['IsRequest']
-            : json['IsRequest'] == 1,
-        hasCreated: json['has_created'] == 1,
-        hasUpdated: json['has_updated'] == 1,
+        Section: json['Section'],
+        SubSection: json['SubSection'],
+        hasCreated: json['has_created'] is bool
+            ? json['has_created']
+            : json['has_created'] == 1,
+        hasUpdated: json['has_updated'] is bool
+            ? json['has_updated']
+            : json['has_updated'] == 1,
       );
 
   Map<String, dynamic> toJson() => {
         'ID': ID,
-        'TransId': TransId,
+        'Code': Code,
         'RowId': RowId,
-        'ItemCode': ItemCode,
-        'ItemName': ItemName,
-        'Quantity': Quantity,
-        'UOM': UOM,
-        'IsFromStock': IsFromStock,
-        'SupplierCode': SupplierCode,
-        'SupplierName': SupplierName,
-        'RequestDate': RequestDate?.toIso8601String(),
-        'MNGITransId': MNGITransId,
-        'MNGIRowId': MNGIRowId,
-        'PRTransId': PRTransId,
-        'PRRowId': PRRowId,
-        'MNITTransId': MNITTransId,
-        'MNITRowId': MNITRowId,
+        'Problem': Problem,
+        'SubProblem': SubProblem,
         'CreateDate': CreateDate?.toIso8601String(),
         'UpdateDate': UpdateDate?.toIso8601String(),
-        'IsConsumption': IsConsumption,
-        'IsRequest': IsRequest,
-        "has_created": hasCreated ? 1 : 0,
-        "has_updated": hasUpdated ? 1 : 0,
+        'Section': Section,
+        'SubSection': SubSection,
+        'has_created': hasCreated,
+        'has_updated': hasUpdated,
       };
 }
 
-List<MNJCD1> mNJCD1FromJson(String str) =>
-    List<MNJCD1>.from(json.decode(str).map((x) => MNJCD1.fromJson(x)));
+List<MNEQG3> mNEQG3FromJson(String str) =>
+    List<MNEQG3>.from(json.decode(str).map((x) => MNEQG3.fromJson(x)));
 
-String mNJCD1ToJson(List<MNJCD1> data) =>
+String mNEQG3ToJson(List<MNEQG3> data) =>
     json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
-Future<List<MNJCD1>> dataSyncMNJCD1() async {
+Future<List<MNEQG3>> dataSyncMNEQG3() async {
   var res =
-      await http.get(headers: header, Uri.parse(prefix + "MNJCD1" + postfix));
+      await http.get(headers: header, Uri.parse(prefix + "MNEQG3" + postfix));
   print(res.body);
-  return mNJCD1FromJson(res.body);
+  return mNEQG3FromJson(res.body);
 }
 
-Future<void> insertMNJCD1(Database db, {List? list}) async {
+Future<void> insertMNEQG3(Database db, {List? list}) async {
   if (postfix.toLowerCase().contains('all')) {
-    await deleteMNJCD1(db);
+    await deleteMNEQG3(db);
   }
   List customers;
   if (list != null) {
     customers = list;
   } else {
-    customers = await dataSyncMNJCD1();
+    customers = await dataSyncMNEQG3();
   }
   print(customers);
   Stopwatch stopwatch = Stopwatch();
@@ -153,9 +102,9 @@ Future<void> insertMNJCD1(Database db, {List? list}) async {
     var batchRecords = customers.sublist(i, end);
     await db.transaction((txn) async {
       var batch = txn.batch();
-      for (MNJCD1 record in batchRecords) {
+      for (MNEQG3 record in batchRecords) {
         try {
-          batch.insert('MNJCD1_Temp', record.toJson());
+          batch.insert('MNEQG3_Temp', record.toJson());
         } catch (e) {
           writeToLogFile(
               text: e.toString(),
@@ -175,9 +124,9 @@ Future<void> insertMNJCD1(Database db, {List? list}) async {
 
   var differenceList = await db.rawQuery('''
   Select * from (
-			select * from MNJCD1_Temp
+			select * from MNEQG3_Temp
 			except
-			select * from MNJCD1
+			select * from MNEQG3
 			)A
   ''');
   print(differenceList);
@@ -191,10 +140,10 @@ Future<void> insertMNJCD1(Database db, {List? list}) async {
       var batch = txn.batch();
       for (var element in batchRecords) {
         try {
-          batch.update("MNJCD1", element,
+          batch.update("MNEQG3", element,
               where:
-                  "TransId = ? AND ifnull(has_created,0) <> ? AND ifnull(has_updated,0) <> ?",
-              whereArgs: [element["TransId"], 1, 1]);
+                  "Code = ? AND RowId = ? AND ifnull(has_created,0) <> ? AND ifnull(has_updated,0) <> ?",
+              whereArgs: [element["Code"],element["RowId"], 1, 1]);
         } catch (e) {
           writeToLogFile(
               text: e.toString(),
@@ -208,14 +157,14 @@ Future<void> insertMNJCD1(Database db, {List? list}) async {
   }
 
   stopwatch.stop();
-  print('Time taken for MNJCD1 update: ${stopwatch.elapsedMilliseconds}ms');
+  print('Time taken for MNEQG3 update: ${stopwatch.elapsedMilliseconds}ms');
   stopwatch.reset();
   stopwatch.start();
   var v = await db.rawQuery('''
     SELECT T0.*
-      FROM MNJCD1_Temp T0
-      LEFT JOIN MNJCD1 T1 ON T0.TransId = T1.TransId AND T0.RowId = T1.RowId
-      WHERE T1.TransId IS NULL AND T1.RowId IS NULL;
+      FROM MNEQG3_Temp T0
+      LEFT JOIN MNEQG3 T1 ON T0.Code = T1.Code AND T0.RowId = T1.RowId
+      WHERE T1.Code IS NULL AND T1.RowId IS NULL
 ''');
   for (var i = 0; i < v.length; i += batchSize) {
     var end = (i + batchSize < v.length) ? i + batchSize : v.length;
@@ -224,7 +173,7 @@ Future<void> insertMNJCD1(Database db, {List? list}) async {
       var batch = txn.batch();
       for (var record in batchRecords) {
         try {
-          batch.insert('MNJCD1', record);
+          batch.insert('MNEQG3', record);
         } catch (e) {
           writeToLogFile(
               text: e.toString(),
@@ -238,48 +187,48 @@ Future<void> insertMNJCD1(Database db, {List? list}) async {
   }
   stopwatch.stop();
   print(
-      'Time taken for MNJCD1_Temp and MNJCD1 compare : ${stopwatch.elapsedMilliseconds}ms');
+      'Time taken for MNEQG3_Temp and MNEQG3 compare : ${stopwatch.elapsedMilliseconds}ms');
   stopwatch.reset();
   print('Time taken for insertDataInTable: ${stopwatch.elapsedMilliseconds}ms');
   // stopwatch.start();
   // // await batch3.commit(noResult: true);
-  await db.delete('MNJCD1_Temp');
+  await db.delete('MNEQG3_Temp');
 }
 
-Future<List<MNJCD1>> retrieveMNJCD1(BuildContext context) async {
+Future<List<MNEQG3>> retrieveMNEQG3(BuildContext context) async {
   final Database db = await initializeDB(context);
-  final List<Map<String, Object?>> queryResult = await db.query('MNJCD1');
-  return queryResult.map((e) => MNJCD1.fromJson(e)).toList();
+  final List<Map<String, Object?>> queryResult = await db.query('MNEQG3');
+  return queryResult.map((e) => MNEQG3.fromJson(e)).toList();
 }
 
-Future<void> updateMNJCD1(
+Future<void> updateMNEQG3(
     int id, Map<String, dynamic> values, BuildContext context) async {
   final db = await initializeDB(context);
   try {
     db.transaction((db) async {
-      await db.update('MNJCD1', values, where: 'ID = ?', whereArgs: [id]);
+      await db.update('MNEQG3', values, where: 'ID = ?', whereArgs: [id]);
     });
   } catch (e) {
     getErrorSnackBar('Sync Error ' + e.toString());
   }
 }
 
-Future<void> deleteMNJCD1(Database db) async {
-  await db.delete('MNJCD1');
+Future<void> deleteMNEQG3(Database db) async {
+  await db.delete('MNEQG3');
 }
 
-Future<List<MNJCD1>> retrieveMNJCD1ById(
+Future<List<MNEQG3>> retrieveMNEQG3ById(
     BuildContext? context, String str, List l) async {
   final Database db = await initializeDB(context);
   final List<Map<String, Object?>> queryResult =
-      await db.query('MNJCD1', where: str, whereArgs: l);
-  return queryResult.map((e) => MNJCD1.fromJson(e)).toList();
+      await db.query('MNEQG3', where: str, whereArgs: l);
+  return queryResult.map((e) => MNEQG3.fromJson(e)).toList();
 }
 
-Future<String> insertMNJCD1ToServer(BuildContext? context,
+Future<String> insertMNEQG3ToServer(BuildContext? context,
     {String? TransId, int? id}) async {
   String response = "";
-  List<MNJCD1> list = await retrieveMNJCD1ById(
+  List<MNEQG3> list = await retrieveMNEQG3ById(
       context,
       TransId == null
           ? DataSync.getInsertToServerStr()
@@ -287,7 +236,7 @@ Future<String> insertMNJCD1ToServer(BuildContext? context,
       TransId == null ? DataSync.getInsertToServerList() : [TransId, id]);
   if (TransId != null) {
     list[0].ID = 0;
-    var res = await http.post(Uri.parse(prefix + "MNJCD1/Add"),
+    var res = await http.post(Uri.parse(prefix + "MNEQG3/Add"),
         headers: header, body: jsonEncode(list[0].toJson()));
     response = res.body;
   } else if (list.isNotEmpty) {
@@ -299,7 +248,7 @@ Future<String> insertMNJCD1ToServer(BuildContext? context,
         Map<String, dynamic> map = list[i].toJson();
         map.remove('ID');
         var res = await http
-            .post(Uri.parse(prefix + "MNJCD1/Add"),
+            .post(Uri.parse(prefix + "MNEQG3/Add"),
                 headers: header, body: jsonEncode(map))
             .timeout(Duration(seconds: 30), onTimeout: () {
           return http.Response('Error', 500);
@@ -307,26 +256,16 @@ Future<String> insertMNJCD1ToServer(BuildContext? context,
         response = await res.body;
         print("eeaaae status");
         print(await res.statusCode);
-        if (res.statusCode == 409) {
-          ///Already added in server
-          final Database db = await initializeDB(context);
-          MNJCD1 model = MNJCD1.fromJson(jsonDecode(res.body));
-          map["ID"] = model.ID;
-          map["has_created"] = 0;
-          var x = await db.update("MNJCD1", map,
-              where: "TransId = ? AND RowId = ?",
-              whereArgs: [model.TransId, model.RowId]);
-          print(x.toString());
-        } else if (res.statusCode == 201 || res.statusCode == 500) {
+        if (res.statusCode == 201 || res.statusCode == 500) {
           sentSuccessInServer = true;
           if (res.statusCode == 201) {
             map['ID'] = jsonDecode(res.body)['ID'];
             final Database db = await initializeDB(context);
-            // map=jsonDecode(res.body);
+            map = jsonDecode(res.body);
             map["has_created"] = 0;
-            var x = await db.update("MNJCD1", map,
-                where: "TransId = ? AND RowId = ?",
-                whereArgs: [map["TransId"], map["RowId"]]);
+            var x = await db.update("MNEQG3", map,
+                where: "Code = ? AND RowId = ?",
+                whereArgs: [map["Code"], map["RowId"]]);
             print(x.toString());
           }
         }
@@ -335,16 +274,16 @@ Future<String> insertMNJCD1ToServer(BuildContext? context,
         print("Timeout " + e.toString());
         sentSuccessInServer = true;
       }
-      i++;
+      print('i++;');
       print("INDEX = " + i.toString());
     } while (i < list.length && sentSuccessInServer == true);
   }
   return response;
 }
 
-Future<void> updateMNJCD1OnServer(BuildContext? context,
+Future<void> updateMNEQG3OnServer(BuildContext? context,
     {String? condition, List? l}) async {
-  List<MNJCD1> list = await retrieveMNJCD1ById(
+  List<MNEQG3> list = await retrieveMNEQG3ById(
       context,
       l == null ? DataSync.getUpdateOnServerStr() : condition ?? "",
       l == null ? DataSync.getUpdateOnServerList() : l);
@@ -356,7 +295,7 @@ Future<void> updateMNJCD1OnServer(BuildContext? context,
     try {
       Map<String, dynamic> map = list[i].toJson();
       var res = await http
-          .put(Uri.parse(prefix + 'MNJCD1/Update'),
+          .put(Uri.parse(prefix + 'MNEQG3/Update'),
               headers: header, body: jsonEncode(map))
           .timeout(Duration(seconds: 30), onTimeout: () {
         return http.Response('Error', 500);
@@ -367,9 +306,9 @@ Future<void> updateMNJCD1OnServer(BuildContext? context,
         if (res.statusCode == 201) {
           final Database db = await initializeDB(context);
           map["has_updated"] = 0;
-          var x = await db.update("MNJCD1", map,
-              where: "TransId = ? AND RowId = ?",
-              whereArgs: [map["TransId"], map["RowId"]]);
+          var x = await db.update("MNEQG3", map,
+              where: "Code = ? AND RowId = ?",
+              whereArgs: [map["Code"], map["RowId"]]);
           print(x.toString());
         }
       }
