@@ -38,7 +38,6 @@ class OPOCNA {
   String? CreatedBy;
   DateTime? CreateDate;
   DateTime? UpdateDate;
-  String? ApprovedBy;
   String? Error;
   bool? IsPosted;
   String? DraftKey;
@@ -85,7 +84,6 @@ class OPOCNA {
     this.CreatedBy,
     this.CreateDate,
     this.UpdateDate,
-    this.ApprovedBy,
     this.Error,
     this.IsPosted,
     this.DraftKey,
@@ -133,7 +131,6 @@ class OPOCNA {
         CreatedBy: json['CreatedBy']?.toString() ?? '',
         CreateDate: DateTime.tryParse(json['CreateDate'].toString()),
         UpdateDate: DateTime.tryParse(json['UpdateDate'].toString()),
-        ApprovedBy: json['ApprovedBy']?.toString() ?? '',
         Error: json['Error']?.toString() ?? '',
         IsPosted:
             json['IsPosted'] is bool ? json['IsPosted'] : json['IsPosted'] == 1,
@@ -182,7 +179,6 @@ class OPOCNA {
         'CreatedBy': CreatedBy,
         'CreateDate': CreateDate?.toIso8601String(),
         'UpdateDate': UpdateDate?.toIso8601String(),
-        'ApprovedBy': ApprovedBy,
         'Error': Error,
         'IsPosted': IsPosted,
         'DraftKey': DraftKey,

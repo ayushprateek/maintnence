@@ -28,7 +28,6 @@ class TROTRS {
   String? Longitude;
   String? PostingAddress;
   DateTime? TripStartDate;
-  String? Remarks;
   int? hasCreated;
   int? hasUpdated;
 
@@ -51,7 +50,6 @@ class TROTRS {
     this.Longitude,
     this.PostingAddress,
     this.TripStartDate,
-    this.Remarks,
     this.hasCreated,
     this.hasUpdated,
   });
@@ -75,7 +73,6 @@ class TROTRS {
         Longitude: json['Longitude'],
         PostingAddress: json['PostingAddress'],
         TripStartDate: DateTime.tryParse(json['TripStartDate'].toString()),
-        Remarks: json['Remarks'],
         hasCreated: int.tryParse(json['has_created'].toString()) ?? 0,
         hasUpdated: int.tryParse(json['has_updated'].toString()) ?? 0,
       );
@@ -99,7 +96,6 @@ class TROTRS {
         'Longitude': Longitude,
         'PostingAddress': PostingAddress,
         'TripStartDate': TripStartDate?.toIso8601String(),
-        'Remarks': Remarks,
         'has_created': hasCreated,
         'has_updated': hasUpdated,
       };

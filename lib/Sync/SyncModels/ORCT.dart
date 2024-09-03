@@ -14,13 +14,7 @@ import 'package:sqflite/sqlite_api.dart';
 class ORCT {
   int? ID;
 
-  // int? RowId;
-  double? PayAmt;
-  double? RecoverAmt;
-  double? TotalCashHandoverAmt;
-  double? TotalExpenseApprovedAmt;
-  double? TotalApprovedAmt;
-  double? TotalRequestedAmt;
+
   DateTime? PostingDate;
 
   String? DocStatus;
@@ -54,17 +48,11 @@ class ORCT {
 
   ORCT({
     this.ID,
-    this.PayAmt,
     this.CRTransId,
     // this.RowId,
     this.hasCreated = false,
     this.hasUpdated = false,
-    this.TotalCashHandoverAmt,
-    this.TotalExpenseApprovedAmt,
-    this.TotalApprovedAmt,
     this.DocStatus,
-    this.RecoverAmt,
-    this.TotalRequestedAmt,
     this.PostingDate,
     this.ApprovedBy,
     this.CreateDate,
@@ -97,8 +85,6 @@ class ORCT {
             DateTime.parse('1900-01-01'),
         hasCreated: json['has_created'] == 1,
         hasUpdated: json['has_updated'] == 1,
-        RecoverAmt: double.tryParse(json['RecoverAmt'].toString()) ?? 0.0,
-        PayAmt: double.tryParse(json['PayAmt'].toString()) ?? 0.0,
         PermanentTransId: json['PermanentTransId'] ?? '',
         DocStatus: json['DocStatus'] ?? '',
         CRTransId: json['CRTransId'] ?? '',
@@ -120,14 +106,6 @@ class ORCT {
             DateTime.parse('1900-01-01'),
         ToDate: DateTime.tryParse(json['ToDate'].toString()) ??
             DateTime.parse('1900-01-01'),
-        TotalApprovedAmt:
-            double.tryParse(json['TotalApprovedAmt'].toString()) ?? 0.0,
-        TotalCashHandoverAmt:
-            double.tryParse(json['TotalCashHandoverAmt'].toString()) ?? 0.0,
-        TotalExpenseApprovedAmt:
-            double.tryParse(json['TotalExpenseApprovedAmt'].toString()) ?? 0.0,
-        TotalRequestedAmt:
-            double.tryParse(json['TotalRequestedAmt'].toString()) ?? 0.0,
         ApprovalStatus: json['ApprovalStatus'] ?? '',
         Currency: json['Currency'] ?? '',
         Rate: double.tryParse(json['Rate'].toString()) ?? 0.0,
@@ -141,8 +119,6 @@ class ORCT {
         'ID': ID,
         'PermanentTransId': PermanentTransId,
         'DocStatus': DocStatus,
-        'PayAmt': PayAmt,
-        'RecoverAmt': RecoverAmt,
         'CRTransId': CRTransId,
         // 'RowId': RowId,
         'PostingDate': PostingDate?.toIso8601String(),
@@ -169,10 +145,6 @@ class ORCT {
         'DocNum': DocNum,
         'DraftKey': DraftKey,
         'Error': Error,
-        'TotalCashHandoverAmt': TotalCashHandoverAmt,
-        'TotalExpenseApprovedAmt': TotalExpenseApprovedAmt,
-        'TotalApprovedAmt': TotalApprovedAmt,
-        'TotalRequestedAmt': TotalRequestedAmt,
       };
 }
 

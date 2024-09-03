@@ -14,7 +14,7 @@ class OCSH {
   int? DocEntry;
   String? Error;
   String? DocNum;
-  String? Currency;
+
   String? DocStatus;
   String? ApprovalStatus;
   String? RPTransId;
@@ -25,7 +25,7 @@ class OCSH {
   double? Amount;
 
   // double? OpenAmt;
-  double? Rate;
+
   double? Cash;
   String? Remarks;
   String? CreatedBy;
@@ -41,8 +41,7 @@ class OCSH {
     this.ID,
     this.Error,
     this.RPTransId,
-    this.Currency,
-    this.Rate,
+
     this.DocNum,
     this.DocEntry,
     this.DocStatus,
@@ -69,7 +68,7 @@ class OCSH {
         ID: int.tryParse(json['ID'].toString()) ?? 0,
         DocEntry: int.tryParse(json['DocEntry'].toString()) ?? 0,
         Error: json['Error'] ?? '',
-        Currency: json['Currency'] ?? '',
+
         RPTransId: json['RPTransId'] ?? '',
         PermanentTransId: json["PermanentTransId"] ?? "",
         DocNum: json['DocNum'] ?? '',
@@ -78,7 +77,6 @@ class OCSH {
             DateTime.parse('1900-01-01'),
         CRTransId: json['CRTransId'] ?? '',
         Amount: double.tryParse(json['Amount'].toString()) ?? 0.0,
-        Rate: double.tryParse(json['Rate'].toString()) ?? 0.0,
         // OpenAmt: double.tryParse(json['OpenAmt'].toString()) ?? 0.0,
         Cash: double.tryParse(json['Cash'].toString()) ?? 0.0,
         ApprovalStatus: json['ApprovalStatus'] ?? '',
@@ -102,10 +100,8 @@ class OCSH {
 
   Map<String, dynamic> toJson() => {
         'ID': ID,
-        'Rate': Rate,
         'RPTransId': RPTransId,
         "PermanentTransId": PermanentTransId,
-        'Currency': Currency,
         'DocEntry': DocEntry,
         'TransId': TransId,
         'PostingDate': PostingDate?.toIso8601String(),
