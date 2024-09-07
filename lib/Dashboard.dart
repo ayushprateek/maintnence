@@ -15,7 +15,7 @@ import 'package:maintenance/Component/CompanyDetails.dart';
 import 'package:maintenance/Component/CustomColor.dart';
 import 'package:maintenance/Component/CustomDrawer.dart';
 import 'package:maintenance/Component/CustomFont.dart';
-import 'package:maintenance/Component/GenerateTransIdLocation.dart';
+import 'package:maintenance/Component/GenerateTransId.dart';
 import 'package:maintenance/Component/GetFormattedDate.dart';
 import 'package:maintenance/Component/GetLiveLocation.dart';
 import 'package:maintenance/Component/IsValidAppVersion.dart';
