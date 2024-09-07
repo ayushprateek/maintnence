@@ -2,22 +2,20 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:maintenance/CheckListDocument/ClearCheckListDocument.dart';
 import 'package:maintenance/CheckListDocument/create/CheckListDetails/CheckListDetails.dart'
-    as checkListDetails;
+as checkListDetails;
 import 'package:maintenance/CheckListDocument/create/CheckListDocument.dart';
 import 'package:maintenance/CheckListDocument/create/GeneralData.dart'
-    as checkListGenData;
+as checkListGenData;
 import 'package:maintenance/Component/AppConfig.dart';
 import 'package:maintenance/Component/CheckInternet.dart';
 import 'package:maintenance/Component/CompanyDetails.dart';
 import 'package:maintenance/Component/CustomColor.dart';
 import 'package:maintenance/Component/CustomDrawer.dart';
 import 'package:maintenance/Component/CustomFont.dart';
-import 'package:maintenance/Component/GenerateTransId.dart';
-import 'package:maintenance/Component/GetCurrentLocation.dart';
+import 'package:maintenance/Component/GenerateTransIdLocation.dart';
 import 'package:maintenance/Component/GetFormattedDate.dart';
 import 'package:maintenance/Component/GetLiveLocation.dart';
 import 'package:maintenance/Component/IsValidAppVersion.dart';
@@ -83,10 +81,10 @@ class _DashboardState extends State<Dashboard> {
     if (isLoading) {
       Navigator.pop(context);
     }
-    if (CustomLiveLocation.currentLocation==null) {
+    if (CustomLiveLocation.currentLocation == null) {
       CustomDrawer.hasEnabledLocation = false;
       getErrorSnackBar("Allow the app to access your location");
-    }  else {
+    } else {
       if (Platform.isAndroid) {
         CustomDrawer.hasEnabledLocation = true;
         // var methodChannel = MethodChannel("LITSales");
@@ -298,17 +296,21 @@ WHERE
       //     x.CheckListCode == checkListGenData.GeneralData.CheckListCode &&
       //     x.EquipmentGroupCode == EquipmentGroupCode)?.Code ?? "";
 
-      String CheckListTemplateCode = (await db.rawQuery(
-                      "select Code from mnoclm where CheckListCode = '${dashboardItem.checkListCode}' and EquipmentGroupCode = '$EquipmentGroupCode'"))[
-                  0]['Code']
-              ?.toString() ??
-          '';
+      String CheckListTemplateCode = '';
+      List a = await db.rawQuery(
+          "select Code from mnoclm where CheckListCode = '${dashboardItem.checkListCode}' and EquipmentGroupCode = '$EquipmentGroupCode'");
+      if (a.isNotEmpty) {
+        CheckListTemplateCode = a[0]['Code']?.toString() ?? '';
+      }
 
       // bool checkIfTyreMiantenanceIsAplicable = db.MNEQG2.FirstOrDefault(x => x.CheckListCode == checkListGenData.GeneralData.CheckListCode && x.Code == EquipmentGroupCode).IsTyreMaintenence ?? false;
-      bool checkIfTyreMiantenanceIsAplicable = (await db.rawQuery(
-                  "SELECT IsTyreMaintenence FROM MNEQG2 WHERE CheckListCode='${dashboardItem.checkListCode}' AND Code='$EquipmentGroupCode'"))[
-              0]['IsTyreMaintenence'] ==
-          1;
+      bool checkIfTyreMiantenanceIsAplicable = false;
+      List b = await db.rawQuery(
+          "SELECT IsTyreMaintenence FROM MNEQG2 WHERE CheckListCode='${dashboardItem.checkListCode}' AND Code='$EquipmentGroupCode'");
+      if (b.isNotEmpty) {
+        checkIfTyreMiantenanceIsAplicable = b[0]['IsTyreMaintenence'] == 1;
+      }
+
       if (checkIfTyreMiantenanceIsAplicable) {
         CheckListDocument.numOfTabs.value = 4;
       }
@@ -534,8 +536,8 @@ WHERE
                                                   getPoppinsTextSpanHeading(
                                                       text: 'Type'),
                                                   getPoppinsTextSpanDetails(
-                                                      text: data.checkType ??
-                                                          ""),
+                                                      text:
+                                                          data.checkType ?? ""),
                                                 ],
                                               ),
                                             ),
