@@ -490,19 +490,16 @@ WHERE
                                               left: 8.0, right: 8.0, top: 4.0),
                                           child: Align(
                                             alignment: Alignment.topLeft,
-                                            child: FittedBox(
-                                              fit: BoxFit.contain,
-                                              child: Text.rich(
-                                                TextSpan(
-                                                  children: [
-                                                    getPoppinsTextSpanHeading(
-                                                        text: 'Equipment'),
-                                                    getPoppinsTextSpanDetails(
-                                                        text:
-                                                            data.equipmentCode ??
-                                                                ''),
-                                                  ],
-                                                ),
+                                            child: Text.rich(
+                                              TextSpan(
+                                                children: [
+                                                  getPoppinsTextSpanHeading(
+                                                      text: 'Equipment'),
+                                                  getPoppinsTextSpanDetails(
+                                                      text:
+                                                          data.equipmentCode ??
+                                                              ''),
+                                                ],
                                               ),
                                             ),
                                           ),
@@ -512,19 +509,16 @@ WHERE
                                               left: 8.0, right: 8.0, top: 4.0),
                                           child: Align(
                                             alignment: Alignment.topLeft,
-                                            child: FittedBox(
-                                              fit: BoxFit.contain,
-                                              child: Text.rich(
-                                                TextSpan(
-                                                  children: [
-                                                    getPoppinsTextSpanHeading(
-                                                        text: 'Check List'),
-                                                    getPoppinsTextSpanDetails(
-                                                        text:
-                                                            data.checkListName ??
-                                                                ""),
-                                                  ],
-                                                ),
+                                            child: Text.rich(
+                                              TextSpan(
+                                                children: [
+                                                  getPoppinsTextSpanHeading(
+                                                      text: 'Check List'),
+                                                  getPoppinsTextSpanDetails(
+                                                      text:
+                                                          data.checkListName ??
+                                                              ""),
+                                                ],
                                               ),
                                             ),
                                           ),
@@ -534,18 +528,15 @@ WHERE
                                               left: 8.0, right: 8.0, top: 4.0),
                                           child: Align(
                                             alignment: Alignment.topLeft,
-                                            child: FittedBox(
-                                              fit: BoxFit.contain,
-                                              child: Text.rich(
-                                                TextSpan(
-                                                  children: [
-                                                    getPoppinsTextSpanHeading(
-                                                        text: 'Type'),
-                                                    getPoppinsTextSpanDetails(
-                                                        text: data.checkType ??
-                                                            ""),
-                                                  ],
-                                                ),
+                                            child: Text.rich(
+                                              TextSpan(
+                                                children: [
+                                                  getPoppinsTextSpanHeading(
+                                                      text: 'Type'),
+                                                  getPoppinsTextSpanDetails(
+                                                      text: data.checkType ??
+                                                          ""),
+                                                ],
                                               ),
                                             ),
                                           ),
