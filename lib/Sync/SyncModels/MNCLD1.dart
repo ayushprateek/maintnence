@@ -45,6 +45,7 @@ class MNCLD1 {
   ///FOR DEV PURPOSE ONLY
   double? AvailableQty;
   TextEditingController consumptionQtyController = TextEditingController();
+  TextEditingController userRemarksController = TextEditingController();
 
   MNCLD1({
     this.ID,

@@ -257,6 +257,29 @@ class _CheckListDetailsState extends State<CheckListDetails> {
                                             ),
                                             Padding(
                                               padding:
+                                              const EdgeInsets.only(
+                                                  left: 8.0,
+                                                  right: 8.0,
+                                                  top: 4.0),
+                                              child: Align(
+                                                alignment:
+                                                Alignment.topLeft,
+                                                child: Text.rich(
+                                                  TextSpan(
+                                                    children: [
+                                                      getPoppinsTextSpanHeading(
+                                                          text: 'Remarks'),
+                                                      getPoppinsTextSpanDetails(
+                                                          text:
+                                                          mncld1.Remarks ??
+                                                              ''),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                            Padding(
+                                              padding:
                                                   const EdgeInsets.only(
                                                       top: 4.0, bottom: 4),
                                               child: SizedBox(
@@ -551,6 +574,26 @@ class _CheckListDetailsState extends State<CheckListDetails> {
                                             child: getTextFieldWithoutLookup(
                                                 controller: mncld1
                                                     .consumptionQtyController,
+                                                height: 30,
+                                                labelText: '')),
+                                      ],
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                        left: 8.0, right: 8.0, top: 4.0),
+                                    child: Row(
+                                      children: [
+                                        Expanded(
+                                            child: getPoppinsText(
+                                                text: 'User Remarks',
+                                                textAlign: TextAlign.start,
+                                                fontWeight:
+                                                FontWeight.bold)),
+                                        Expanded(
+                                            child: getTextFieldWithoutLookup(
+                                                controller: mncld1
+                                                    .userRemarksController,
                                                 height: 30,
                                                 labelText: '')),
                                       ],
