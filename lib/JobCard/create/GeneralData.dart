@@ -188,7 +188,7 @@ class _GeneralDataState extends State<GeneralData> {
   final TextEditingController _remarks =
       TextEditingController(text: GeneralData.remarks);
 
-  List<String> typeList = ['Preventive', 'Breakdown'];
+  List<String> typeList = ['Breakdown'];
 
   List<String> warrantyList = ['Yes', 'No'];
 
