@@ -436,34 +436,42 @@ class _CheckListDetailsState extends State<CheckListDetails> {
                                                 //   ),
                                                 // ),
 
-                                                Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          left: 8.0,
-                                                          right: 8.0,
-                                                          top: 4.0),
-                                                  child: Align(
-                                                    alignment:
-                                                        Alignment.topLeft,
-                                                    child: Text.rich(
-                                                      TextSpan(
-                                                        children: [
-                                                          getPoppinsTextSpanHeading(
-                                                              text:
-                                                                  'Required Date'),
-                                                          getPoppinsTextSpanDetails(
-                                                              text: getFormattedDate(
-                                                                  mncld1
-                                                                      .RequiredDate)),
-                                                        ],
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
                                               ],
                                             ),
                                           ),
                                         ],
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.only(
+                                            left: 8.0, right: 8.0, top: 4.0),
+                                        child: Row(
+                                          children: [
+                                            Expanded(
+                                                child: getPoppinsText(
+                                                    text: 'Required Date',
+                                                    textAlign: TextAlign.start,
+                                                    fontWeight:
+                                                    FontWeight.bold)),
+                                            Expanded(
+                                              child: getDateTextField(
+                                                  height: 30,
+                                                  controller:
+                                                  TextEditingController(
+                                                      text: getFormattedDate(
+                                                          mncld1
+                                                              .RequiredDate)),
+                                                  enableLocalDate: false,
+                                                  displayWithoutLookup: true,
+                                                  onChanged: (val){
+                                                    setState(() {
+                                                      mncld1.RequiredDate=getDateFromString(val);
+                                                    });
+                                                  },
+
+                                                  localCurrController: TextEditingController()),
+                                            ),
+                                          ],
+                                        ),
                                       ),
                                       Padding(
                                         padding: const EdgeInsets.only(

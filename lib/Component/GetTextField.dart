@@ -246,12 +246,14 @@ Widget getDateTextField(
     Function(String value)? onFieldSubmitted,
     Function(String value)? onChanged,
     bool obscureText = false,
+    bool displayWithoutLookup = false,
     bool autofocus = false,
     bool enabled = true,
     bool enableInteractiveSelection = true,
     bool enableSuggestions = false,
     Function? onLookupPressed,
     bool enableLookup = false,
+    bool enableLocalDate = true,
     int? maxLines,
     Function? onTap,
     int? maxLength,
@@ -332,7 +334,7 @@ Widget getDateTextField(
               ),
             ),
           ),
-          if (CompanyDetails.ocinModel?.IsLocalDate == true)
+          if (enableLocalDate && CompanyDetails.ocinModel?.IsLocalDate == true)
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.only(left: 4.0),
@@ -382,27 +384,30 @@ Widget getDateTextField(
                 ),
               ),
             ),
-          enableLookup
-              ? iconButton == null
-                  ? IconButton(
-                      icon: Icon(
-                        Icons.search,
-                        color: iconColor ?? barColor,
-                      ),
-                      onPressed: onLookupPressed != null
-                          ? onLookupPressed as Function()
-                          : null,
-                    )
-                  : iconButton
-              : iconButton == null
-                  ? IconButton(
-                      icon: Icon(
-                        Icons.search,
-                        color: iconColor ?? Colors.white,
-                      ),
-                      onPressed: null,
-                    )
-                  : iconButton
+          if(!displayWithoutLookup)...[
+            enableLookup
+                ? iconButton == null
+                ? IconButton(
+              icon: Icon(
+                Icons.search,
+                color: iconColor ?? barColor,
+              ),
+              onPressed: onLookupPressed != null
+                  ? onLookupPressed as Function()
+                  : null,
+            )
+                : iconButton
+                : iconButton == null
+                ? IconButton(
+              icon: Icon(
+                Icons.search,
+                color: iconColor ?? Colors.white,
+              ),
+              onPressed: null,
+            )
+                : iconButton
+  ],
+
         ],
       ),
     ),
