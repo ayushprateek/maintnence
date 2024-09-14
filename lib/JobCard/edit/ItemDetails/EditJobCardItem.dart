@@ -191,14 +191,9 @@ class _EditJobCardItemState extends State<EditJobCardItem> {
                         if (!isNumeric(_quantity.text)) {
                           getErrorSnackBar(
                               "Consumption Quantity must be numeric");
-                        } else if (double.parse(_quantity.text) <= 0.0) {
-                          getErrorSnackBar(
-                              "Consumption Quantity can not be less that or equal to 0");
                         } else if (_uomCode.text.isEmpty) {
                           getErrorSnackBar("UOM can not be empty");
-                        } else if (_supplierCode.text.isEmpty) {
-                          getErrorSnackBar("Supplier can not be empty");
-                        } else if (_requiredDate.text.isEmpty) {
+                        }  else if (_requiredDate.text.isEmpty) {
                           getErrorSnackBar("Required Date can not be empty");
                         } else {
                           if (EditJobCardItem.isUpdating) {
