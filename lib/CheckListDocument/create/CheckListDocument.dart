@@ -315,7 +315,7 @@ class _CheckListDocumentState extends State<CheckListDocument> {
               print(generalData.toJson());
               print(generalData);
               //CreateDate
-              getSuccessSnackBar("Creating Sales Quotation...");
+              getSuccessSnackBar("Creating Check List Document...");
               generalData.CreateDate = DateTime.now();
               generalData.UpdateDate = DateTime.now();
               generalData.CreatedBy = userModel.UserCode;

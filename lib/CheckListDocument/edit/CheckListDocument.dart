@@ -333,6 +333,7 @@ class _EditCheckListDocumentState extends State<EditCheckListDocument> {
     EditCheckListDocument.saveButtonPressed = false;
     if (DataSync.isSyncing()) {
       getErrorSnackBar(DataSync.syncingErrorMsg);
+      //todo:
     } else if (!(await Mode.isCreate(MenuDescription.salesQuotation))) {
       getErrorSnackBar("You are not authorised to create this document");
     } else if (!(await Mode.isEdit(MenuDescription.salesQuotation))) {
