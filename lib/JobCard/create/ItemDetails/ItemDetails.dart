@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:maintenance/Component/Common.dart';
 
 import 'package:maintenance/Component/CustomColor.dart';
 import 'package:maintenance/Component/CustomFont.dart';
@@ -79,58 +80,56 @@ class _ItemDetailsState extends State<ItemDetails> {
                       itemBuilder: (BuildContext context, int index) {
                         MNJCD1 mnjcd1 = ItemDetails.items[index];
 
-                        return Stack(
-                          fit: StackFit.loose,
-                          clipBehavior: Clip.none,
-                          children: [
-                            InkWell(
-                              onDoubleTap: () async {
-                                ClearJobCardDoc.clearEditItems();
-                                List<OUOMModel> uomList =
-                                    await retrieveOUOMById(
-                                        null, 'UomCode = ?', [mnjcd1.UOM]);
-                                if (uomList.isNotEmpty) {
-                                  EditJobCardItem.uomName = uomList[0].UomName;
-                                }
+                        return InkWell(
+                          onDoubleTap: () async {
+                            ClearJobCardDoc.clearEditItems();
+                            List<OUOMModel> uomList =
+                                await retrieveOUOMById(
+                                    null, 'UomCode = ?', [mnjcd1.UOM]);
+                            if (uomList.isNotEmpty) {
+                              EditJobCardItem.uomName = uomList[0].UomName;
+                            }
 
-                                EditJobCardItem.transId = GeneralData.transId;
-                                EditJobCardItem.itemCode = mnjcd1.ItemCode;
-                                EditJobCardItem.itemName = mnjcd1.ItemName;
-                                EditJobCardItem.requiredDate =
-                                    getFormattedDate(mnjcd1.RequestDate);
-                                EditJobCardItem.quantity =
-                                    mnjcd1.Quantity?.toStringAsFixed(2);
-                                EditJobCardItem.uomCode = mnjcd1.UOM;
-                                EditJobCardItem.supplierCode =
-                                    mnjcd1.SupplierCode;
-                                EditJobCardItem.supplierName =
-                                    mnjcd1.SupplierName;
-                                EditJobCardItem.fromStock = mnjcd1.IsFromStock;
-                                EditJobCardItem.consumption =
-                                    mnjcd1.IsConsumption;
-                                EditJobCardItem.request = mnjcd1.IsRequest;
-                                EditJobCardItem.isUpdating = true;
-                                Get.to(() => EditJobCardItem());
-                              },
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  shape: BoxShape.rectangle,
-                                  borderRadius: BorderRadius.circular(16.0),
-                                  boxShadow: const [
-                                    BoxShadow(
-                                      color: Colors.black26,
-                                      blurRadius: 4.0,
-                                      offset: Offset(2.0, 2.0),
-                                    ),
-                                  ],
+                            EditJobCardItem.transId = GeneralData.transId;
+                            EditJobCardItem.itemCode = mnjcd1.ItemCode;
+                            EditJobCardItem.itemName = mnjcd1.ItemName;
+                            EditJobCardItem.requiredDate =
+                                getFormattedDate(mnjcd1.RequestDate);
+                            EditJobCardItem.quantity =
+                                mnjcd1.Quantity?.toStringAsFixed(2);
+                            EditJobCardItem.uomCode = mnjcd1.UOM;
+                            EditJobCardItem.supplierCode =
+                                mnjcd1.SupplierCode;
+                            EditJobCardItem.supplierName =
+                                mnjcd1.SupplierName;
+                            EditJobCardItem.fromStock = mnjcd1.IsFromStock;
+                            EditJobCardItem.consumption =
+                                mnjcd1.IsConsumption;
+                            EditJobCardItem.request = mnjcd1.IsRequest;
+                            EditJobCardItem.isUpdating = true;
+                            Get.to(() => EditJobCardItem());
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              shape: BoxShape.rectangle,
+                              borderRadius: BorderRadius.circular(16.0),
+                              boxShadow: const [
+                                BoxShadow(
+                                  color: Colors.black26,
+                                  blurRadius: 4.0,
+                                  offset: Offset(2.0, 2.0),
                                 ),
-                                margin: const EdgeInsets.only(
-                                    left: 15.0, right: 15.0, bottom: 10),
-                                width: MediaQuery.of(context).size.width,
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Row(
+                              ],
+                            ),
+                            margin: const EdgeInsets.only(
+                                left: 15.0, right: 15.0, bottom: 10),
+                            width: MediaQuery.of(context).size.width,
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Column(
+                                children: [
+                                  Row(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
@@ -343,86 +342,88 @@ class _ItemDetailsState extends State<ItemDetails> {
                                       ),
                                     ],
                                   ),
-                                ),
-                              ),
-                            ),
-                            Positioned(
-                              top: -27,
-                              right: -4,
-                              child: Card(
-                                child: IconButton(
-                                    onPressed: () async {
-                                      await showDialog(
-                                        barrierDismissible: false,
-                                        context: context,
-                                        builder: (BuildContext context) {
-                                          return AlertDialog(
-                                            content: Container(
-                                              height: MediaQuery.of(context)
-                                                      .size
-                                                      .height /
-                                                  20,
-                                              width: MediaQuery.of(context)
-                                                      .size
-                                                      .width /
-                                                  1.5,
-                                              child: Text(
-                                                "Are you sure you want to delete this row?",
-                                                style: TextStyle(
-                                                    color: Colors.black,
-                                                    fontWeight:
-                                                        FontWeight.bold),
-                                              ),
-                                            ),
-                                            actions: [
-                                              MaterialButton(
-                                                // OPTIONAL BUTTON
-                                                shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(40),
-                                                ),
-                                                color: barColor,
-                                                child: Text(
-                                                  'No',
-                                                  style: TextStyle(
-                                                      color: Colors.white),
-                                                ),
-                                                onPressed: () {
-                                                  Navigator.pop(context);
+                                  getDivider(),
+                                  Row(
+                                    children: [
+                                      Expanded(
+                                          child: InkWell(
+                                            onTap: () async {
+                                              await showDialog(
+                                                barrierDismissible: false,
+                                                context: context,
+                                                builder: (BuildContext context) {
+                                                  return AlertDialog(
+                                                    content: Container(
+                                                      height: MediaQuery.of(context)
+                                                          .size
+                                                          .height /
+                                                          20,
+                                                      width: MediaQuery.of(context)
+                                                          .size
+                                                          .width /
+                                                          1.5,
+                                                      child: Text(
+                                                        "Are you sure you want to delete this row?",
+                                                        style: TextStyle(
+                                                            color: Colors.black,
+                                                            fontWeight:
+                                                            FontWeight.bold),
+                                                      ),
+                                                    ),
+                                                    actions: [
+                                                      MaterialButton(
+                                                        // OPTIONAL BUTTON
+                                                        shape: RoundedRectangleBorder(
+                                                          borderRadius:
+                                                          BorderRadius.circular(40),
+                                                        ),
+                                                        color: barColor,
+                                                        child: Text(
+                                                          'No',
+                                                          style: TextStyle(
+                                                              color: Colors.white),
+                                                        ),
+                                                        onPressed: () {
+                                                          Navigator.pop(context);
+                                                        },
+                                                      ),
+                                                      MaterialButton(
+                                                        // OPTIONAL BUTTON
+                                                        shape: RoundedRectangleBorder(
+                                                          borderRadius:
+                                                          BorderRadius.circular(40),
+                                                        ),
+                                                        color: Colors.red,
+                                                        child: Text(
+                                                          'Yes',
+                                                          style: TextStyle(
+                                                              color: Colors.white),
+                                                        ),
+                                                        onPressed: () async {
+                                                          ItemDetails.items
+                                                              .removeAt(index);
+                                                          Navigator.pop(context);
+                                                        },
+                                                      ),
+                                                    ],
+                                                  );
                                                 },
-                                              ),
-                                              MaterialButton(
-                                                // OPTIONAL BUTTON
-                                                shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(40),
-                                                ),
+                                              ).then((value) {
+                                                setState(() {});
+                                              });
+                                            },
+                                            child: getPoppinsText(
+                                                text: 'Delete',
                                                 color: Colors.red,
-                                                child: Text(
-                                                  'Yes',
-                                                  style: TextStyle(
-                                                      color: Colors.white),
-                                                ),
-                                                onPressed: () async {
-                                                  ItemDetails.items
-                                                      .removeAt(index);
-                                                  Navigator.pop(context);
-                                                },
-                                              ),
-                                            ],
-                                          );
-                                        },
-                                      ).then((value) {
-                                        setState(() {});
-                                      });
-                                    },
-                                    icon: Icon(
-                                      Icons.delete_forever,
-                                      color: Colors.red,
-                                    )),
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 16),
+                                          )),
+                                    ],
+                                  ),
+                                ],
                               ),
                             ),
-                          ],
+                          ),
                         );
                       },
                     ),
