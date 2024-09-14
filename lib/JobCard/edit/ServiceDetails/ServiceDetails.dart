@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:maintenance/Component/Common.dart';
 import 'package:maintenance/Component/CustomColor.dart';
 import 'package:maintenance/Component/CustomFont.dart';
 import 'package:maintenance/JobCard/edit/ServiceDetails/AddServiceItem.dart';
@@ -73,71 +74,69 @@ class _ServiceDetailsState extends State<ServiceDetails> {
                       itemBuilder: (BuildContext context, int index) {
                         MNJCD2 mnjcd2 = ServiceDetails.items[index];
 
-                        return Stack(
-                          fit: StackFit.loose,
-                          clipBehavior: Clip.none,
-                          children: [
-                            InkWell(
-                              // onDoubleTap: () {
-                              //   if (isSelectedAndCancelled() ||
-                              //       isSalesQuotationDocClosed()) {
-                              //     getErrorSnackBar(
-                              //         "This Document is already cancelled / closed");
-                              //   } else {
-                              //     EditItems.isInserted =
-                              //         ItemDetails.items[index].insertedIntoDatabase;
-                              //     EditItems.TaxCode =
-                              //         ItemDetails.items[index].TaxCode.toString();
-                              //     EditItems.TaxRate =
-                              //         ItemDetails.items[index].TaxRate;
-                              //     Navigator.push(
-                              //         context,
-                              //         MaterialPageRoute(
-                              //             builder: ((context) => EditItems(
-                              //                 ItemDetails.items[index].ID ?? 0,
-                              //                 1,
-                              //                 ItemDetails.items[index].WhsCode ??
-                              //                     '',
-                              //                 ItemDetails.items[index].TransId ??
-                              //                     '',
-                              //                 ItemDetails.items[index].ItemCode ??
-                              //                     '',
-                              //                 ItemDetails.items[index].ItemName ??
-                              //                     '',
-                              //                 ItemDetails.items[index].UOM ?? '',
-                              //                 ItemDetails.items[index].TaxCode ??
-                              //                     '',
-                              //                 ItemDetails.items[index].Quantity ??
-                              //                     0.0,
-                              //                 ItemDetails.items[index].Price ?? 0.0,
-                              //                 ItemDetails.items[index].TaxRate ??
-                              //                     0.0,
-                              //                 ItemDetails.items[index].Discount ??
-                              //                     0.0,
-                              //                 ItemDetails.items[index].LineTotal ??
-                              //                     0.0,
-                              //                 true))));
-                              //   }
-                              // },
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  shape: BoxShape.rectangle,
-                                  borderRadius: BorderRadius.circular(16.0),
-                                  boxShadow: const [
-                                    BoxShadow(
-                                      color: Colors.black26,
-                                      blurRadius: 4.0,
-                                      offset: Offset(2.0, 2.0),
-                                    ),
-                                  ],
+                        return InkWell(
+                          // onDoubleTap: () {
+                          //   if (isSelectedAndCancelled() ||
+                          //       isSalesQuotationDocClosed()) {
+                          //     getErrorSnackBar(
+                          //         "This Document is already cancelled / closed");
+                          //   } else {
+                          //     EditItems.isInserted =
+                          //         ItemDetails.items[index].insertedIntoDatabase;
+                          //     EditItems.TaxCode =
+                          //         ItemDetails.items[index].TaxCode.toString();
+                          //     EditItems.TaxRate =
+                          //         ItemDetails.items[index].TaxRate;
+                          //     Navigator.push(
+                          //         context,
+                          //         MaterialPageRoute(
+                          //             builder: ((context) => EditItems(
+                          //                 ItemDetails.items[index].ID ?? 0,
+                          //                 1,
+                          //                 ItemDetails.items[index].WhsCode ??
+                          //                     '',
+                          //                 ItemDetails.items[index].TransId ??
+                          //                     '',
+                          //                 ItemDetails.items[index].ItemCode ??
+                          //                     '',
+                          //                 ItemDetails.items[index].ItemName ??
+                          //                     '',
+                          //                 ItemDetails.items[index].UOM ?? '',
+                          //                 ItemDetails.items[index].TaxCode ??
+                          //                     '',
+                          //                 ItemDetails.items[index].Quantity ??
+                          //                     0.0,
+                          //                 ItemDetails.items[index].Price ?? 0.0,
+                          //                 ItemDetails.items[index].TaxRate ??
+                          //                     0.0,
+                          //                 ItemDetails.items[index].Discount ??
+                          //                     0.0,
+                          //                 ItemDetails.items[index].LineTotal ??
+                          //                     0.0,
+                          //                 true))));
+                          //   }
+                          // },
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              shape: BoxShape.rectangle,
+                              borderRadius: BorderRadius.circular(16.0),
+                              boxShadow: const [
+                                BoxShadow(
+                                  color: Colors.black26,
+                                  blurRadius: 4.0,
+                                  offset: Offset(2.0, 2.0),
                                 ),
-                                margin: const EdgeInsets.only(
-                                    left: 15.0, right: 15.0, bottom: 10),
-                                width: MediaQuery.of(context).size.width,
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Row(
+                              ],
+                            ),
+                            margin: const EdgeInsets.only(
+                                left: 15.0, right: 15.0, bottom: 10),
+                            width: MediaQuery.of(context).size.width,
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Column(
+                                children: [
+                                  Row(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
@@ -258,86 +257,88 @@ class _ServiceDetailsState extends State<ServiceDetails> {
                                       ),
                                     ],
                                   ),
-                                ),
-                              ),
-                            ),
-                            Positioned(
-                              top: -27,
-                              right: -4,
-                              child: Card(
-                                child: IconButton(
-                                    onPressed: () async {
-                                      await showDialog(
-                                        barrierDismissible: false,
-                                        context: context,
-                                        builder: (BuildContext context) {
-                                          return AlertDialog(
-                                            content: Container(
-                                              height: MediaQuery.of(context)
-                                                      .size
-                                                      .height /
-                                                  20,
-                                              width: MediaQuery.of(context)
-                                                      .size
-                                                      .width /
-                                                  1.5,
-                                              child: Text(
-                                                "Are you sure you want to delete this row?",
-                                                style: TextStyle(
-                                                    color: Colors.black,
-                                                    fontWeight:
-                                                        FontWeight.bold),
-                                              ),
-                                            ),
-                                            actions: [
-                                              MaterialButton(
-                                                // OPTIONAL BUTTON
-                                                shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(40),
-                                                ),
-                                                color: barColor,
-                                                child: Text(
-                                                  'No',
-                                                  style: TextStyle(
-                                                      color: Colors.white),
-                                                ),
-                                                onPressed: () {
-                                                  Navigator.pop(context);
+                                  getDivider(),
+                                  Row(
+                                    children: [
+                                      Expanded(
+                                          child: InkWell(
+                                            onTap: () async {
+                                              await showDialog(
+                                                barrierDismissible: false,
+                                                context: context,
+                                                builder: (BuildContext context) {
+                                                  return AlertDialog(
+                                                    content: Container(
+                                                      height: MediaQuery.of(context)
+                                                          .size
+                                                          .height /
+                                                          20,
+                                                      width: MediaQuery.of(context)
+                                                          .size
+                                                          .width /
+                                                          1.5,
+                                                      child: Text(
+                                                        "Are you sure you want to delete this row?",
+                                                        style: TextStyle(
+                                                            color: Colors.black,
+                                                            fontWeight:
+                                                            FontWeight.bold),
+                                                      ),
+                                                    ),
+                                                    actions: [
+                                                      MaterialButton(
+                                                        // OPTIONAL BUTTON
+                                                        shape: RoundedRectangleBorder(
+                                                          borderRadius:
+                                                          BorderRadius.circular(40),
+                                                        ),
+                                                        color: barColor,
+                                                        child: Text(
+                                                          'No',
+                                                          style: TextStyle(
+                                                              color: Colors.white),
+                                                        ),
+                                                        onPressed: () {
+                                                          Navigator.pop(context);
+                                                        },
+                                                      ),
+                                                      MaterialButton(
+                                                        // OPTIONAL BUTTON
+                                                        shape: RoundedRectangleBorder(
+                                                          borderRadius:
+                                                          BorderRadius.circular(40),
+                                                        ),
+                                                        color: Colors.red,
+                                                        child: Text(
+                                                          'Yes',
+                                                          style: TextStyle(
+                                                              color: Colors.white),
+                                                        ),
+                                                        onPressed: () async {
+                                                          Navigator.pop(context);
+                                                          setState(() {
+                                                            ServiceDetails.items
+                                                                .removeAt(index);
+                                                          });
+                                                        },
+                                                      ),
+                                                    ],
+                                                  );
                                                 },
-                                              ),
-                                              MaterialButton(
-                                                // OPTIONAL BUTTON
-                                                shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(40),
-                                                ),
+                                              );
+                                            },
+                                            child: getPoppinsText(
+                                                text: 'Delete',
                                                 color: Colors.red,
-                                                child: Text(
-                                                  'Yes',
-                                                  style: TextStyle(
-                                                      color: Colors.white),
-                                                ),
-                                                onPressed: () async {
-                                                  Navigator.pop(context);
-                                                  setState(() {
-                                                    ServiceDetails.items
-                                                        .removeAt(index);
-                                                  });
-                                                },
-                                              ),
-                                            ],
-                                          );
-                                        },
-                                      );
-                                    },
-                                    icon: Icon(
-                                      Icons.delete_forever,
-                                      color: Colors.red,
-                                    )),
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 16),
+                                          )),
+                                    ],
+                                  ),
+                                ],
                               ),
                             ),
-                          ],
+                          ),
                         );
                       },
                     ),
