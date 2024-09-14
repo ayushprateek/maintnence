@@ -225,19 +225,20 @@ class _GeneralDataState extends State<GeneralData> {
               getDisabledTextField(
                   controller: _equipmentName,
                   labelText: 'Equipment',
-                  enableLookup: true,
-                  onLookupPressed: () {
-                    Get.to(() => EquipmentCodeLookup(
-                          onSelection: (OVCLModel ovcl) {
-                            setState(() {
-                              GeneralData.equipmentCode =
-                                  _equipmentCode.text = ovcl.Code ?? '';
-                              GeneralData.equipmentName =
-                                  _equipmentName.text = ovcl.Name ?? '';
-                            });
-                          },
-                        ));
-                  }),
+                  // enableLookup: true,
+                  // onLookupPressed: () {
+                  //   Get.to(() => EquipmentCodeLookup(
+                  //         onSelection: (OVCLModel ovcl) {
+                  //           setState(() {
+                  //             GeneralData.equipmentCode =
+                  //                 _equipmentCode.text = ovcl.Code ?? '';
+                  //             GeneralData.equipmentName =
+                  //                 _equipmentName.text = ovcl.Name ?? '';
+                  //           });
+                  //         },
+                  //       ));
+                  // }
+                  ),
               // getDisabledTextField(
               //     controller: _checkListCode,
               //     labelText: 'Check List Code',
@@ -245,19 +246,20 @@ class _GeneralDataState extends State<GeneralData> {
               getDisabledTextField(
                   controller: _checkListName,
                   labelText: 'CheckList',
-                  onLookupPressed: () {
-                    Get.to(() => CheckListCodeLookup(
-                          onSelection: (MNOCLT mnoclm) {
-                            setState(() {
-                              GeneralData.checkListCode =
-                                  _checkListCode.text = mnoclm.Code ?? '';
-                              GeneralData.checkListName =
-                                  _checkListName.text = mnoclm.Name ?? '';
-                            });
-                          },
-                        ));
-                  },
-                  enableLookup: true),
+                  // onLookupPressed: () {
+                  //   Get.to(() => CheckListCodeLookup(
+                  //         onSelection: (MNOCLT mnoclm) {
+                  //           setState(() {
+                  //             GeneralData.checkListCode =
+                  //                 _checkListCode.text = mnoclm.Code ?? '';
+                  //             GeneralData.checkListName =
+                  //                 _checkListName.text = mnoclm.Name ?? '';
+                  //           });
+                  //         },
+                  //       ));
+                  // },
+                  // enableLookup: true
+              ),
               // getDisabledTextField(
               //   controller: _workCenterCode,
               //   labelText: 'WorkCenter Code',
