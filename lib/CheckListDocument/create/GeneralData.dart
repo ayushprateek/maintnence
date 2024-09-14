@@ -176,7 +176,6 @@ class _GeneralDataState extends State<GeneralData> {
   List<String> checkListStatusOptions = [
     'Open',
     'WIP',
-    'Close',
     'Transfer To JobCard',
     'Hold'
   ];
