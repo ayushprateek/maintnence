@@ -30,25 +30,7 @@ class _CheckListDetailsState extends State<CheckListDetails> {
     return SingleChildScrollView(
       child: Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.only(top: 10.0, bottom: 10),
-            child: Align(
-              alignment: Alignment.centerRight,
-              child: TextButton(
-                child: Text(
-                  "+ Add Item",
-                  style: TextStyle(
-                    color: barColor,
-                    fontSize: 16,
-                    fontStyle: FontStyle.italic,
-                  ),
-                ),
-                onPressed: () {
-                  Get.to(() => AddCheckList());
-                },
-              ),
-            ),
-          ),
+          const SizedBox(height: 25,),
           Padding(
             padding: const EdgeInsets.only(left: 8.0, right: 8, bottom: 8),
             child: Container(
