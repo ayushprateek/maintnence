@@ -192,10 +192,7 @@ class _EditJobCardItemState extends State<EditJobCardItem> {
                     child: MaterialButton(
                       minWidth: MediaQuery.of(context).size.width,
                       onPressed: () async {
-                        if (!isNumeric(_quantity.text)) {
-                          getErrorSnackBar(
-                              "Consumption Quantity must be numeric");
-                        } else if (_uomCode.text.isEmpty) {
+                         if (_uomCode.text.isEmpty) {
                           getErrorSnackBar("UOM can not be empty");
                         }  else if (_requiredDate.text.isEmpty) {
                           getErrorSnackBar("Required Date can not be empty");
