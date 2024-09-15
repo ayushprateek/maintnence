@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:maintenance/Component/Common.dart';
 import 'package:maintenance/Component/CustomColor.dart';
 import 'package:maintenance/Component/CustomFont.dart';
 import 'package:maintenance/Purchase/PurchaseOrder/edit/ItemDetails/AddItems.dart';
@@ -78,112 +79,110 @@ class _ItemDetailsState extends State<ItemDetails> {
                       itemBuilder: (BuildContext context, int index) {
                         PRPOR1 item = ItemDetails.items[index];
 
-                        return Stack(
-                          fit: StackFit.loose,
-                          clipBehavior: Clip.none,
-                          children: [
-                            InkWell(
-                              onDoubleTap: () async {
-                                EditItems.isInserted = ItemDetails
-                                    .items[index].insertedIntoDatabase;
-                                EditItems.isUpdating = true;
-                                EditItems.id =
-                                    ItemDetails.items[index].ID?.toString();
-                                EditItems.noOfPieces = ItemDetails
-                                        .items[index].NoOfPieces
-                                        ?.toStringAsFixed(2) ??
-                                    '';
-                                EditItems.remarks =
-                                    ItemDetails.items[index].Remarks ?? '';
-                                EditItems.tripTransId =
-                                    ItemDetails.items[index].TripTransId ?? '';
+                        return InkWell(
+                          onDoubleTap: () async {
+                            EditItems.isInserted = ItemDetails
+                                .items[index].insertedIntoDatabase;
+                            EditItems.isUpdating = true;
+                            EditItems.id =
+                                ItemDetails.items[index].ID?.toString();
+                            EditItems.noOfPieces = ItemDetails
+                                    .items[index].NoOfPieces
+                                    ?.toStringAsFixed(2) ??
+                                '';
+                            EditItems.remarks =
+                                ItemDetails.items[index].Remarks ?? '';
+                            EditItems.tripTransId =
+                                ItemDetails.items[index].TripTransId ?? '';
 
-                                EditItems.truckNo =
-                                    ItemDetails.items[index].TruckNo ?? '';
-                                EditItems.toWhsCode =
-                                    ItemDetails.items[index].WhsCode ?? '';
-                                List<OWHS> wareHouseList =
-                                    await retrieveOWHSById(
-                                        null, 'WhsCode = ?', [item.WhsCode]);
-                                if (wareHouseList.isNotEmpty) {
-                                  EditItems.toWhsName =
-                                      wareHouseList[0].WhsName;
-                                }
-                                EditItems.driverCode =
-                                    ItemDetails.items[index].DriverCode ?? '';
-                                EditItems.driverName =
-                                    ItemDetails.items[index].DriverName ?? '';
-                                EditItems.routeCode =
-                                    ItemDetails.items[index].RouteCode ?? '';
-                                EditItems.routeName =
-                                    ItemDetails.items[index].RouteName ?? '';
-                                EditItems.transId =
-                                    ItemDetails.items[index].TransId ?? '';
-                                EditItems.rowId = ItemDetails.items[index].RowId
-                                        ?.toString() ??
-                                    '';
-                                EditItems.itemCode =
-                                    ItemDetails.items[index].ItemCode ?? '';
-                                EditItems.itemName =
-                                    ItemDetails.items[index].ItemName ?? '';
-                                EditItems.consumptionQty = ItemDetails
-                                        .items[index].Quantity
-                                        ?.toString() ??
-                                    '';
-                                EditItems.uomCode =
-                                    ItemDetails.items[index].UOM ?? '';
-                                List<OUOMModel> uomList =
-                                    await retrieveOUOMById(
-                                        null, 'UomCode = ?', [item.UOM]);
-                                if (uomList.isNotEmpty) {
-                                  EditItems.uomName = uomList[0].UomName;
-                                }
-                                EditItems.deptCode =
-                                    ItemDetails.items[index].DeptCode ?? '';
-                                EditItems.deptName =
-                                    ItemDetails.items[index].DeptName ?? '';
-                                EditItems.price = ItemDetails.items[index].Price
-                                        ?.toStringAsFixed(2) ??
-                                    '';
-                                EditItems.mtv = ItemDetails.items[index].MSP
-                                        ?.toStringAsFixed(2) ??
-                                    '';
-                                EditItems.taxCode =
-                                    ItemDetails.items[index].TaxCode ?? '';
-                                EditItems.taxRate = ItemDetails
-                                        .items[index].TaxRate
-                                        ?.toStringAsFixed(2) ??
-                                    '';
-                                EditItems.lineDiscount = ItemDetails
-                                        .items[index].Discount
-                                        ?.toStringAsFixed(2) ??
-                                    '';
-                                EditItems.lineTotal = ItemDetails
-                                        .items[index].LineTotal
-                                        ?.toStringAsFixed(2) ??
-                                    '';
+                            EditItems.truckNo =
+                                ItemDetails.items[index].TruckNo ?? '';
+                            EditItems.toWhsCode =
+                                ItemDetails.items[index].WhsCode ?? '';
+                            List<OWHS> wareHouseList =
+                                await retrieveOWHSById(
+                                    null, 'WhsCode = ?', [item.WhsCode]);
+                            if (wareHouseList.isNotEmpty) {
+                              EditItems.toWhsName =
+                                  wareHouseList[0].WhsName;
+                            }
+                            EditItems.driverCode =
+                                ItemDetails.items[index].DriverCode ?? '';
+                            EditItems.driverName =
+                                ItemDetails.items[index].DriverName ?? '';
+                            EditItems.routeCode =
+                                ItemDetails.items[index].RouteCode ?? '';
+                            EditItems.routeName =
+                                ItemDetails.items[index].RouteName ?? '';
+                            EditItems.transId =
+                                ItemDetails.items[index].TransId ?? '';
+                            EditItems.rowId = ItemDetails.items[index].RowId
+                                    ?.toString() ??
+                                '';
+                            EditItems.itemCode =
+                                ItemDetails.items[index].ItemCode ?? '';
+                            EditItems.itemName =
+                                ItemDetails.items[index].ItemName ?? '';
+                            EditItems.consumptionQty = ItemDetails
+                                    .items[index].Quantity
+                                    ?.toString() ??
+                                '';
+                            EditItems.uomCode =
+                                ItemDetails.items[index].UOM ?? '';
+                            List<OUOMModel> uomList =
+                                await retrieveOUOMById(
+                                    null, 'UomCode = ?', [item.UOM]);
+                            if (uomList.isNotEmpty) {
+                              EditItems.uomName = uomList[0].UomName;
+                            }
+                            EditItems.deptCode =
+                                ItemDetails.items[index].DeptCode ?? '';
+                            EditItems.deptName =
+                                ItemDetails.items[index].DeptName ?? '';
+                            EditItems.price = ItemDetails.items[index].Price
+                                    ?.toStringAsFixed(2) ??
+                                '';
+                            EditItems.mtv = ItemDetails.items[index].MSP
+                                    ?.toStringAsFixed(2) ??
+                                '';
+                            EditItems.taxCode =
+                                ItemDetails.items[index].TaxCode ?? '';
+                            EditItems.taxRate = ItemDetails
+                                    .items[index].TaxRate
+                                    ?.toStringAsFixed(2) ??
+                                '';
+                            EditItems.lineDiscount = ItemDetails
+                                    .items[index].Discount
+                                    ?.toStringAsFixed(2) ??
+                                '';
+                            EditItems.lineTotal = ItemDetails
+                                    .items[index].LineTotal
+                                    ?.toStringAsFixed(2) ??
+                                '';
 
-                                Get.to(() => EditItems());
-                              },
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  shape: BoxShape.rectangle,
-                                  borderRadius: BorderRadius.circular(16.0),
-                                  boxShadow: const [
-                                    BoxShadow(
-                                      color: Colors.black26,
-                                      blurRadius: 4.0,
-                                      offset: Offset(2.0, 2.0),
-                                    ),
-                                  ],
+                            Get.to(() => EditItems());
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              shape: BoxShape.rectangle,
+                              borderRadius: BorderRadius.circular(16.0),
+                              boxShadow: const [
+                                BoxShadow(
+                                  color: Colors.black26,
+                                  blurRadius: 4.0,
+                                  offset: Offset(2.0, 2.0),
                                 ),
-                                margin: const EdgeInsets.only(
-                                    left: 15.0, right: 15.0, bottom: 10),
-                                width: MediaQuery.of(context).size.width,
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Row(
+                              ],
+                            ),
+                            margin: const EdgeInsets.only(
+                                left: 15.0, right: 15.0, bottom: 10),
+                            width: MediaQuery.of(context).size.width,
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Column(
+                                children: [
+                                  Row(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
@@ -542,88 +541,86 @@ class _ItemDetailsState extends State<ItemDetails> {
                                       ),
                                     ],
                                   ),
-                                ),
-                              ),
-                            ),
-                            Positioned(
-                              top: -27,
-                              right: -4,
-                              child: InkWell(
-                                onTap: () async {
-                                  await showDialog(
-                                    barrierDismissible: false,
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      return AlertDialog(
-                                        content: Container(
-                                          height: MediaQuery.of(context)
-                                                  .size
-                                                  .height /
-                                              20,
-                                          width: MediaQuery.of(context)
-                                                  .size
-                                                  .width /
-                                              1.5,
-                                          child: Text(
-                                            "Are you sure you want to delete this row?",
-                                            style: TextStyle(
-                                                color: Colors.black,
-                                                fontWeight: FontWeight.bold),
-                                          ),
-                                        ),
-                                        actions: [
-                                          MaterialButton(
-                                            // OPTIONAL BUTTON
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(40),
-                                            ),
-                                            color: barColor,
-                                            child: Text(
-                                              'No',
-                                              style: TextStyle(
-                                                  color: Colors.white),
-                                            ),
-                                            onPressed: () {
-                                              Navigator.pop(context);
+                                  getDivider(),
+                                  Row(
+                                    children: [
+                                      Expanded(
+                                          child: InkWell(
+                                            onTap: () async {
+                                              await showDialog(
+                                                barrierDismissible: false,
+                                                context: context,
+                                                builder: (BuildContext context) {
+                                                  return AlertDialog(
+                                                    content: Container(
+                                                      height: MediaQuery.of(context)
+                                                          .size
+                                                          .height /
+                                                          20,
+                                                      width: MediaQuery.of(context)
+                                                          .size
+                                                          .width /
+                                                          1.5,
+                                                      child: Text(
+                                                        "Are you sure you want to delete this row?",
+                                                        style: TextStyle(
+                                                            color: Colors.black,
+                                                            fontWeight: FontWeight.bold),
+                                                      ),
+                                                    ),
+                                                    actions: [
+                                                      MaterialButton(
+                                                        // OPTIONAL BUTTON
+                                                        shape: RoundedRectangleBorder(
+                                                          borderRadius:
+                                                          BorderRadius.circular(40),
+                                                        ),
+                                                        color: barColor,
+                                                        child: Text(
+                                                          'No',
+                                                          style: TextStyle(
+                                                              color: Colors.white),
+                                                        ),
+                                                        onPressed: () {
+                                                          Navigator.pop(context);
+                                                        },
+                                                      ),
+                                                      MaterialButton(
+                                                        // OPTIONAL BUTTON
+                                                        shape: RoundedRectangleBorder(
+                                                          borderRadius:
+                                                          BorderRadius.circular(40),
+                                                        ),
+                                                        color: Colors.red,
+                                                        child: Text(
+                                                          'Yes',
+                                                          style: TextStyle(
+                                                              color: Colors.white),
+                                                        ),
+                                                        onPressed: () async {
+                                                          ItemDetails.items.removeAt(index);
+                                                          Navigator.pop(context);
+                                                        },
+                                                      ),
+                                                    ],
+                                                  );
+                                                },
+                                              ).then((value) {
+                                                setState(() {});
+                                              });
                                             },
-                                          ),
-                                          MaterialButton(
-                                            // OPTIONAL BUTTON
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(40),
-                                            ),
-                                            color: Colors.red,
-                                            child: Text(
-                                              'Yes',
-                                              style: TextStyle(
-                                                  color: Colors.white),
-                                            ),
-                                            onPressed: () async {
-                                              ItemDetails.items.removeAt(index);
-                                              Navigator.pop(context);
-                                            },
-                                          ),
-                                        ],
-                                      );
-                                    },
-                                  ).then((value) {
-                                    setState(() {});
-                                  });
-                                },
-                                child: Card(
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(10.0),
-                                    child: Icon(
-                                      Icons.delete_forever,
-                                      color: Colors.red,
-                                    ),
+                                            child: getPoppinsText(
+                                                text: 'Delete',
+                                                color: Colors.red,
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 16),
+                                          )),
+                                    ],
                                   ),
-                                ),
+                                ],
                               ),
                             ),
-                          ],
+                          ),
                         );
                       },
                     ),
