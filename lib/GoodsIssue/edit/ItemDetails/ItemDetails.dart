@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:maintenance/Component/Common.dart';
 import 'package:maintenance/Component/CustomColor.dart';
 import 'package:maintenance/Component/CustomFont.dart';
 import 'package:maintenance/GoodsIssue/edit/ItemDetails/AddItems.dart';
@@ -76,76 +77,74 @@ class _ItemDetailsState extends State<ItemDetails> {
                       physics: const ScrollPhysics(),
                       itemBuilder: (BuildContext context, int index) {
                         IMGDI1 item = ItemDetails.items[index];
-                        return Stack(
-                          fit: StackFit.loose,
-                          clipBehavior: Clip.none,
-                          children: [
-                            InkWell(
-                              onDoubleTap: () async {
-                                EditItems.id = item.ID?.toString();
-                                EditItems.truckNo = item.TruckNo;
-                                EditItems.toWhsCode = item.ToWhsCode;
-                                List<OWHS> wareHouseList =
-                                    await retrieveOWHSById(
-                                        null, 'WhsCode = ?', [item.ToWhsCode]);
-                                if (wareHouseList.isNotEmpty) {
-                                  EditItems.toWhsName =
-                                      wareHouseList[0].WhsName;
-                                }
-                                EditItems.driverCode = item.DriverCode;
-                                EditItems.driverName = item.DriverName;
-                                EditItems.routeCode = item.RouteCode;
-                                EditItems.routeName = item.RouteName;
-                                EditItems.transId = item.TransId;
-                                EditItems.rowId = item.RowId?.toString();
-                                EditItems.itemCode = item.ItemCode;
-                                EditItems.itemName = item.ItemName;
-                                EditItems.consumptionQty =
-                                    item.Quantity?.toStringAsFixed(2);
-                                EditItems.tripTransId = item.TripTransId;
-                                EditItems.uomCode = item.UOM;
-                                List<OUOMModel> uomList =
-                                    await retrieveOUOMById(
-                                        null, 'UomCode = ?', [item.UOM]);
-                                if (uomList.isNotEmpty) {
-                                  EditItems.uomName = uomList[0].UomName;
-                                }
+                        return InkWell(
+                          onDoubleTap: () async {
+                            EditItems.id = item.ID?.toString();
+                            EditItems.truckNo = item.TruckNo;
+                            EditItems.toWhsCode = item.ToWhsCode;
+                            List<OWHS> wareHouseList =
+                                await retrieveOWHSById(
+                                    null, 'WhsCode = ?', [item.ToWhsCode]);
+                            if (wareHouseList.isNotEmpty) {
+                              EditItems.toWhsName =
+                                  wareHouseList[0].WhsName;
+                            }
+                            EditItems.driverCode = item.DriverCode;
+                            EditItems.driverName = item.DriverName;
+                            EditItems.routeCode = item.RouteCode;
+                            EditItems.routeName = item.RouteName;
+                            EditItems.transId = item.TransId;
+                            EditItems.rowId = item.RowId?.toString();
+                            EditItems.itemCode = item.ItemCode;
+                            EditItems.itemName = item.ItemName;
+                            EditItems.consumptionQty =
+                                item.Quantity?.toStringAsFixed(2);
+                            EditItems.tripTransId = item.TripTransId;
+                            EditItems.uomCode = item.UOM;
+                            List<OUOMModel> uomList =
+                                await retrieveOUOMById(
+                                    null, 'UomCode = ?', [item.UOM]);
+                            if (uomList.isNotEmpty) {
+                              EditItems.uomName = uomList[0].UomName;
+                            }
 
-                                EditItems.deptCode = item.DeptCode;
-                                EditItems.deptName = item.DeptName;
-                                EditItems.price =
-                                    item.Price?.toStringAsFixed(2);
-                                EditItems.mtv = item.MSP?.toStringAsFixed(2);
-                                EditItems.taxCode = item.TaxCode;
-                                EditItems.taxRate =
-                                    item.TaxRate?.toStringAsFixed(2);
-                                EditItems.lineDiscount =
-                                    item.Discount?.toStringAsFixed(2);
-                                EditItems.lineTotal =
-                                    item.LineTotal?.toStringAsFixed(2);
+                            EditItems.deptCode = item.DeptCode;
+                            EditItems.deptName = item.DeptName;
+                            EditItems.price =
+                                item.Price?.toStringAsFixed(2);
+                            EditItems.mtv = item.MSP?.toStringAsFixed(2);
+                            EditItems.taxCode = item.TaxCode;
+                            EditItems.taxRate =
+                                item.TaxRate?.toStringAsFixed(2);
+                            EditItems.lineDiscount =
+                                item.Discount?.toStringAsFixed(2);
+                            EditItems.lineTotal =
+                                item.LineTotal?.toStringAsFixed(2);
 
-                                EditItems.isUpdating = true;
-                                Get.to(() => EditItems());
-                              },
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  shape: BoxShape.rectangle,
-                                  borderRadius: BorderRadius.circular(16.0),
-                                  boxShadow: const [
-                                    BoxShadow(
-                                      color: Colors.black26,
-                                      blurRadius: 4.0,
-                                      offset: Offset(2.0, 2.0),
-                                    ),
-                                  ],
+                            EditItems.isUpdating = true;
+                            Get.to(() => EditItems());
+                          },
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              shape: BoxShape.rectangle,
+                              borderRadius: BorderRadius.circular(16.0),
+                              boxShadow: const [
+                                BoxShadow(
+                                  color: Colors.black26,
+                                  blurRadius: 4.0,
+                                  offset: Offset(2.0, 2.0),
                                 ),
-                                margin: const EdgeInsets.only(
-                                    left: 15.0, right: 15.0, bottom: 10),
-                                width: MediaQuery.of(context).size.width,
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Row(
+                              ],
+                            ),
+                            margin: const EdgeInsets.only(
+                                left: 15.0, right: 15.0, bottom: 10),
+                            width: MediaQuery.of(context).size.width,
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Column(
+                                children: [
+                                  Row(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
@@ -437,86 +436,88 @@ class _ItemDetailsState extends State<ItemDetails> {
                                       ),
                                     ],
                                   ),
-                                ),
-                              ),
-                            ),
-                            Positioned(
-                              top: -27,
-                              right: -4,
-                              child: Card(
-                                child: IconButton(
-                                    onPressed: () async {
-                                      await showDialog(
-                                        barrierDismissible: false,
-                                        context: context,
-                                        builder: (BuildContext context) {
-                                          return AlertDialog(
-                                            content: Container(
-                                              height: MediaQuery.of(context)
-                                                      .size
-                                                      .height /
-                                                  20,
-                                              width: MediaQuery.of(context)
-                                                      .size
-                                                      .width /
-                                                  1.5,
-                                              child: Text(
-                                                "Are you sure you want to delete this row?",
-                                                style: TextStyle(
-                                                    color: Colors.black,
-                                                    fontWeight:
-                                                        FontWeight.bold),
-                                              ),
-                                            ),
-                                            actions: [
-                                              MaterialButton(
-                                                // OPTIONAL BUTTON
-                                                shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(40),
-                                                ),
-                                                color: barColor,
-                                                child: Text(
-                                                  'No',
-                                                  style: TextStyle(
-                                                      color: Colors.white),
-                                                ),
-                                                onPressed: () {
-                                                  Navigator.pop(context);
+                                  getDivider(),
+                                  Row(
+                                    children: [
+                                      Expanded(
+                                          child: InkWell(
+                                            onTap: () async {
+                                              await showDialog(
+                                                barrierDismissible: false,
+                                                context: context,
+                                                builder: (BuildContext context) {
+                                                  return AlertDialog(
+                                                    content: Container(
+                                                      height: MediaQuery.of(context)
+                                                          .size
+                                                          .height /
+                                                          20,
+                                                      width: MediaQuery.of(context)
+                                                          .size
+                                                          .width /
+                                                          1.5,
+                                                      child: Text(
+                                                        "Are you sure you want to delete this row?",
+                                                        style: TextStyle(
+                                                            color: Colors.black,
+                                                            fontWeight:
+                                                            FontWeight.bold),
+                                                      ),
+                                                    ),
+                                                    actions: [
+                                                      MaterialButton(
+                                                        // OPTIONAL BUTTON
+                                                        shape: RoundedRectangleBorder(
+                                                          borderRadius:
+                                                          BorderRadius.circular(40),
+                                                        ),
+                                                        color: barColor,
+                                                        child: Text(
+                                                          'No',
+                                                          style: TextStyle(
+                                                              color: Colors.white),
+                                                        ),
+                                                        onPressed: () {
+                                                          Navigator.pop(context);
+                                                        },
+                                                      ),
+                                                      MaterialButton(
+                                                        // OPTIONAL BUTTON
+                                                        shape: RoundedRectangleBorder(
+                                                          borderRadius:
+                                                          BorderRadius.circular(40),
+                                                        ),
+                                                        color: Colors.red,
+                                                        child: Text(
+                                                          'Yes',
+                                                          style: TextStyle(
+                                                              color: Colors.white),
+                                                        ),
+                                                        onPressed: () async {
+                                                          ItemDetails.items
+                                                              .removeAt(index);
+                                                          Navigator.pop(context);
+                                                        },
+                                                      ),
+                                                    ],
+                                                  );
                                                 },
-                                              ),
-                                              MaterialButton(
-                                                // OPTIONAL BUTTON
-                                                shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(40),
-                                                ),
+                                              ).then((value) {
+                                                setState(() {});
+                                              });
+                                            },
+                                            child: getPoppinsText(
+                                                text: 'Delete',
                                                 color: Colors.red,
-                                                child: Text(
-                                                  'Yes',
-                                                  style: TextStyle(
-                                                      color: Colors.white),
-                                                ),
-                                                onPressed: () async {
-                                                  ItemDetails.items
-                                                      .removeAt(index);
-                                                  Navigator.pop(context);
-                                                },
-                                              ),
-                                            ],
-                                          );
-                                        },
-                                      ).then((value) {
-                                        setState(() {});
-                                      });
-                                    },
-                                    icon: Icon(
-                                      Icons.delete_forever,
-                                      color: Colors.red,
-                                    )),
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 16),
+                                          )),
+                                    ],
+                                  ),
+                                ],
                               ),
                             ),
-                          ],
+                          ),
                         );
                       },
                     ),
