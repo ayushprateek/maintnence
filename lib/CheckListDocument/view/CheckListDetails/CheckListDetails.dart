@@ -250,29 +250,7 @@ class _CheckListDetailsState extends State<CheckListDetails> {
                                               height: 20,
                                               child: Row(
                                                 mainAxisAlignment:
-                                                    MainAxisAlignment.start,
-                                                children: [
-                                                  Checkbox(
-                                                    value: mncld1.IsFromStock,
-                                                    onChanged: (bool? value) {},
-                                                  ),
-                                                  Expanded(
-                                                      child: getPoppinsText(
-                                                          text: 'From Stock',
-                                                          textAlign:
-                                                              TextAlign.start)),
-                                                ],
-                                              ),
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.only(
-                                                top: 4.0, bottom: 4),
-                                            child: SizedBox(
-                                              height: 20,
-                                              child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.start,
+                                                MainAxisAlignment.start,
                                                 children: [
                                                   Checkbox(
                                                     value: mncld1.IsConsumption,
@@ -282,11 +260,13 @@ class _CheckListDetailsState extends State<CheckListDetails> {
                                                       child: getPoppinsText(
                                                           text: 'Consumption',
                                                           textAlign:
-                                                              TextAlign.start)),
+                                                          TextAlign.start)),
                                                 ],
                                               ),
                                             ),
                                           ),
+
+
                                           Padding(
                                             padding: const EdgeInsets.only(
                                                 top: 4.0, bottom: 4),
@@ -305,6 +285,28 @@ class _CheckListDetailsState extends State<CheckListDetails> {
                                                           text: 'Request',
                                                           textAlign:
                                                               TextAlign.start)),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                                top: 4.0, bottom: 4),
+                                            child: SizedBox(
+                                              height: 20,
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                                children: [
+                                                  Checkbox(
+                                                    value: mncld1.IsFromStock,
+                                                    onChanged: (bool? value) {},
+                                                  ),
+                                                  Expanded(
+                                                      child: getPoppinsText(
+                                                          text: 'From Stock',
+                                                          textAlign:
+                                                          TextAlign.start)),
                                                 ],
                                               ),
                                             ),
