@@ -310,6 +310,15 @@ Future<void> updateMNCLD2OnServer(BuildContext? context,
     sentSuccessInServer = false;
     try {
       Map<String, dynamic> map = list[i].toJson();
+      if (list[i].Attachment?.contains(appPkg) ?? false) {
+        File imageFile = File(list[i].Attachment ?? '');
+        if (await imageFile.exists()) {
+          String url =
+          await uploadImageToServer(imageFile, null, setURL: (url) {});
+          list[i].Attachment = url;
+          map = list[i].toJson();
+        }
+      }
       var res = await http
           .put(Uri.parse(prefix + 'MNCLD2/Update'),
               headers: header, body: jsonEncode(map))

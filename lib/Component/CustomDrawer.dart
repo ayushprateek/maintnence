@@ -8,6 +8,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:maintenance/3DView.dart';
 import 'package:maintenance/CheckListDocument/ClearCheckListDocument.dart';
+import 'package:maintenance/CheckListDocument/create/SearchCheckListDoc.dart';
 import 'package:maintenance/Component/AppConfig.dart';
 import 'package:maintenance/Component/CheckInternet.dart';
 
@@ -81,18 +82,18 @@ class _CustomDrawerState extends State<CustomDrawer> {
                         style: TextStyle(color: headColor),
                       ),
                       children: [
-                        // ListTile(
-                        //   onTap: () {
-                        //     goToNewCheckListDocument();
-                        //   },
-                        //   title: Text(
-                        //     'Check List Document',
-                        //     style: TextStyle(color: Colors.white),
-                        //   ),
-                        //   leading: Icon(MdiIcons.account, color: Colors.white),
-                        //   trailing: Icon(Icons.keyboard_arrow_right,
-                        //       color: Colors.white),
-                        // ),
+                        ListTile(
+                          onTap: () {
+                            Get.to(()=>SearchCheckListDoc());
+                          },
+                          title: Text(
+                            'Check List Document',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                          leading: Icon(MdiIcons.account, color: Colors.white),
+                          trailing: Icon(Icons.keyboard_arrow_right,
+                              color: Colors.white),
+                        ),
                         ListTile(
                           onTap: () {
                             goToNewJobCardDocument();
