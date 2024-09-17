@@ -1,36 +1,34 @@
 //---------------------------------CREATE JOB CARD IMPORTS
 import 'package:get/get.dart';
+import 'package:maintenance/Component/CompanyDetails.dart';
 import 'package:maintenance/Component/GenerateTransId.dart';
 import 'package:maintenance/Component/GetFormattedDate.dart';
-import 'package:maintenance/Component/GetLastDocNum.dart';
-import 'package:maintenance/Component/IsAvailableTransId.dart';
 import 'package:maintenance/JobCard/create/GeneralData.dart'
-as jcdCreateGenData;
+    as jcdCreateGenData;
 import 'package:maintenance/JobCard/create/ItemDetails/EditJobCardItem.dart'
-as editCreateJCDItems;
+    as editCreateJCDItems;
 import 'package:maintenance/JobCard/create/ItemDetails/ItemDetails.dart'
-as jcdCreateItemDetails;
+    as jcdCreateItemDetails;
 import 'package:maintenance/JobCard/create/JobCard.dart';
 import 'package:maintenance/JobCard/create/ServiceDetails/EditService.dart'
-as editCreateJCDService;
+    as editCreateJCDService;
 import 'package:maintenance/JobCard/create/ServiceDetails/ServiceDetails.dart'
-as jcdCreateServiceDetails;
+    as jcdCreateServiceDetails;
+import 'package:maintenance/JobCard/create/WhyWhyAnalysis.dart'
+    as jcdCreateWhyWhyAnalysis;
 import 'package:maintenance/JobCard/edit/Attachment.dart' as jcdEditAttachment;
 //---------------------------------EDIT JOB CARD IMPORTS
 import 'package:maintenance/JobCard/edit/GeneralData.dart' as jcdEditGenData;
 import 'package:maintenance/JobCard/edit/ItemDetails/ItemDetails.dart'
-as jcdEditItemDetails;
+    as jcdEditItemDetails;
 import 'package:maintenance/JobCard/edit/JobCard.dart';
 import 'package:maintenance/JobCard/edit/ProblemDetails.dart'
-as jcdEditProblemDetails;
-import 'package:maintenance/JobCard/edit/SectionDetails.dart'
-as jcdEditSectionDetails;
+    as jcdEditProblemDetails;
 import 'package:maintenance/JobCard/edit/ServiceDetails/ServiceDetails.dart'
-as jcdEditServiceDetails;
+    as jcdEditServiceDetails;
 import 'package:maintenance/JobCard/edit/WhyWhyAnalysis.dart'
-as jcdEditWhyWhyAnalysis;
+    as jcdEditWhyWhyAnalysis;
 import 'package:maintenance/JobCard/view/Attachment.dart' as jcdViewAttachment;
-
 //---------------------------------VIEW JOB CARD IMPORTS
 import 'package:maintenance/JobCard/view/GeneralData.dart' as jcdViewGenData;
 import 'package:maintenance/JobCard/view/ItemDetails/ItemDetails.dart'
@@ -38,8 +36,6 @@ import 'package:maintenance/JobCard/view/ItemDetails/ItemDetails.dart'
 import 'package:maintenance/JobCard/view/JobCard.dart';
 import 'package:maintenance/JobCard/view/ProblemDetails.dart'
     as jcdViewProblemDetails;
-import 'package:maintenance/JobCard/view/SectionDetails.dart'
-    as jcdViewSectionDetails;
 import 'package:maintenance/JobCard/view/ServiceDetails/ServiceDetails.dart'
     as jcdViewServiceDetails;
 import 'package:maintenance/JobCard/view/WhyWhyAnalysis.dart'
@@ -49,7 +45,6 @@ import 'package:maintenance/Sync/SyncModels/MNJCD2.dart';
 import 'package:maintenance/Sync/SyncModels/MNJCD3.dart';
 import 'package:maintenance/Sync/SyncModels/MNJCD5.dart';
 import 'package:maintenance/Sync/SyncModels/MNJCD6.dart';
-import 'package:maintenance/Sync/SyncModels/MNJCD7.dart';
 import 'package:maintenance/Sync/SyncModels/MNOJCD.dart';
 import 'package:maintenance/main.dart';
 
@@ -303,8 +298,17 @@ goToNewJobCardDocument() async {
   await ClearJobCardDoc.clearGeneralData();
   jcdCreateItemDetails.ItemDetails.items.clear();
   jcdCreateServiceDetails.ServiceDetails.items.clear();
-  String TransId = await GenerateTransId.getTransId(tableName: 'MNOJCD', docName: 'MNJC');
-  jcdCreateGenData.GeneralData.transId=TransId;
+  double num = double.tryParse(
+          CompanyDetails.ocinModel?.NoOfWhyAnalysis?.toString() ?? "") ??
+      0.0;
+  for (int i = 0; i <= num; i++) {
+    jcdCreateWhyWhyAnalysis.WhyWhyAnalysis.list
+        .add(MNJCD5(insertedIntoDatabase: false));
+  }
+
+  String TransId =
+      await GenerateTransId.getTransId(tableName: 'MNOJCD', docName: 'MNJC');
+  jcdCreateGenData.GeneralData.transId = TransId;
   Get.offAll(() => JobCard(0));
 }
 
