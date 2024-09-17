@@ -81,18 +81,18 @@ class _CustomDrawerState extends State<CustomDrawer> {
                         style: TextStyle(color: headColor),
                       ),
                       children: [
-                        ListTile(
-                          onTap: () {
-                            goToNewCheckListDocument();
-                          },
-                          title: Text(
-                            'Check List Document',
-                            style: TextStyle(color: Colors.white),
-                          ),
-                          leading: Icon(MdiIcons.account, color: Colors.white),
-                          trailing: Icon(Icons.keyboard_arrow_right,
-                              color: Colors.white),
-                        ),
+                        // ListTile(
+                        //   onTap: () {
+                        //     goToNewCheckListDocument();
+                        //   },
+                        //   title: Text(
+                        //     'Check List Document',
+                        //     style: TextStyle(color: Colors.white),
+                        //   ),
+                        //   leading: Icon(MdiIcons.account, color: Colors.white),
+                        //   trailing: Icon(Icons.keyboard_arrow_right,
+                        //       color: Colors.white),
+                        // ),
                         ListTile(
                           onTap: () {
                             goToNewJobCardDocument();
