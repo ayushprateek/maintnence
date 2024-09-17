@@ -5,10 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:maintenance/CheckListDocument/ClearCheckListDocument.dart';
 import 'package:maintenance/CheckListDocument/create/CheckListDetails/CheckListDetails.dart'
-as checkListDetails;
+    as checkListDetails;
 import 'package:maintenance/CheckListDocument/create/CheckListDocument.dart';
 import 'package:maintenance/CheckListDocument/create/GeneralData.dart'
-as checkListGenData;
+    as checkListGenData;
+import 'package:maintenance/CheckListDocument/create/Attachments.dart'
+    as checkListAttachment;
 import 'package:maintenance/Component/AppConfig.dart';
 import 'package:maintenance/Component/CheckInternet.dart';
 import 'package:maintenance/Component/CompanyDetails.dart';
@@ -28,6 +30,7 @@ import 'package:maintenance/DatabaseInitialization.dart';
 import 'package:maintenance/LoginPage.dart';
 import 'package:maintenance/Sync/DataSync.dart';
 import 'package:maintenance/Sync/SyncModels/MNCLD1.dart';
+import 'package:maintenance/Sync/SyncModels/MNCLD2.dart';
 import 'package:maintenance/Sync/SyncModels/MNCLM1.dart';
 import 'package:maintenance/Sync/SyncModels/MNOCLT.dart';
 import 'package:maintenance/Sync/SyncModels/MNOWCM.dart';
@@ -223,13 +226,6 @@ WHERE
     checkListGenData.GeneralData.transId = TransId;
 
     try {
-      // make it come from session instead of query param
-      // String from = Request.QueryString["from"];
-
-      // MaintenanceItemsQueryModel MaintenanceItemsQueryModel = (MaintenanceItemsQueryModel)System.Web.HttpContext.Current.Session["MaintenanceItemsQueryModel"];
-      // Session.Remove("MaintenanceItemsQueryModel");
-
-      // MNOCLDViewModel.MaintenanceItemsQueryModel = MaintenanceItemsQueryModel;
       checkListGenData.GeneralData.checkListCode = dashboardItem.checkListCode;
       checkListGenData.GeneralData.workCenterCode =
           dashboardItem.workCenterCode;
@@ -355,6 +351,21 @@ WHERE
 
         checkListDetails.CheckListDetails.items.add(mncld1);
       }
+      //todo:
+      // List<MNCLM1> attachmentList = await retrieveMNCLM1ById(
+      //     null, 'Code = ?', [CheckListTemplateCode]);
+
+      // for (int i = 0; i < attachmentList.length; i++) {
+      //   MNCLM1 mnclm1 = attachmentList[i];
+      //   checkListAttachment.Attachments.attachments.add(MNCLD2(
+      //     TransId: TransId,
+      //     insertedIntoDatabase: false,
+      //     Attachment: mnclm1.Attachment,
+      //     Remarks: mnclm1.Remarks??'',
+      //     RowId: i,
+      //   ));
+      // }
+
       Get.to(() => CheckListDocument(0));
 
       // MNOCLDViewModel.MNCLD1 = db.MNCLM1.Where(x => x.Code == CheckListTemplateCode).ToList().Select(y => new MNCLD1
