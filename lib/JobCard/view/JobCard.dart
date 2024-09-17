@@ -9,7 +9,6 @@ import 'package:maintenance/JobCard/view/Attachment.dart';
 import 'package:maintenance/JobCard/view/GeneralData.dart';
 import 'package:maintenance/JobCard/view/ItemDetails/ItemDetails.dart';
 import 'package:maintenance/JobCard/view/ProblemDetails.dart';
-import 'package:maintenance/JobCard/view/SectionDetails.dart';
 import 'package:maintenance/JobCard/view/ServiceDetails/ServiceDetails.dart';
 import 'package:maintenance/JobCard/view/TyreMaintenance.dart';
 import 'package:maintenance/JobCard/view/WhyWhyAnalysis.dart';
@@ -57,7 +56,7 @@ class _ViewJobCardState extends State<ViewJobCard> {
       },
       canPop: false,
       child: DefaultTabController(
-        length: 8,
+        length: 7,
         initialIndex: widget.index,
         child: Scaffold(
           key: key,
@@ -116,10 +115,7 @@ class _ViewJobCardState extends State<ViewJobCard> {
                             child: Text(
                           "Problem Details",
                         )),
-                        Tab(
-                            child: Text(
-                          "Section Details",
-                        )),
+
                       ],
                     ),
                   ],
@@ -137,7 +133,6 @@ class _ViewJobCardState extends State<ViewJobCard> {
               TyreMaintenance(),
               WhyWhyAnalysis(),
               ProblemDetails(),
-              SectionDetails(),
             ],
           ),
         ),

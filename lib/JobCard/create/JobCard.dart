@@ -18,7 +18,6 @@ import 'package:maintenance/JobCard/create/GeneralData.dart';
 import 'package:maintenance/JobCard/create/ItemDetails/ItemDetails.dart';
 import 'package:maintenance/JobCard/create/ProblemDetails.dart';
 import 'package:maintenance/JobCard/create/SearchJobCardDoc.dart';
-import 'package:maintenance/JobCard/create/SectionDetails.dart';
 import 'package:maintenance/JobCard/create/ServiceDetails/ServiceDetails.dart';
 import 'package:maintenance/JobCard/create/TyreMaintenance.dart';
 import 'package:maintenance/JobCard/create/WhyWhyAnalysis.dart';
@@ -75,7 +74,7 @@ class _JobCardState extends State<JobCard> {
       },
       canPop: false,
       child: DefaultTabController(
-        length: 8,
+        length: 7,
         initialIndex: widget.index,
         child: Scaffold(
           key: key,
@@ -134,10 +133,7 @@ class _JobCardState extends State<JobCard> {
                             child: Text(
                           "Problem Details",
                         )),
-                        Tab(
-                            child: Text(
-                          "Section Details",
-                        )),
+
                       ],
                     ),
                   ],
@@ -249,7 +245,7 @@ class _JobCardState extends State<JobCard> {
               TyreMaintenance(),
               WhyWhyAnalysis(),
               ProblemDetails(),
-              SectionDetails(),
+
             ],
           ),
           floatingActionButton: FloatingActionButton(
@@ -433,20 +429,6 @@ class _JobCardState extends State<JobCard> {
                 }
               }
               getSuccessSnackBar('Job Card created successfully');
-              // for (int i = 0; i < SectionDetails.list.length; i++) {
-              //   MNJCD7 qut1model = SectionDetails.list[i];
-              //   qut1model.ID = i;
-              //   qut1model.RowId = i;
-              //   qut1model.hasCreated = true;
-              //   qut1model.CreateDate = DateTime.now();
-              //
-              //   if (!qut1model.insertedIntoDatabase) {
-              //     qut1model.CreateDate = DateTime.now();
-              //     qut1model.UpdateDate = DateTime.now();
-              //
-              //     await database.insert('MNJCD7', qut1model.toJson());
-              //   }
-              // }
             });
             goToNewJobCardDocument();
           } catch (e) {
