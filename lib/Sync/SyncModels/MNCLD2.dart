@@ -1,9 +1,12 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:maintenance/Component/AppConfig.dart';
 import 'package:maintenance/Component/LogFileFunctions.dart';
 import 'package:maintenance/Component/SnackbarComponent.dart';
+import 'package:maintenance/Component/UploadImageToServer.dart';
 import 'package:maintenance/DatabaseInitialization.dart';
 import 'package:maintenance/Sync/CustomURL.dart';
 import 'package:maintenance/Sync/DataSync.dart';
@@ -240,6 +243,15 @@ Future<String> insertMNCLD2ToServer(BuildContext? context,
       sentSuccessInServer = false;
       try {
         Map<String, dynamic> map = list[i].toJson();
+        if (list[i].Attachment?.contains(appPkg) ?? false) {
+          File imageFile = File(list[i].Attachment ?? '');
+          if (await imageFile.exists()) {
+            String url =
+            await uploadImageToServer(imageFile, null, setURL: (url) {});
+            list[i].Attachment = url;
+            map = list[i].toJson();
+          }
+        }
         map.remove('ID');
         var res = await http
             .post(Uri.parse(prefix + "MNCLD2/Add"),

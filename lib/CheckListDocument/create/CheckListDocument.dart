@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:maintenance/ApprovalStatus/ApprovalListUIComponent.dart';
@@ -9,11 +8,9 @@ import 'package:maintenance/CheckListDocument/create/CheckListDetails/CheckListD
 import 'package:maintenance/CheckListDocument/create/GeneralData.dart';
 import 'package:maintenance/CheckListDocument/create/SearchCheckListDoc.dart';
 import 'package:maintenance/Component/BackPressedWarning.dart';
-
 import 'package:maintenance/Component/CustomColor.dart';
 import 'package:maintenance/Component/CustomFont.dart';
 import 'package:maintenance/Component/GenerateTransId.dart';
-import 'package:maintenance/Component/GetCurrentLocation.dart';
 import 'package:maintenance/Component/LogFileFunctions.dart';
 import 'package:maintenance/Component/ShowLoader.dart';
 import 'package:maintenance/Component/SnackbarComponent.dart';
@@ -263,7 +260,6 @@ class _CheckListDocumentState extends State<CheckListDocument> {
           CheckListDocument.saveButtonPressed = true;
           showLoader(context);
 
-
           final Database db = await initializeDB(context);
           try {
             await db.transaction((database) async {
@@ -341,20 +337,16 @@ class _CheckListDocumentState extends State<CheckListDocument> {
               }
               for (int i = 0; i < Attachments.attachments.length; i++) {
                 MNCLD2 qut1model = Attachments.attachments[i];
-                qut1model.ID = i;
                 qut1model.RowId = i;
                 qut1model.hasCreated = true;
                 qut1model.CreateDate = DateTime.now();
+                qut1model.UpdateDate = DateTime.now();
 
-                if (!qut1model.insertedIntoDatabase) {
-                  qut1model.CreateDate = DateTime.now();
-                  qut1model.UpdateDate = DateTime.now();
-
-                  await database.insert('MNCLD2', qut1model.toJson());
-                }
+                await database.insert('MNCLD2', qut1model.toJson());
               }
             });
-            await GenerateTransId.updateDonNum(docName: 'MNCL',tableName: 'MNOCLD');
+            await GenerateTransId.updateDonNum(
+                docName: 'MNCL', tableName: 'MNOCLD');
             goToNewCheckListDocument();
           } catch (e) {
             writeToLogFile(

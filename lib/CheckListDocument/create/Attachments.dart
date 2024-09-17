@@ -170,49 +170,49 @@ class _AttachmentsState extends State<Attachments> {
                         ),
                       ),
                     ),
-              Row(
-                children: [
-                  Spacer(),
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: Container(
-                      width: MediaQuery.of(context).size.width / 2,
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Material(
-                          borderRadius: BorderRadius.circular(10.0),
-                          color: barColor,
-                          elevation: 0.0,
-                          child: MaterialButton(
-                            onPressed: () async {
-                              // print(Attachment.imageFile!.path);
-                              // uploadImageToServer(Attachment.imageFile!, context, setURL: (String url){
-                              //   print(url);
-                              // });
-                            },
-                            minWidth: MediaQuery.of(context).size.width,
-                            child: Text(
-                              "Upload",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 20.0),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  IconButton(
-                    icon: Icon(
-                      Icons.select_all,
-                      color: Colors.white,
-                    ),
-                    onPressed: null,
-                  )
-                ],
-              ),
+              // Row(
+              //   children: [
+              //     Spacer(),
+              //     Align(
+              //       alignment: Alignment.centerRight,
+              //       child: Container(
+              //         width: MediaQuery.of(context).size.width / 2,
+              //         child: Padding(
+              //           padding: const EdgeInsets.all(8.0),
+              //           child: Material(
+              //             borderRadius: BorderRadius.circular(10.0),
+              //             color: barColor,
+              //             elevation: 0.0,
+              //             child: MaterialButton(
+              //               onPressed: () async {
+              //                 // print(Attachment.imageFile!.path);
+              //                 // uploadImageToServer(Attachment.imageFile!, context, setURL: (String url){
+              //                 //   print(url);
+              //                 // });
+              //               },
+              //               minWidth: MediaQuery.of(context).size.width,
+              //               child: Text(
+              //                 "Upload",
+              //                 textAlign: TextAlign.center,
+              //                 style: TextStyle(
+              //                     color: Colors.white,
+              //                     fontWeight: FontWeight.bold,
+              //                     fontSize: 20.0),
+              //               ),
+              //             ),
+              //           ),
+              //         ),
+              //       ),
+              //     ),
+              //     IconButton(
+              //       icon: Icon(
+              //         Icons.select_all,
+              //         color: Colors.white,
+              //       ),
+              //       onPressed: null,
+              //     )
+              //   ],
+              // ),
               Row(
                 children: [
                   Spacer(),
@@ -232,7 +232,6 @@ class _AttachmentsState extends State<Attachments> {
                                   Attachments.attachment != "") {
                                 setState(() {
                                   Attachments.attachments.add(MNCLD2(
-                                    ID: 0,
                                     TransId: GeneralData.transId ?? "",
                                     RowId: Attachments.attachments.length,
                                     Attachment: Attachments.imageFile?.path,
