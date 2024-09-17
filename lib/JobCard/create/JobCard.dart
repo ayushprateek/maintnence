@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:maintenance/Component/BackPressedWarning.dart';
-
+import 'package:maintenance/Component/CompanyDetails.dart';
 import 'package:maintenance/Component/CustomColor.dart';
 import 'package:maintenance/Component/CustomFont.dart';
-import 'package:maintenance/Component/GetCurrentLocation.dart';
 import 'package:maintenance/Component/LogFileFunctions.dart';
 import 'package:maintenance/Component/MenuDescription.dart';
 import 'package:maintenance/Component/Mode.dart';
@@ -30,7 +28,6 @@ import 'package:maintenance/Sync/SyncModels/MNJCD2.dart';
 import 'package:maintenance/Sync/SyncModels/MNJCD3.dart';
 import 'package:maintenance/Sync/SyncModels/MNJCD5.dart';
 import 'package:maintenance/Sync/SyncModels/MNJCD6.dart';
-import 'package:maintenance/Sync/SyncModels/MNJCD7.dart';
 import 'package:maintenance/Sync/SyncModels/MNOJCD.dart';
 import 'package:maintenance/main.dart';
 import 'package:sqflite/sqlite_api.dart';
@@ -269,10 +266,28 @@ class _JobCardState extends State<JobCard> {
     );
   }
 
+  bool checkWhyWhyAnalysis() {
+    bool isValid = true;
+    double num = double.tryParse(
+            CompanyDetails.ocinModel?.NoOfWhyAnalysis?.toString() ?? "") ??
+        0.0;
+    if (WhyWhyAnalysis.list.length < num) {
+      getErrorSnackBar('Please add at least $num Why Why Analysis');
+      return false;
+    }
+    for (MNJCD5 mnjcd5 in WhyWhyAnalysis.list) {
+      if (mnjcd5.Remarks == null || mnjcd5.Remarks?.isNotEmpty == false) {
+        isValid = false;
+        getErrorSnackBar('Please add remarks in all Why Why Analysis');
+        break;
+      }
+    }
+    return isValid;
+  }
+
   save() async {
-    //GeneralData.isSelected
-    JobCard.saveButtonPressed = false;
-    if (DataSync.isSyncing()) {
+    if (!checkWhyWhyAnalysis()) {
+    } else if (DataSync.isSyncing()) {
       getErrorSnackBar(DataSync.syncingErrorMsg);
     } else if (!(await Mode.isCreate(MenuDescription.salesQuotation))) {
       getErrorSnackBar("You are not authorised to create this document");
@@ -285,7 +300,7 @@ class _JobCardState extends State<JobCard> {
         if (!JobCard.saveButtonPressed) {
           JobCard.saveButtonPressed = true;
           showLoader(context);
-          
+
           String str = 'TransId = ?';
 
           final Database db = await initializeDB(context);

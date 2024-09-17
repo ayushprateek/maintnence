@@ -3,6 +3,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:maintenance/Component/BackPressedWarning.dart';
+import 'package:maintenance/Component/CompanyDetails.dart';
 import 'package:maintenance/Component/CustomColor.dart';
 import 'package:maintenance/Component/CustomFont.dart';
 import 'package:maintenance/Component/GenerateTransId.dart';
@@ -349,9 +350,28 @@ class _EditJobCardState extends State<EditJobCard> {
       ),
     );
   }
+  bool checkWhyWhyAnalysis() {
+    bool isValid = true;
+    double num = double.tryParse(
+        CompanyDetails.ocinModel?.NoOfWhyAnalysis?.toString() ?? "") ??
+        0.0;
+    if (WhyWhyAnalysis.list.length < num) {
+      getErrorSnackBar('Please add at least $num Why Why Analysis');
+      return false;
+    }
+    for (MNJCD5 mnjcd5 in WhyWhyAnalysis.list) {
+      if (mnjcd5.Remarks == null || mnjcd5.Remarks?.isNotEmpty == false) {
+        isValid = false;
+        getErrorSnackBar('Please add remarks in all Why Why Analysis');
+        break;
+      }
+    }
+    return isValid;
+  }
 
   save() async {
-    if (DataSync.isSyncing()) {
+    if (!checkWhyWhyAnalysis()) {
+    } else if (DataSync.isSyncing()) {
       getErrorSnackBar(DataSync.syncingErrorMsg);
     } else if (!(await Mode.isCreate(MenuDescription.salesQuotation))) {
       getErrorSnackBar("You are not authorised to create this document");
@@ -364,8 +384,8 @@ class _EditJobCardState extends State<EditJobCard> {
         if (!EditJobCard.saveButtonPressed) {
           EditJobCard.saveButtonPressed = true;
           showLoader(context);
-          
-          
+
+
 
           final Database db = await initializeDB(context);
           try {

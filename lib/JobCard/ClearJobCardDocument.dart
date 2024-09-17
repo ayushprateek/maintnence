@@ -298,10 +298,11 @@ goToNewJobCardDocument() async {
   await ClearJobCardDoc.clearGeneralData();
   jcdCreateItemDetails.ItemDetails.items.clear();
   jcdCreateServiceDetails.ServiceDetails.items.clear();
+  jcdCreateWhyWhyAnalysis.WhyWhyAnalysis.list.clear();
   double num = double.tryParse(
           CompanyDetails.ocinModel?.NoOfWhyAnalysis?.toString() ?? "") ??
       0.0;
-  for (int i = 0; i <= num; i++) {
+  for (int i = 0; i < num; i++) {
     jcdCreateWhyWhyAnalysis.WhyWhyAnalysis.list
         .add(MNJCD5(insertedIntoDatabase: false));
   }
