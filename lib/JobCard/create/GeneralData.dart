@@ -451,22 +451,29 @@ class _GeneralDataState extends State<GeneralData> {
                   GeneralData.lastReadingDate = _lastReadingDate.text = val;
                 },
               ),
-              if (GeneralData.type == 'Preventive')
-                getDisabledTextField(
-                  controller: _lastReading,
-                  labelText: 'Last Reading',
-                  onChanged: (val) {
-                    GeneralData.lastReading = val;
-                  },
-                )
-              else
-                getTextField(
-                  controller: _lastReading,
-                  labelText: 'Last Reading',
-                  onChanged: (val) {
-                    GeneralData.lastReading = val;
-                  },
-                ),
+              getDisabledTextField(
+                controller: _lastReading,
+                labelText: 'Last Reading',
+                onChanged: (val) {
+                  GeneralData.lastReading = val;
+                },
+              ),
+              // if (GeneralData.type == 'Preventive')
+              //   getDisabledTextField(
+              //     controller: _lastReading,
+              //     labelText: 'Last Reading',
+              //     onChanged: (val) {
+              //       GeneralData.lastReading = val;
+              //     },
+              //   )
+              // else
+              //   getTextField(
+              //     controller: _lastReading,
+              //     labelText: 'Last Reading',
+              //     onChanged: (val) {
+              //       GeneralData.lastReading = val;
+              //     },
+              //   ),
               if (GeneralData.type == 'Preventive')
                 getDisabledTextField(
                   controller: _subject,
