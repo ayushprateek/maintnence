@@ -417,6 +417,7 @@ class _JobCardState extends State<JobCard> {
                   await database.insert('MNJCD6', qut1model.toJson());
                 }
               }
+              getSuccessSnackBar('Job Card created successfully');
               // for (int i = 0; i < SectionDetails.list.length; i++) {
               //   MNJCD7 qut1model = SectionDetails.list[i];
               //   qut1model.ID = i;

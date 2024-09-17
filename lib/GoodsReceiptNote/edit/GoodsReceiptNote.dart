@@ -237,7 +237,7 @@ class _JobCardState extends State<EditGoodsRecepitNote> {
               map.removeWhere((key, value) => value == null || value == '');
               await database
                   .update('PROPDN', map, where: 'TransId = ?', whereArgs: [GeneralData.transId]);
-              getSuccessSnackBar("Sales Quotation Updated Successfully");
+              getSuccessSnackBar("Goods Receipt Note Updated Successfully");
 
               //ITEM DETAILS
               print("Item Details ");
@@ -272,7 +272,7 @@ class _JobCardState extends State<EditGoodsRecepitNote> {
                   .removeWhere((key, value) => value == null || value == '');
               await database
                   .update('PRPDN2', shippingMap, where: 'TransId = ?', whereArgs: [GeneralData.transId]);
-              getSuccessSnackBar("Sales Quotation Updated Successfully");
+              getSuccessSnackBar("Goods Receipt Note Updated Successfully");
               //BILLING ADDRESS
               PRPDN3 billingAddress = BillingAddress.getBillingAddress();
               print(billingAddress);
@@ -283,7 +283,7 @@ class _JobCardState extends State<EditGoodsRecepitNote> {
                   .removeWhere((key, value) => value == null || value == '');
               await database
                   .update('PRPDN3', billingMap, where: 'TransId = ?', whereArgs: [GeneralData.transId]);
-              getSuccessSnackBar("Sales Quotation Updated Successfully");
+              getSuccessSnackBar("Goods Receipt Note Updated Successfully");
             });
             goToNewGRNDocument();
           } catch (e) {

@@ -268,7 +268,7 @@ class _JobCardState extends State<GoodsRecepitNote> {
               print(generalData.toJson());
               print(generalData);
               //CreateDate
-              getSuccessSnackBar("Creating Sales Quotation...");
+              getSuccessSnackBar("Creating Goods Receipt Note...");
               generalData.CreateDate = DateTime.now();
               generalData.UpdateDate = DateTime.now();
               generalData.CreatedBy = userModel.UserCode;
@@ -310,7 +310,7 @@ class _JobCardState extends State<GoodsRecepitNote> {
               billingAddress.UpdateDate = DateTime.now();
               billingAddress.hasCreated = true;
               await database.insert('PRPDN3', billingAddress.toJson());
-              getSuccessSnackBar("Sales Quotation Successfully Created");
+              getSuccessSnackBar("Goods Receipt Note Successfully Created");
             });
             goToNewGRNDocument();
           } catch (e) {

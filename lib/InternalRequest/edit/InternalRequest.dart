@@ -217,7 +217,7 @@ class EditInternalRequestState extends State<EditInternalRequest> {
               map.removeWhere((key, value) => value == null || value == '');
               await database
                   .update('PROITR', map, where: 'TransId = ?', whereArgs: [GeneralData.transId]);
-              getSuccessSnackBar("Sales Quotation Updated Successfully");
+              getSuccessSnackBar("Internal Request Updated Successfully");
 
               //ITEM DETAILS
               print("Item Details ");

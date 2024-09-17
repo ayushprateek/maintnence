@@ -216,7 +216,7 @@ class _JobCardState extends State<EditPurchaseRequest> {
               map.removeWhere((key, value) => value == null || value == '');
               await database
                   .update('PROPRQ', map, where: 'TransId = ?', whereArgs: [GeneralData.transId]);
-              getSuccessSnackBar("Sales Quotation Updated Successfully");
+              getSuccessSnackBar("Purchase Request Updated Successfully");
 
               //ITEM DETAILS
               print("Item Details ");

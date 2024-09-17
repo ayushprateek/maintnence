@@ -246,7 +246,7 @@ class _JobCardState extends State<PurchaseRequest> {
                   .removeWhere((key, value) => value == null || value == '');
               print(generalData.toJson());
               print(generalData);
-              getSuccessSnackBar("Creating Sales Quotation...");
+              getSuccessSnackBar("Purchase Request Quotation...");
               generalData.CreateDate = DateTime.now();
               generalData.UpdateDate = DateTime.now();
               generalData.CreatedBy = userModel.UserCode;

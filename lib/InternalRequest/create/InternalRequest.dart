@@ -247,7 +247,7 @@ class InternalRequestState extends State<InternalRequest> {
               print(generalData.toJson());
               print(generalData);
               //CreateDate
-              getSuccessSnackBar("Creating Sales Quotation...");
+              getSuccessSnackBar("Creating Internal Request...");
               generalData.CreateDate = DateTime.now();
               generalData.UpdateDate = DateTime.now();
               generalData.CreatedBy = userModel.UserCode;

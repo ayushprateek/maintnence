@@ -216,7 +216,7 @@ class _JobCardState extends State<EditGoodsIssue> {
               map.removeWhere((key, value) => value == null || value == '');
               await database
                   .update('IMOGDI', map, where: 'TransId = ?', whereArgs: [GeneralData.transId]);
-              getSuccessSnackBar("Sales Quotation Updated Successfully");
+              getSuccessSnackBar("Goods Issue Updated Successfully");
 
               //ITEM DETAILS
               print("Item Details ");

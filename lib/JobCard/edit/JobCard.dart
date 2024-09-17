@@ -520,6 +520,7 @@ class _EditJobCardState extends State<EditJobCard> {
               //   }
               // }
             });
+            getSuccessSnackBar('Job Card updated successfully');
             goToNewJobCardDocument();
           } catch (e) {
             writeToLogFile(

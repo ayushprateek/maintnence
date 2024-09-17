@@ -267,7 +267,7 @@ class _JobCardState extends State<GoodsIssue> {
               print(generalData.toJson());
               print(generalData);
               //CreateDate
-              getSuccessSnackBar("Creating Sales Quotation...");
+              getSuccessSnackBar("Creating Goods Issue...");
               generalData.CreateDate = DateTime.now();
               generalData.UpdateDate = DateTime.now();
               generalData.CreatedBy = userModel.UserCode;
