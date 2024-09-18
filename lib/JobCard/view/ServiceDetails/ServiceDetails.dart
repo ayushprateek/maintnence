@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:maintenance/Component/Common.dart';
 import 'package:maintenance/Component/CustomFont.dart';
 import 'package:maintenance/Sync/SyncModels/MNJCD2.dart';
 
@@ -62,25 +63,30 @@ class _ServiceDetailsState extends State<ServiceDetails> {
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                              crossAxisAlignment:
+                              CrossAxisAlignment.start,
                               children: [
                                 Expanded(
                                   flex: 8,
                                   child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    mainAxisAlignment:
+                                    MainAxisAlignment.start,
                                     children: [
                                       Padding(
                                         padding: const EdgeInsets.only(
-                                            left: 8.0, right: 8.0, top: 4.0),
+                                            left: 8.0,
+                                            right: 8.0,
+                                            top: 4.0),
                                         child: Align(
                                           alignment: Alignment.topLeft,
                                           child: Text.rich(
                                             TextSpan(
                                               children: [
                                                 getPoppinsTextSpanHeading(
-                                                    text: 'Service Name'),
+                                                    text: 'Equipment'),
                                                 getPoppinsTextSpanDetails(
-                                                    text: mnjcd2.ServiceName ??
+                                                    text: mnjcd2
+                                                        .EquipmentCode ??
                                                         ''),
                                               ],
                                             ),
@@ -89,7 +95,51 @@ class _ServiceDetailsState extends State<ServiceDetails> {
                                       ),
                                       Padding(
                                         padding: const EdgeInsets.only(
-                                            left: 8.0, right: 8.0, top: 4.0),
+                                            left: 8.0,
+                                            right: 8.0,
+                                            top: 4.0),
+                                        child: Align(
+                                          alignment: Alignment.topLeft,
+                                          child: Text.rich(
+                                            TextSpan(
+                                              children: [
+                                                getPoppinsTextSpanHeading(
+                                                    text: 'Service'),
+                                                getPoppinsTextSpanDetails(
+                                                    text: mnjcd2
+                                                        .ServiceName ??
+                                                        ''),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.only(
+                                            left: 8.0,
+                                            right: 8.0,
+                                            top: 4.0),
+                                        child: Align(
+                                          alignment: Alignment.topLeft,
+                                          child: Text.rich(
+                                            TextSpan(
+                                              children: [
+                                                getPoppinsTextSpanHeading(
+                                                    text: 'Item'),
+                                                getPoppinsTextSpanDetails(
+                                                    text:
+                                                    mnjcd2.ItemName ??
+                                                        ''),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.only(
+                                            left: 8.0,
+                                            right: 8.0,
+                                            top: 4.0),
                                         child: Align(
                                           alignment: Alignment.topLeft,
                                           child: Text.rich(
@@ -98,7 +148,73 @@ class _ServiceDetailsState extends State<ServiceDetails> {
                                                 getPoppinsTextSpanHeading(
                                                     text: 'Supplier'),
                                                 getPoppinsTextSpanDetails(
-                                                    text: mnjcd2.SupplierName ??
+                                                    text: mnjcd2
+                                                        .SupplierName ??
+                                                        ''),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.only(
+                                            left: 8.0,
+                                            right: 8.0,
+                                            top: 4.0),
+                                        child: Align(
+                                          alignment: Alignment.topLeft,
+                                          child: Text.rich(
+                                            TextSpan(
+                                              children: [
+                                                getPoppinsTextSpanHeading(
+                                                    text: 'Quantity'),
+                                                getPoppinsTextSpanDetails(
+                                                    text: mnjcd2.Quantity
+                                                        ?.toStringAsFixed(
+                                                        2) ??
+                                                        '0'),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.only(
+                                            left: 8.0,
+                                            right: 8.0,
+                                            top: 4.0),
+                                        child: Align(
+                                          alignment: Alignment.topLeft,
+                                          child: Text.rich(
+                                            TextSpan(
+                                              children: [
+                                                getPoppinsTextSpanHeading(
+                                                    text: 'InfoPrice'),
+                                                getPoppinsTextSpanDetails(
+                                                    text: mnjcd2.InfoPrice
+                                                        ?.toStringAsFixed(
+                                                        2) ??
+                                                        '0'),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.only(
+                                            left: 8.0,
+                                            right: 8.0,
+                                            top: 4.0),
+                                        child: Align(
+                                          alignment: Alignment.topLeft,
+                                          child: Text.rich(
+                                            TextSpan(
+                                              children: [
+                                                getPoppinsTextSpanHeading(
+                                                    text: 'Remarks'),
+                                                getPoppinsTextSpanDetails(
+                                                    text:
+                                                    mnjcd2.Remarks ??
                                                         ''),
                                               ],
                                             ),
@@ -109,30 +225,34 @@ class _ServiceDetailsState extends State<ServiceDetails> {
                                   ),
                                 ),
                                 Expanded(
-                                  flex: 8,
+                                  flex: 9,
                                   child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    mainAxisAlignment:
+                                    MainAxisAlignment.start,
                                     children: [
                                       Padding(
                                         padding: const EdgeInsets.only(
-                                            left: 8.0, right: 8.0, top: 4.0),
-                                        child: Align(
-                                          alignment: Alignment.topLeft,
-                                          child: FittedBox(
-                                            fit: BoxFit.contain,
-                                            child: Text.rich(
-                                              TextSpan(
-                                                children: [
-                                                  getPoppinsTextSpanHeading(
-                                                      text: 'Info Price'),
-                                                  getPoppinsTextSpanDetails(
-                                                      text: mnjcd2.InfoPrice
-                                                              ?.toStringAsFixed(
-                                                                  2) ??
-                                                          '0.0'),
-                                                ],
+                                            top: 4.0, bottom: 4),
+                                        child: SizedBox(
+                                          height: 20,
+                                          child: Row(
+                                            mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                            children: [
+                                              Checkbox(
+                                                value:
+                                                mnjcd2.IsSendableItem,
+                                                onChanged: (bool? value) {
+
+                                                },
                                               ),
-                                            ),
+                                              Expanded(
+                                                  child: getPoppinsText(
+                                                      text:
+                                                      'Sendable Item',
+                                                      textAlign: TextAlign
+                                                          .start)),
+                                            ],
                                           ),
                                         ),
                                       ),
@@ -143,17 +263,125 @@ class _ServiceDetailsState extends State<ServiceDetails> {
                                           height: 20,
                                           child: Row(
                                             mainAxisAlignment:
-                                                MainAxisAlignment.start,
+                                            MainAxisAlignment.start,
                                             children: [
                                               Checkbox(
-                                                value: mnjcd2.IsSendableItem,
-                                                onChanged: (bool? value) {},
+                                                value: mnjcd2
+                                                    .IsSendToSupplier,
+                                                onChanged: (bool? value) {
+
+                                                },
                                               ),
                                               Expanded(
                                                   child: getPoppinsText(
-                                                      text: 'Is Sendable Item',
-                                                      textAlign:
-                                                          TextAlign.start)),
+                                                      text:
+                                                      'Send To Supplier',
+                                                      textAlign: TextAlign
+                                                          .start)),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.only(
+                                            top: 4.0, bottom: 4),
+                                        child: SizedBox(
+                                          height: 20,
+                                          child: Row(
+                                            mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                            children: [
+                                              Checkbox(
+                                                value: mnjcd2
+                                                    .IsReceiveFromSupplier,
+                                                onChanged: (bool? value) {
+
+                                                },
+                                              ),
+                                              Expanded(
+                                                  child: getPoppinsText(
+                                                      text:
+                                                      'Receive From Supplier',
+                                                      textAlign: TextAlign
+                                                          .start)),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.only(
+                                            top: 4.0, bottom: 4),
+                                        child: SizedBox(
+                                          height: 20,
+                                          child: Row(
+                                            mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                            children: [
+                                              Checkbox(
+                                                value: mnjcd2
+                                                    .IsPurchaseRequest,
+                                                onChanged: (bool? value) {
+
+                                                },
+                                              ),
+                                              Expanded(
+                                                  child: getPoppinsText(
+                                                      text:
+                                                      'Purchase Request',
+                                                      textAlign: TextAlign
+                                                          .start)),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.only(
+                                            top: 4.0, bottom: 4),
+                                        child: SizedBox(
+                                          height: 20,
+                                          child: Row(
+                                            mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                            children: [
+                                              Checkbox(
+                                                value: mnjcd2
+                                                    .IsPurchaseOrder,
+                                                onChanged: (bool? value) {
+
+                                                },
+                                              ),
+                                              Expanded(
+                                                  child: getPoppinsText(
+                                                      text:
+                                                      'Purchase Order',
+                                                      textAlign: TextAlign
+                                                          .start)),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.only(
+                                            top: 4.0, bottom: 4),
+                                        child: SizedBox(
+                                          height: 20,
+                                          child: Row(
+                                            mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                            children: [
+                                              Checkbox(
+                                                value: mnjcd2
+                                                    .IsServiceConfirmation,
+                                                onChanged: (bool? value) {
+
+                                                },
+                                              ),
+                                              Expanded(
+                                                  child: getPoppinsText(
+                                                      text:
+                                                      'Service Confirmation',
+                                                      textAlign: TextAlign
+                                                          .start)),
                                             ],
                                           ),
                                         ),
