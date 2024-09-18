@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -83,6 +82,17 @@ Future<List<MNEQG3>> dataSyncMNEQG3() async {
   return mNEQG3FromJson(res.body);
 }
 
+Future<List<MNEQG3>> retrieveMNEQG3ForSearch({
+  int? limit,
+  String? query,
+}) async {
+  query = "%$query%";
+  final Database db = await initializeDB(null);
+  final List<Map<String, Object?>> queryResult = await db.rawQuery(
+      'SELECT * FROM MNEQG3 WHERE Code LIKE "$query" OR Problem LIKE "$query" OR SubProblem LIKE "$query" OR Section LIKE "$query" OR SubSection LIKE "$query" LIMIT $limit');
+  return queryResult.map((e) => MNEQG3.fromJson(e)).toList();
+}
+
 Future<void> insertMNEQG3(Database db, {List? list}) async {
   if (postfix.toLowerCase().contains('all')) {
     await deleteMNEQG3(db);
@@ -143,7 +153,7 @@ Future<void> insertMNEQG3(Database db, {List? list}) async {
           batch.update("MNEQG3", element,
               where:
                   "Code = ? AND RowId = ? AND ifnull(has_created,0) <> ? AND ifnull(has_updated,0) <> ?",
-              whereArgs: [element["Code"],element["RowId"], 1, 1]);
+              whereArgs: [element["Code"], element["RowId"], 1, 1]);
         } catch (e) {
           writeToLogFile(
               text: e.toString(),

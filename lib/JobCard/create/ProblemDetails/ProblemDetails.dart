@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:maintenance/Component/Common.dart';
 import 'package:maintenance/Component/CustomColor.dart';
 import 'package:maintenance/Component/CustomFont.dart';
 import 'package:maintenance/Component/GetTextField.dart';
 import 'package:maintenance/Component/SnackbarComponent.dart';
 import 'package:maintenance/JobCard/create/GeneralData.dart';
+import 'package:maintenance/Lookups/MNEQG3Lookup.dart';
+import 'package:maintenance/Sync/SyncModels/MNEQG3.dart';
 import 'package:maintenance/Sync/SyncModels/MNJCD6.dart';
 
 class ProblemDetails extends StatefulWidget {
@@ -38,22 +41,27 @@ class _ProblemDetailsState extends State<ProblemDetails> {
               const SizedBox(
                 height: 25,
               ),
-              // getTextField(
+              // getDisabledTextField(
               //     controller: _rowId,
               //     labelText: 'RowId'),
-              getTextField(
+              getDisabledTextField(
                   controller: _section,
                   labelText: 'Section',
-                  enableLookup: true),
-              getTextField(
+                  enableLookup: true,
+                  onLookupPressed: () {
+                    Get.to(() => MNEQG3Lookup(onSelection: (MNEQG3 mneqg3) {
+                          _section.text = mneqg3.Section ?? '';
+                        }));
+                  }),
+              getDisabledTextField(
                   controller: _subSection,
                   labelText: 'Sub Section',
                   enableLookup: true),
-              getTextField(
+              getDisabledTextField(
                   controller: _problem,
                   labelText: 'Problem',
                   enableLookup: true),
-              getTextField(
+              getDisabledTextField(
                   controller: _subProblem,
                   labelText: 'Sub Problem',
                   enableLookup: true),
