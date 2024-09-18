@@ -16,7 +16,7 @@ import 'package:maintenance/JobCard/ClearJobCardDocument.dart';
 import 'package:maintenance/JobCard/create/Attachment.dart';
 import 'package:maintenance/JobCard/create/GeneralData.dart';
 import 'package:maintenance/JobCard/create/ItemDetails/ItemDetails.dart';
-import 'package:maintenance/JobCard/create/ProblemDetails.dart';
+import 'package:maintenance/JobCard/create/ProblemDetails/ProblemDetails.dart';
 import 'package:maintenance/JobCard/create/SearchJobCardDoc.dart';
 import 'package:maintenance/JobCard/create/ServiceDetails/ServiceDetails.dart';
 import 'package:maintenance/JobCard/create/TyreMaintenance.dart';
