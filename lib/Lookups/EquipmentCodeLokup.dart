@@ -202,7 +202,7 @@ class _EquipmentCodeLookupState extends State<EquipmentCodeLookup> {
                                                     text: 'Name'),
                                                 getPoppinsTextSpanDetails(
                                                     text: snapshot
-                                                        .data![index].Code),
+                                                        .data![index].Name),
                                               ],
                                             ),
                                           ),

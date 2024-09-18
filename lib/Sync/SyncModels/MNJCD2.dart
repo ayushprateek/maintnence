@@ -13,16 +13,27 @@ class MNJCD2 {
   int? ID;
   String? TransId;
   int? RowId;
+  String? Remarks;
   String? ServiceCode;
   String? ServiceName;
+  String? UOM;
   String? SupplierCode;
   String? SupplierName;
+  String? ItemCode;
+  String? EquipmentCode;
+  String? ItemName;
   double? InfoPrice;
   String? PRTransId;
   int? PRRowId;
+  double? Quantity;
   DateTime? CreateDate;
   DateTime? UpdateDate;
   bool IsSendableItem;
+  bool IsServiceConfirmation;
+  bool IsSendToSupplier;
+  bool IsReceiveFromSupplier;
+  bool IsPurchaseRequest;
+  bool IsPurchaseOrder;
   bool hasCreated;
   bool hasUpdated;
   bool insertedIntoDatabase;
@@ -30,8 +41,11 @@ class MNJCD2 {
   MNJCD2({
     this.ID,
     this.TransId,
+    this.UOM,
+    this.Quantity,
     this.RowId,
     this.ServiceCode,
+    this.EquipmentCode,
     this.ServiceName,
     this.SupplierCode,
     this.SupplierName,
@@ -39,8 +53,16 @@ class MNJCD2 {
     this.PRTransId,
     this.PRRowId,
     this.CreateDate,
+    this.ItemCode,
+    this.ItemName,
+    this.Remarks,
     this.UpdateDate,
     this.IsSendableItem = false,
+    this.IsServiceConfirmation = false,
+    this.IsSendToSupplier = false,
+    this.IsReceiveFromSupplier = false,
+    this.IsPurchaseRequest = false,
+    this.IsPurchaseOrder = false,
     this.hasCreated = false,
     this.hasUpdated = false,
     this.insertedIntoDatabase = true,
@@ -48,8 +70,14 @@ class MNJCD2 {
 
   factory MNJCD2.fromJson(Map<String, dynamic> json) => MNJCD2(
         ID: int.tryParse(json['ID'].toString()) ?? 0,
+        Quantity: double.tryParse(json['Quantity'].toString()) ?? 0.0,
         TransId: json['TransId']?.toString() ?? '',
+        EquipmentCode: json['EquipmentCode']?.toString() ?? '',
         RowId: int.tryParse(json['RowId'].toString()) ?? 0,
+        ItemCode: json['ItemCode']?.toString() ?? '',
+        UOM: json['UOM']?.toString() ?? '',
+        ItemName: json['ItemName']?.toString() ?? '',
+        Remarks: json['Remarks']?.toString() ?? '',
         ServiceCode: json['ServiceCode']?.toString() ?? '',
         ServiceName: json['ServiceName']?.toString() ?? '',
         SupplierCode: json['SupplierCode']?.toString() ?? '',
@@ -62,6 +90,21 @@ class MNJCD2 {
         IsSendableItem: json['IsSendableItem'] is bool
             ? json['IsSendableItem']
             : json['IsSendableItem'] == 1,
+        IsServiceConfirmation: json['IsServiceConfirmation'] is bool
+            ? json['IsServiceConfirmation']
+            : json['IsServiceConfirmation'] == 1,
+        IsSendToSupplier: json['IsSendToSupplier'] is bool
+            ? json['IsSendToSupplier']
+            : json['IsSendToSupplier'] == 1,
+        IsReceiveFromSupplier: json['IsReceiveFromSupplier'] is bool
+            ? json['IsReceiveFromSupplier']
+            : json['IsReceiveFromSupplier'] == 1,
+        IsPurchaseRequest: json['IsPurchaseRequest'] is bool
+            ? json['IsPurchaseRequest']
+            : json['IsPurchaseRequest'] == 1,
+        IsPurchaseOrder: json['IsPurchaseOrder'] is bool
+            ? json['IsPurchaseOrder']
+            : json['IsPurchaseOrder'] == 1,
         hasCreated: json['has_created'] == 1,
         hasUpdated: json['has_updated'] == 1,
       );
@@ -69,7 +112,11 @@ class MNJCD2 {
   Map<String, dynamic> toJson() => {
         'ID': ID,
         'TransId': TransId,
+        'Quantity': Quantity,
+        'EquipmentCode': EquipmentCode,
         'RowId': RowId,
+        'ItemCode': ItemCode,
+        'ItemName': ItemName,
         'ServiceCode': ServiceCode,
         'ServiceName': ServiceName,
         'SupplierCode': SupplierCode,
@@ -77,9 +124,15 @@ class MNJCD2 {
         'InfoPrice': InfoPrice,
         'PRTransId': PRTransId,
         'PRRowId': PRRowId,
+        'Remarks': Remarks,
+        'UOM': UOM,
         'CreateDate': CreateDate?.toIso8601String(),
         'UpdateDate': UpdateDate?.toIso8601String(),
+        'IsServiceConfirmation': IsServiceConfirmation,
         'IsSendableItem': IsSendableItem,
+        'IsSendToSupplier': IsSendToSupplier,
+        'IsPurchaseRequest': IsPurchaseRequest,
+        'IsPurchaseOrder': IsPurchaseOrder,
         "has_created": hasCreated ? 1 : 0,
         "has_updated": hasUpdated ? 1 : 0,
       };

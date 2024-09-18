@@ -289,8 +289,21 @@ class ClearJobCardDoc {
     editCreateJCDService.EditService.infoPrice = '';
     editCreateJCDService.EditService.supplierName = '';
     editCreateJCDService.EditService.supplierCode = '';
+    editCreateJCDService.EditService.remarks= '';
+    editCreateJCDService.EditService.uom= '';
+    editCreateJCDService.EditService.itemCode= '';
+    editCreateJCDService.EditService.itemName= '';
+    editCreateJCDService.EditService.quantity= '';
+    editCreateJCDService.EditService.equipmentCode= '';
+    // editCreateJCDService.EditService.equipmentName= '';
     editCreateJCDService.EditService.isUpdating = false;
     editCreateJCDService.EditService.isSendable = false;
+    
+    editCreateJCDService.EditService.isServiceConfirmation=false;
+    editCreateJCDService.EditService.isSendToSupplier= false;
+    editCreateJCDService.EditService.isReceiveFromSupplier= false;
+    editCreateJCDService.EditService.isPurchaseRequest= false;
+    editCreateJCDService.EditService.isPurchaseOrder= false;
   }
 }
 

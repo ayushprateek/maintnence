@@ -1,16 +1,20 @@
 import 'package:flutter/material.dart';
-
+import 'package:get/get.dart';
 import 'package:maintenance/Component/CustomColor.dart';
 import 'package:maintenance/Component/CustomFont.dart';
 import 'package:maintenance/Component/GetTextField.dart';
 import 'package:maintenance/Sync/SyncModels/OITM.dart';
 
-class AddItem extends StatefulWidget {
+class ItemLookup extends StatefulWidget {
+  Function(OITMModel) onSelection;
+
+  ItemLookup({required this.onSelection});
+
   @override
-  _AddItemState createState() => _AddItemState();
+  _ItemLookupState createState() => _ItemLookupState();
 }
 
-class _AddItemState extends State<AddItem> {
+class _ItemLookupState extends State<ItemLookup> {
   ScrollController _scrollController = ScrollController();
   final TextEditingController _query = TextEditingController();
   int _currentMax = 15;
@@ -202,7 +206,10 @@ class _AddItemState extends State<AddItem> {
                                             .toUpperCase()))
                                 : true) {
                               return InkWell(
-                                onDoubleTap: () {},
+                                onDoubleTap: () {
+                                  widget.onSelection(snapshot.data![index]);
+                                  Get.back();
+                                },
                                 child: Container(
                                   decoration: BoxDecoration(
                                     color: Colors.white,
