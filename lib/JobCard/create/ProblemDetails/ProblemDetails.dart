@@ -56,15 +56,39 @@ class _ProblemDetailsState extends State<ProblemDetails> {
               getDisabledTextField(
                   controller: _subSection,
                   labelText: 'Sub Section',
-                  enableLookup: true),
+                  enableLookup: true,
+                  onLookupPressed: () {
+                    Get.to(() => MNEQG3Lookup(
+                          onSelection: (MNEQG3 mneqg3) {
+                            _subSection.text = mneqg3.SubSection ?? '';
+                          },
+                          condition: "Section='${_section.text}'",
+                        ));
+                  }),
               getDisabledTextField(
                   controller: _problem,
                   labelText: 'Problem',
-                  enableLookup: true),
+                  enableLookup: true,
+                  onLookupPressed: () {
+                    Get.to(() => MNEQG3Lookup(
+                          onSelection: (MNEQG3 mneqg3) {
+                            _problem.text = mneqg3.Problem ?? '';
+                          },
+                          condition: "SubSection='${_subSection.text}'",
+                        ));
+                  }),
               getDisabledTextField(
                   controller: _subProblem,
                   labelText: 'Sub Problem',
-                  enableLookup: true),
+                  enableLookup: true,
+                  onLookupPressed: () {
+                    Get.to(() => MNEQG3Lookup(
+                          onSelection: (MNEQG3 mneqg3) {
+                            _subProblem.text = mneqg3.SubProblem ?? '';
+                          },
+                          condition: "Problem='${_problem.text}'",
+                        ));
+                  }),
 
               Row(
                 children: [

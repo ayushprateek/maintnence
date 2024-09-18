@@ -85,11 +85,23 @@ Future<List<MNEQG3>> dataSyncMNEQG3() async {
 Future<List<MNEQG3>> retrieveMNEQG3ForSearch({
   int? limit,
   String? query,
+  String condition='1',
 }) async {
   query = "%$query%";
   final Database db = await initializeDB(null);
   final List<Map<String, Object?>> queryResult = await db.rawQuery(
-      'SELECT * FROM MNEQG3 WHERE Code LIKE "$query" OR Problem LIKE "$query" OR SubProblem LIKE "$query" OR Section LIKE "$query" OR SubSection LIKE "$query" LIMIT $limit');
+      '''
+      SELECT * FROM MNEQG3 WHERE 
+      (
+      Code LIKE "$query" OR 
+      Problem LIKE "$query" OR 
+      SubProblem LIKE "$query" OR 
+      Section LIKE "$query" OR 
+      SubSection LIKE "$query" 
+      )
+      and $condition 
+      LIMIT $limit
+      ''');
   return queryResult.map((e) => MNEQG3.fromJson(e)).toList();
 }
 

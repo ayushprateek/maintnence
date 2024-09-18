@@ -7,8 +7,11 @@ import 'package:maintenance/Sync/SyncModels/MNEQG3.dart';
 
 class MNEQG3Lookup extends StatefulWidget {
   final Function(MNEQG3) onSelection;
+  String condition;
 
-  MNEQG3Lookup({required this.onSelection});
+  MNEQG3Lookup({required this.onSelection,
+  this.condition='1',
+  });
 
   @override
   _MNEQG3LookupState createState() => _MNEQG3LookupState();
@@ -124,7 +127,7 @@ class _MNEQG3LookupState extends State<MNEQG3Lookup> {
             ),
             FutureBuilder(
                 future: retrieveMNEQG3ForSearch(
-                    query: _query.text, limit: _currentMax),
+                    query: _query.text, limit: _currentMax,condition: widget.condition),
                 builder: (context, AsyncSnapshot<List<MNEQG3>> snapshot) {
                   if (!snapshot.hasData) return Container();
                   if (snapshot.data?.isEmpty == true) {
