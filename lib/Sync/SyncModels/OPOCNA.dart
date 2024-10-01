@@ -25,6 +25,7 @@ class OPOCNA {
   String? PaymentTermName;
   int? PaymentTermDays;
   String? ApprovalStatus;
+  String? ApprovedBy;
   String? DocStatus;
   String? BaseTransId;
   double? TotBDisc;
@@ -64,6 +65,7 @@ class OPOCNA {
     this.ContactPersonName,
     this.MobileNo,
     this.PostingDate,
+    this.ApprovedBy,
     this.ValidUntill,
     this.Currency,
     this.CurrRate,
@@ -110,6 +112,7 @@ class OPOCNA {
         ContactPersonId: int.tryParse(json['ContactPersonId'].toString()) ?? 0,
         ContactPersonName: json['ContactPersonName']?.toString() ?? '',
         MobileNo: json['MobileNo']?.toString() ?? '',
+    ApprovedBy: json['ApprovedBy']?.toString() ?? '',
         PostingDate: DateTime.tryParse(json['PostingDate'].toString()),
         ValidUntill: DateTime.tryParse(json['ValidUntill'].toString()),
         Currency: json['Currency']?.toString() ?? '',
@@ -155,6 +158,7 @@ class OPOCNA {
         'CardCode': CardCode,
         'CardName': CardName,
         'RefNo': RefNo,
+        'ApprovedBy': ApprovedBy,
         'ContactPersonId': ContactPersonId,
         'ContactPersonName': ContactPersonName,
         'MobileNo': MobileNo,
