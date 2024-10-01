@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:cached_network_image/cached_network_image.dart';
+// import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -56,15 +56,15 @@ class _CustomDrawerState extends State<CustomDrawer> {
                       userModel.Name,
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
-                    // currentAccountPicture: ClipRRect(
-                    //     borderRadius: BorderRadius.circular(15.0),
-                    //     child: Image.asset(logoPath)),
-                    currentAccountPicture: CachedNetworkImage(
-                      imageUrl: "https://www.litpl.com/static/img/user.png",
-                      placeholder: (context, url) =>
-                          CircularProgressIndicator(),
-                      errorWidget: (context, url, error) => Icon(Icons.error),
-                    ),
+                    currentAccountPicture: ClipRRect(
+                        borderRadius: BorderRadius.circular(15.0),
+                        child: Image.asset(logoPath)),
+                    // currentAccountPicture: CachedNetworkImage(
+                    //   imageUrl: "https://www.litpl.com/static/img/user.png",
+                    //   placeholder: (context, url) =>
+                    //       CircularProgressIndicator(),
+                    //   errorWidget: (context, url, error) => Icon(Icons.error),
+                    // ),
                     decoration: new BoxDecoration(
                       color: barColor,
                     ),
