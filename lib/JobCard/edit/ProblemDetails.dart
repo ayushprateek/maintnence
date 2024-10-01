@@ -117,8 +117,8 @@ class _ProblemDetailsState extends State<ProblemDetails> {
                                 for (MNJCD6 mnjcd6 in ProblemDetails.list) {
                                   if (mnjcd6.RowId ==
                                       (int.tryParse(_rowId.text) ?? 0)) {
-                                    mnjcd6.Section = _section.text;
-                                    mnjcd6.SubSection = _subSection.text;
+                                    // mnjcd6.Section = _section.text;
+                                    // mnjcd6.SubSection = _subSection.text;
                                     mnjcd6.Problem = _problem.text;
                                     mnjcd6.SubProblem = _subProblem.text;
                                   }
@@ -129,8 +129,8 @@ class _ProblemDetailsState extends State<ProblemDetails> {
                                   RowId: ProblemDetails.list.length,
                                   insertedIntoDatabase: false,
                                   TransId: GeneralData.transId,
-                                  Section: _section.text,
-                                  SubSection: _subSection.text,
+                                  // Section: _section.text,
+                                  // SubSection: _subSection.text,
                                   Problem: _problem.text,
                                   SubProblem: _subProblem.text,
                                 ));
@@ -199,49 +199,49 @@ class _ProblemDetailsState extends State<ProblemDetails> {
                           Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Expanded(
-                                flex: 8,
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.only(
-                                          left: 8.0, right: 8.0, top: 4.0),
-                                      child: Align(
-                                        alignment: Alignment.topLeft,
-                                        child: Text.rich(
-                                          TextSpan(
-                                            children: [
-                                              getPoppinsTextSpanHeading(
-                                                  text: 'Section'),
-                                              getPoppinsTextSpanDetails(
-                                                  text: mnjcd6.Section ?? ''),
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(
-                                          left: 8.0, right: 8.0, top: 4.0),
-                                      child: Align(
-                                        alignment: Alignment.topLeft,
-                                        child: Text.rich(
-                                          TextSpan(
-                                            children: [
-                                              getPoppinsTextSpanHeading(
-                                                  text: 'SubSection'),
-                                              getPoppinsTextSpanDetails(
-                                                  text:
-                                                  mnjcd6.SubSection ?? ''),
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
+                              // Expanded(
+                              //   flex: 8,
+                              //   child: Column(
+                              //     mainAxisAlignment: MainAxisAlignment.start,
+                              //     children: [
+                              //       Padding(
+                              //         padding: const EdgeInsets.only(
+                              //             left: 8.0, right: 8.0, top: 4.0),
+                              //         child: Align(
+                              //           alignment: Alignment.topLeft,
+                              //           child: Text.rich(
+                              //             TextSpan(
+                              //               children: [
+                              //                 getPoppinsTextSpanHeading(
+                              //                     text: 'Section'),
+                              //                 getPoppinsTextSpanDetails(
+                              //                     text: mnjcd6.Section ?? ''),
+                              //               ],
+                              //             ),
+                              //           ),
+                              //         ),
+                              //       ),
+                              //       Padding(
+                              //         padding: const EdgeInsets.only(
+                              //             left: 8.0, right: 8.0, top: 4.0),
+                              //         child: Align(
+                              //           alignment: Alignment.topLeft,
+                              //           child: Text.rich(
+                              //             TextSpan(
+                              //               children: [
+                              //                 getPoppinsTextSpanHeading(
+                              //                     text: 'SubSection'),
+                              //                 getPoppinsTextSpanDetails(
+                              //                     text:
+                              //                     mnjcd6.SubSection ?? ''),
+                              //               ],
+                              //             ),
+                              //           ),
+                              //         ),
+                              //       ),
+                              //     ],
+                              //   ),
+                              // ),
                               Expanded(
                                 flex: 9,
                                 child: Column(
@@ -294,8 +294,8 @@ class _ProblemDetailsState extends State<ProblemDetails> {
                                   child: InkWell(
                                     onTap: () async {
                                       _rowId.text = mnjcd6.RowId.toString();
-                                      _section.text = mnjcd6.Section ?? '';
-                                      _subSection.text = mnjcd6.SubSection ?? '';
+                                      // _section.text = mnjcd6.Section ?? '';
+                                      // _subSection.text = mnjcd6.SubSection ?? '';
                                       _problem.text = mnjcd6.Problem ?? '';
                                       _subProblem.text = mnjcd6.SubProblem ?? '';
                                     },
