@@ -22,12 +22,6 @@ String googleAPiKey =
 String prefix = "http://103.146.242.248:6006/"; //DEVELOPMENT
 //http://103.146.242.248:6005/ DEVELOPMENT WEBSITE
 
-// String prefix = "http://103.191.130.12:7000/";//MANSA
-// http://103.191.130.12:7001/ MANSA WEBSITE
-
-// String prefix = "http://45.115.219.49:6006/"; //MUKTINATH
-// String prefix = "http://41.216.66.126:6005/API/";
-
 String postfix = "/GetAll";
 
 String credentials = '';
