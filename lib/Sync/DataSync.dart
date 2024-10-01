@@ -362,9 +362,9 @@ class _DataSyncState extends State<DataSync> {
   }
 
   Future<void> initConnectivity() async {
-    ConnectivityResult result;
+    List<ConnectivityResult> connectivityResult;
     try {
-      result = await _connectivity.checkConnectivity();
+      connectivityResult = await (Connectivity().checkConnectivity());
     } on PlatformException catch (e) {
       writeToLogFile(
           text: e.toString(),
@@ -378,76 +378,135 @@ class _DataSyncState extends State<DataSync> {
       return Future.value(null);
     }
 
-    return _updateConnectionStatus(result);
+    return _updateConnectionStatus(connectivityResult);
   }
 
-  Future<void> _updateConnectionStatus(ConnectivityResult result) async {
-    switch (result) {
-      case ConnectivityResult.none:
-        getSuccessSnackBar("Failed to get connectivity.");
-        setState(() {
-          text = "Please check your internet connection";
-        });
-        Connectivity()
-            .onConnectivityChanged
-            .listen((ConnectivityResult result) async {
-          // Got a new connectivity status!
-          try {
-            result = await _connectivity.checkConnectivity();
-          } on PlatformException {}
-          if (!mounted) {
-            return Future.value(null);
-          }
-          _updateConnectionStatus(result);
-        });
-        break;
-      default:
-        getErrorSnackBar("Data Sync Started");
-
-        if (!calledSyncFunc) {
-          calledSyncFunc = true;
-          if (!isFirstTimeSync) {
-            await dataSync(context);
-            await firstTimeSync(context);
-          } else {
-            await firstTimeSync(context);
-          }
-
-          // try {
-          //   await dataSync(context);
-          // } catch (e) {
-          //   // getErrorSnackBar(e.toString());
-          //   log("eeaaae + ${e.toString()}");
-          // }
+  Future<void> _updateConnectionStatus(List<ConnectivityResult> result) async {
+    if (result.contains(ConnectivityResult.none)) {
+      getSuccessSnackBar("Failed to get connectivity.");
+      setState(() {
+        text = "Please check your internet connection";
+      });
+      Connectivity()
+          .onConnectivityChanged
+          .listen((List<ConnectivityResult> result) async {
+        // Got a new connectivity status!
+        try {
+          result = await _connectivity.checkConnectivity();
+        } on PlatformException {}
+        if (!mounted) {
+          return Future.value(null);
         }
-        await setRequiredData();
-        await setRequiredData();
+        _updateConnectionStatus(result);
+      });
+    }
+    else{
+      getErrorSnackBar("Data Sync Started");
 
-        int num = await retrieveNotSyncedDocument();
-        if (num == 0 && (await isInternetAvailable())) {
-          List<Widget> titleRowWidgets = [
-            getHeadingText(
-                text: 'Data sync completed', color: barColor, fontSize: 16),
-            const SizedBox(
-              width: 4,
-            ),
-            Icon(
-              Icons.check_circle,
-              color: Colors.green,
-            )
-          ];
-          List<Widget> actions = [
-            Container(
-                width: MediaQuery.of(context).size.width,
-                alignment: Alignment.center,
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    // if (!isShowNegative)
-                    const Spacer(),
+      if (!calledSyncFunc) {
+        calledSyncFunc = true;
+        if (!isFirstTimeSync) {
+          await dataSync(context);
+          await firstTimeSync(context);
+        } else {
+          await firstTimeSync(context);
+        }
 
-                    TextButton(
+        // try {
+        //   await dataSync(context);
+        // } catch (e) {
+        //   // getErrorSnackBar(e.toString());
+        //   log("eeaaae + ${e.toString()}");
+        // }
+      }
+      await setRequiredData();
+      await setRequiredData();
+
+      int num = await retrieveNotSyncedDocument();
+      if (num == 0 &&(await isInternetAvailable())) {
+        List<Widget> titleRowWidgets = [
+          getHeadingText(
+              text: 'Data sync completed', color: barColor, fontSize: 16),
+          const SizedBox(width: 4,),
+          Icon(Icons.check_circle,color: Colors.green,)];
+        List<Widget> actions = [
+          Container(
+              width: MediaQuery.of(context).size.width,
+              alignment: Alignment.center,
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  // if (!isShowNegative)
+                  const Spacer(),
+
+                  TextButton(
+                    onPressed: () async {
+                      Navigator.pop(context);
+                      if (widget.isComingFromLogin) {
+                        LoginPage.hasSynced = true;
+                        Navigator.pushAndRemoveUntil(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => Dashboard()),
+                                (route) => false);
+                      } else {
+                        Navigator.pop(context);
+                        await isValidAppVersion();
+                      }
+                    },
+                    child: getHeadingText(
+                      text: isFirstTimeSync?'Go to Dashboard':'Go Back',
+                      color: barColor,
+                    ),
+                  ),
+                ],
+              )),
+        ];
+        showDialog(
+          context: context,
+          barrierDismissible: false,
+          builder: (BuildContext context) {
+            if (Platform.isIOS) {
+              return CupertinoAlertDialog(
+                title: Row(
+                  children: titleRowWidgets,
+                ),
+                content: Text("Your syncing has been completed"),
+                actions: actions,
+              );
+            } else {
+              return AlertDialog(
+                title: Row(
+                  children: titleRowWidgets,
+                ),
+                content: Text("Your syncing has been completed"),
+                actions: actions,
+              );
+            }
+          },
+        );
+      }
+      else {
+        setState(() {
+          _currentStep = 0;
+        });
+        List<Widget> titleRowWidgets = [
+          getHeadingText(
+              text: 'Sync Not completed', color: Colors.red, fontSize: 16),
+          const SizedBox(width: 4,),
+          Icon(Icons.error,color: Colors.red,)
+        ];
+        List<Widget> actions = [
+          Container(
+              width: MediaQuery.of(context).size.width,
+              alignment: Alignment.center,
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Expanded(
+                    child: TextButton(
                       onPressed: () async {
+
                         Navigator.pop(context);
                         if (widget.isComingFromLogin) {
                           LoginPage.hasSynced = true;
@@ -455,150 +514,84 @@ class _DataSyncState extends State<DataSync> {
                               context,
                               MaterialPageRoute(
                                   builder: (context) => Dashboard()),
-                              (route) => false);
+                                  (route) => false);
                         } else {
                           Navigator.pop(context);
                           await isValidAppVersion();
                         }
                       },
                       child: getHeadingText(
-                        text: isFirstTimeSync ? 'Go to Dashboard' : 'Go Back',
+                        text: isFirstTimeSync?'Go to Dashboard':'Go Back',
                         color: barColor,
                       ),
                     ),
-                  ],
-                )),
-          ];
-          showDialog(
-            context: context,
-            barrierDismissible: false,
-            builder: (BuildContext context) {
-              if (Platform.isIOS) {
-                return CupertinoAlertDialog(
-                  title: Row(
-                    children: titleRowWidgets,
                   ),
-                  content: Text("Your syncing has been completed"),
-                  actions: actions,
-                );
-              } else {
-                return AlertDialog(
-                  title: Row(
-                    children: titleRowWidgets,
+
+                  Expanded(
+                    child: TextButton(
+                      onPressed: () {
+                        Get.to(() => ShareDatabase());
+                      },
+                      child: getHeadingText(
+                        text: 'Share Info',
+                        color: barColor,
+                      ),
+                    ),
                   ),
-                  content: Text("Your syncing has been completed"),
-                  actions: actions,
-                );
-              }
-            },
-          );
-        } else {
-          setState(() {
-            _currentStep = 0;
-          });
-          List<Widget> titleRowWidgets = [
-            getHeadingText(
-                text: 'Sync Not completed', color: Colors.red, fontSize: 16),
-            const SizedBox(
-              width: 4,
-            ),
-            Icon(
-              Icons.error,
-              color: Colors.red,
-            )
-          ];
-          List<Widget> actions = [
-            Container(
-                width: MediaQuery.of(context).size.width,
-                alignment: Alignment.center,
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
+                  Expanded(
+                    child: TextButton(
+                      onPressed: () {
+                        calledSyncFunc = false;
+                        Navigator.pop(context);
+                        initConnectivity();
+                      },
+                      child: getHeadingText(
+                        text: 'Re sync',
+                        color: Colors.red,
+                      ),
+                    ),
+                  ),
+
+                ],
+              )),
+        ];
+        showDialog(
+          context: context,
+          barrierDismissible: false,
+          builder: (BuildContext context) {
+            if (Platform.isIOS) {
+              return CupertinoAlertDialog(
+                title: Row(
+                  children: titleRowWidgets,
+                ),
+                content: Text("$num record(s) not synced with server"),
+                actions: actions,
+              );
+            } else {
+              return AlertDialog(
+                title: Row(
+                  children: titleRowWidgets,
+                ),
+                content: Row(
                   children: [
-                    Expanded(
-                      child: TextButton(
-                        onPressed: () async {
-                          Navigator.pop(context);
-                          if (widget.isComingFromLogin) {
-                            LoginPage.hasSynced = true;
-                            Navigator.pushAndRemoveUntil(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => Dashboard()),
-                                (route) => false);
-                          } else {
-                            Navigator.pop(context);
-                            await isValidAppVersion();
-                          }
-                        },
-                        child: getHeadingText(
-                          text: isFirstTimeSync ? 'Go to Dashboard' : 'Go Back',
-                          color: barColor,
-                        ),
-                      ),
-                    ),
-                    Expanded(
-                      child: TextButton(
-                        onPressed: () {
-                          Get.to(() => ShareDatabase());
-                        },
-                        child: getHeadingText(
-                          text: 'Share Info',
-                          color: barColor,
-                        ),
-                      ),
-                    ),
-                    Expanded(
-                      child: TextButton(
-                        onPressed: () {
-                          calledSyncFunc = false;
-                          Navigator.pop(context);
-                          initConnectivity();
-                        },
-                        child: getHeadingText(
-                          text: 'Re sync',
-                          color: Colors.red,
-                        ),
-                      ),
-                    ),
+                    Text("$num ",
+                        style:TextStyle(
+                            color:Colors.red,
+                            fontSize: 22,
+                            decoration: TextDecoration.underline,
+                            decorationColor: Colors.red,
+                            fontWeight: FontWeight.bold
+                        )),
+                    Text("record(s) not synced with server"),
                   ],
-                )),
-          ];
-          showDialog(
-            context: context,
-            barrierDismissible: false,
-            builder: (BuildContext context) {
-              if (Platform.isIOS) {
-                return CupertinoAlertDialog(
-                  title: Row(
-                    children: titleRowWidgets,
-                  ),
-                  content: Text("$num record(s) not synced with server"),
-                  actions: actions,
-                );
-              } else {
-                return AlertDialog(
-                  title: Row(
-                    children: titleRowWidgets,
-                  ),
-                  content: Row(
-                    children: [
-                      Text("$num ",
-                          style: TextStyle(
-                              color: Colors.red,
-                              fontSize: 22,
-                              decoration: TextDecoration.underline,
-                              decorationColor: Colors.red,
-                              fontWeight: FontWeight.bold)),
-                      Text("record(s) not synced with server"),
-                    ],
-                  ),
-                  actions: actions,
-                );
-              }
-            },
-          );
-        }
-        getSuccessSnackBar("Data Sync Completed");
+                ),
+                actions: actions,
+              );
+            }
+          },
+        );
+      }
+      getSuccessSnackBar("Data Sync Completed");
       // if (DataSync.isSyncSuccessful) {
       //   if (widget.isComingFromLogin) {
       //     LoginPage.hasSynced = true;
@@ -624,6 +617,242 @@ class _DataSyncState extends State<DataSync> {
       //   });
       // }
     }
+    // switch (result) {
+    //   case ConnectivityResult.none:
+    //     getSuccessSnackBar("Failed to get connectivity.");
+    //     setState(() {
+    //       text = "Please check your internet connection";
+    //     });
+    //     Connectivity()
+    //         .onConnectivityChanged
+    //         .listen((ConnectivityResult result) async {
+    //       // Got a new connectivity status!
+    //       try {
+    //         result = await _connectivity.checkConnectivity();
+    //       } on PlatformException {}
+    //       if (!mounted) {
+    //         return Future.value(null);
+    //       }
+    //       _updateConnectionStatus(result);
+    //     });
+    //     break;
+    //   default:
+    //     getErrorSnackBar("Data Sync Started");
+    //
+    //     if (!calledSyncFunc) {
+    //       calledSyncFunc = true;
+    //       if (!isFirstTimeSync) {
+    //         await dataSync(context);
+    //         await firstTimeSync(context);
+    //       } else {
+    //         await firstTimeSync(context);
+    //       }
+    //
+    //       // try {
+    //       //   await dataSync(context);
+    //       // } catch (e) {
+    //       //   // getErrorSnackBar(e.toString());
+    //       //   log("eeaaae + ${e.toString()}");
+    //       // }
+    //     }
+    //     await setRequiredData();
+    //     await setRequiredData();
+    //
+    //     int num = await retrieveNotSyncedDocument();
+    //     if (num == 0 &&(await isInternetAvailable())) {
+    //       List<Widget> titleRowWidgets = [
+    //         getHeadingText(
+    //             text: 'Data sync completed', color: barColor, fontSize: 16),
+    //         const SizedBox(width: 4,),
+    //         Icon(Icons.check_circle,color: Colors.green,)];
+    //       List<Widget> actions = [
+    //         Container(
+    //             width: MediaQuery.of(context).size.width,
+    //             alignment: Alignment.center,
+    //             child: Row(
+    //               crossAxisAlignment: CrossAxisAlignment.center,
+    //               children: [
+    //                 // if (!isShowNegative)
+    //                 const Spacer(),
+    //
+    //                 TextButton(
+    //                   onPressed: () async {
+    //                     Navigator.pop(context);
+    //                     if (widget.isComingFromLogin) {
+    //                       LoginPage.hasSynced = true;
+    //                       Navigator.pushAndRemoveUntil(
+    //                           context,
+    //                           MaterialPageRoute(
+    //                               builder: (context) => Dashboard()),
+    //                               (route) => false);
+    //                     } else {
+    //                       Navigator.pop(context);
+    //                       await isValidAppVersion();
+    //                     }
+    //                   },
+    //                   child: getHeadingText(
+    //                     text: isFirstTimeSync?'Go to Dashboard':'Go Back',
+    //                     color: barColor,
+    //                   ),
+    //                 ),
+    //               ],
+    //             )),
+    //       ];
+    //       showDialog(
+    //         context: context,
+    //         barrierDismissible: false,
+    //         builder: (BuildContext context) {
+    //           if (Platform.isIOS) {
+    //             return CupertinoAlertDialog(
+    //               title: Row(
+    //                 children: titleRowWidgets,
+    //               ),
+    //               content: Text("Your syncing has been completed"),
+    //               actions: actions,
+    //             );
+    //           } else {
+    //             return AlertDialog(
+    //               title: Row(
+    //                 children: titleRowWidgets,
+    //               ),
+    //               content: Text("Your syncing has been completed"),
+    //               actions: actions,
+    //             );
+    //           }
+    //         },
+    //       );
+    //     }
+    //     else {
+    //       setState(() {
+    //         _currentStep = 0;
+    //       });
+    //       List<Widget> titleRowWidgets = [
+    //         getHeadingText(
+    //             text: 'Sync Not completed', color: Colors.red, fontSize: 16),
+    //         const SizedBox(width: 4,),
+    //         Icon(Icons.error,color: Colors.red,)
+    //       ];
+    //       List<Widget> actions = [
+    //         Container(
+    //             width: MediaQuery.of(context).size.width,
+    //             alignment: Alignment.center,
+    //             child: Row(
+    //               crossAxisAlignment: CrossAxisAlignment.center,
+    //               children: [
+    //                 Expanded(
+    //                   child: TextButton(
+    //                     onPressed: () async {
+    //
+    //                       Navigator.pop(context);
+    //                       if (widget.isComingFromLogin) {
+    //                         LoginPage.hasSynced = true;
+    //                         Navigator.pushAndRemoveUntil(
+    //                             context,
+    //                             MaterialPageRoute(
+    //                                 builder: (context) => Dashboard()),
+    //                                 (route) => false);
+    //                       } else {
+    //                         Navigator.pop(context);
+    //                         await isValidAppVersion();
+    //                       }
+    //                     },
+    //                     child: getHeadingText(
+    //                       text: isFirstTimeSync?'Go to Dashboard':'Go Back',
+    //                       color: barColor,
+    //                     ),
+    //                   ),
+    //                 ),
+    //
+    //                 Expanded(
+    //                   child: TextButton(
+    //                     onPressed: () {
+    //                       Get.to(() => ShareDatabase());
+    //                     },
+    //                     child: getHeadingText(
+    //                       text: 'Share Info',
+    //                       color: barColor,
+    //                     ),
+    //                   ),
+    //                 ),
+    //                 Expanded(
+    //                   child: TextButton(
+    //                     onPressed: () {
+    //                       calledSyncFunc = false;
+    //                       Navigator.pop(context);
+    //                       initConnectivity();
+    //                     },
+    //                     child: getHeadingText(
+    //                       text: 'Re sync',
+    //                       color: Colors.red,
+    //                     ),
+    //                   ),
+    //                 ),
+    //
+    //               ],
+    //             )),
+    //       ];
+    //       showDialog(
+    //         context: context,
+    //         barrierDismissible: false,
+    //         builder: (BuildContext context) {
+    //           if (Platform.isIOS) {
+    //             return CupertinoAlertDialog(
+    //               title: Row(
+    //                 children: titleRowWidgets,
+    //               ),
+    //               content: Text("$num record(s) not synced with server"),
+    //               actions: actions,
+    //             );
+    //           } else {
+    //             return AlertDialog(
+    //               title: Row(
+    //                 children: titleRowWidgets,
+    //               ),
+    //               content: Row(
+    //                 children: [
+    //                   Text("$num ",
+    //                       style:TextStyle(
+    //                           color:Colors.red,
+    //                           fontSize: 22,
+    //                           decoration: TextDecoration.underline,
+    //                           decorationColor: Colors.red,
+    //                           fontWeight: FontWeight.bold
+    //                       )),
+    //                   Text("record(s) not synced with server"),
+    //                 ],
+    //               ),
+    //               actions: actions,
+    //             );
+    //           }
+    //         },
+    //       );
+    //     }
+    //     getSuccessSnackBar("Data Sync Completed");
+    //     // if (DataSync.isSyncSuccessful) {
+    //     //   if (widget.isComingFromLogin) {
+    //     //     LoginPage.hasSynced = true;
+    //     //     Navigator.pushAndRemoveUntil(
+    //     //         context,
+    //     //         MaterialPageRoute(builder: (context) => Dashboard()),
+    //     //         (route) => false);
+    //     //   } else {
+    //     //     await isValidAppVersion();
+    //     //     // if(isAppVersionValid!=RxBool(true)){
+    //     //     //   Get.offAll(() => LoginPage());
+    //     //     //   // showUpdateAppAlertDialog();
+    //     //     //   return;
+    //     //     // }
+    //     //     Navigator.pop(context);
+    //     //   }
+    //     // }
+    //     // else {
+    //     //   getErrorSnackBar("Data Sync could not Complete");
+    //     //
+    //     //   setState(() {
+    //     //     _currentStep = 0;
+    //     //   });
+    //     // }
+    // }
   }
 
   @override
@@ -1143,7 +1372,7 @@ Future<void> updateLocationInBackground() async {
     return;
   }
 
-  
+
   Database db = await initializeDB(null);
   OECLOModel oecloModel = OECLOModel(
       ID: 0,

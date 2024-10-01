@@ -2,7 +2,6 @@ plugins {
     id "com.android.application"
     id "org.jetbrains.kotlin.android"
     id "dev.flutter.flutter-gradle-plugin"
-//    id "com.google.gms.google-services"
 }
 def localProperties = new Properties()
 def localPropertiesFile = rootProject.file('local.properties')
@@ -27,8 +26,14 @@ if (flutterVersionName == null) {
     flutterVersionName = '1.0'
 }
 
+//apply plugin: 'com.android.application'
+//apply plugin: 'kotlin-android'
+////apply plugin: 'com.google.gms.google-services'
+//apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
+
 android {
-    compileSdkVersion 34
+    namespace "com.litpl.maintenance"
+    compileSdkVersion 35
     ndkVersion flutter.ndkVersion
 
     compileOptions {
@@ -41,15 +46,15 @@ android {
         applicationId "com.litpl.maintenance"
         // You can update the following values to match your application needs.
         // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-build-configuration.
-        minSdkVersion 24
-        targetSdkVersion 33
+        minSdkVersion 33
+        targetSdkVersion 35
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
         multiDexEnabled true
 
-        dexOptions {
-            javaMaxHeapSize "4g"
-        }
+//        dexOptions {
+//            javaMaxHeapSize "4g"
+//        }
     }
 
     buildTypes {
@@ -75,35 +80,46 @@ flutter {
 //        force 'com.google.android.gms:play-services-location:20.0.0'
 //    }
 //}
+//dependencies {
+//    implementation "org.jetbrains.kotlin:kotlin-stdlib:1.9.22"
+//    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.9.22"
+//    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.9.22"
+//    implementation fileTree(dir: 'libs', include: ['*.jar'])
+//    implementation 'androidx.appcompat:appcompat:1.6.1'
+////    compile 'com.google.firebase:firebase-database:20.0.5'
+//    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+//    testImplementation 'junit:junit:4.13.2'
+//    androidTestImplementation 'androidx.test:runner:1.5.2'
+//    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+////    implementation 'com.google.android.gms:play-services-location:17.0.1'
+////    implementation 'com.google.android.gms:play-services-location:21.0.1'
+//    implementation 'com.android.support:multidex:1.0.3'
+//
+//
+////    implementation platform('com.google.firebase:firebase-bom:26.7.0')
+////    implementation 'com.google.firebase:firebase-analytics'
+////    implementation 'com.google.firebase:firebase-auth'
+////    implementation 'com.google.firebase:firebase-messaging'
+//    implementation "androidx.browser:browser:1.5.0"
+//    implementation 'androidx.work:work-runtime-ktx:2.8.1'
+//
+//    implementation 'com.android.volley:volley:1.2.1'
+//    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.0.3'
+//}
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib:1.9.22"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.9.22"
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.9.22"
 
-    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'androidx.appcompat:appcompat:1.7.0'
     implementation "androidx.multidex:multidex:2.0.1"
     implementation "com.squareup.okhttp3:okhttp:4.9.1"
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.5.0'
-//    implementation(platform("com.google.firebase:firebase-bom:32.7.4"))
-//    implementation 'com.google.firebase:firebase-crashlytics'
-//    implementation 'com.google.firebase:firebase-database:20.2.1'
-//    implementation 'com.google.firebase:firebase-auth'
-//    implementation 'com.google.firebase:firebase-core:21.1.1'
     implementation 'com.google.android.gms:play-services-location:21.1.0'
-//    implementation 'com.google.firebase:firebase-messaging'
-    implementation "androidx.browser:browser:1.7.0"
-//    implementation 'com.google.firebase:firebase-analytics'
-
-
-//    implementation platform('com.google.firebase:firebase-bom:26.7.0')
-//    implementation 'com.google.firebase:firebase-analytics'
-//    implementation 'com.google.firebase:firebase-auth'
-//    implementation 'com.google.firebase:firebase-messaging'
     implementation "androidx.browser:browser:1.8.0"
     implementation 'androidx.work:work-runtime-ktx:2.9.0'
-
     implementation 'com.android.volley:volley:1.2.1'
     coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.0.4'
 }

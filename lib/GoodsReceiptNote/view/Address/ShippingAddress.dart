@@ -6,7 +6,7 @@ import 'package:maintenance/Component/SnackbarComponent.dart';
 import 'package:maintenance/GoodsReceiptNote/view/GeneralData.dart';
 import 'package:maintenance/GoodsReceiptNote/view/GoodsReceiptNote.dart';
 import 'package:maintenance/Sync/SyncModels/PRPDN2.dart';
-import 'package:maps_launcher/maps_launcher.dart';
+//import 'package:maps_launcher/maps_launcher.dart';
 
 class ShippingAddress extends StatefulWidget {
   const ShippingAddress({super.key});
@@ -190,11 +190,12 @@ class _ShippingAddressState extends State<ShippingAddress> {
                             Latitude.text == "0.0") {
                           getErrorSnackBar(
                               "Cannot launch map, Latitude or Longitude is null");
-                        } else
-                          MapsLauncher.launchCoordinates(
-                            double.parse(Latitude.text),
-                            double.parse(Longitude.text),
-                          );
+                        }
+                        // else
+                        //   MapsLauncher.launchCoordinates(
+                        //     double.parse(Latitude.text),
+                        //     double.parse(Longitude.text),
+                        //   );
                       },
                     )
                   ],

@@ -2,11 +2,11 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:floating_overlay/floating_overlay.dart';
+// import 'package:floating_overlay/floating_overlay.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
+// import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
@@ -22,7 +22,7 @@ import 'package:maintenance/Sync/SyncModels/ACT1.dart';
 import 'package:maintenance/Sync/SyncModels/OCIN.dart';
 import 'package:maintenance/Sync/SyncModels/OCINMetaData.dart';
 import 'package:maintenance/Sync/SyncModels/OUSR.dart';
-import 'package:provider/provider.dart';
+// import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:workmanager/workmanager.dart';
 
@@ -65,14 +65,14 @@ Timer? rootTimer;
 //   padding: const EdgeInsets.all(20.0),
 //   constrained: true,
 // );
-var imagesController = FloatingOverlayController.absoluteSize(
-    maxSize: Size(Get.width, 170),
-    minSize: Size(Get.width / 1.3, 150),
-    padding: const EdgeInsets.all(20.0),
-    constrained: true,
-    start: Offset(Get.width - 20, Get.height)
-    // start: Offset(0, 0)
-    );
+// var imagesController = FloatingOverlayController.absoluteSize(
+//     maxSize: Size(Get.width, 170),
+//     minSize: Size(Get.width / 1.3, 150),
+//     padding: const EdgeInsets.all(20.0),
+//     constrained: true,
+//     start: Offset(Get.width - 20, Get.height)
+//     // start: Offset(0, 0)
+//     );
 OUSRModel userModel = OUSRModel(
     CreateDate: DateTime.now(),
     MUser: true,
@@ -322,7 +322,7 @@ Future<void> main() async {
         flutterLocalNotificationsPlugin.resolvePlatformSpecificImplementation<
             AndroidFlutterLocalNotificationsPlugin>();
 
-    final bool? granted = await androidImplementation?.requestPermission();
+    final bool? granted = await androidImplementation?.requestNotificationsPermission();
     print(granted);
   }
   // runApp(MaterialApp.router(
@@ -357,10 +357,11 @@ Future<void> main() async {
                 color: Colors.white,
               )),
 
-          home: Provider<RouteObserver>(
-            create: (_) => routeObserver,
-            child: MyApp(),
-          ),
+          // home: Provider<RouteObserver>(
+          //   create: (_) => routeObserver,
+          //   child: MyApp(),
+          // ),
+          home:MyApp(),
         ),
       ),
     ),
@@ -445,7 +446,7 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    final routeObserver = Provider.of<RouteObserver>(context, listen: false);
+    // final routeObserver = Provider.of<RouteObserver>(context, listen: false);
     return Scaffold(
       key: key,
       backgroundColor: Colors.white,
@@ -463,9 +464,9 @@ class _MyAppState extends State<MyApp> {
                 ),
               ),
             ),
-            SpinKitRipple(
-              color: backColor,
-            )
+            // SpinKitRipple(
+            //   color: backColor,
+            // )
           ]),
       //todo: bottomNavigationBar
       // bottomNavigationBar: FloatingOverlay(
