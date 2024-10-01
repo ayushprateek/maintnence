@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:flutter_share/flutter_share.dart';
 import 'package:maintenance/Component/AppConfig.dart';
 import 'package:maintenance/Component/CompanyDetails.dart';
 import 'package:maintenance/Component/GetFormattedDate.dart';
@@ -9,7 +8,6 @@ import 'package:maintenance/Sync/CustomURL.dart';
 import 'package:maintenance/main.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:whatsapp_share/whatsapp_share.dart';
 
 String logFileName = 'FILE_NAME';
 String dbFileName = 'DB_FILE_NAME';
@@ -119,26 +117,28 @@ Future<void> shareLogFile() async {
   //   text: "share image",
   //   filePath: pubPath,
   // );
+  //TODO
 
-  await FlutterShare.shareFile(
-    title: appName,
-    text: 'Log File',
-    filePath: file.path,
-    // fileType: '*.txt'
-  );
+  // await FlutterShare.shareFile(
+  //   title: appName,
+  //   text: 'Log File',
+  //   filePath: file.path,
+  //   // fileType: '*.txt'
+  // );
 }
 
 Future<void> shareFileOnWhatsApp() async {
-  final directory = await getExternalStorageDirectory();
-  File file = File('${directory?.path}/log.txt');
-  print(file.path);
-  bool logFileExists = await file.exists();
-  if (!logFileExists) {
-    getErrorSnackBar('You do not have any log');
-    return;
-  }
-  await WhatsappShare.shareFile(
-    phone: '*',
-    filePath: [file.path],
-  );
+  //TODO:
+  // final directory = await getExternalStorageDirectory();
+  // File file = File('${directory?.path}/log.txt');
+  // print(file.path);
+  // bool logFileExists = await file.exists();
+  // if (!logFileExists) {
+  //   getErrorSnackBar('You do not have any log');
+  //   return;
+  // }
+  // await WhatsappShare.shareFile(
+  //   phone: '*',
+  //   filePath: [file.path],
+  // );
 }

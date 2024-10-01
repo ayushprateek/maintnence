@@ -439,7 +439,7 @@ class _CustomDrawerState extends State<CustomDrawer> {
                   ),
                   InkWell(
                     onTap: (){
-                      Get.to(()=>View3DModel(title: 'View 3D Model',));
+                      // Get.to(()=>View3DModel(title: 'View 3D Model',));
                     },
                     child: ListTile(
                       title: Text(

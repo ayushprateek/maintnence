@@ -7,7 +7,7 @@ import 'package:maintenance/GoodsReceiptNote/Address/AddressLookup.dart';
 import 'package:maintenance/Sync/SyncModels/PRPDN3.dart';
 import 'package:maintenance/GoodsReceiptNote/GeneralData.dart';
 import 'package:maintenance/GoodsReceiptNote/GoodsReceiptNote.dart';
-import 'package:maps_launcher/maps_launcher.dart';
+// import 'package:maps_launcher/maps_launcher.dart';
 class BillingAddress extends StatefulWidget {
   const BillingAddress({super.key});
   static bool validate() {
@@ -198,11 +198,13 @@ class _BillingAddressState extends State<BillingAddress> {
                           Latitude.text == "0.0") {
                         getErrorSnackBar(
                             "Cannot launch map, Latitude or Longitude is null");
-                      } else
-                        MapsLauncher.launchCoordinates(
-                          double.parse(Latitude.text),
-                          double.parse(Longitude.text),
-                        );
+                      } else {
+                        //todo
+                        // MapsLauncher.launchCoordinates(
+                        //   double.parse(Latitude.text),
+                        //   double.parse(Longitude.text),
+                        // );
+                      }
                     },
                   )
                 ],

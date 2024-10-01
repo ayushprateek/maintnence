@@ -64,9 +64,9 @@ class _LoginPageState extends State<LoginPage> {
   void initState() {
     super.initState();
     Timer(Duration(seconds: 2), () {
-      if (displayTakeSS == true) {
-        imagesController.show();
-      }
+      // if (displayTakeSS == true) {
+      //   imagesController.show();
+      // }
 
       syncDate = getDataSyncDate();
       DateTime now = DateTime.now();

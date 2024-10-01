@@ -153,9 +153,9 @@ WHERE
       CompanyDetails.loadCompanyDetails();
       if (displayTakeSS == true) {
         Timer(Duration(seconds: 2), () {
-          if (!imagesController.isFloating) {
-            imagesController.show();
-          }
+          // if (!imagesController.isFloating) {
+          //   imagesController.show();
+          // }
         });
       }
 
