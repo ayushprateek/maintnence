@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:maintenance/CheckListDocument/edit/CheckListDetails/AddCheckList.dart';
 import 'package:maintenance/Component/Common.dart';
 import 'package:maintenance/Component/CustomColor.dart';
 import 'package:maintenance/Component/CustomFont.dart';
@@ -30,7 +29,9 @@ class _CheckListDetailsState extends State<CheckListDetails> {
     return SingleChildScrollView(
       child: Column(
         children: [
-          const SizedBox(height: 25,),
+          const SizedBox(
+            height: 25,
+          ),
           Padding(
             padding: const EdgeInsets.only(left: 8.0, right: 8, bottom: 8),
             child: Container(
@@ -127,14 +128,12 @@ class _CheckListDetailsState extends State<CheckListDetails> {
                                               MainAxisAlignment.start,
                                           children: [
                                             Padding(
-                                              padding:
-                                                  const EdgeInsets.only(
-                                                      left: 8.0,
-                                                      right: 8.0,
-                                                      top: 4.0),
+                                              padding: const EdgeInsets.only(
+                                                  left: 8.0,
+                                                  right: 8.0,
+                                                  top: 4.0),
                                               child: Align(
-                                                alignment:
-                                                    Alignment.topLeft,
+                                                alignment: Alignment.topLeft,
                                                 child: Text.rich(
                                                   TextSpan(
                                                     children: [
@@ -151,20 +150,17 @@ class _CheckListDetailsState extends State<CheckListDetails> {
                                               ),
                                             ),
                                             Padding(
-                                              padding:
-                                                  const EdgeInsets.only(
-                                                      left: 8.0,
-                                                      right: 8.0,
-                                                      top: 4.0),
+                                              padding: const EdgeInsets.only(
+                                                  left: 8.0,
+                                                  right: 8.0,
+                                                  top: 4.0),
                                               child: Align(
-                                                alignment:
-                                                    Alignment.topLeft,
+                                                alignment: Alignment.topLeft,
                                                 child: Text.rich(
                                                   TextSpan(
                                                     children: [
                                                       getPoppinsTextSpanHeading(
-                                                          text:
-                                                              'Description'),
+                                                          text: 'Description'),
                                                       getPoppinsTextSpanDetails(
                                                           text: mncld1
                                                                   .Description ??
@@ -175,38 +171,33 @@ class _CheckListDetailsState extends State<CheckListDetails> {
                                               ),
                                             ),
                                             Padding(
-                                              padding:
-                                                  const EdgeInsets.only(
-                                                      left: 8.0,
-                                                      right: 8.0,
-                                                      top: 4.0),
+                                              padding: const EdgeInsets.only(
+                                                  left: 8.0,
+                                                  right: 8.0,
+                                                  top: 4.0),
                                               child: Align(
-                                                alignment:
-                                                    Alignment.topLeft,
+                                                alignment: Alignment.topLeft,
                                                 child: Text.rich(
                                                   TextSpan(
                                                     children: [
                                                       getPoppinsTextSpanHeading(
-                                                          text:
-                                                              'Item Name'),
+                                                          text: 'Item Name'),
                                                       getPoppinsTextSpanDetails(
-                                                          text: mncld1
-                                                                  .ItemName ??
-                                                              ''),
+                                                          text:
+                                                              mncld1.ItemName ??
+                                                                  ''),
                                                     ],
                                                   ),
                                                 ),
                                               ),
                                             ),
                                             Padding(
-                                              padding:
-                                                  const EdgeInsets.only(
-                                                      left: 8.0,
-                                                      right: 8.0,
-                                                      top: 4.0),
+                                              padding: const EdgeInsets.only(
+                                                  left: 8.0,
+                                                  right: 8.0,
+                                                  top: 4.0),
                                               child: Align(
-                                                alignment:
-                                                    Alignment.topLeft,
+                                                alignment: Alignment.topLeft,
                                                 child: Text.rich(
                                                   TextSpan(
                                                     children: [
@@ -233,14 +224,12 @@ class _CheckListDetailsState extends State<CheckListDetails> {
                                               MainAxisAlignment.start,
                                           children: [
                                             Padding(
-                                              padding:
-                                                  const EdgeInsets.only(
-                                                      left: 8.0,
-                                                      right: 8.0,
-                                                      top: 4.0),
+                                              padding: const EdgeInsets.only(
+                                                  left: 8.0,
+                                                  right: 8.0,
+                                                  top: 4.0),
                                               child: Align(
-                                                alignment:
-                                                    Alignment.topLeft,
+                                                alignment: Alignment.topLeft,
                                                 child: Text.rich(
                                                   TextSpan(
                                                     children: [
@@ -248,22 +237,19 @@ class _CheckListDetailsState extends State<CheckListDetails> {
                                                           text: 'UOM'),
                                                       getPoppinsTextSpanDetails(
                                                           text:
-                                                              mncld1.UOM ??
-                                                                  ''),
+                                                              mncld1.UOM ?? ''),
                                                     ],
                                                   ),
                                                 ),
                                               ),
                                             ),
                                             Padding(
-                                              padding:
-                                              const EdgeInsets.only(
+                                              padding: const EdgeInsets.only(
                                                   left: 8.0,
                                                   right: 8.0,
                                                   top: 4.0),
                                               child: Align(
-                                                alignment:
-                                                Alignment.topLeft,
+                                                alignment: Alignment.topLeft,
                                                 child: Text.rich(
                                                   TextSpan(
                                                     children: [
@@ -271,102 +257,104 @@ class _CheckListDetailsState extends State<CheckListDetails> {
                                                           text: 'Remarks'),
                                                       getPoppinsTextSpanDetails(
                                                           text:
-                                                          mncld1.Remarks ??
-                                                              ''),
+                                                              mncld1.Remarks ??
+                                                                  ''),
                                                     ],
                                                   ),
                                                 ),
                                               ),
                                             ),
                                             Padding(
-                                              padding:
-                                                  const EdgeInsets.only(
-                                                      top: 4.0, bottom: 4),
+                                              padding: const EdgeInsets.only(
+                                                  top: 4.0, bottom: 4),
                                               child: SizedBox(
                                                 height: 20,
                                                 child: Row(
                                                   mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .start,
+                                                      MainAxisAlignment.start,
                                                   children: [
                                                     Checkbox(
-                                                      value: mncld1
-                                                          .IsChecked,
-                                                      onChanged:
-                                                          (bool? value) {
+                                                      value: mncld1.IsChecked,
+                                                      onChanged: (bool? value) {
                                                         setState(() {
                                                           mncld1.IsChecked =
-                                                              !mncld1
-                                                                  .IsChecked;
+                                                              !mncld1.IsChecked;
                                                         });
                                                       },
                                                     ),
                                                     Expanded(
                                                         child: getPoppinsText(
-                                                            text:
-                                                                'Is Checked',
-                                                            textAlign:
-                                                                TextAlign
-                                                                    .start)),
+                                                            text: 'Is Checked',
+                                                            textAlign: TextAlign
+                                                                .start)),
                                                   ],
                                                 ),
                                               ),
                                             ),
-                                            if(mncld1.ItemCode!=null&& mncld1.ItemCode?.isNotEmpty==true)...[
+                                            if (mncld1.ItemCode != null &&
+                                                mncld1.ItemCode?.isNotEmpty ==
+                                                    true) ...[
                                               Padding(
-                                                padding:
-                                                const EdgeInsets.only(
+                                                padding: const EdgeInsets.only(
                                                     top: 4.0, bottom: 4),
                                                 child: SizedBox(
                                                   height: 20,
                                                   child: Row(
                                                     mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .start,
+                                                        MainAxisAlignment.start,
                                                     children: [
                                                       Checkbox(
                                                         value: mncld1
                                                             .IsConsumption,
                                                         onChanged:
                                                             (bool? value) {
+                                                          if (value = true) {
+                                                            mncld1.IsRequest =
+                                                                false;
+                                                            mncld1.IsFromStock =
+                                                                false;
+                                                          }
                                                           setState(() {
                                                             mncld1.IsConsumption =
-                                                            !mncld1
-                                                                .IsConsumption;
+                                                                !mncld1
+                                                                    .IsConsumption;
                                                           });
                                                         },
                                                       ),
                                                       Expanded(
                                                           child: getPoppinsText(
                                                               text:
-                                                              'Consumption',
+                                                                  'Consumption',
                                                               textAlign:
-                                                              TextAlign
-                                                                  .start)),
+                                                                  TextAlign
+                                                                      .start)),
                                                     ],
                                                   ),
                                                 ),
                                               ),
                                               Padding(
-                                                padding:
-                                                const EdgeInsets.only(
+                                                padding: const EdgeInsets.only(
                                                     top: 4.0, bottom: 4),
                                                 child: SizedBox(
                                                   height: 20,
                                                   child: Row(
                                                     mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .start,
+                                                        MainAxisAlignment.start,
                                                     children: [
                                                       Checkbox(
-                                                        value:
-                                                        mncld1.IsRequest,
+                                                        value: mncld1.IsRequest,
                                                         onChanged:
                                                             (bool? value) {
+                                                          if (value = true) {
+                                                            mncld1.IsConsumption =
+                                                                false;
+                                                            mncld1.IsFromStock =
+                                                                false;
+                                                          }
                                                           setState(() {
                                                             mncld1.IsRequest =
-                                                            !mncld1
-                                                                .IsRequest;
+                                                                !mncld1
+                                                                    .IsRequest;
                                                           });
                                                         },
                                                       ),
@@ -374,49 +362,51 @@ class _CheckListDetailsState extends State<CheckListDetails> {
                                                           child: getPoppinsText(
                                                               text: 'Request',
                                                               textAlign:
-                                                              TextAlign
-                                                                  .start)),
+                                                                  TextAlign
+                                                                      .start)),
                                                     ],
                                                   ),
                                                 ),
                                               ),
                                               Padding(
-                                                padding:
-                                                const EdgeInsets.only(
+                                                padding: const EdgeInsets.only(
                                                     top: 4.0, bottom: 4),
                                                 child: SizedBox(
                                                   height: 20,
                                                   child: Row(
                                                     mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .start,
+                                                        MainAxisAlignment.start,
                                                     children: [
                                                       Checkbox(
-                                                        value: mncld1
-                                                            .IsFromStock,
+                                                        value:
+                                                            mncld1.IsFromStock,
                                                         onChanged:
                                                             (bool? value) {
+                                                          if (value = true) {
+                                                            mncld1.IsRequest =
+                                                                false;
+                                                            mncld1.IsConsumption =
+                                                                false;
+                                                          }
                                                           setState(() {
                                                             mncld1.IsFromStock =
-                                                            !mncld1
-                                                                .IsFromStock;
+                                                                !mncld1
+                                                                    .IsFromStock;
                                                           });
                                                         },
                                                       ),
                                                       Expanded(
                                                           child: getPoppinsText(
                                                               text:
-                                                              'From Stock',
+                                                                  'From Stock',
                                                               textAlign:
-                                                              TextAlign
-                                                                  .start)),
+                                                                  TextAlign
+                                                                      .start)),
                                                     ],
                                                   ),
                                                 ),
                                               ),
                                             ],
-
-
 
                                             // Padding(
                                             //   padding: const EdgeInsets.only(
@@ -440,8 +430,6 @@ class _CheckListDetailsState extends State<CheckListDetails> {
                                             //     ),
                                             //   ),
                                             // ),
-
-
                                           ],
                                         ),
                                       ),
@@ -456,25 +444,23 @@ class _CheckListDetailsState extends State<CheckListDetails> {
                                             child: getPoppinsText(
                                                 text: 'Required Date',
                                                 textAlign: TextAlign.start,
-                                                fontWeight:
-                                                FontWeight.bold)),
+                                                fontWeight: FontWeight.bold)),
                                         Expanded(
                                           child: getDateTextField(
                                               height: 30,
-                                              controller:
-                                              TextEditingController(
+                                              controller: TextEditingController(
                                                   text: getFormattedDate(
-                                                      mncld1
-                                                          .RequiredDate)),
+                                                      mncld1.RequiredDate)),
                                               enableLocalDate: false,
                                               displayWithoutLookup: true,
-                                              onChanged: (val){
+                                              onChanged: (val) {
                                                 setState(() {
-                                                  mncld1.RequiredDate=getDateFromString(val);
+                                                  mncld1.RequiredDate =
+                                                      getDateFromString(val);
                                                 });
                                               },
-
-                                              localCurrController: TextEditingController()),
+                                              localCurrController:
+                                                  TextEditingController()),
                                         ),
                                       ],
                                     ),
@@ -491,8 +477,7 @@ class _CheckListDetailsState extends State<CheckListDetails> {
                                                 text: 'Section',
                                                 fontSize: 13,
                                                 textAlign: TextAlign.start,
-                                                fontWeight:
-                                                    FontWeight.bold)),
+                                                fontWeight: FontWeight.bold)),
                                         Expanded(
                                             child: MaterialButton(
                                           onPressed: () async {
@@ -500,8 +485,7 @@ class _CheckListDetailsState extends State<CheckListDetails> {
                                                 mncld1.Attachment != '') {
                                               File? file =
                                                   await downloadFileFromServer(
-                                                      path: mncld1
-                                                              .Attachment ??
+                                                      path: mncld1.Attachment ??
                                                           '');
                                               if (file != null) {
                                                 Get.to(() => ViewImageFile(
@@ -521,8 +505,7 @@ class _CheckListDetailsState extends State<CheckListDetails> {
                                             child: Text(
                                               "View",
                                               textAlign: TextAlign.start,
-                                              style: TextStyle(
-                                                  color: barColor),
+                                              style: TextStyle(color: barColor),
                                             ),
                                           ),
                                         ))
@@ -538,15 +521,12 @@ class _CheckListDetailsState extends State<CheckListDetails> {
                                             child: getPoppinsText(
                                                 text: 'Supplier',
                                                 textAlign: TextAlign.start,
-                                                fontWeight:
-                                                    FontWeight.bold)),
+                                                fontWeight: FontWeight.bold)),
                                         Expanded(
                                           child: getDisabledTextField(
                                               height: 30,
-                                              controller:
-                                                  TextEditingController(
-                                                      text: mncld1
-                                                          .SupplierName),
+                                              controller: TextEditingController(
+                                                  text: mncld1.SupplierName),
                                               enableLookup: true,
                                               onLookupPressed: () {
                                                 Get.to(() => SupplierLookup(
@@ -573,8 +553,7 @@ class _CheckListDetailsState extends State<CheckListDetails> {
                                             child: getPoppinsText(
                                                 text: 'Consumption Qty',
                                                 textAlign: TextAlign.start,
-                                                fontWeight:
-                                                    FontWeight.bold)),
+                                                fontWeight: FontWeight.bold)),
                                         Expanded(
                                             child: getTextFieldWithoutLookup(
                                                 controller: mncld1
@@ -593,8 +572,7 @@ class _CheckListDetailsState extends State<CheckListDetails> {
                                             child: getPoppinsText(
                                                 text: 'User Remarks',
                                                 textAlign: TextAlign.start,
-                                                fontWeight:
-                                                FontWeight.bold)),
+                                                fontWeight: FontWeight.bold)),
                                         Expanded(
                                             child: getTextFieldWithoutLookup(
                                                 controller: mncld1
@@ -609,78 +587,82 @@ class _CheckListDetailsState extends State<CheckListDetails> {
                                     children: [
                                       Expanded(
                                           child: InkWell(
-                                            onTap: () async {
-                                              await showDialog(
-                                                barrierDismissible: false,
-                                                context: context,
-                                                builder: (BuildContext context) {
-                                                  return AlertDialog(
-                                                    content: Container(
-                                                      height: MediaQuery.of(context)
+                                        onTap: () async {
+                                          await showDialog(
+                                            barrierDismissible: false,
+                                            context: context,
+                                            builder: (BuildContext context) {
+                                              return AlertDialog(
+                                                content: Container(
+                                                  height: MediaQuery.of(context)
                                                           .size
                                                           .height /
-                                                          20,
-                                                      width: MediaQuery.of(context)
+                                                      20,
+                                                  width: MediaQuery.of(context)
                                                           .size
                                                           .width /
-                                                          1.5,
-                                                      child: Text(
-                                                        "Are you sure you want to delete this row?",
-                                                        style: TextStyle(
-                                                            color: Colors.black,
-                                                            fontWeight:
+                                                      1.5,
+                                                  child: Text(
+                                                    "Are you sure you want to delete this row?",
+                                                    style: TextStyle(
+                                                        color: Colors.black,
+                                                        fontWeight:
                                                             FontWeight.bold),
-                                                      ),
+                                                  ),
+                                                ),
+                                                actions: [
+                                                  MaterialButton(
+                                                    // OPTIONAL BUTTON
+                                                    shape:
+                                                        RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              40),
                                                     ),
-                                                    actions: [
-                                                      MaterialButton(
-                                                        // OPTIONAL BUTTON
-                                                        shape: RoundedRectangleBorder(
-                                                          borderRadius:
-                                                          BorderRadius.circular(40),
-                                                        ),
-                                                        color: barColor,
-                                                        child: Text(
-                                                          'No',
-                                                          style: TextStyle(
-                                                              color: Colors.white),
-                                                        ),
-                                                        onPressed: () {
-                                                          Navigator.pop(context);
-                                                        },
-                                                      ),
-                                                      MaterialButton(
-                                                        // OPTIONAL BUTTON
-                                                        shape: RoundedRectangleBorder(
-                                                          borderRadius:
-                                                          BorderRadius.circular(40),
-                                                        ),
-                                                        color: Colors.red,
-                                                        child: Text(
-                                                          'Yes',
-                                                          style: TextStyle(
-                                                              color: Colors.white),
-                                                        ),
-                                                        onPressed: () async {
-                                                          setState(() {
-                                                            CheckListDetails.items
-                                                                .removeAt(index);
-                                                          });
+                                                    color: barColor,
+                                                    child: Text(
+                                                      'No',
+                                                      style: TextStyle(
+                                                          color: Colors.white),
+                                                    ),
+                                                    onPressed: () {
+                                                      Navigator.pop(context);
+                                                    },
+                                                  ),
+                                                  MaterialButton(
+                                                    // OPTIONAL BUTTON
+                                                    shape:
+                                                        RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              40),
+                                                    ),
+                                                    color: Colors.red,
+                                                    child: Text(
+                                                      'Yes',
+                                                      style: TextStyle(
+                                                          color: Colors.white),
+                                                    ),
+                                                    onPressed: () async {
+                                                      setState(() {
+                                                        CheckListDetails.items
+                                                            .removeAt(index);
+                                                      });
 
-                                                          Navigator.pop(context);
-                                                        },
-                                                      ),
-                                                    ],
-                                                  );
-                                                },
+                                                      Navigator.pop(context);
+                                                    },
+                                                  ),
+                                                ],
                                               );
                                             },
-                                            child: getPoppinsText(
-                                                text: 'Delete',
-                                                color: Colors.red,
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 16),
-                                          )),
+                                          );
+                                        },
+                                        child: getPoppinsText(
+                                            text: 'Delete',
+                                            color: Colors.red,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 16),
+                                      )),
                                     ],
                                   ),
                                 ],

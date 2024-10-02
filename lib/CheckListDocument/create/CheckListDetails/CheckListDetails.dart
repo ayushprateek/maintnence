@@ -349,6 +349,11 @@ class _CheckListDetailsState extends State<CheckListDetails> {
                                                             .IsConsumption,
                                                         onChanged:
                                                             (bool? value) {
+                                                              if(value=true)
+                                                              {
+                                                                mncld1.IsRequest=false;
+                                                                mncld1.IsFromStock=false;
+                                                              }
                                                           setState(() {
                                                             mncld1.IsConsumption =
                                                             !mncld1
@@ -383,6 +388,11 @@ class _CheckListDetailsState extends State<CheckListDetails> {
                                                         mncld1.IsRequest,
                                                         onChanged:
                                                             (bool? value) {
+                                                              if(value=true)
+                                                              {
+                                                                mncld1.IsConsumption=false;
+                                                                mncld1.IsFromStock=false;
+                                                              }
                                                           setState(() {
                                                             mncld1.IsRequest =
                                                             !mncld1
@@ -416,6 +426,11 @@ class _CheckListDetailsState extends State<CheckListDetails> {
                                                             .IsFromStock,
                                                         onChanged:
                                                             (bool? value) {
+                                                              if(value=true)
+                                                              {
+                                                                mncld1.IsRequest=false;
+                                                                mncld1.IsConsumption=false;
+                                                              }
                                                           setState(() {
                                                             mncld1.IsFromStock =
                                                             !mncld1
