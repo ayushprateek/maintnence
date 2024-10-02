@@ -282,6 +282,7 @@ class _EditCheckListDocumentState extends State<EditCheckListDocument> {
                     preferredSize: Size.fromHeight(50.0),
                   ),
                   actions: [
+                    if(GeneralData.approvalStatus=='Approved')
                     PopupMenuButton<int>(
                       onSelected: (item) {
                         if (item == 1) {

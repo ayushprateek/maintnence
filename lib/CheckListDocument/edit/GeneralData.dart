@@ -6,15 +6,11 @@ import 'package:maintenance/Component/CustomFont.dart';
 import 'package:maintenance/Component/GetFormattedDate.dart';
 import 'package:maintenance/Component/GetTextField.dart';
 import 'package:maintenance/Component/SnackbarComponent.dart';
-import 'package:maintenance/Lookups/CheckListCodeLookup.dart';
-import 'package:maintenance/Lookups/EquipmentCodeLokup.dart';
 import 'package:maintenance/Lookups/TechnicianCodeLookup.dart';
 import 'package:maintenance/Lookups/WorkCenterLookup.dart';
 import 'package:maintenance/Sync/SyncModels/MNOCLD.dart';
-import 'package:maintenance/Sync/SyncModels/MNOCLT.dart';
 import 'package:maintenance/Sync/SyncModels/MNOWCM.dart';
 import 'package:maintenance/Sync/SyncModels/OEMP.dart';
-import 'package:maintenance/Sync/SyncModels/OVCL.dart';
 
 class GeneralData extends StatefulWidget {
   GeneralData({super.key});
@@ -94,7 +90,7 @@ class GeneralData extends StatefulWidget {
     return MNOCLD(
       ID: int.tryParse(iD ?? ''),
       TransId: transId,
-      TripTransId:tripTransId,
+      TripTransId: tripTransId,
       DocNum: docNum ?? '',
       PermanentTransId: permanentTransId ?? '',
       PostingDate: getDateFromString(postingDate ?? ""),
@@ -176,7 +172,7 @@ class _GeneralDataState extends State<GeneralData> {
   final TextEditingController _currentReading =
       TextEditingController(text: GeneralData.currentReading);
   final TextEditingController _difference =
-  TextEditingController(text: GeneralData.difference);
+      TextEditingController(text: GeneralData.difference);
   List<String> tyreMaintenanceOptions = ['Yes', 'No'];
   List<String> checkListStatusOptions = [
     'Open',
@@ -185,12 +181,14 @@ class _GeneralDataState extends State<GeneralData> {
     'Transfer To JobCard',
     'Hold'
   ];
+
   calculateDifference() {
     double currentReading = double.tryParse(_currentReading.text) ?? 0.0;
     double lastReading = double.tryParse(_lastReading.text) ?? 0.0;
     GeneralData.difference =
         _difference.text = (currentReading - lastReading).toStringAsFixed(2);
   }
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -233,42 +231,42 @@ class _GeneralDataState extends State<GeneralData> {
               //     labelText: 'Equipment Code',
               //     ),
               getDisabledTextField(
-                  controller: _equipmentName,
-                  labelText: 'Equipment',
-                  // enableLookup: true,
-                  // onLookupPressed: () {
-                  //   Get.to(() => EquipmentCodeLookup(
-                  //         onSelection: (OVCLModel ovcl) {
-                  //           setState(() {
-                  //             GeneralData.equipmentCode =
-                  //                 _equipmentCode.text = ovcl.Code ?? '';
-                  //             GeneralData.equipmentName =
-                  //                 _equipmentName.text = ovcl.Name ?? '';
-                  //           });
-                  //         },
-                  //       ));
-                  // }
-                  ),
+                controller: _equipmentName,
+                labelText: 'Equipment',
+                // enableLookup: true,
+                // onLookupPressed: () {
+                //   Get.to(() => EquipmentCodeLookup(
+                //         onSelection: (OVCLModel ovcl) {
+                //           setState(() {
+                //             GeneralData.equipmentCode =
+                //                 _equipmentCode.text = ovcl.Code ?? '';
+                //             GeneralData.equipmentName =
+                //                 _equipmentName.text = ovcl.Name ?? '';
+                //           });
+                //         },
+                //       ));
+                // }
+              ),
               // getDisabledTextField(
               //     controller: _checkListCode,
               //     labelText: 'Check List Code',
               //     ),
               getDisabledTextField(
-                  controller: _checkListName,
-                  labelText: 'CheckList',
-                  // onLookupPressed: () {
-                  //   Get.to(() => CheckListCodeLookup(
-                  //         onSelection: (MNOCLT mnoclm) {
-                  //           setState(() {
-                  //             GeneralData.checkListCode =
-                  //                 _checkListCode.text = mnoclm.Code ?? '';
-                  //             GeneralData.checkListName =
-                  //                 _checkListName.text = mnoclm.Name ?? '';
-                  //           });
-                  //         },
-                  //       ));
-                  // },
-                  // enableLookup: true
+                controller: _checkListName,
+                labelText: 'CheckList',
+                // onLookupPressed: () {
+                //   Get.to(() => CheckListCodeLookup(
+                //         onSelection: (MNOCLT mnoclm) {
+                //           setState(() {
+                //             GeneralData.checkListCode =
+                //                 _checkListCode.text = mnoclm.Code ?? '';
+                //             GeneralData.checkListName =
+                //                 _checkListName.text = mnoclm.Name ?? '';
+                //           });
+                //         },
+                //       ));
+                // },
+                // enableLookup: true
               ),
               // getDisabledTextField(
               //   controller: _workCenterCode,
@@ -329,6 +327,12 @@ class _GeneralDataState extends State<GeneralData> {
                           onChanged: (val) {
                             setState(() {
                               GeneralData.checkListStatus = val;
+                              if (val == 'Close') {
+                                _closeDate.text =
+                                    getFormattedDate(DateTime.now());
+                              } else {
+                                _closeDate.clear();
+                              }
                             });
                           },
                           value: GeneralData.checkListStatus,
@@ -338,17 +342,15 @@ class _GeneralDataState extends State<GeneralData> {
                   ],
                 ),
               ),
-              getDateTextField(
+              getDisabledTextField(
                   controller: _openDate,
                   labelText: 'Open Date',
-                  localCurrController: TextEditingController(),
                   onChanged: (val) {
                     _openDate.text = GeneralData.openDate = val;
                   }),
-              getDateTextField(
+              getDisabledTextField(
                   controller: _closeDate,
                   labelText: 'Close Date',
-                  localCurrController: TextEditingController(),
                   onChanged: (val) {
                     _closeDate.text = GeneralData.closeDate = val;
                   }),
