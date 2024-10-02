@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:maintenance/CheckListDocument/ClearCheckListDocument.dart';
@@ -10,7 +9,6 @@ import 'package:maintenance/Component/BackPressedWarning.dart';
 import 'package:maintenance/Component/CustomColor.dart';
 import 'package:maintenance/Component/CustomFont.dart';
 import 'package:maintenance/Component/GenerateTransId.dart';
-import 'package:maintenance/Component/GetCurrentLocation.dart';
 import 'package:maintenance/Component/LogFileFunctions.dart';
 import 'package:maintenance/Component/MenuDescription.dart';
 import 'package:maintenance/Component/Mode.dart';
@@ -282,26 +280,35 @@ class _EditCheckListDocumentState extends State<EditCheckListDocument> {
                     preferredSize: Size.fromHeight(50.0),
                   ),
                   actions: [
-                    if(GeneralData.approvalStatus=='Approved')
-                    PopupMenuButton<int>(
-                      onSelected: (item) {
-                        if (item == 1) {
-                          navigateToPurchaseRequest();
-                        } else if (item == 2) {
-                          navigateToInternalRequest();
-                        } else if (item == 3) {
-                          navigateToGoodsIssue();
-                        }
-                      },
-                      itemBuilder: (context) => [
-                        const PopupMenuItem<int>(
-                            value: 1, child: Text('Purchase Request')),
-                        const PopupMenuItem<int>(
-                            value: 2, child: Text('Internal Request')),
-                        const PopupMenuItem<int>(
-                            value: 3, child: Text('Goods Issue')),
-                      ],
-                    )
+                    if (GeneralData.approvalStatus == 'Approved')
+                      PopupMenuButton<int>(
+                        onSelected: (item) {
+                          double currentReading = double.tryParse(
+                                  GeneralData.currentReading?.toString() ??
+                                      '0.0') ??
+                              0.0;
+                          if (currentReading == 0.0) {
+                            getErrorSnackBar(
+                                'Current Reading must be greater that or equal to 1');
+                            return;
+                          }
+                          if (item == 1) {
+                            navigateToPurchaseRequest();
+                          } else if (item == 2) {
+                            navigateToInternalRequest();
+                          } else if (item == 3) {
+                            navigateToGoodsIssue();
+                          }
+                        },
+                        itemBuilder: (context) => [
+                          const PopupMenuItem<int>(
+                              value: 1, child: Text('Purchase Request')),
+                          const PopupMenuItem<int>(
+                              value: 2, child: Text('Internal Request')),
+                          const PopupMenuItem<int>(
+                              value: 3, child: Text('Goods Issue')),
+                        ],
+                      )
                   ],
                   title: getHeadingText(
                       text: "Edit Check List Document",
@@ -348,8 +355,6 @@ class _EditCheckListDocumentState extends State<EditCheckListDocument> {
         if (!EditCheckListDocument.saveButtonPressed) {
           EditCheckListDocument.saveButtonPressed = true;
           showLoader(context);
-          
-
 
           final Database db = await initializeDB(context);
           try {
@@ -369,8 +374,8 @@ class _EditCheckListDocumentState extends State<EditCheckListDocument> {
               generalData.hasUpdated = true;
               Map<String, Object?> map = generalData.toJson();
               map.removeWhere((key, value) => value == null || value == '');
-              await database
-                  .update('MNOCLD', map, where: 'TransId = ?', whereArgs: [GeneralData.transId]);
+              await database.update('MNOCLD', map,
+                  where: 'TransId = ?', whereArgs: [GeneralData.transId]);
 
               //ITEM DETAILS
               print("Item Details ");
