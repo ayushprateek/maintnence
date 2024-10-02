@@ -242,7 +242,7 @@ Future<List<OEMPModel>> retrieveTechnicianForSearch(
     {required String query, int? limit}) async {
   final Database db = await initializeDB(null);
   final List<Map<String, Object?>> queryResult = await db.rawQuery(
-      "SELECT FirstName || MiddleName || LastName as Name,* FROM OEMP where IsTechnician=1 AND  Name LIKE \'%$query%\' COLLATE NOCASE LIMIT $limit");
+      "SELECT FirstName || MiddleName || LastName as Name,* FROM OEMP where IsTechnician=1 AND Active=1 AND  Name LIKE \'%$query%\' COLLATE NOCASE LIMIT $limit");
   return queryResult.map((e) => OEMPModel.fromJson(e)).toList();
 }
 
