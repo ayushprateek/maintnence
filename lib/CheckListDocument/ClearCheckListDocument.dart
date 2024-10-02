@@ -259,7 +259,7 @@ class ClearEditCheckListDoc {
     editGeneralData.GeneralData.currentReading = mnocld.CurrentReading ?? '';
     double currentReading=double.tryParse(mnocld.CurrentReading?.toString()??'0.0')??0.0;
     double lastReading=double.tryParse(mnocld.LastReading?.toString()??'0.0')??0.0;
-    editGeneralData.GeneralData.currentReading = (currentReading - lastReading).toStringAsFixed(2);
+    editGeneralData.GeneralData.difference = (currentReading - lastReading).toStringAsFixed(2);
     editGeneralData.GeneralData.isConsumption = mnocld.IsConsumption ?? false;
     editGeneralData.GeneralData.isRequest = mnocld.IsRequest ?? false;
     editGeneralData.GeneralData.isSelected = true;
@@ -319,7 +319,7 @@ class ClearEditCheckListDoc {
     editGeneralData.GeneralData.hasUpdated = mnocld.hasUpdated;
     double currentReading=double.tryParse(mnocld.CurrentReading?.toString()??'0.0')??0.0;
     double lastReading=double.tryParse(mnocld.LastReading?.toString()??'0.0')??0.0;
-    editGeneralData.GeneralData.currentReading = (currentReading - lastReading).toStringAsFixed(2);
+    editGeneralData.GeneralData.difference = (currentReading - lastReading).toStringAsFixed(2);
   }
 }
 
@@ -424,7 +424,7 @@ class ClearViewCheckListDoc {
 
     double currentReading=double.tryParse(mnocld.CurrentReading?.toString()??'0.0')??0.0;
     double lastReading=double.tryParse(mnocld.LastReading?.toString()??'0.0')??0.0;
-    viewGeneralData.GeneralData.currentReading = (currentReading - lastReading).toStringAsFixed(2);
+    viewGeneralData.GeneralData.difference = (currentReading - lastReading).toStringAsFixed(2);
   }
 
   static setViewCheckListDocTextFields({required MNOCLD mnocld}) {
