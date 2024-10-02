@@ -114,7 +114,7 @@ class ClearCreateCheckListDoc {
     createGeneralData.GeneralData.approvalStatus =
         mnocld.ApprovalStatus ?? 'Pending';
     createGeneralData.GeneralData.checkListStatus =
-        mnocld.CheckListStatus ?? 'WIP';
+        mnocld.CheckListStatus ?? 'Open';
     createGeneralData.GeneralData.tyreMaintenance = 'No';
     createGeneralData.GeneralData.objectCode = mnocld.ObjectCode ?? '';
     createGeneralData.GeneralData.equipmentCode = mnocld.EquipmentCode ?? '';
@@ -177,7 +177,7 @@ class ClearEditCheckListDoc {
     editGeneralData.GeneralData.canceled = '';
     editGeneralData.GeneralData.docStatus = 'Open';
     editGeneralData.GeneralData.approvalStatus = 'Pending';
-    editGeneralData.GeneralData.checkListStatus = 'WIP';
+    editGeneralData.GeneralData.checkListStatus = 'Open';
     editGeneralData.GeneralData.tyreMaintenance = 'No';
     editGeneralData.GeneralData.objectCode = '';
     editGeneralData.GeneralData.equipmentCode = '';
@@ -225,7 +225,7 @@ class ClearEditCheckListDoc {
     editGeneralData.GeneralData.approvalStatus =
         mnocld.ApprovalStatus ?? 'Pending';
     editGeneralData.GeneralData.checkListStatus =
-        mnocld.CheckListStatus ?? 'WIP';
+        mnocld.CheckListStatus ?? 'Open';
     editGeneralData.GeneralData.tyreMaintenance = 'No';
     editGeneralData.GeneralData.objectCode = mnocld.ObjectCode ?? '';
     editGeneralData.GeneralData.equipmentCode = mnocld.EquipmentCode ?? '';

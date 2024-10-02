@@ -255,6 +255,8 @@ WHERE
       // checkListGenData.GeneralData.assignedUserName = StaticFuntion.GetEmployeeName(db, dashboardItem.TechnicianCode);
       checkListGenData.GeneralData.assignedUserName =
           dashboardItem.technicianName;
+      checkListGenData.GeneralData.checkListStatus =
+          dashboardItem.checkListStatus??'Open';
       checkListGenData.GeneralData.assignedUserCode =
           dashboardItem.technicianCode;
       checkListGenData.GeneralData.equipmentName = dashboardItem.equipmentCode;

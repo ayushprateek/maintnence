@@ -176,9 +176,9 @@ class _GeneralDataState extends State<GeneralData> {
   List<String> tyreMaintenanceOptions = ['Yes', 'No'];
   List<String> checkListStatusOptions = [
     'Open',
-    'WIP',
-    'Transfer To JobCard',
-    'Hold'
+    // 'WIP',
+    // 'Transfer To JobCard',
+    // 'Hold'
   ];
 
   calculateDifference() {
