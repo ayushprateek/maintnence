@@ -23,6 +23,7 @@ import 'package:maintenance/Sync/SyncModels/LITPL_OOAL.dart';
 import 'package:maintenance/Sync/SyncModels/OCDC.dart';
 import 'package:maintenance/Sync/SyncModels/OEJT.dart';
 import 'package:maintenance/Sync/SyncModels/OEPO.dart';
+import 'package:maintenance/Sync/SyncModels/OINM.dart';
 import 'package:maintenance/Sync/SyncModels/OPRF.dart';
 import 'package:maintenance/Sync/SyncModels/ORTU.dart';
 import 'package:maintenance/Sync/SyncModels/OTRM.dart';
@@ -72,6 +73,7 @@ class GetAllMaster2 {
     this.ocdc,
     this.otrm,
     this.oprf,
+    this.oinm,
     // this.prf1,
   });
 
@@ -92,6 +94,7 @@ class GetAllMaster2 {
   List<OVCLModel>? ovcl;
   List<IUOM>? iuom;
   List<IWHS>? iwhs;
+  List<OINM>? oinm;
 
   // List<OUOMModel>? ouom;
   List<BPSG>? bpsg;
@@ -158,8 +161,8 @@ class GetAllMaster2 {
         bpsg: List<BPSG>.from(json["BPSG"].map((x) => BPSG.fromJson(x))),
         oac2: List<LITPL_OAC2>.from(
             json["LITPL_OAC2"].map((x) => LITPL_OAC2.fromJson(x))),
-        oadm: List<LITPL_OADM>.from(
-            json["LITPL_OADM"].map((x) => LITPL_OADM.fromJson(x))),
+        oadm: List<LITPL_OADM>.from(json["LITPL_OADM"].map((x) => LITPL_OADM.fromJson(x))),
+        oinm: List<OINM>.from(json["OINM"].map((x) => OINM.fromJson(x))),
         secondaryCalendar: List<SecondaryCalendar>.from(
             json["SecondaryCalendar"]
                 .map((x) => SecondaryCalendar.fromJson(x))),
@@ -198,6 +201,7 @@ class GetAllMaster2 {
 
         "OTRM": List<dynamic>.from(otrm ?? [].map((x) => x.toJson())),
         "OEJT": List<dynamic>.from(oejt ?? [].map((x) => x.toJson())),
+        "OINM": List<dynamic>.from(oinm ?? [].map((x) => x.toJson())),
         // "PRF1": List<dynamic>.from(prf1 ?? [].map((x) => x.toJson())),
         "SecondaryCalendar":
             List<dynamic>.from(secondaryCalendar ?? [].map((x) => x.toJson())),
@@ -274,6 +278,7 @@ class GetAllMaster2 {
     await insertOCDC(db, list: getAll.ocdc);
     await insertOTRM(db, list: getAll.otrm);
     await insertOPRF(db, list: getAll.oprf);
+    await insertOINM(db, list: getAll.oinm);
     // await insertPRF1(db, list: getAll.prf1);
     await insertSecondaryCalendar(db, list: getAll.secondaryCalendar);
     await insertSecondaryCalendarYears(db, list: getAll.secondaryCalendarYears);
