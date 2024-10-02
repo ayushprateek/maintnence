@@ -50,6 +50,9 @@ class GeneralData extends StatefulWidget {
 
   static String tyreMaintenance = 'No';
 
+  ///------UI Variables
+  static String? difference;
+
   static bool validate() {
     bool success = true;
 
@@ -163,6 +166,8 @@ class _GeneralDataState extends State<GeneralData> {
       TextEditingController(text: GeneralData.remarks);
   final TextEditingController _currentReading =
       TextEditingController(text: GeneralData.currentReading);
+  final TextEditingController _difference =
+  TextEditingController(text: GeneralData.difference);
   List<String> tyreMaintenanceOptions = ['Yes', 'No'];
   List<String> checkListStatusOptions = [
     'Open',
@@ -274,6 +279,13 @@ class _GeneralDataState extends State<GeneralData> {
                 onChanged: (val) {
                   GeneralData.currentReading = val;
                 },
+              ),
+              getDisabledTextField(
+                  controller: _difference,
+                  labelText: 'Difference',
+                  onChanged: (val) {
+                    GeneralData.difference = val;
+                  },
               ),
               getDateTextField(
                   controller: _lastReadingDate,

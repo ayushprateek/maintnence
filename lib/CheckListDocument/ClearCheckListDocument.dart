@@ -39,6 +39,7 @@ class ClearCreateCheckListDoc {
     createGeneralData.GeneralData.transId = '';
     createGeneralData.GeneralData.docEntry = '';
     createGeneralData.GeneralData.docNum = '';
+    createGeneralData.GeneralData.difference = '0.00';
     createGeneralData.GeneralData.canceled = '';
     createGeneralData.GeneralData.docStatus = 'Open';
     createGeneralData.GeneralData.approvalStatus = 'Pending';
@@ -169,6 +170,7 @@ class ClearEditCheckListDoc {
     editGeneralData.GeneralData.iD = '';
     editGeneralData.GeneralData.tripTransId = '';
     editGeneralData.GeneralData.permanentTransId = '';
+    createGeneralData.GeneralData.difference = '0.00';
     editGeneralData.GeneralData.transId = '';
     editGeneralData.GeneralData.docEntry = '';
     editGeneralData.GeneralData.docNum = '';
@@ -255,6 +257,9 @@ class ClearEditCheckListDoc {
     editGeneralData.GeneralData.updateDate =
         getFormattedDate(mnocld.UpdateDate);
     editGeneralData.GeneralData.currentReading = mnocld.CurrentReading ?? '';
+    double currentReading=double.tryParse(mnocld.CurrentReading?.toString()??'0.0')??0.0;
+    double lastReading=double.tryParse(mnocld.LastReading?.toString()??'0.0')??0.0;
+    editGeneralData.GeneralData.currentReading = (currentReading - lastReading).toStringAsFixed(2);
     editGeneralData.GeneralData.isConsumption = mnocld.IsConsumption ?? false;
     editGeneralData.GeneralData.isRequest = mnocld.IsRequest ?? false;
     editGeneralData.GeneralData.isSelected = true;
@@ -312,6 +317,9 @@ class ClearEditCheckListDoc {
     editGeneralData.GeneralData.isSelected = true;
     editGeneralData.GeneralData.hasCreated = mnocld.hasCreated;
     editGeneralData.GeneralData.hasUpdated = mnocld.hasUpdated;
+    double currentReading=double.tryParse(mnocld.CurrentReading?.toString()??'0.0')??0.0;
+    double lastReading=double.tryParse(mnocld.LastReading?.toString()??'0.0')??0.0;
+    editGeneralData.GeneralData.currentReading = (currentReading - lastReading).toStringAsFixed(2);
   }
 }
 
@@ -330,6 +338,7 @@ class ClearViewCheckListDoc {
     viewGeneralData.GeneralData.checkListStatus = 'WIP';
     viewGeneralData.GeneralData.tyreMaintenance = 'No';
     viewGeneralData.GeneralData.objectCode = '';
+    viewGeneralData.GeneralData.difference = '';
     viewGeneralData.GeneralData.equipmentCode = '';
     viewGeneralData.GeneralData.equipmentName = '';
     viewGeneralData.GeneralData.checkListCode = '';
@@ -412,6 +421,10 @@ class ClearViewCheckListDoc {
     viewGeneralData.GeneralData.isSelected = true;
     viewGeneralData.GeneralData.hasCreated = mnocld.hasCreated;
     viewGeneralData.GeneralData.hasUpdated = mnocld.hasUpdated;
+
+    double currentReading=double.tryParse(mnocld.CurrentReading?.toString()??'0.0')??0.0;
+    double lastReading=double.tryParse(mnocld.LastReading?.toString()??'0.0')??0.0;
+    viewGeneralData.GeneralData.currentReading = (currentReading - lastReading).toStringAsFixed(2);
   }
 
   static setViewCheckListDocTextFields({required MNOCLD mnocld}) {

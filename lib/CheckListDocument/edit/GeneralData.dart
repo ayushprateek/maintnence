@@ -59,6 +59,9 @@ class GeneralData extends StatefulWidget {
 
   static String tyreMaintenance = 'No';
 
+  ///------UI Variables
+  static String? difference;
+
   static bool validate() {
     bool success = true;
 
@@ -172,6 +175,8 @@ class _GeneralDataState extends State<GeneralData> {
       TextEditingController(text: GeneralData.remarks);
   final TextEditingController _currentReading =
       TextEditingController(text: GeneralData.currentReading);
+  final TextEditingController _difference =
+  TextEditingController(text: GeneralData.difference);
   List<String> tyreMaintenanceOptions = ['Yes', 'No'];
   List<String> checkListStatusOptions = [
     'Open',
@@ -180,7 +185,12 @@ class _GeneralDataState extends State<GeneralData> {
     'Transfer To JobCard',
     'Hold'
   ];
-
+  calculateDifference() {
+    double currentReading = double.tryParse(_currentReading.text) ?? 0.0;
+    double lastReading = double.tryParse(_lastReading.text) ?? 0.0;
+    GeneralData.difference =
+        _difference.text = (currentReading - lastReading).toStringAsFixed(2);
+  }
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -347,6 +357,17 @@ class _GeneralDataState extends State<GeneralData> {
                   labelText: 'Current Reading',
                   onChanged: (val) {
                     GeneralData.currentReading = val;
+                    calculateDifference();
+                  },
+                  keyboardType: TextInputType.number,
+                  inputFormatters: [
+                    getIntegerRegEx(),
+                  ]),
+              getTextField(
+                  controller: _difference,
+                  labelText: 'Difference',
+                  onChanged: (val) {
+                    GeneralData.difference = val;
                   },
                   keyboardType: TextInputType.number,
                   inputFormatters: [
