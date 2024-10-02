@@ -312,107 +312,110 @@ class _CheckListDetailsState extends State<CheckListDetails> {
                                                 ),
                                               ),
                                             ),
-                                            Padding(
-                                              padding:
-                                              const EdgeInsets.only(
-                                                  top: 4.0, bottom: 4),
-                                              child: SizedBox(
-                                                height: 20,
-                                                child: Row(
-                                                  mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .start,
-                                                  children: [
-                                                    Checkbox(
-                                                      value: mncld1
-                                                          .IsConsumption,
-                                                      onChanged:
-                                                          (bool? value) {
-                                                        setState(() {
-                                                          mncld1.IsConsumption =
-                                                          !mncld1
-                                                              .IsConsumption;
-                                                        });
-                                                      },
-                                                    ),
-                                                    Expanded(
-                                                        child: getPoppinsText(
-                                                            text:
-                                                            'Consumption',
-                                                            textAlign:
-                                                            TextAlign
-                                                                .start)),
-                                                  ],
+                                            if(mncld1.ItemCode!=null&& mncld1.ItemCode?.isNotEmpty==true)...[
+                                              Padding(
+                                                padding:
+                                                const EdgeInsets.only(
+                                                    top: 4.0, bottom: 4),
+                                                child: SizedBox(
+                                                  height: 20,
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .start,
+                                                    children: [
+                                                      Checkbox(
+                                                        value: mncld1
+                                                            .IsConsumption,
+                                                        onChanged:
+                                                            (bool? value) {
+                                                          setState(() {
+                                                            mncld1.IsConsumption =
+                                                            !mncld1
+                                                                .IsConsumption;
+                                                          });
+                                                        },
+                                                      ),
+                                                      Expanded(
+                                                          child: getPoppinsText(
+                                                              text:
+                                                              'Consumption',
+                                                              textAlign:
+                                                              TextAlign
+                                                                  .start)),
+                                                    ],
+                                                  ),
                                                 ),
                                               ),
-                                            ),
-                                            Padding(
-                                              padding:
-                                              const EdgeInsets.only(
-                                                  top: 4.0, bottom: 4),
-                                              child: SizedBox(
-                                                height: 20,
-                                                child: Row(
-                                                  mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .start,
-                                                  children: [
-                                                    Checkbox(
-                                                      value:
-                                                      mncld1.IsRequest,
-                                                      onChanged:
-                                                          (bool? value) {
-                                                        setState(() {
-                                                          mncld1.IsRequest =
-                                                          !mncld1
-                                                              .IsRequest;
-                                                        });
-                                                      },
-                                                    ),
-                                                    Expanded(
-                                                        child: getPoppinsText(
-                                                            text: 'Request',
-                                                            textAlign:
-                                                            TextAlign
-                                                                .start)),
-                                                  ],
+                                              Padding(
+                                                padding:
+                                                const EdgeInsets.only(
+                                                    top: 4.0, bottom: 4),
+                                                child: SizedBox(
+                                                  height: 20,
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .start,
+                                                    children: [
+                                                      Checkbox(
+                                                        value:
+                                                        mncld1.IsRequest,
+                                                        onChanged:
+                                                            (bool? value) {
+                                                          setState(() {
+                                                            mncld1.IsRequest =
+                                                            !mncld1
+                                                                .IsRequest;
+                                                          });
+                                                        },
+                                                      ),
+                                                      Expanded(
+                                                          child: getPoppinsText(
+                                                              text: 'Request',
+                                                              textAlign:
+                                                              TextAlign
+                                                                  .start)),
+                                                    ],
+                                                  ),
                                                 ),
                                               ),
-                                            ),
-                                            Padding(
-                                              padding:
-                                                  const EdgeInsets.only(
-                                                      top: 4.0, bottom: 4),
-                                              child: SizedBox(
-                                                height: 20,
-                                                child: Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .start,
-                                                  children: [
-                                                    Checkbox(
-                                                      value: mncld1
-                                                          .IsFromStock,
-                                                      onChanged:
-                                                          (bool? value) {
-                                                        setState(() {
-                                                          mncld1.IsFromStock =
-                                                              !mncld1
-                                                                  .IsFromStock;
-                                                        });
-                                                      },
-                                                    ),
-                                                    Expanded(
-                                                        child: getPoppinsText(
-                                                            text:
-                                                                'From Stock',
-                                                            textAlign:
-                                                                TextAlign
-                                                                    .start)),
-                                                  ],
+                                              Padding(
+                                                padding:
+                                                const EdgeInsets.only(
+                                                    top: 4.0, bottom: 4),
+                                                child: SizedBox(
+                                                  height: 20,
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .start,
+                                                    children: [
+                                                      Checkbox(
+                                                        value: mncld1
+                                                            .IsFromStock,
+                                                        onChanged:
+                                                            (bool? value) {
+                                                          setState(() {
+                                                            mncld1.IsFromStock =
+                                                            !mncld1
+                                                                .IsFromStock;
+                                                          });
+                                                        },
+                                                      ),
+                                                      Expanded(
+                                                          child: getPoppinsText(
+                                                              text:
+                                                              'From Stock',
+                                                              textAlign:
+                                                              TextAlign
+                                                                  .start)),
+                                                    ],
+                                                  ),
                                                 ),
                                               ),
-                                            ),
+                                            ],
+
 
 
                                             // Padding(
