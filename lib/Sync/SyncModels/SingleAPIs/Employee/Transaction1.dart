@@ -21,7 +21,6 @@ import 'package:maintenance/Sync/SyncModels/MNOJCD.dart';
 import 'package:maintenance/Sync/SyncModels/OPCNA1.dart';
 import 'package:maintenance/Sync/SyncModels/OPCNA2.dart';
 import 'package:maintenance/Sync/SyncModels/OPCNA3.dart';
-import 'package:maintenance/Sync/SyncModels/OPCNA4.dart';
 import 'package:maintenance/Sync/SyncModels/OPOCNA.dart';
 import 'package:maintenance/Sync/SyncModels/OPOTRE.dart';
 import 'package:maintenance/Sync/SyncModels/OPOTRP.dart';
@@ -68,7 +67,6 @@ class Transaction1 {
     this.opcna1,
     this.opcna2,
     this.opcna3,
-    this.opcna4,
     this.opocna,
     this.opotre,
     this.opotrp,
@@ -118,7 +116,6 @@ class Transaction1 {
   List<OPCNA1>? opcna1;
   List<OPCNA2>? opcna2;
   List<OPCNA3>? opcna3;
-  List<OPCNA4>? opcna4;
   List<OPOCNA>? opocna;
   List<OPOTRE>? opotre;
   List<OPOTRP>? opotrp;
@@ -266,8 +263,7 @@ class Transaction1 {
             List<OPCNA2>.from(json["OPCNA2"].map((x) => OPCNA2.fromJson(x))),
         opcna3:
             List<OPCNA3>.from(json["OPCNA3"].map((x) => OPCNA3.fromJson(x))),
-        opcna4:
-            List<OPCNA4>.from(json["OPCNA4"].map((x) => OPCNA4.fromJson(x))),
+
         opocna:
             List<OPOCNA>.from(json["OPOCNA"].map((x) => OPOCNA.fromJson(x))),
         opotre:
@@ -387,7 +383,6 @@ class Transaction1 {
         "OPCNA1": List<dynamic>.from(opcna1 ?? [].map((x) => x.toJson())),
         "OPCNA2": List<dynamic>.from(opcna2 ?? [].map((x) => x.toJson())),
         "OPCNA3": List<dynamic>.from(opcna3 ?? [].map((x) => x.toJson())),
-        "OPCNA4": List<dynamic>.from(opcna4 ?? [].map((x) => x.toJson())),
         "OPOCNA": List<dynamic>.from(opocna ?? [].map((x) => x.toJson())),
         "OPOTRE": List<dynamic>.from(opotre ?? [].map((x) => x.toJson())),
         "OPOTRP": List<dynamic>.from(opotrp ?? [].map((x) => x.toJson())),
@@ -473,7 +468,6 @@ class Transaction1 {
     await insertOPCNA1(db, list: transactions.opcna1);
     await insertOPCNA2(db, list: transactions.opcna2);
     await insertOPCNA3(db, list: transactions.opcna3);
-    await insertOPCNA4(db, list: transactions.opcna4);
     await insertOPOCNA(db, list: transactions.opocna);
     await insertOPOTRE(db, list: transactions.opotre);
     await insertOPOTRP(db, list: transactions.opotrp);

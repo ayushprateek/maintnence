@@ -21,14 +21,11 @@ import 'package:maintenance/Sync/SyncModels/LITPL_OADM.dart';
 import 'package:maintenance/Sync/SyncModels/LITPL_OOAC.dart';
 import 'package:maintenance/Sync/SyncModels/LITPL_OOAL.dart';
 import 'package:maintenance/Sync/SyncModels/OCDC.dart';
-import 'package:maintenance/Sync/SyncModels/OCINP.dart';
 import 'package:maintenance/Sync/SyncModels/OEJT.dart';
 import 'package:maintenance/Sync/SyncModels/OEPO.dart';
 import 'package:maintenance/Sync/SyncModels/OPRF.dart';
 import 'package:maintenance/Sync/SyncModels/ORTU.dart';
 import 'package:maintenance/Sync/SyncModels/OTRM.dart';
-import 'package:maintenance/Sync/SyncModels/OTRNS.dart';
-import 'package:maintenance/Sync/SyncModels/OUDA.dart';
 import 'package:maintenance/Sync/SyncModels/OUDAR.dart';
 import 'package:maintenance/Sync/SyncModels/OVCL.dart';
 import 'package:maintenance/Sync/SyncModels/SecondaryCalendar.dart';
@@ -63,9 +60,7 @@ class GetAllMaster2 {
     this.oudar,
     this.bpmg,
     // this.owhs,
-    this.otrns,
-    this.ouda,
-    this.ocinp,
+
     this.oadm,
     this.secondaryCalendar,
     this.secondaryCalendarYears,
@@ -115,9 +110,7 @@ class GetAllMaster2 {
   List<CVMTP1>? cvmtp1;
 
   // List<OWHS>? owhs;
-  List<OTRNSModel>? otrns;
-  List<OUDA>? ouda;
-  List<OCINP>? ocinp;
+
   List<SecondaryCalendar>? secondaryCalendar;
   List<SecondaryCalendarYears>? secondaryCalendarYears;
 
@@ -156,15 +149,12 @@ class GetAllMaster2 {
         bpmg: List<BPMG>.from(json["BPMG"].map((x) => BPMG.fromJson(x))),
         otrm: List<OTRM>.from(json["OTRM"].map((x) => OTRM.fromJson(x))),
         // owhs: List<OWHS>.from(json["OWHS"].map((x) => OWHS.fromJson(x))),
-        otrns: List<OTRNSModel>.from(
-            json["OTRNS"].map((x) => OTRNSModel.fromJson(x))),
-        ouda: List<OUDA>.from(json["OUDA"].map((x) => OUDA.fromJson(x))),
+
         oejt: List<OEJT>.from(json["OEJT"].map((x) => OEJT.fromJson(x))),
         cvomtp:
             List<CVOMTP>.from(json["CVOMTP"].map((x) => CVOMTP.fromJson(x))),
         cvmtp1:
             List<CVMTP1>.from(json["CVMTP1"].map((x) => CVMTP1.fromJson(x))),
-        ocinp: List<OCINP>.from(json["OCINP"].map((x) => OCINP.fromJson(x))),
         bpsg: List<BPSG>.from(json["BPSG"].map((x) => BPSG.fromJson(x))),
         oac2: List<LITPL_OAC2>.from(
             json["LITPL_OAC2"].map((x) => LITPL_OAC2.fromJson(x))),
@@ -205,9 +195,7 @@ class GetAllMaster2 {
         "OUDAR": List<dynamic>.from(oudar ?? [].map((x) => x.toJson())),
         "BPMG": List<dynamic>.from(bpmg ?? [].map((x) => x.toJson())),
         // "OWHS": List<dynamic>.from(owhs ?? [].map((x) => x.toJson())),
-        "OTRNS": List<dynamic>.from(otrns ?? [].map((x) => x.toJson())),
-        "OUDA": List<dynamic>.from(ouda ?? [].map((x) => x.toJson())),
-        "OCINP": List<dynamic>.from(ocinp ?? [].map((x) => x.toJson())),
+
         "OTRM": List<dynamic>.from(otrm ?? [].map((x) => x.toJson())),
         "OEJT": List<dynamic>.from(oejt ?? [].map((x) => x.toJson())),
         // "PRF1": List<dynamic>.from(prf1 ?? [].map((x) => x.toJson())),
@@ -280,9 +268,7 @@ class GetAllMaster2 {
     await insertOUDAR(db, list: getAll.oudar);
     await insertBPMG(db, list: getAll.bpmg);
     // await insertOWHS(db, list: getAll.owhs);
-    await insertOTRNS(db, list: getAll.otrns);
-    await insertOUDA(db, list: getAll.ouda);
-    await insertOCINP(db, list: getAll.ocinp);
+
     await insertOEJT(db, list: getAll.oejt);
     await insertOEPO(db, list: getAll.oepo);
     await insertOCDC(db, list: getAll.ocdc);

@@ -34,15 +34,12 @@ import 'package:maintenance/Sync/SyncModels/OCRY.dart';
 import 'package:maintenance/Sync/SyncModels/OCST.dart';
 import 'package:maintenance/Sync/SyncModels/OEMG.dart';
 import 'package:maintenance/Sync/SyncModels/OEMP.dart';
-import 'package:maintenance/Sync/SyncModels/OGRP.dart';
 import 'package:maintenance/Sync/SyncModels/OITM.dart';
-import 'package:maintenance/Sync/SyncModels/OLEV.dart';
 import 'package:maintenance/Sync/SyncModels/OMDOC.dart';
 import 'package:maintenance/Sync/SyncModels/OMNU.dart';
 import 'package:maintenance/Sync/SyncModels/OMSP.dart';
 import 'package:maintenance/Sync/SyncModels/ORTT.dart';
 import 'package:maintenance/Sync/SyncModels/OTAX.dart';
-import 'package:maintenance/Sync/SyncModels/OTRNS.dart';
 import 'package:maintenance/Sync/SyncModels/OUDP.dart';
 import 'package:maintenance/Sync/SyncModels/OUOM.dart';
 import 'package:maintenance/Sync/SyncModels/OUSR.dart';
@@ -95,14 +92,11 @@ class GetAllMaster1 {
     this.omdoc,
     this.oemg,
     this.oemp,
-    this.ogrp,
     this.oitm,
-    this.olev,
     this.omnu,
     this.omsp,
     this.ortt,
     this.otax,
-    this.otrns,
     this.oudp,
     this.ouom,
     this.ousr,
@@ -159,14 +153,11 @@ class GetAllMaster1 {
   List<OMDOCModel>? omdoc;
   List<OEMGModel>? oemg;
   List<OEMPModel>? oemp;
-  List<OGRPModel>? ogrp;
   List<OITMModel>? oitm;
-  List<OLEVModel>? olev;
   List<OMNUModel>? omnu;
   List<OMSPModel>? omsp;
   List<ORTTModel>? ortt;
   List<OTAXModel>? otax;
-  List<OTRNSModel>? otrns;
   List<OUDP>? oudp;
   List<OUOMModel>? ouom;
   List<OUSRModel>? ousr;
@@ -245,12 +236,10 @@ class GetAllMaster1 {
             json["OEMG"].map((x) => OEMGModel.fromJson(x))),
         oemp: List<OEMPModel>.from(
             json["OEMP"].map((x) => OEMPModel.fromJson(x))),
-        ogrp: List<OGRPModel>.from(
-            json["OGRP"].map((x) => OGRPModel.fromJson(x))),
+
         oitm: List<OITMModel>.from(
             json["OITM"].map((x) => OITMModel.fromJson(x))),
-        olev: List<OLEVModel>.from(
-            json["OLEV"].map((x) => OLEVModel.fromJson(x))),
+
         omnu: List<OMNUModel>.from(
             json["OMNU"].map((x) => OMNUModel.fromJson(x))),
         omsp: List<OMSPModel>.from(
@@ -259,8 +248,7 @@ class GetAllMaster1 {
             json["ORTT"].map((x) => ORTTModel.fromJson(x))),
         otax: List<OTAXModel>.from(
             json["OTAX"].map((x) => OTAXModel.fromJson(x))),
-        otrns: List<OTRNSModel>.from(
-            json["OTRNS"].map((x) => OTRNSModel.fromJson(x))),
+
         oudp: List<OUDP>.from(json["OUDP"].map((x) => OUDP.fromJson(x))),
         ouom: List<OUOMModel>.from(
             json["OUOM"].map((x) => OUOMModel.fromJson(x))),
@@ -347,14 +335,11 @@ class GetAllMaster1 {
         "ODOC": List<dynamic>.from(omdoc ?? [].map((x) => x.toJson())),
         "OEMG": List<dynamic>.from(oemg ?? [].map((x) => x.toJson())),
         "OEMP": List<dynamic>.from(oemp ?? [].map((x) => x.toJson())),
-        "OGRP": List<dynamic>.from(ogrp ?? [].map((x) => x.toJson())),
         "OITM": List<dynamic>.from(oitm ?? [].map((x) => x.toJson())),
-        "OLEV": List<dynamic>.from(olev ?? [].map((x) => x.toJson())),
         "OMNU": List<dynamic>.from(omnu ?? [].map((x) => x.toJson())),
         "OMSP": List<dynamic>.from(omsp ?? [].map((x) => x.toJson())),
         "ORTT": List<dynamic>.from(ortt ?? [].map((x) => x.toJson())),
         "OTAX": List<dynamic>.from(otax ?? [].map((x) => x.toJson())),
-        "OTRNS": List<dynamic>.from(otrns ?? [].map((x) => x.toJson())),
         "OUDP": List<dynamic>.from(oudp ?? [].map((x) => x.toJson())),
         "OUOM": List<dynamic>.from(ouom ?? [].map((x) => x.toJson())),
         "OUSR": List<dynamic>.from(ousr ?? [].map((x) => x.toJson())),
@@ -517,14 +502,11 @@ class GetAllMaster1 {
     await insertOEMG(db, list: getAll.oemg);
     await insertOEMP(db, list: getAll.oemp);
     await insertCRD8(db, list: getAll.crd8);
-    await insertOGRP(db, list: getAll.ogrp);
     await insertOITM(db, list: getAll.oitm);
-    await insertOLEV(db, list: getAll.olev);
     await insertOMNU(db, list: getAll.omnu);
     await insertOMSP(db, list: getAll.omsp);
     await insertORTT(db, list: getAll.ortt);
     await insertOTAX(db, list: getAll.otax);
-    await insertOTRNS(db, list: getAll.otrns);
     await insertOUDP(db, list: getAll.oudp);
     await insertOUOM(db, list: getAll.ouom);
     await insertOUSR(db, list: getAll.ousr);

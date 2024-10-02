@@ -1,6 +1,5 @@
 import 'package:maintenance/Sync/SyncModels/CRT1.dart';
 import 'package:maintenance/Sync/SyncModels/ECP1.dart';
-import 'package:maintenance/Sync/SyncModels/OCRO.dart';
 import 'package:maintenance/Sync/SyncModels/ORCT.dart';
 import 'package:maintenance/Sync/SyncModels/OVUL.dart';
 import 'package:maintenance/Sync/SyncModels/RCT1.dart';
@@ -24,7 +23,6 @@ class Transaction2 {
   List<RCT1>? rct1;
   List<ORCT>? orct;
   List<ECP1>? ecp1;
-  List<OCRO>? ocro;
   List<OVULModel>? ovul;
   List<VUL1Model>? vul1;
   List<CRT1>? crt1;
@@ -49,7 +47,6 @@ class Transaction2 {
     this.rct1,
     this.orct,
     this.ecp1,
-    this.ocro,
     this.ovul,
     this.vul1,
     this.crt1,
@@ -74,7 +71,6 @@ class Transaction2 {
         rct1: List<RCT1>.from(json["RCT1"].map((x) => RCT1.fromJson(x))),
         orct: List<ORCT>.from(json["ORCT"].map((x) => ORCT.fromJson(x))),
         ecp1: List<ECP1>.from(json["ECP1"].map((x) => ECP1.fromJson(x))),
-        ocro: List<OCRO>.from(json["OCRO"].map((x) => OCRO.fromJson(x))),
         ovul: List<OVULModel>.from(
             json["OVUL"].map((x) => OVULModel.fromJson(x))),
         vul1: List<VUL1Model>.from(
@@ -116,7 +112,6 @@ class Transaction2 {
         "RCT1": List<dynamic>.from(rct1 ?? [].map((x) => x.toJson())),
         "ORCT": List<dynamic>.from(orct ?? [].map((x) => x.toJson())),
         "ECP1": List<dynamic>.from(ecp1 ?? [].map((x) => x.toJson())),
-        "OCRO": List<dynamic>.from(ocro ?? [].map((x) => x.toJson())),
         "OVUL": List<dynamic>.from(ovul ?? [].map((x) => x.toJson())),
         "VUL1": List<dynamic>.from(vul1 ?? [].map((x) => x.toJson())),
         "CRT1": List<dynamic>.from(crt1 ?? [].map((x) => x.toJson())),
