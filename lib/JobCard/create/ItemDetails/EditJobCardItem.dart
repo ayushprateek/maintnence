@@ -156,7 +156,7 @@ class _EditJobCardItemState extends State<EditJobCardItem> {
                   EditJobCardItem.fromStock = val ?? !EditJobCardItem.fromStock;
                 });
               },
-              title: Text('From Stock'),
+              title: Text('Internal Request'),
             ),
             CheckboxListTile(
               controlAffinity: ListTileControlAffinity.leading,
@@ -177,7 +177,7 @@ class _EditJobCardItemState extends State<EditJobCardItem> {
                   EditJobCardItem.request = val ?? !EditJobCardItem.request;
                 });
               },
-              title: Text('Request'),
+              title: Text('Purchase Request'),
             ),
             Align(
               alignment: Alignment.centerRight,

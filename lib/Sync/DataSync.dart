@@ -171,7 +171,7 @@ class _DataSyncState extends State<DataSync> {
       _currentStep = 3;
     });
 
-    ///Internal request
+    ///Internal Request
 
     await insertPROITRToServer(null);
     await insertPRITR1ToServer(null);
@@ -231,7 +231,7 @@ class _DataSyncState extends State<DataSync> {
     await updatePRPDN2OnServer(null);
     await updatePRPDN3OnServer(null);
 
-    ///Internal request
+    ///Internal Request
 
     await updatePROITROnServer(null);
     await updatePRITR1OnServer(null);

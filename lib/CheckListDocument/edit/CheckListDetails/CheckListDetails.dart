@@ -360,7 +360,7 @@ class _CheckListDetailsState extends State<CheckListDetails> {
                                                       ),
                                                       Expanded(
                                                           child: getPoppinsText(
-                                                              text: 'Request',
+                                                              text: 'Purchase Request',
                                                               textAlign:
                                                                   TextAlign
                                                                       .start)),
@@ -398,7 +398,7 @@ class _CheckListDetailsState extends State<CheckListDetails> {
                                                       Expanded(
                                                           child: getPoppinsText(
                                                               text:
-                                                                  'From Stock',
+                                                                  'Internal Request',
                                                               textAlign:
                                                                   TextAlign
                                                                       .start)),

@@ -138,7 +138,7 @@ class _ItemDetailsState extends State<ItemDetails> {
                                               ),
                                               Expanded(
                                                   child: getPoppinsText(
-                                                      text: 'From Stock',
+                                                      text: 'Internal Request',
                                                       textAlign:
                                                           TextAlign.start)),
                                             ],
@@ -190,7 +190,7 @@ class _ItemDetailsState extends State<ItemDetails> {
                                               ),
                                               Expanded(
                                                   child: getPoppinsText(
-                                                      text: 'Request',
+                                                      text: 'Purchase Request',
                                                       textAlign:
                                                           TextAlign.start)),
                                             ],

@@ -223,7 +223,7 @@ class _EditCheckListState extends State<EditCheckList> {
                   EditCheckList.fromStock = val ?? !EditCheckList.fromStock;
                 });
               },
-              title: Text('From Stock'),
+              title: Text('Internal Request'),
             ),
             CheckboxListTile(
               controlAffinity: ListTileControlAffinity.leading,
@@ -243,7 +243,7 @@ class _EditCheckListState extends State<EditCheckList> {
                   EditCheckList.request = val ?? !EditCheckList.request;
                 });
               },
-              title: Text('Request'),
+              title: Text('Purchase Request'),
             ),
             Align(
               alignment: Alignment.centerRight,
