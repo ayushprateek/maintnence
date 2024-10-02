@@ -209,8 +209,8 @@ Future<List<MNOWCM>> retrieveMNOWCMForSearch({
 }) async {
   query = "%$query%";
   final Database db = await initializeDB(null);
-  final List<Map<String, Object?>> queryResult = await db.rawQuery(
-      'SELECT * FROM MNOWCM WHERE Code LIKE "$query" OR Name LIKE "$query" LIMIT $limit');
+  String dbQuery='SELECT * FROM MNOWCM WHERE (Code LIKE "$query" OR Name LIKE "$query") AND Active=1 LIMIT $limit';
+  final List<Map<String, Object?>> queryResult = await db.rawQuery(dbQuery);
   return queryResult.map((e) => MNOWCM.fromJson(e)).toList();
 }
 
