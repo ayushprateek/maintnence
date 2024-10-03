@@ -365,7 +365,7 @@ class _GeneralDataState extends State<GeneralData> {
                   inputFormatters: [
                     getIntegerRegEx(),
                   ]),
-              getTextField(
+              getDisabledTextField(
                   controller: _difference,
                   labelText: 'Difference',
                   onChanged: (val) {
