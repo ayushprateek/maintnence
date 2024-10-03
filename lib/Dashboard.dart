@@ -255,8 +255,7 @@ WHERE
       // checkListGenData.GeneralData.assignedUserName = StaticFuntion.GetEmployeeName(db, dashboardItem.TechnicianCode);
       checkListGenData.GeneralData.assignedUserName =
           dashboardItem.technicianName;
-      checkListGenData.GeneralData.checkListStatus =
-          dashboardItem.checkListStatus??'Open';
+      checkListGenData.GeneralData.checkListStatus ='Open';
       checkListGenData.GeneralData.assignedUserCode =
           dashboardItem.technicianCode;
       checkListGenData.GeneralData.equipmentName = dashboardItem.equipmentCode;
@@ -327,12 +326,16 @@ WHERE
         if (whsList.isNotEmpty) {
           whsCode = whsList[0].WhsCode;
         }
-        double? availableQty = 0.0;
+        double availableQty = 0.0;
         List list = await db.rawQuery('''
         SELECT SUM(InQty)-SUM(OutQty) as AvailableQty FROM OINM WHERE ItemCode='${mnclm1.ItemCode}' AND WhsCode='$whsCode'
         ''');
         if (list.isNotEmpty) {
-          availableQty = double.tryParse(list[0]['AvailableQty'].toString());
+          availableQty = double.tryParse(list[0]['AvailableQty'].toString())??0.0;
+          if(availableQty<=0.0)
+            {
+              availableQty=0.0;
+            }
         }
         MNCLD1 mncld1 = MNCLD1(
           TransId: checkListGenData.GeneralData.transId,

@@ -113,8 +113,7 @@ class ClearCreateCheckListDoc {
     createGeneralData.GeneralData.docStatus = mnocld.DocStatus ?? 'Open';
     createGeneralData.GeneralData.approvalStatus =
         mnocld.ApprovalStatus ?? 'Pending';
-    createGeneralData.GeneralData.checkListStatus =
-        mnocld.CheckListStatus ?? 'Open';
+    createGeneralData.GeneralData.checkListStatus = 'Open';
     createGeneralData.GeneralData.tyreMaintenance = 'No';
     createGeneralData.GeneralData.objectCode = mnocld.ObjectCode ?? '';
     createGeneralData.GeneralData.equipmentCode = mnocld.EquipmentCode ?? '';
