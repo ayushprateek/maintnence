@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:maintenance/Component/BackPressedWarning.dart';
@@ -7,9 +6,6 @@ import 'package:maintenance/Component/CompanyDetails.dart';
 import 'package:maintenance/Component/CustomColor.dart';
 import 'package:maintenance/Component/CustomFont.dart';
 import 'package:maintenance/Component/GenerateTransId.dart';
-import 'package:maintenance/Component/GetCurrentLocation.dart';
-import 'package:maintenance/Component/GetLastDocNum.dart';
-import 'package:maintenance/Component/IsAvailableTransId.dart';
 import 'package:maintenance/Component/LogFileFunctions.dart';
 import 'package:maintenance/Component/MenuDescription.dart';
 import 'package:maintenance/Component/Mode.dart';
@@ -19,8 +15,12 @@ import 'package:maintenance/Dashboard.dart';
 import 'package:maintenance/DatabaseInitialization.dart';
 import 'package:maintenance/GoodsIssue/ClearGoodsIssueDocument.dart';
 import 'package:maintenance/GoodsIssue/create/GoodsIssue.dart';
+import 'package:maintenance/GoodsIssue/create/ItemDetails/ItemDetails.dart'
+    as goodsIssueCreateDetails;
 import 'package:maintenance/InternalRequest/ClearInternalRequestDocument.dart';
 import 'package:maintenance/InternalRequest/create/InternalRequest.dart';
+import 'package:maintenance/InternalRequest/create/ItemDetails/ItemDetails.dart'
+    as createInternalItemDetails;
 import 'package:maintenance/JobCard/ClearJobCardDocument.dart';
 import 'package:maintenance/JobCard/edit/Attachment.dart';
 import 'package:maintenance/JobCard/edit/GeneralData.dart';
@@ -30,17 +30,17 @@ import 'package:maintenance/JobCard/edit/ServiceDetails/ServiceDetails.dart';
 import 'package:maintenance/JobCard/edit/TyreMaintenance.dart';
 import 'package:maintenance/JobCard/edit/WhyWhyAnalysis.dart';
 import 'package:maintenance/Purchase/PurchaseRequest/ClearPurchaseRequest.dart';
+import 'package:maintenance/Purchase/PurchaseRequest/create/ItemDetails/ItemDetails.dart'
+    as createPurchaseItemDetails;
 import 'package:maintenance/Purchase/PurchaseRequest/create/PurchaseRequest.dart';
 import 'package:maintenance/Sync/DataSync.dart';
 import 'package:maintenance/Sync/SyncModels/IMGDI1.dart';
 import 'package:maintenance/Sync/SyncModels/IMOGDI.dart';
 import 'package:maintenance/Sync/SyncModels/MNJCD1.dart';
-import 'package:maintenance/Sync/SyncModels/MNJCD1.dart';
 import 'package:maintenance/Sync/SyncModels/MNJCD2.dart';
 import 'package:maintenance/Sync/SyncModels/MNJCD3.dart';
 import 'package:maintenance/Sync/SyncModels/MNJCD5.dart';
 import 'package:maintenance/Sync/SyncModels/MNJCD6.dart';
-import 'package:maintenance/Sync/SyncModels/MNJCD7.dart';
 import 'package:maintenance/Sync/SyncModels/MNOJCD.dart';
 import 'package:maintenance/Sync/SyncModels/PRITR1.dart';
 import 'package:maintenance/Sync/SyncModels/PROITR.dart';
@@ -48,19 +48,13 @@ import 'package:maintenance/Sync/SyncModels/PROPRQ.dart';
 import 'package:maintenance/Sync/SyncModels/PRPRQ1.dart';
 import 'package:maintenance/main.dart';
 import 'package:sqflite/sqlite_api.dart';
-import 'package:maintenance/GoodsIssue/create/ItemDetails/ItemDetails.dart'
-as goodsIssueCreateDetails;
-import 'package:maintenance/InternalRequest/create/ItemDetails/ItemDetails.dart'
-as createInternalItemDetails;
-import 'package:maintenance/Purchase/PurchaseRequest/create/ItemDetails/ItemDetails.dart'
-as createPurchaseItemDetails;
 
 class EditJobCard extends StatefulWidget {
   static bool saveButtonPressed = false;
-  int index = 0;
+  RxInt index = RxInt(0);
 
   EditJobCard(int index, {this.onBackPressed}) {
-    this.index = index;
+    this.index.value = index;
   }
 
   Function? onBackPressed;
@@ -95,7 +89,7 @@ class _EditJobCardState extends State<EditJobCard> {
     ClearPurchaseRequestDocument.clearEditItems();
     createPurchaseItemDetails.ItemDetails.items.clear();
     for (MNJCD1 mnjcd1 in ItemDetails.items) {
-      if ( mnjcd1.IsRequest) {
+      if (mnjcd1.IsRequest) {
         createPurchaseItemDetails.ItemDetails.items.add(PRPRQ1(
           insertedIntoDatabase: false,
           ID: 0,
@@ -115,19 +109,20 @@ class _EditJobCardState extends State<EditJobCard> {
           'Unable to Create Purchase Request. Please ensure Item, Qty is valid and you have selected atleast one Item!');
       return;
     }
-    String TransId = await GenerateTransId.getTransId(tableName: 'PROPRQ', docName: 'PR');
+    String TransId =
+        await GenerateTransId.getTransId(tableName: 'PROPRQ', docName: 'PR');
     print(TransId);
     ClearPurchaseRequestDocument.setGeneralData(
         data: PROPRQ(
-          RequestedCode: GeneralData.assignedUserCode,
-          RequestedName: GeneralData.assignedUserName,
-          TransId: TransId,
-          TripTransId: GeneralData.TripTransId,
-          PostingDate: DateTime.now(),
-          ValidUntill: DateTime.now().add(Duration(days: 7)),
-          DocStatus: 'Open',
-          ApprovalStatus: 'Pending',
-        ));
+      RequestedCode: GeneralData.assignedUserCode,
+      RequestedName: GeneralData.assignedUserName,
+      TransId: TransId,
+      TripTransId: GeneralData.TripTransId,
+      PostingDate: DateTime.now(),
+      ValidUntill: DateTime.now().add(Duration(days: 7)),
+      DocStatus: 'Open',
+      ApprovalStatus: 'Pending',
+    ));
 
     Get.to(() => PurchaseRequest(0));
   }
@@ -137,7 +132,7 @@ class _EditJobCardState extends State<EditJobCard> {
     ClearCreateInternalRequestDocument.clearEditItems();
     createInternalItemDetails.ItemDetails.items.clear();
     for (MNJCD1 mnjcd1 in ItemDetails.items) {
-      if ( mnjcd1.IsFromStock && mnjcd1.IsRequest) {
+      if (mnjcd1.IsFromStock && mnjcd1.IsRequest) {
         createInternalItemDetails.ItemDetails.items.add(PRITR1(
           insertedIntoDatabase: false,
           ID: 0,
@@ -159,20 +154,21 @@ class _EditJobCardState extends State<EditJobCard> {
       return;
     }
 
-    String TransId = await GenerateTransId.getTransId(tableName: 'PROITR', docName: 'PRIR');
+    String TransId =
+        await GenerateTransId.getTransId(tableName: 'PROITR', docName: 'PRIR');
 
     print(TransId);
     ClearCreateInternalRequestDocument.setGeneralData(
         data: PROITR(
-          RequestedCode: GeneralData.assignedUserCode,
-          RequestedName: GeneralData.assignedUserName,
-          TransId: TransId,
-          TripTransId: GeneralData.TripTransId,
-          PostingDate: DateTime.now(),
-          ValidUntill: DateTime.now().add(Duration(days: 7)),
-          DocStatus: 'Open',
-          ApprovalStatus: 'Pending',
-        ));
+      RequestedCode: GeneralData.assignedUserCode,
+      RequestedName: GeneralData.assignedUserName,
+      TransId: TransId,
+      TripTransId: GeneralData.TripTransId,
+      PostingDate: DateTime.now(),
+      ValidUntill: DateTime.now().add(Duration(days: 7)),
+      DocStatus: 'Open',
+      ApprovalStatus: 'Pending',
+    ));
 
     Get.to(() => InternalRequest(0));
   }
@@ -183,7 +179,7 @@ class _EditJobCardState extends State<EditJobCard> {
     goodsIssueCreateDetails.ItemDetails.items.clear();
 
     for (MNJCD1 mnjcd1 in ItemDetails.items) {
-      if ( mnjcd1.IsConsumption) {
+      if (mnjcd1.IsConsumption) {
         goodsIssueCreateDetails.ItemDetails.items.add(IMGDI1(
           insertedIntoDatabase: false,
           ID: 0,
@@ -205,23 +201,78 @@ class _EditJobCardState extends State<EditJobCard> {
       return;
     }
 
-    String TransId = await GenerateTransId.getTransId(tableName: 'IMOGDI', docName: 'MNGI');
+    String TransId =
+        await GenerateTransId.getTransId(tableName: 'IMOGDI', docName: 'MNGI');
     print(TransId);
     ClearGoodsIssueDocument.setGeneralData(
         imogdi: IMOGDI(
-          RequestedCode: GeneralData.assignedUserCode,
-          RequestedName: GeneralData.assignedUserName,
-          TransId: TransId,
-          Currency: userModel.Currency,
-          CurrRate: double.tryParse(userModel.Rate?.toString() ?? ''),
-          TripTransId: GeneralData.TripTransId,
-          PostingDate: DateTime.now(),
-          ValidUntill: DateTime.now().add(Duration(days: 7)),
-          DocStatus: 'Open',
-          ApprovalStatus: 'Pending',
-        ));
+      RequestedCode: GeneralData.assignedUserCode,
+      RequestedName: GeneralData.assignedUserName,
+      TransId: TransId,
+      Currency: userModel.Currency,
+      CurrRate: double.tryParse(userModel.Rate?.toString() ?? ''),
+      TripTransId: GeneralData.TripTransId,
+      PostingDate: DateTime.now(),
+      ValidUntill: DateTime.now().add(Duration(days: 7)),
+      DocStatus: 'Open',
+      ApprovalStatus: 'Pending',
+    ));
 
     Get.to(() => GoodsIssue(0));
+  }
+
+  Widget getBottomNavigationBar({required TabController controller}) {
+    return Obx(() {
+      if (controller.index == 1) {
+        return SizedBox(
+          width: Get.width,
+          height: Get.height / 13,
+          child: SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Material(
+                    borderRadius: BorderRadius.circular(10.0),
+                    color: barColor,
+                    elevation: 0.0,
+                    child: MaterialButton(
+                      onPressed: () {},
+                      minWidth: MediaQuery.of(context).size.width,
+                      child: Text(
+                        "Proceed Securely",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 20.0),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      } else if (controller.index == 1) {
+        return SizedBox(
+          width: Get.width,
+          height: Get.height / 13,
+          child: SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              children: [],
+            ),
+          ),
+        );
+      } else {
+        return Container(
+          height: 0,
+          width: 0,
+        );
+      }
+    });
   }
 
   @override
@@ -233,122 +284,319 @@ class _EditJobCardState extends State<EditJobCard> {
       canPop: false,
       child: DefaultTabController(
         length: 7,
-        initialIndex: widget.index,
-        child: Scaffold(
-          key: key,
-          appBar: AppBar(
-              leading: IconButton(
-                onPressed: () async {
-                  await _onBackButtonPressed();
-                },
-                icon: Icon(
-                  Icons.arrow_back,
-                  color: Colors.white,
-                ),
-              ),
-              elevation: 10.0,
-              backgroundColor: barColor,
-              bottom: PreferredSize(
-                child: Column(
-                  children: [
-                    TabBar(
-                      indicator: BoxDecoration(
-                          borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(10),
-                              topRight: Radius.circular(10)),
-                          color: Colors.white),
-                      labelColor: barColor,
-                      isScrollable: true,
-                      physics: const ScrollPhysics(),
-                      unselectedLabelColor: Colors.white,
-                      labelStyle:
-                          GoogleFonts.poppins(fontWeight: FontWeight.w500),
-                      tabs: [
-                        Tab(
-                          child: Text("General Data"),
-                        ),
-                        Tab(
-                            child: Text(
-                          "Item Details",
-                        )),
-                        Tab(
-                            child: Text(
-                          "Service Details",
-                        )),
-                        Tab(
-                            child: Text(
-                          "Attachments",
-                        )),
-                        Tab(
-                            child: Text(
-                          "Tyre Maintenance",
-                        )),
-                        Tab(
-                            child: Text(
-                          "Why Why Analysis",
-                        )),
-                        Tab(
-                            child: Text(
-                          "Problem Details",
-                        )),
-
-                      ],
-                    ),
-                  ],
-                ),
-                preferredSize: Size.fromHeight(50.0),
-              ),
-              actions: [
-                PopupMenuButton<int>(
-                  onSelected: (item) {
-                    if (item == 1) {
-                      navigateToPurchaseRequest();
-                    } else if (item == 2) {
-                      navigateToInternalRequest();
-                    } else if (item == 3) {
-                      navigateToGoodsIssue();
-                    }
+        initialIndex: widget.index.value,
+        child: Builder(builder: (BuildContext context) {
+          final TabController controller = DefaultTabController.of(context);
+          controller.addListener(() {
+            if (!controller.indexIsChanging) {
+              print(controller.index);
+              if (controller.index != 1 && controller.index != 2) {
+                setState(() {
+                  // displaySaveButton = true;
+                });
+              } else {
+                setState(() {
+                  // displaySaveButton = false;
+                });
+              }
+              // add code to be executed on TabBar change
+            }
+          });
+          return Scaffold(
+            key: key,
+            appBar: AppBar(
+                leading: IconButton(
+                  onPressed: () async {
+                    await _onBackButtonPressed();
                   },
-                  itemBuilder: (context) => [
-                    const PopupMenuItem<int>(
-                        value: 1, child: Text('Purchase Request')),
-                    const PopupMenuItem<int>(
-                        value: 2, child: Text('Internal Request')),
-                    const PopupMenuItem<int>(
-                        value: 3, child: Text('Goods Issue')),
-                  ],
-                )
+                  icon: Icon(
+                    Icons.arrow_back,
+                    color: Colors.white,
+                  ),
+                ),
+                elevation: 10.0,
+                backgroundColor: barColor,
+                bottom: PreferredSize(
+                  child: Column(
+                    children: [
+                      TabBar(
+                        indicator: BoxDecoration(
+                            borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(10),
+                                topRight: Radius.circular(10)),
+                            color: Colors.white),
+                        labelColor: barColor,
+                        isScrollable: true,
+                        physics: const ScrollPhysics(),
+                        unselectedLabelColor: Colors.white,
+                        labelStyle:
+                            GoogleFonts.poppins(fontWeight: FontWeight.w500),
+                        tabs: [
+                          Tab(
+                            child: Text("General Data"),
+                          ),
+                          Tab(
+                              child: Text(
+                            "Item Details",
+                          )),
+                          Tab(
+                              child: Text(
+                            "Service Details",
+                          )),
+                          Tab(
+                              child: Text(
+                            "Attachments",
+                          )),
+                          Tab(
+                              child: Text(
+                            "Tyre Maintenance",
+                          )),
+                          Tab(
+                              child: Text(
+                            "Why Why Analysis",
+                          )),
+                          Tab(
+                              child: Text(
+                            "Problem Details",
+                          )),
+                        ],
+                      ),
+                    ],
+                  ),
+                  preferredSize: Size.fromHeight(50.0),
+                ),
+                actions: [
+                  PopupMenuButton<int>(
+                    onSelected: (item) {
+                      if (item == 1) {
+                        navigateToPurchaseRequest();
+                      } else if (item == 2) {
+                        navigateToInternalRequest();
+                      } else if (item == 3) {
+                        navigateToGoodsIssue();
+                      }
+                    },
+                    itemBuilder: (context) => [
+                      const PopupMenuItem<int>(
+                          value: 1, child: Text('Purchase Request')),
+                      const PopupMenuItem<int>(
+                          value: 2, child: Text('Internal Request')),
+                      const PopupMenuItem<int>(
+                          value: 3, child: Text('Goods Issue')),
+                    ],
+                  )
+                ],
+                title: getHeadingText(
+                    text: "Edit Job Card", color: headColor, fontSize: 20)),
+            body: TabBarView(
+              children: [
+                GeneralData(),
+                ItemDetails(),
+                ServiceDetails(),
+                Attachments(),
+                TyreMaintenance(),
+                WhyWhyAnalysis(),
+                ProblemDetails(),
               ],
-              title: getHeadingText(
-                  text: "Edit Job Card", color: headColor, fontSize: 20)),
-          body: TabBarView(
-            children: [
-              GeneralData(),
-              ItemDetails(),
-              ServiceDetails(),
-              Attachments(),
-              TyreMaintenance(),
-              WhyWhyAnalysis(),
-              ProblemDetails(),
-            ],
-          ),
-          floatingActionButton: FloatingActionButton(
-            backgroundColor: barColor,
-            tooltip: "Save Data",
-            child: Text(
-              "Save",
-              style: TextStyle(color: Colors.white),
             ),
-            onPressed: save,
-          ),
-        ),
+            // bottomNavigationBar: getBottomNavigationBar(controller: controller),
+            bottomNavigationBar: controller.index == 1
+                ? SizedBox(
+                    width: Get.width,
+                    height: Get.height / 16,
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Material(
+                              borderRadius: BorderRadius.circular(10.0),
+                              color: barColor,
+                              elevation: 0.0,
+                              child: MaterialButton(
+                                onPressed: () {},
+                                child: Text(
+                                  "Purchase Request",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 14.0),
+                                ),
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Material(
+                              borderRadius: BorderRadius.circular(10.0),
+                              color: barColor,
+                              elevation: 0.0,
+                              child: MaterialButton(
+                                onPressed: () {},
+                                child: Text(
+                                  "Internal Request",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 14.0),
+                                ),
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Material(
+                              borderRadius: BorderRadius.circular(10.0),
+                              color: barColor,
+                              elevation: 0.0,
+                              child: MaterialButton(
+                                onPressed: () {},
+                                child: Text(
+                                  "Goods Issue",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 14.0),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  )
+                : controller.index == 2
+                    ? SizedBox(
+                        width: Get.width,
+                        height: Get.height / 16,
+                        child: SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Row(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Material(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                  color: barColor,
+                                  elevation: 0.0,
+                                  child: MaterialButton(
+                                    onPressed: () {},
+                                    child: Text(
+                                      "Send To Supplier",
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 14.0),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Material(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                  color: barColor,
+                                  elevation: 0.0,
+                                  child: MaterialButton(
+                                    onPressed: () {},
+                                    child: Text(
+                                      "New Purchase Order",
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 14.0),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Material(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                  color: barColor,
+                                  elevation: 0.0,
+                                  child: MaterialButton(
+                                    onPressed: () {},
+                                    child: Text(
+                                      "Receive from Supplier",
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 14.0),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Material(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                  color: barColor,
+                                  elevation: 0.0,
+                                  child: MaterialButton(
+                                    onPressed: () {},
+                                    child: Text(
+                                      "Purchase Request",
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 14.0),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Material(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                  color: barColor,
+                                  elevation: 0.0,
+                                  child: MaterialButton(
+                                    onPressed: () {},
+                                    child: Text(
+                                      "Service Confirmation",
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 14.0),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      )
+                    : null,
+
+            floatingActionButton: FloatingActionButton(
+              backgroundColor: barColor,
+              tooltip: "Save Data",
+              child: Text(
+                "Save",
+                style: TextStyle(color: Colors.white),
+              ),
+              onPressed: save,
+            ),
+          );
+        }),
       ),
     );
   }
+
   bool checkWhyWhyAnalysis() {
     bool isValid = true;
     double num = double.tryParse(
-        CompanyDetails.ocinModel?.NoOfWhyAnalysis?.toString() ?? "") ??
+            CompanyDetails.ocinModel?.NoOfWhyAnalysis?.toString() ?? "") ??
         0.0;
     if (WhyWhyAnalysis.list.length < num) {
       getErrorSnackBar('Please add at least $num Why Why Analysis');
@@ -380,8 +628,6 @@ class _EditJobCardState extends State<EditJobCard> {
           EditJobCard.saveButtonPressed = true;
           showLoader(context);
 
-
-
           final Database db = await initializeDB(context);
           try {
             await db.transaction((database) async {
@@ -399,8 +645,8 @@ class _EditJobCardState extends State<EditJobCard> {
               generalData.hasUpdated = true;
               Map<String, Object?> map = generalData.toJson();
               map.removeWhere((key, value) => value == null || value == '');
-              await database
-                  .update('MNOJCD', map, where: 'TransId = ?', whereArgs: [GeneralData.transId]);
+              await database.update('MNOJCD', map,
+                  where: 'TransId = ?', whereArgs: [GeneralData.transId]);
 
               //ITEM DETAILS
               print("Item Details ");
