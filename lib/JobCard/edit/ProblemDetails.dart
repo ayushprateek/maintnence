@@ -50,44 +50,50 @@ class _ProblemDetailsState extends State<ProblemDetails> {
                   onLookupPressed: () {
                     Get.to(() => MNEQG3Lookup(onSelection: (MNEQG3 mneqg3) {
                       _section.text = mneqg3.Section ?? '';
+                      _subSection.text = mneqg3.SubSection ?? '';
+                      _problem.text = mneqg3.Problem ?? '';
+                      _subProblem.text = mneqg3.SubProblem ?? '';
                     }));
                   }),
               getDisabledTextField(
                   controller: _subSection,
                   labelText: 'Sub Section',
-                  enableLookup: true,
-                  onLookupPressed: () {
-                    Get.to(() => MNEQG3Lookup(
-                      onSelection: (MNEQG3 mneqg3) {
-                        _subSection.text = mneqg3.SubSection ?? '';
-                      },
-                      condition: "Section='${_section.text}'",
-                    ));
-                  }),
+                  // enableLookup: true,
+                  // onLookupPressed: () {
+                  //   Get.to(() => MNEQG3Lookup(
+                  //     onSelection: (MNEQG3 mneqg3) {
+                  //       _subSection.text = mneqg3.SubSection ?? '';
+                  //     },
+                  //     condition: "Section='${_section.text}'",
+                  //   ));
+                  // }
+                  ),
               getDisabledTextField(
                   controller: _problem,
                   labelText: 'Problem',
-                  enableLookup: true,
-                  onLookupPressed: () {
-                    Get.to(() => MNEQG3Lookup(
-                      onSelection: (MNEQG3 mneqg3) {
-                        _problem.text = mneqg3.Problem ?? '';
-                      },
-                      condition: "SubSection='${_subSection.text}'",
-                    ));
-                  }),
+                  // enableLookup: true,
+                  // onLookupPressed: () {
+                  //   Get.to(() => MNEQG3Lookup(
+                  //     onSelection: (MNEQG3 mneqg3) {
+                  //       _problem.text = mneqg3.Problem ?? '';
+                  //     },
+                  //     condition: "SubSection='${_subSection.text}'",
+                  //   ));
+                  // }
+                  ),
               getDisabledTextField(
                   controller: _subProblem,
                   labelText: 'Sub Problem',
-                  enableLookup: true,
-                  onLookupPressed: () {
-                    Get.to(() => MNEQG3Lookup(
-                      onSelection: (MNEQG3 mneqg3) {
-                        _subProblem.text = mneqg3.SubProblem ?? '';
-                      },
-                      condition: "Problem='${_problem.text}'",
-                    ));
-                  }),
+                  // enableLookup: true,
+                  // onLookupPressed: () {
+                  //   Get.to(() => MNEQG3Lookup(
+                  //     onSelection: (MNEQG3 mneqg3) {
+                  //       _subProblem.text = mneqg3.SubProblem ?? '';
+                  //     },
+                  //     condition: "Problem='${_problem.text}'",
+                  //   ));
+                  // }
+                  ),
 
               Row(
                 children: [
@@ -199,49 +205,49 @@ class _ProblemDetailsState extends State<ProblemDetails> {
                           Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              // Expanded(
-                              //   flex: 8,
-                              //   child: Column(
-                              //     mainAxisAlignment: MainAxisAlignment.start,
-                              //     children: [
-                              //       Padding(
-                              //         padding: const EdgeInsets.only(
-                              //             left: 8.0, right: 8.0, top: 4.0),
-                              //         child: Align(
-                              //           alignment: Alignment.topLeft,
-                              //           child: Text.rich(
-                              //             TextSpan(
-                              //               children: [
-                              //                 getPoppinsTextSpanHeading(
-                              //                     text: 'Section'),
-                              //                 getPoppinsTextSpanDetails(
-                              //                     text: mnjcd6.Section ?? ''),
-                              //               ],
-                              //             ),
-                              //           ),
-                              //         ),
-                              //       ),
-                              //       Padding(
-                              //         padding: const EdgeInsets.only(
-                              //             left: 8.0, right: 8.0, top: 4.0),
-                              //         child: Align(
-                              //           alignment: Alignment.topLeft,
-                              //           child: Text.rich(
-                              //             TextSpan(
-                              //               children: [
-                              //                 getPoppinsTextSpanHeading(
-                              //                     text: 'SubSection'),
-                              //                 getPoppinsTextSpanDetails(
-                              //                     text:
-                              //                     mnjcd6.SubSection ?? ''),
-                              //               ],
-                              //             ),
-                              //           ),
-                              //         ),
-                              //       ),
-                              //     ],
-                              //   ),
-                              // ),
+                              Expanded(
+                                flex: 8,
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                          left: 8.0, right: 8.0, top: 4.0),
+                                      child: Align(
+                                        alignment: Alignment.topLeft,
+                                        child: Text.rich(
+                                          TextSpan(
+                                            children: [
+                                              getPoppinsTextSpanHeading(
+                                                  text: 'Section'),
+                                              getPoppinsTextSpanDetails(
+                                                  text: mnjcd6.Section ?? ''),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                          left: 8.0, right: 8.0, top: 4.0),
+                                      child: Align(
+                                        alignment: Alignment.topLeft,
+                                        child: Text.rich(
+                                          TextSpan(
+                                            children: [
+                                              getPoppinsTextSpanHeading(
+                                                  text: 'SubSection'),
+                                              getPoppinsTextSpanDetails(
+                                                  text:
+                                                  mnjcd6.SubSection ?? ''),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
                               Expanded(
                                 flex: 9,
                                 child: Column(
