@@ -136,8 +136,8 @@ class _ProblemDetailsState extends State<ProblemDetails> {
                                   RowId: ProblemDetails.list.length,
                                   insertedIntoDatabase: false,
                                   TransId: GeneralData.transId,
-                                  // Section: _section.text,
-                                  // SubSection: _subSection.text,
+                                  Section: _section.text,
+                                  SubSection: _subSection.text,
                                   Problem: _problem.text,
                                   SubProblem: _subProblem.text,
                                 ));
