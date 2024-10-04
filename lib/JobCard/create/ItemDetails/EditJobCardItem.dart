@@ -7,17 +7,20 @@ import 'package:maintenance/Component/IsNumeric.dart';
 import 'package:maintenance/Component/SnackbarComponent.dart';
 import 'package:maintenance/JobCard/create/ItemDetails/ItemDetails.dart';
 import 'package:maintenance/JobCard/create/JobCard.dart';
+import 'package:maintenance/Lookups/EquipmentCodeLokup.dart';
 import 'package:maintenance/Lookups/SupplierLookup.dart';
 import 'package:maintenance/Lookups/UOMLookup.dart';
 import 'package:maintenance/Sync/SyncModels/MNJCD1.dart';
 import 'package:maintenance/Sync/SyncModels/OCRD.dart';
 import 'package:maintenance/Sync/SyncModels/OUOM.dart';
+import 'package:maintenance/Sync/SyncModels/OVCL.dart';
 
 class EditJobCardItem extends StatefulWidget {
   static String? id;
   static String? transId;
   static String? rowId;
   static String? itemCode;
+  static String? equipmentCode;
   static String? itemName;
   static String? quantity;
   static String? uomCode;
@@ -42,8 +45,8 @@ class EditJobCardItem extends StatefulWidget {
 }
 
 class _EditJobCardItemState extends State<EditJobCardItem> {
-  final TextEditingController _itemCode =
-      TextEditingController(text: EditJobCardItem.itemCode);
+  final TextEditingController _equipmentCode =
+      TextEditingController(text: EditJobCardItem.equipmentCode);
   final TextEditingController _itemName =
       TextEditingController(text: EditJobCardItem.itemName);
   final TextEditingController _quantity =
@@ -92,6 +95,25 @@ class _EditJobCardItemState extends State<EditJobCardItem> {
           children: [
             const SizedBox(
               height: 20,
+            ),
+            getDisabledTextField(
+              controller: _equipmentCode,
+              labelText: 'Equipment Code',
+              onChanged: (val) {
+                EditJobCardItem.equipmentCode = val;
+              },
+              enableLookup: true,
+              onLookupPressed: (){
+                  Get.to(() => EquipmentCodeLookup(
+                        onSelection: (OVCLModel ovcl) {
+                          setState(() {
+                            EditJobCardItem.equipmentCode =
+                                _equipmentCode.text = ovcl.Code ?? '';
+
+                          });
+                        },
+                      ));
+              }
             ),
             getDisabledTextField(
               controller: _itemName,
@@ -254,6 +276,7 @@ class _EditJobCardItemState extends State<EditJobCardItem> {
                                 RequestDate:
                                     getDateFromString(_requiredDate.text),
                                 IsFromStock: EditJobCardItem.fromStock,
+                                EquipmentCode: EditJobCardItem.equipmentCode,
                                 Quantity: double.tryParse(
                                         EditJobCardItem.quantity.toString()) ??
                                     0.0,

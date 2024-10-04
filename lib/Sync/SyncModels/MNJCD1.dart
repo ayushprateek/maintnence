@@ -13,6 +13,7 @@ class MNJCD1 {
   int? ID;
   String? TransId;
   int? RowId;
+  String? EquipmentCode;
   String? ItemCode;
   String? ItemName;
   double? Quantity;
@@ -38,6 +39,7 @@ class MNJCD1 {
   MNJCD1({
     this.ID,
     this.TransId,
+    this.EquipmentCode,
     this.RowId,
     this.ItemCode,
     this.ItemName,
@@ -65,6 +67,7 @@ class MNJCD1 {
   factory MNJCD1.fromJson(Map<String, dynamic> json) => MNJCD1(
         ID: int.tryParse(json['ID'].toString()) ?? 0,
         TransId: json['TransId']?.toString() ?? '',
+    EquipmentCode: json['EquipmentCode']?.toString() ?? '',
         RowId: int.tryParse(json['RowId'].toString()) ?? 0,
         ItemCode: json['ItemCode']?.toString() ?? '',
         ItemName: json['ItemName']?.toString() ?? '',
@@ -98,6 +101,7 @@ class MNJCD1 {
         'ID': ID,
         'TransId': TransId,
         'RowId': RowId,
+        'EquipmentCode': EquipmentCode,
         'ItemCode': ItemCode,
         'ItemName': ItemName,
         'Quantity': Quantity,

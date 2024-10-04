@@ -95,6 +95,7 @@ class ClearJobCardDoc {
     jcdCreateGenData.GeneralData.hasUpdated = false;
     jcdCreateGenData.GeneralData.warranty = 'Yes';
     jcdCreateGenData.GeneralData.type = 'Breakdown';
+    jcdCreateGenData.GeneralData.typeList = ['Breakdown'];
   }
 
   static setCreateJobCardData({required MNOJCD mnojcd}) {

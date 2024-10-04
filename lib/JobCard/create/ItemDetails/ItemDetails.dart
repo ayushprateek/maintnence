@@ -90,6 +90,7 @@ class _ItemDetailsState extends State<ItemDetails> {
                               EditJobCardItem.uomName = uomList[0].UomName;
                             }
 
+                            EditJobCardItem.equipmentCode = mnjcd1.EquipmentCode;
                             EditJobCardItem.transId = GeneralData.transId;
                             EditJobCardItem.itemCode = mnjcd1.ItemCode;
                             EditJobCardItem.itemName = mnjcd1.ItemName;
@@ -139,6 +140,27 @@ class _ItemDetailsState extends State<ItemDetails> {
                                           mainAxisAlignment:
                                               MainAxisAlignment.start,
                                           children: [
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  left: 8.0,
+                                                  right: 8.0,
+                                                  top: 4.0),
+                                              child: Align(
+                                                alignment: Alignment.topLeft,
+                                                child: Text.rich(
+                                                  TextSpan(
+                                                    children: [
+                                                      getPoppinsTextSpanHeading(
+                                                          text: 'EquipmentCode'),
+                                                      getPoppinsTextSpanDetails(
+                                                          text:
+                                                              mnjcd1.EquipmentCode ??
+                                                                  ''),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
                                             Padding(
                                               padding: const EdgeInsets.only(
                                                   left: 8.0,
@@ -327,7 +349,7 @@ class _ItemDetailsState extends State<ItemDetails> {
                                                     children: [
                                                       getPoppinsTextSpanHeading(
                                                           text:
-                                                              'Required Date'),
+                                                              'Req Date'),
                                                       getPoppinsTextSpanDetails(
                                                           text: getFormattedDate(
                                                               mnjcd1

@@ -24,6 +24,8 @@ import 'package:maintenance/InternalRequest/ClearInternalRequestDocument.dart';
 import 'package:maintenance/InternalRequest/create/InternalRequest.dart';
 import 'package:maintenance/InternalRequest/create/ItemDetails/ItemDetails.dart'
     as createInternalItemDetails;
+import 'package:maintenance/JobCard/ClearJobCardDocument.dart';
+import 'package:maintenance/JobCard/create/JobCard.dart';
 import 'package:maintenance/Purchase/PurchaseRequest/ClearPurchaseRequest.dart';
 import 'package:maintenance/Purchase/PurchaseRequest/create/ItemDetails/ItemDetails.dart'
     as createPurchaseItemDetails;
@@ -41,6 +43,8 @@ import 'package:maintenance/Sync/SyncModels/PROPRQ.dart';
 import 'package:maintenance/Sync/SyncModels/PRPRQ1.dart';
 import 'package:maintenance/main.dart';
 import 'package:sqflite/sqlite_api.dart';
+import 'package:maintenance/JobCard/create/GeneralData.dart'
+as jcdCreateGenData;
 
 class EditCheckListDocument extends StatefulWidget {
   static var address;
@@ -217,6 +221,27 @@ class _EditCheckListDocumentState extends State<EditCheckListDocument> {
     Get.to(() => GoodsIssue(0));
   }
 
+  navigateToJobCard()async{
+    ClearJobCardDoc.clearGeneralData();
+    String TransId =
+    await GenerateTransId.getTransId(tableName: 'MNOJCD', docName: 'MNJC');
+    jcdCreateGenData.GeneralData.transId = TransId;
+    jcdCreateGenData.GeneralData.type = 'Preventive';
+    jcdCreateGenData.GeneralData.equipmentCode = GeneralData.equipmentCode;
+    jcdCreateGenData.GeneralData.equipmentName = GeneralData.equipmentName;
+    jcdCreateGenData.GeneralData.checkListCode = GeneralData.checkListCode;
+    jcdCreateGenData.GeneralData.checkListName = GeneralData.checkListName;
+    jcdCreateGenData.GeneralData.checkListStatus = GeneralData.checkListStatus;
+    jcdCreateGenData.GeneralData.workCenterCode = GeneralData.workCenterCode;
+    jcdCreateGenData.GeneralData.workCenterName = GeneralData.workCenterName;
+    jcdCreateGenData.GeneralData.lastReading = GeneralData.currentReading;
+    jcdCreateGenData.GeneralData.assignedUserCode = GeneralData.assignedUserCode;
+    jcdCreateGenData.GeneralData.assignedUserName = GeneralData.assignedUserName;
+    jcdCreateGenData.GeneralData.typeList.clear();
+    jcdCreateGenData.GeneralData.typeList = ['Preventive'];
+    Get.to(()=>JobCard(0));
+  }
+
   @override
   Widget build(BuildContext context) {
     return PopScope(
@@ -298,6 +323,8 @@ class _EditCheckListDocumentState extends State<EditCheckListDocument> {
                             navigateToInternalRequest();
                           } else if (item == 3) {
                             navigateToGoodsIssue();
+                          }else if (item == 4) {
+                            navigateToJobCard();
                           }
                         },
                         itemBuilder: (context) => [
@@ -307,6 +334,8 @@ class _EditCheckListDocumentState extends State<EditCheckListDocument> {
                               value: 2, child: Text('Internal Request')),
                           const PopupMenuItem<int>(
                               value: 3, child: Text('Goods Issue')),
+                          const PopupMenuItem<int>(
+                              value: 4, child: Text('Job Card')),
                         ],
                       )
                   ],

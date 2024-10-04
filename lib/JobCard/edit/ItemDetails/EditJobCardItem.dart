@@ -6,11 +6,13 @@ import 'package:maintenance/Component/IsNumeric.dart';
 import 'package:maintenance/Component/SnackbarComponent.dart';
 import 'package:maintenance/JobCard/edit/ItemDetails/ItemDetails.dart';
 import 'package:maintenance/JobCard/edit/JobCard.dart';
+import 'package:maintenance/Lookups/EquipmentCodeLokup.dart';
 import 'package:maintenance/Lookups/SupplierLookup.dart';
 import 'package:maintenance/Lookups/UOMLookup.dart';
 import 'package:maintenance/Sync/SyncModels/MNJCD1.dart';
 import 'package:maintenance/Sync/SyncModels/OCRD.dart';
 import 'package:maintenance/Sync/SyncModels/OUOM.dart';
+import 'package:maintenance/Sync/SyncModels/OVCL.dart';
 
 class EditJobCardItem extends StatefulWidget {
   static String? id;
@@ -23,6 +25,7 @@ class EditJobCardItem extends StatefulWidget {
   static String? uomName;
   static String? supplierName;
   static String? supplierCode;
+  static String? equipmentCode;
 
   static String? requiredDate;
 
@@ -58,6 +61,8 @@ class _EditJobCardItemState extends State<EditJobCardItem> {
 
   final TextEditingController _requiredDate =
       TextEditingController(text: EditJobCardItem.requiredDate);
+  final TextEditingController _equipmentCode =
+  TextEditingController(text: EditJobCardItem.equipmentCode);
 
   // List<String>  uomCode = [];
   // // List<IWHS> whsCodeList = [];
@@ -93,12 +98,32 @@ class _EditJobCardItemState extends State<EditJobCardItem> {
               height: 20,
             ),
             getDisabledTextField(
+              controller: _equipmentCode,
+              labelText: 'Equipment Code',
+              onChanged: (val) {
+                EditJobCardItem.equipmentCode = val;
+              },
+                enableLookup: true,
+                onLookupPressed: (){
+                  Get.to(() => EquipmentCodeLookup(
+                    onSelection: (OVCLModel ovcl) {
+                      setState(() {
+                        EditJobCardItem.equipmentCode =
+                            _equipmentCode.text = ovcl.Code ?? '';
+
+                      });
+                    },
+                  ));
+                }
+            ),
+            getDisabledTextField(
               controller: _itemName,
               labelText: 'Item Name',
               onChanged: (val) {
                 EditJobCardItem.itemName = val;
               },
             ),
+
             getTextField(
               controller: _quantity,
               labelText: 'Quantity',
@@ -216,6 +241,7 @@ class _EditJobCardItemState extends State<EditJobCardItem> {
                                     EditJobCardItem.itemName.toString() ?? '',
                                 UOM: EditJobCardItem.uomCode.toString() ?? '',
                                 IsFromStock: EditJobCardItem.fromStock,
+                                EquipmentCode: EditJobCardItem.equipmentCode,
                                 Quantity: double.tryParse(
                                         EditJobCardItem.quantity.toString()) ??
                                     0.0,

@@ -60,6 +60,7 @@ class GeneralData extends StatefulWidget {
 
   static bool isConsumption = false;
   static bool isRequest = false;
+  static List<String> typeList = [];
 
   static bool validate() {
     bool success = true;
@@ -188,7 +189,7 @@ class _GeneralDataState extends State<GeneralData> {
   final TextEditingController _remarks =
       TextEditingController(text: GeneralData.remarks);
 
-  List<String> typeList = ['Breakdown'];
+
 
   List<String> warrantyList = ['Yes', 'No'];
 
@@ -399,7 +400,7 @@ class _GeneralDataState extends State<GeneralData> {
                       Expanded(
                         flex: 2,
                         child: DropdownButton<String>(
-                          items: typeList.map((String value) {
+                          items: GeneralData.typeList.map((String value) {
                             return DropdownMenuItem<String>(
                               value: value,
                               child: Text(value),
