@@ -90,6 +90,7 @@ class _ServiceDetailsState extends State<ServiceDetails> {
                             EditService.isSendable = mnjcd2.IsSendableItem;
                             EditService.isUpdating = true;
                             EditService.transId = GeneralData.transId;
+                            EditService.equipmentCode = GeneralData.equipmentCode;
 
 
                             EditService.remarks=mnjcd2.Remarks;

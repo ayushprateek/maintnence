@@ -6,6 +6,7 @@ import 'package:maintenance/CheckListDocument/edit/Attachments.dart';
 import 'package:maintenance/CheckListDocument/edit/CheckListDetails/CheckListDetails.dart';
 import 'package:maintenance/CheckListDocument/edit/GeneralData.dart';
 import 'package:maintenance/Component/BackPressedWarning.dart';
+import 'package:maintenance/Component/CompanyDetails.dart';
 import 'package:maintenance/Component/CustomColor.dart';
 import 'package:maintenance/Component/CustomFont.dart';
 import 'package:maintenance/Component/GenerateTransId.dart';
@@ -25,7 +26,15 @@ import 'package:maintenance/InternalRequest/create/InternalRequest.dart';
 import 'package:maintenance/InternalRequest/create/ItemDetails/ItemDetails.dart'
     as createInternalItemDetails;
 import 'package:maintenance/JobCard/ClearJobCardDocument.dart';
+import 'package:maintenance/JobCard/create/GeneralData.dart'
+    as jcdCreateGenData;
+import 'package:maintenance/JobCard/create/ItemDetails/ItemDetails.dart'
+    as jcdCreateItemDetails;
 import 'package:maintenance/JobCard/create/JobCard.dart';
+import 'package:maintenance/JobCard/create/ServiceDetails/ServiceDetails.dart'
+    as jcdCreateServiceDetails;
+import 'package:maintenance/JobCard/create/WhyWhyAnalysis.dart'
+    as jcdCreateWhyWhyAnalysis;
 import 'package:maintenance/Purchase/PurchaseRequest/ClearPurchaseRequest.dart';
 import 'package:maintenance/Purchase/PurchaseRequest/create/ItemDetails/ItemDetails.dart'
     as createPurchaseItemDetails;
@@ -36,6 +45,7 @@ import 'package:maintenance/Sync/SyncModels/IMGDI1.dart';
 import 'package:maintenance/Sync/SyncModels/IMOGDI.dart';
 import 'package:maintenance/Sync/SyncModels/MNCLD1.dart';
 import 'package:maintenance/Sync/SyncModels/MNCLD2.dart';
+import 'package:maintenance/Sync/SyncModels/MNJCD5.dart';
 import 'package:maintenance/Sync/SyncModels/MNOCLD.dart';
 import 'package:maintenance/Sync/SyncModels/PRITR1.dart';
 import 'package:maintenance/Sync/SyncModels/PROITR.dart';
@@ -43,8 +53,6 @@ import 'package:maintenance/Sync/SyncModels/PROPRQ.dart';
 import 'package:maintenance/Sync/SyncModels/PRPRQ1.dart';
 import 'package:maintenance/main.dart';
 import 'package:sqflite/sqlite_api.dart';
-import 'package:maintenance/JobCard/create/GeneralData.dart'
-as jcdCreateGenData;
 
 class EditCheckListDocument extends StatefulWidget {
   static var address;
@@ -221,10 +229,20 @@ class _EditCheckListDocumentState extends State<EditCheckListDocument> {
     Get.to(() => GoodsIssue(0));
   }
 
-  navigateToJobCard()async{
+  navigateToJobCard() async {
     ClearJobCardDoc.clearGeneralData();
+    jcdCreateItemDetails.ItemDetails.items.clear();
+    jcdCreateServiceDetails.ServiceDetails.items.clear();
+    jcdCreateWhyWhyAnalysis.WhyWhyAnalysis.list.clear();
+    double num = double.tryParse(
+            CompanyDetails.ocinModel?.NoOfWhyAnalysis?.toString() ?? "") ??
+        0.0;
+    for (int i = 0; i < num; i++) {
+      jcdCreateWhyWhyAnalysis.WhyWhyAnalysis.list
+          .add(MNJCD5(insertedIntoDatabase: false));
+    }
     String TransId =
-    await GenerateTransId.getTransId(tableName: 'MNOJCD', docName: 'MNJC');
+        await GenerateTransId.getTransId(tableName: 'MNOJCD', docName: 'MNJC');
     jcdCreateGenData.GeneralData.transId = TransId;
     jcdCreateGenData.GeneralData.type = 'Preventive';
     jcdCreateGenData.GeneralData.equipmentCode = GeneralData.equipmentCode;
@@ -235,11 +253,13 @@ class _EditCheckListDocumentState extends State<EditCheckListDocument> {
     jcdCreateGenData.GeneralData.workCenterCode = GeneralData.workCenterCode;
     jcdCreateGenData.GeneralData.workCenterName = GeneralData.workCenterName;
     jcdCreateGenData.GeneralData.lastReading = GeneralData.currentReading;
-    jcdCreateGenData.GeneralData.assignedUserCode = GeneralData.assignedUserCode;
-    jcdCreateGenData.GeneralData.assignedUserName = GeneralData.assignedUserName;
+    jcdCreateGenData.GeneralData.assignedUserCode =
+        GeneralData.assignedUserCode;
+    jcdCreateGenData.GeneralData.assignedUserName =
+        GeneralData.assignedUserName;
     jcdCreateGenData.GeneralData.typeList.clear();
     jcdCreateGenData.GeneralData.typeList = ['Preventive'];
-    Get.to(()=>JobCard(0));
+    Get.to(() => JobCard(0));
   }
 
   @override
@@ -323,7 +343,7 @@ class _EditCheckListDocumentState extends State<EditCheckListDocument> {
                             navigateToInternalRequest();
                           } else if (item == 3) {
                             navigateToGoodsIssue();
-                          }else if (item == 4) {
+                          } else if (item == 4) {
                             navigateToJobCard();
                           }
                         },

@@ -228,6 +228,7 @@ class _AddServiceItemState extends State<AddServiceItem> {
                                     EditService.serviceCode =
                                         snapshot.data![index].ItemCode;
                                     EditService.transId = GeneralData.transId;
+                                    EditService.equipmentCode = GeneralData.equipmentCode;
                                     EditService.serviceName =
                                         snapshot.data![index].ItemName;
                                     Get.to(() => EditService());
