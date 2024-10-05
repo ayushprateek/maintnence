@@ -26,6 +26,8 @@ class MNVCL2 {
   String? Remarks;
   DateTime? CreateDate;
   DateTime? UpdateDate;
+  /// for drawing tyres
+  Offset? offset;
 
   MNVCL2({
     this.ID,
@@ -44,6 +46,7 @@ class MNVCL2 {
     this.Remarks,
     this.CreateDate,
     this.UpdateDate,
+    this.offset,
   });
 
   factory MNVCL2.fromJson(Map<String, dynamic> json) => MNVCL2(

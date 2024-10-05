@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:maintenance/Component/CustomColor.dart';
+import 'package:maintenance/DatabaseInitialization.dart';
+import 'package:maintenance/Sync/SyncModels/MNVCL2.dart';
+import 'package:sqflite/sqlite_api.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -50,33 +53,45 @@ class TruckDescription extends StatefulWidget {
 }
 
 class _TruckDescriptionState extends State<TruckDescription> {
-  List<Offset> tirePositions = [];
+  List<MNVCL2> tirePositions = [];
 
   @override
   void initState() {
     super.initState();
     initializeTirePositions();
   }
-  void initializeTirePositions(){
-    int numHorizontalLines = 5;
-    double horizontalGap = Get.height / (numHorizontalLines + 1);
-    double verticalLineX = Get.width / 2;
-    double verticalLineTop = 0;
-    double verticalLineBottom = Get.height;
+  void initializeTirePositions()async{
+    int numOfAxles = 0;
+    Database db=await initializeDB(null);
+    String code='ASHOK-AMT-03';
+    List l=await db.rawQuery('''
+    SELECT ifnull(Max(XAxles),0) as NumberOfAxles FROM MNVCL2 WHERE Code='$code'
+    ''');
+    if(l.isNotEmpty)
+      {
+        numOfAxles=int.tryParse(l[0]['NumberOfAxles'].toString())??0;
+      }
+    List<MNVCL2> mnvlc2List=await retrieveMNVCL2ById(null, 'Code = ?', [code]);
 
-    for (int i = 1; i <= numHorizontalLines; i++) {
+
+    double horizontalGap = Get.height / (numOfAxles + 1);
+    double verticalLineX = Get.width / 2;
+    // double verticalLineTop = 0;
+    // double verticalLineBottom = Get.height;
+
+    for (int i = 1; i < mnvlc2List.length; i++) {
       double y = i * horizontalGap;
 
-
-
       // Calculate the number of images per side
-      int numImages = i;
-      if (i == 4) {
-        numImages = 3;
-      } else if (i == 5) {
-        numImages = 2;
-      }
+      int numImages = 0;
 
+      List l=await db.rawQuery('''
+    SELECT ifnull(MaX(YTyres),0) as YTyres FROM MNVCL2 WHERE Code='ASHOK-AMT-03' and XAxles=5
+    ''');
+      if(l.isNotEmpty)
+      {
+        numImages=int.tryParse(l[0]['YTyres'].toString())??0;
+      }
       // Calculate spacing for images
       double imageGap = Get.width / (2 * numImages + 1);
 
@@ -84,12 +99,19 @@ class _TruckDescriptionState extends State<TruckDescription> {
         double xOffset = j * imageGap;
 
         // Draw images on the left side
-        tirePositions.add(Offset(verticalLineX - xOffset, y - 20));
+        tirePositions.add(MNVCL2(
+          offset: Offset(verticalLineX - xOffset, y - 20)
+        ));
 
         // Draw images on the right side
-        tirePositions.add(Offset(verticalLineX + xOffset - 40, y - 20));
+        tirePositions.add(MNVCL2(
+          offset: Offset(verticalLineX + xOffset - 40, y - 20)
+        ));
       }
     }
+    setState(() {
+
+    });
     // for (int i = 1; i <= numHorizontalLines; i++) {
     //   double y = i * horizontalGap;
     //
@@ -138,8 +160,8 @@ class _TruckDescriptionState extends State<TruckDescription> {
           child: Stack(
             children: List.generate(tirePositions.length, (index) {
               return Positioned(
-                left: tirePositions[index].dx,
-                top: tirePositions[index].dy,
+                left: tirePositions[index].offset?.dx,
+                top: tirePositions[index].offset?.dy,
                 child: Draggable<int>(
                   data: index,
                   feedback: Container(
