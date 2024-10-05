@@ -42,6 +42,11 @@ class GeneralData extends StatefulWidget {
   static String? requestedCode;
   static String? requestedName;
 
+  static String? city;
+  static String? state;
+  static String? currency;
+  static String? currencyRate;
+
   static bool isPosted = false;
   static bool isConsumption = false;
   static bool isRequest = false;
@@ -69,30 +74,6 @@ class GeneralData extends StatefulWidget {
     return success;
   }
 
-  static PROPRQ getGeneralData() {
-    return PROPRQ(
-        ID: int.tryParse(iD ?? ''),
-        TransId: transId,
-        PermanentTransId: permanentTransId ?? '',
-        PostingDate: getDateFromString(postingDate ?? ""),
-        ValidUntill: getDateFromString(validUntill ?? ''),
-        hasCreated: hasCreated,
-        hasUpdated: hasUpdated,
-        ObjectCode: '23',
-        Remarks: remarks,
-        TripTransId: tripTransId,
-        RequestedCode: requestedCode,
-        RequestedName: requestedName,
-        PostingAddress: postingAddress,
-        MobileNo: mobileNo,
-        RefNo: refNo,
-        DeptCode: deptCode,
-        DeptName: deptName,
-        IsPosted: isPosted,
-        ApprovalStatus: approvalStatus ?? "Pending",
-        DocStatus: docStatus,
-        WhsCode: whsCode);
-  }
 
   @override
   State<GeneralData> createState() => _GeneralDataState();
@@ -159,6 +140,11 @@ class _GeneralDataState extends State<GeneralData> {
   final TextEditingController _requestedName =
       TextEditingController(text: GeneralData.requestedName);
 
+  final TextEditingController _currency = TextEditingController(text: GeneralData.currency);
+  final TextEditingController _currencyRate = TextEditingController(text: GeneralData.currencyRate);
+  final TextEditingController _city = TextEditingController(text: GeneralData.city);
+  final TextEditingController _state = TextEditingController(text: GeneralData.state);
+
   List<String> typeList = ['Preventive', 'Breakdown'];
   String type = 'Preventive';
   List<String> warrantyList = ['Yes', 'No'];
@@ -219,18 +205,28 @@ class _GeneralDataState extends State<GeneralData> {
                 },
               ),
               getDisabledTextField(
-                  controller: TextEditingController(),
-                  labelText: 'City',
+                  controller: _currency,
+                  labelText: 'Currency',
                   onChanged: (val) {
-                    //todo:
-                    // GeneralData.permanentTransId = _permanentTransId.text = val;
+                    GeneralData.currency = _currency.text = val;
                   }),
               getDisabledTextField(
-                  controller: TextEditingController(),
+                  controller: _currencyRate,
+                  labelText: 'Currency Rate',
+                  onChanged: (val) {
+                    GeneralData.currencyRate = _currencyRate.text = val;
+                  }),
+              getDisabledTextField(
+                  controller: _city,
+                  labelText: 'City',
+                  onChanged: (val) {
+                    GeneralData.city = _city.text = val;
+                  }),
+              getDisabledTextField(
+                  controller: _state,
                   labelText: 'State',
                   onChanged: (val) {
-                    //todo:
-                    // GeneralData.permanentTransId = _permanentTransId.text = val;
+                    GeneralData.state = _state.text = val;
                   }),
               getDateTextField(
                   controller: _postingDate,

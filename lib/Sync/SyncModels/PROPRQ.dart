@@ -41,6 +41,8 @@ class PROPRQ {
   String? DeptName;
   String? RequestedCode;
   String? RequestedName;
+  String? Currency;
+  double? CurrRate;
 
   //todo: add City
   //todo: add State
@@ -57,6 +59,8 @@ class PROPRQ {
     this.ApprovalStatus,
     this.DocStatus,
     this.PermanentTransId,
+    this.Currency,
+    this.CurrRate,
     this.DocEntry,
     this.DocNum,
     this.CreatedBy,
@@ -85,6 +89,7 @@ class PROPRQ {
 
   factory PROPRQ.fromJson(Map<String, dynamic> json) => PROPRQ(
         ID: int.tryParse(json['ID'].toString()) ?? 0,
+    CurrRate: double.tryParse(json['CurrRate'].toString()) ?? 0.0,
         TransId: json['TransId']?.toString() ?? '',
         RefNo: json['RefNo']?.toString() ?? '',
         MobileNo: json['MobileNo']?.toString() ?? '',
@@ -99,6 +104,7 @@ class PROPRQ {
         CreateDate: DateTime.tryParse(json['CreateDate'].toString()),
         UpdateDate: DateTime.tryParse(json['UpdateDate'].toString()),
         ApprovedBy: json['ApprovedBy']?.toString() ?? '',
+    Currency: json['Currency']?.toString() ?? '',
         Error: json['Error']?.toString() ?? '',
         IsPosted:
             json['IsPosted'] is bool ? json['IsPosted'] : json['IsPosted'] == 1,
@@ -122,6 +128,7 @@ class PROPRQ {
 
   Map<String, dynamic> toJson() => {
         'ID': ID,
+        'CurrRate': CurrRate,
         'TransId': TransId,
         'RefNo': RefNo,
         'MobileNo': MobileNo,
@@ -137,6 +144,7 @@ class PROPRQ {
         'UpdateDate': UpdateDate?.toIso8601String(),
         'ApprovedBy': ApprovedBy,
         'Error': Error,
+        'Currency': Currency,
         'IsPosted': IsPosted,
         'DraftKey': DraftKey,
         'Latitude': Latitude,

@@ -52,6 +52,11 @@ class GeneralData extends StatefulWidget {
   static String? requestedCode;
   static String? requestedName;
 
+  static String? city;
+  static String? state;
+  static String? currency;
+  static String? currencyRate;
+
   static bool isPosted = false;
   static bool isConsumption = false;
   static bool isRequest = false;
@@ -88,6 +93,8 @@ class GeneralData extends StatefulWidget {
         ValidUntill: getDateFromString(validUntill ?? ''),
         hasCreated: hasCreated,
         hasUpdated: hasUpdated,
+        Currency: currency,
+        CurrRate:double.tryParse(currencyRate?.toString()??''),
         ObjectCode: '23',
         Remarks: remarks,
         TripTransId: tripTransId,
@@ -168,6 +175,11 @@ class _GeneralDataState extends State<GeneralData> {
       TextEditingController(text: GeneralData.requestedCode);
   final TextEditingController _requestedName =
       TextEditingController(text: GeneralData.requestedName);
+
+  final TextEditingController _currency = TextEditingController(text: GeneralData.currency);
+  final TextEditingController _currencyRate = TextEditingController(text: GeneralData.currencyRate);
+  final TextEditingController _city = TextEditingController(text: GeneralData.city);
+  final TextEditingController _state = TextEditingController(text: GeneralData.state);
 
   List<String> typeList = ['Preventive', 'Breakdown'];
   String type = 'Preventive';
@@ -263,19 +275,30 @@ class _GeneralDataState extends State<GeneralData> {
                           });
                         }));
                   }),
+
               getDisabledTextField(
-                  controller: TextEditingController(),
-                  labelText: 'City',
+                  controller: _currency,
+                  labelText: 'Currency',
                   onChanged: (val) {
-                    //todo:
-                    // GeneralData.permanentTransId = _permanentTransId.text = val;
+                    GeneralData.currency = _currency.text = val;
                   }),
               getDisabledTextField(
-                  controller: TextEditingController(),
+                  controller: _currencyRate,
+                  labelText: 'Currency Rate',
+                  onChanged: (val) {
+                    GeneralData.currencyRate = _currencyRate.text = val;
+                  }),
+              getDisabledTextField(
+                  controller: _city,
+                  labelText: 'City',
+                  onChanged: (val) {
+                    GeneralData.city = _city.text = val;
+                  }),
+              getDisabledTextField(
+                  controller: _state,
                   labelText: 'State',
                   onChanged: (val) {
-                    //todo:
-                    // GeneralData.permanentTransId = _permanentTransId.text = val;
+                    GeneralData.state = _state.text = val;
                   }),
               getDateTextField(
                   controller: _postingDate,

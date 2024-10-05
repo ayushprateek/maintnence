@@ -310,6 +310,8 @@ class ClearJobCardDoc {
 
 goToNewJobCardDocument() async {
   await ClearJobCardDoc.clearGeneralData();
+  jcdCreateGenData.GeneralData.typeList.clear();
+  jcdCreateGenData.GeneralData.typeList = ['Preventive','Breakdown'];
   jcdCreateItemDetails.ItemDetails.items.clear();
   jcdCreateServiceDetails.ServiceDetails.items.clear();
   jcdCreateWhyWhyAnalysis.WhyWhyAnalysis.list.clear();

@@ -33,6 +33,10 @@ class ClearPurchaseRequestDocument {
     createPurchaseGenData.GeneralData.iD = '';
     createPurchaseGenData.GeneralData.transId = '';
     createPurchaseGenData.GeneralData.refNo = '';
+    createPurchaseGenData.GeneralData.city = '';
+    createPurchaseGenData.GeneralData.state = '';
+    createPurchaseGenData.GeneralData.currency = '';
+    createPurchaseGenData.GeneralData.currencyRate = '';
     createPurchaseGenData.GeneralData.mobileNo = '';
     createPurchaseGenData.GeneralData.postingDate =
         getFormattedDate(DateTime.now());
@@ -73,11 +77,14 @@ class ClearPurchaseRequestDocument {
   }
   static setGeneralData({
     required PROPRQ data
-}) {
+})
+  {
     createPurchaseGenData.GeneralData.iD = data.ID?.toString();
     createPurchaseGenData.GeneralData.transId = data.TransId;
     createPurchaseGenData.GeneralData.refNo = data.RefNo;
     createPurchaseGenData.GeneralData.mobileNo = data.MobileNo;
+    createPurchaseGenData.GeneralData.currency = data.Currency;
+    createPurchaseGenData.GeneralData.currencyRate = data.CurrRate?.toStringAsFixed(2);
     createPurchaseGenData.GeneralData.postingDate =
         getFormattedDate(data.PostingDate);
     createPurchaseGenData.GeneralData.validUntill =
@@ -121,6 +128,8 @@ class ClearPurchaseRequestDocument {
     createPurchaseGenData.GeneralData.transId = data.TransId ?? '';
     createPurchaseGenData.GeneralData.refNo = data.RefNo ?? '';
     createPurchaseGenData.GeneralData.mobileNo = data.MobileNo ?? '';
+    createPurchaseGenData.GeneralData.currency = data.Currency ?? '';
+    createPurchaseGenData.GeneralData.currencyRate = data.CurrRate?.toStringAsFixed(2);
     createPurchaseGenData.GeneralData.postingDate =
         getFormattedDate(data.PostingDate);
     createPurchaseGenData.GeneralData.validUntill =
@@ -166,6 +175,9 @@ class ClearPurchaseRequestDocument {
     viewPurchaseGenData.GeneralData.transId = data.TransId ?? '';
     viewPurchaseGenData.GeneralData.refNo = data.RefNo ?? '';
     viewPurchaseGenData.GeneralData.mobileNo = data.MobileNo ?? '';
+    viewPurchaseGenData.GeneralData.currency = data.Currency ?? '';
+    viewPurchaseGenData.GeneralData.currencyRate = data.CurrRate?.toStringAsFixed(2);
+
     viewPurchaseGenData.GeneralData.postingDate =
         getFormattedDate(data.PostingDate);
     viewPurchaseGenData.GeneralData.validUntill =
@@ -209,6 +221,8 @@ class ClearPurchaseRequestDocument {
     editPurchaseGenData.GeneralData.transId = data.TransId ?? '';
     editPurchaseGenData.GeneralData.refNo = data.RefNo ?? '';
     editPurchaseGenData.GeneralData.mobileNo = data.MobileNo ?? '';
+    editPurchaseGenData.GeneralData.currency = data.Currency ?? '';
+    editPurchaseGenData.GeneralData.currencyRate = data.CurrRate?.toStringAsFixed(2);
     editPurchaseGenData.GeneralData.postingDate =
         getFormattedDate(data.PostingDate);
     editPurchaseGenData.GeneralData.validUntill =
