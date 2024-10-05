@@ -3,15 +3,222 @@ import 'package:get/get.dart';
 import 'package:maintenance/Component/Common.dart';
 import 'package:maintenance/Component/CustomColor.dart';
 import 'package:maintenance/Component/CustomFont.dart';
+import 'package:maintenance/Component/GenerateTransId.dart';
+import 'package:maintenance/Component/SnackbarComponent.dart';
+import 'package:maintenance/GoodsReceiptNote/ClearGRNDocument.dart';
+import 'package:maintenance/GoodsReceiptNote/create/GeneralData.dart'
+    as createGrnGenData;
+import 'package:maintenance/Purchase/PurchaseOrder/create/GeneralData.dart'
+as createPurchaseOrderGenData;
+import 'package:maintenance/Purchase/PurchaseOrder/create/ItemDetails/ItemDetails.dart' as createPurchaseOrderItemDetails;
+import 'package:maintenance/GoodsReceiptNote/create/GoodsReceiptNote.dart';
+import 'package:maintenance/GoodsReceiptNote/create/ItemDetails/ItemDetails.dart'
+    as createGrnItemDetails;
+import 'package:maintenance/InternalRequest/ClearInternalRequestDocument.dart';
+import 'package:maintenance/InternalRequest/create/InternalRequest.dart';
+import 'package:maintenance/InternalRequest/create/ItemDetails/ItemDetails.dart'
+    as createInternalItemDetails;
+import 'package:maintenance/JobCard/edit/GeneralData.dart';
 import 'package:maintenance/JobCard/edit/ServiceDetails/AddServiceItem.dart';
 import 'package:maintenance/JobCard/edit/ServiceDetails/EditService.dart';
-import 'package:maintenance/JobCard/edit/GeneralData.dart';
+import 'package:maintenance/Purchase/PurchaseOrder/ClearPurchaseOrder.dart';
+import 'package:maintenance/Purchase/PurchaseOrder/create/PurchaseOrder.dart';
+import 'package:maintenance/Purchase/PurchaseRequest/ClearPurchaseRequest.dart';
+import 'package:maintenance/Purchase/PurchaseRequest/create/GeneralData.dart'
+    as createPurchaseGenData;
+import 'package:maintenance/Purchase/PurchaseRequest/create/ItemDetails/ItemDetails.dart'
+    as createPurchaseItemDetails;
 import 'package:maintenance/Sync/SyncModels/MNJCD2.dart';
+import 'package:maintenance/Sync/SyncModels/MNOWCM.dart';
+import 'package:maintenance/Sync/SyncModels/OCRN.dart';
+import 'package:maintenance/Sync/SyncModels/PRITR1.dart';
+import 'package:maintenance/Sync/SyncModels/PROITR.dart';
+import 'package:maintenance/Sync/SyncModels/PRPOR1.dart';
+import 'package:maintenance/Sync/SyncModels/PRPRQ1.dart';
+import 'package:maintenance/main.dart';
 
 class ServiceDetails extends StatefulWidget {
   const ServiceDetails({super.key});
 
   static List<MNJCD2> items = [];
+
+  static sendToSupplier() async {
+    ClearCreateInternalRequestDocument.clearGeneralDataTextFields();
+    ClearCreateInternalRequestDocument.clearEditItems();
+    createInternalItemDetails.ItemDetails.items.clear();
+    int i = 0;
+    for (MNJCD2 mnjcd1 in ServiceDetails.items) {
+      if (mnjcd1.IsSendToSupplier && mnjcd1.IsSendableItem) {
+        createInternalItemDetails.ItemDetails.items.add(PRITR1(
+          insertedIntoDatabase: false,
+          ID: 0,
+          TransId: '',
+          RowId: ++i,
+          ItemCode: mnjcd1.ItemCode,
+          ItemName: mnjcd1.ItemName,
+          Quantity: mnjcd1.Quantity,
+          UOM: mnjcd1.UOM,
+          LineStatus: 'Open',
+          OpenQty: mnjcd1.Quantity,
+          // TruckNo: mnjcd1.EquipmentCode,
+        ));
+      }
+    }
+    if (createInternalItemDetails.ItemDetails.items.isEmpty) {
+      getErrorSnackBar(
+          'Unable to Create Internal Request. Please ensure Item, Qty is valid and you have selected atleast one Item!');
+      return;
+    }
+
+    String TransId =
+        await GenerateTransId.getTransId(tableName: 'PROITR', docName: 'PRIR');
+    print(TransId);
+    String fromWhs = '';
+
+    List<MNOWCM> mnowcmList = await retrieveMNOWCMById(
+        null, 'WorkCenterCode = ?', [GeneralData.workCenterCode]);
+    if (mnowcmList.isNotEmpty) {
+      fromWhs = mnowcmList[0].WhsCode ?? '';
+    }
+
+    ClearCreateInternalRequestDocument.setGeneralData(
+        data: PROITR(
+      RequestedCode: GeneralData.assignedUserCode,
+      RequestedName: GeneralData.assignedUserName,
+      TransId: TransId,
+      FromWhsCode: fromWhs,
+      TripTransId: GeneralData.TripTransId,
+      PostingDate: DateTime.now(),
+      ValidUntill: DateTime.now().add(Duration(days: 7)),
+      DocStatus: 'Open',
+      ApprovalStatus: 'Pending',
+    ));
+
+    Get.to(() => InternalRequest(0));
+  }
+
+  static receiveFromSupplier() async {
+    ClearCreateInternalRequestDocument.clearGeneralDataTextFields();
+    ClearCreateInternalRequestDocument.clearEditItems();
+    createInternalItemDetails.ItemDetails.items.clear();
+    int i = 0;
+    for (MNJCD2 mnjcd1 in ServiceDetails.items) {
+      if (mnjcd1.IsSendToSupplier && mnjcd1.IsSendableItem) {
+        createInternalItemDetails.ItemDetails.items.add(PRITR1(
+          insertedIntoDatabase: false,
+          ID: 0,
+          TransId: '',
+          RowId: ++i,
+          ItemCode: mnjcd1.ItemCode,
+          ItemName: mnjcd1.ItemName,
+          Quantity: mnjcd1.Quantity,
+          UOM: mnjcd1.UOM,
+          LineStatus: 'Open',
+          OpenQty: mnjcd1.Quantity,
+          // TruckNo: mnjcd1.EquipmentCode,
+        ));
+      }
+    }
+    if (createInternalItemDetails.ItemDetails.items.isEmpty) {
+      getErrorSnackBar(
+          'Unable to Create Internal Request. Please ensure Item, Qty is valid and you have selected atleast one Item!');
+      return;
+    }
+
+    String TransId =
+        await GenerateTransId.getTransId(tableName: 'PROITR', docName: 'PRIR');
+
+    print(TransId);
+    String toWhs = '';
+
+    List<MNOWCM> mnowcmList = await retrieveMNOWCMById(
+        null, 'WorkCenterCode = ?', [GeneralData.workCenterCode]);
+    if (mnowcmList.isNotEmpty) {
+      toWhs = mnowcmList[0].WhsCode ?? '';
+    }
+    ClearCreateInternalRequestDocument.setGeneralData(
+        data: PROITR(
+      RequestedCode: GeneralData.assignedUserCode,
+      RequestedName: GeneralData.assignedUserName,
+      TransId: TransId,
+      ToWhsCode: toWhs,
+      TripTransId: GeneralData.TripTransId,
+      PostingDate: DateTime.now(),
+      ValidUntill: DateTime.now().add(Duration(days: 7)),
+      DocStatus: 'Open',
+      ApprovalStatus: 'Pending',
+    ));
+
+    Get.to(() => InternalRequest(0));
+  }
+
+  static createPurchaseOrder() async{
+    await ClearPurchaseOrderDocument.clearGeneralDataTextFields();
+    await ClearPurchaseOrderDocument.clearEditItems();
+    await ClearPurchaseOrderDocument.clearShippingAddressTextFields();
+    await ClearPurchaseOrderDocument.clearBillingAddressTextFields();
+    createPurchaseOrderItemDetails.ItemDetails.items.clear();
+
+
+    String TransId = await GenerateTransId.getTransId(tableName: 'PROPOR', docName: 'PROR');
+    createPurchaseOrderGenData.GeneralData.transId=TransId;
+    for(int i=0;i< ServiceDetails.items.length;i++)
+    {
+      MNJCD2 mnjcd2=ServiceDetails.items[i];
+      if(mnjcd2.IsPurchaseOrder)
+      {
+        createPurchaseOrderItemDetails.ItemDetails.items.add(PRPOR1(
+            ItemCode: mnjcd2.ServiceCode,
+            ItemName: mnjcd2.ServiceName,
+          TransId: TransId,
+          RowId: i,
+
+        ));
+      }
+    }
+    Get.offAll(() => PurchaseOrder(0));
+  }
+
+  static createPurchaseRequest() async {
+    await ClearPurchaseRequestDocument.clearGeneralData();
+    await ClearPurchaseRequestDocument.clearEditItems();
+    createPurchaseItemDetails.ItemDetails.items.clear();
+    String TransId =
+        await GenerateTransId.getTransId(tableName: 'PROPRQ', docName: 'PR');
+    createPurchaseGenData.GeneralData.transId = TransId;
+    createPurchaseGenData.GeneralData.requestedCode = GeneralData.assignedUserCode;
+    createPurchaseGenData.GeneralData.requestedName = GeneralData.assignedUserName;
+    List<OCRNModel> ocrnList=await retrieveOCRNById(null, 'BranchId = ?', [userModel.BranchId]);
+
+
+    for(int i=0;i< ServiceDetails.items.length;i++)
+    {
+      MNJCD2 mnjcd2=ServiceDetails.items[i];
+      if(mnjcd2.IsPurchaseRequest)
+      {
+        createPurchaseItemDetails.ItemDetails.items.add(PRPRQ1(
+          ItemCode: mnjcd2.ServiceCode,
+          ItemName: mnjcd2.ServiceName,
+          TransId: TransId,
+          RowId: i,
+
+        ));
+      }
+    }
+  }
+
+  static serviceConfirmation() async {
+    await ClearGRNDocument.clearGeneralDataTextFields();
+    await ClearGRNDocument.clearEditItems();
+    await ClearGRNDocument.clearBillingAddressTextFields();
+    await ClearGRNDocument.clearShippingAddressTextFields();
+    createGrnItemDetails.ItemDetails.items.clear();
+    String TransId =
+        await GenerateTransId.getTransId(tableName: 'PROPDN', docName: 'PRGR');
+    createGrnGenData.GeneralData.transId = TransId;
+
+    Get.offAll(() => GoodsRecepitNote(0));
+  }
 
   @override
   State<ServiceDetails> createState() => _ServiceDetailsState();
@@ -90,20 +297,26 @@ class _ServiceDetailsState extends State<ServiceDetails> {
                             EditService.isSendable = mnjcd2.IsSendableItem;
                             EditService.isUpdating = true;
                             EditService.transId = GeneralData.transId;
-                            EditService.equipmentCode = GeneralData.equipmentCode;
+                            EditService.equipmentCode =
+                                GeneralData.equipmentCode;
 
-
-                            EditService.remarks=mnjcd2.Remarks;
-                            EditService.uom=mnjcd2.UOM;
-                            EditService.itemCode=mnjcd2.ItemCode;
-                            EditService.itemName=mnjcd2.ItemName;
-                            EditService.quantity=mnjcd2.Quantity?.toStringAsFixed(2);
-                            EditService.equipmentCode=mnjcd2.EquipmentCode;
-                            EditService.isServiceConfirmation=mnjcd2.IsServiceConfirmation;
-                            EditService.isSendToSupplier= mnjcd2.IsSendToSupplier;
-                            EditService.isReceiveFromSupplier= mnjcd2.IsReceiveFromSupplier;
-                            EditService.isPurchaseRequest= mnjcd2.IsPurchaseRequest;
-                            EditService.isPurchaseOrder= mnjcd2.IsPurchaseOrder;
+                            EditService.remarks = mnjcd2.Remarks;
+                            EditService.uom = mnjcd2.UOM;
+                            EditService.itemCode = mnjcd2.ItemCode;
+                            EditService.itemName = mnjcd2.ItemName;
+                            EditService.quantity =
+                                mnjcd2.Quantity?.toStringAsFixed(2);
+                            EditService.equipmentCode = mnjcd2.EquipmentCode;
+                            EditService.isServiceConfirmation =
+                                mnjcd2.IsServiceConfirmation;
+                            EditService.isSendToSupplier =
+                                mnjcd2.IsSendToSupplier;
+                            EditService.isReceiveFromSupplier =
+                                mnjcd2.IsReceiveFromSupplier;
+                            EditService.isPurchaseRequest =
+                                mnjcd2.IsPurchaseRequest;
+                            EditService.isPurchaseOrder =
+                                mnjcd2.IsPurchaseOrder;
 
                             Get.to(() => EditService());
                           },
@@ -129,13 +342,13 @@ class _ServiceDetailsState extends State<ServiceDetails> {
                                 children: [
                                   Row(
                                     crossAxisAlignment:
-                                    CrossAxisAlignment.start,
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Expanded(
                                         flex: 8,
                                         child: Column(
                                           mainAxisAlignment:
-                                          MainAxisAlignment.start,
+                                              MainAxisAlignment.start,
                                           children: [
                                             Padding(
                                               padding: const EdgeInsets.only(
@@ -151,7 +364,7 @@ class _ServiceDetailsState extends State<ServiceDetails> {
                                                           text: 'Equipment'),
                                                       getPoppinsTextSpanDetails(
                                                           text: mnjcd2
-                                                              .EquipmentCode ??
+                                                                  .EquipmentCode ??
                                                               ''),
                                                     ],
                                                   ),
@@ -172,7 +385,7 @@ class _ServiceDetailsState extends State<ServiceDetails> {
                                                           text: 'Service'),
                                                       getPoppinsTextSpanDetails(
                                                           text: mnjcd2
-                                                              .ServiceName ??
+                                                                  .ServiceName ??
                                                               ''),
                                                     ],
                                                   ),
@@ -193,8 +406,8 @@ class _ServiceDetailsState extends State<ServiceDetails> {
                                                           text: 'Item'),
                                                       getPoppinsTextSpanDetails(
                                                           text:
-                                                          mnjcd2.ItemName ??
-                                                              ''),
+                                                              mnjcd2.ItemName ??
+                                                                  ''),
                                                     ],
                                                   ),
                                                 ),
@@ -214,7 +427,7 @@ class _ServiceDetailsState extends State<ServiceDetails> {
                                                           text: 'Supplier'),
                                                       getPoppinsTextSpanDetails(
                                                           text: mnjcd2
-                                                              .SupplierName ??
+                                                                  .SupplierName ??
                                                               ''),
                                                     ],
                                                   ),
@@ -235,8 +448,8 @@ class _ServiceDetailsState extends State<ServiceDetails> {
                                                           text: 'Quantity'),
                                                       getPoppinsTextSpanDetails(
                                                           text: mnjcd2.Quantity
-                                                              ?.toStringAsFixed(
-                                                              2) ??
+                                                                  ?.toStringAsFixed(
+                                                                      2) ??
                                                               '0'),
                                                     ],
                                                   ),
@@ -257,8 +470,8 @@ class _ServiceDetailsState extends State<ServiceDetails> {
                                                           text: 'InfoPrice'),
                                                       getPoppinsTextSpanDetails(
                                                           text: mnjcd2.InfoPrice
-                                                              ?.toStringAsFixed(
-                                                              2) ??
+                                                                  ?.toStringAsFixed(
+                                                                      2) ??
                                                               '0'),
                                                     ],
                                                   ),
@@ -279,8 +492,8 @@ class _ServiceDetailsState extends State<ServiceDetails> {
                                                           text: 'Remarks'),
                                                       getPoppinsTextSpanDetails(
                                                           text:
-                                                          mnjcd2.Remarks ??
-                                                              ''),
+                                                              mnjcd2.Remarks ??
+                                                                  ''),
                                                     ],
                                                   ),
                                                 ),
@@ -293,7 +506,7 @@ class _ServiceDetailsState extends State<ServiceDetails> {
                                         flex: 9,
                                         child: Column(
                                           mainAxisAlignment:
-                                          MainAxisAlignment.start,
+                                              MainAxisAlignment.start,
                                           children: [
                                             Padding(
                                               padding: const EdgeInsets.only(
@@ -302,23 +515,23 @@ class _ServiceDetailsState extends State<ServiceDetails> {
                                                 height: 20,
                                                 child: Row(
                                                   mainAxisAlignment:
-                                                  MainAxisAlignment.start,
+                                                      MainAxisAlignment.start,
                                                   children: [
                                                     Checkbox(
                                                       value:
-                                                      mnjcd2.IsSendableItem,
+                                                          mnjcd2.IsSendableItem,
                                                       onChanged: (bool? value) {
                                                         setState(() {
                                                           mnjcd2.IsSendableItem =
-                                                          !mnjcd2
-                                                              .IsSendableItem;
+                                                              !mnjcd2
+                                                                  .IsSendableItem;
                                                         });
                                                       },
                                                     ),
                                                     Expanded(
                                                         child: getPoppinsText(
                                                             text:
-                                                            'Sendable Item',
+                                                                'Sendable Item',
                                                             textAlign: TextAlign
                                                                 .start)),
                                                   ],
@@ -332,7 +545,7 @@ class _ServiceDetailsState extends State<ServiceDetails> {
                                                 height: 20,
                                                 child: Row(
                                                   mainAxisAlignment:
-                                                  MainAxisAlignment.start,
+                                                      MainAxisAlignment.start,
                                                   children: [
                                                     Checkbox(
                                                       value: mnjcd2
@@ -340,15 +553,15 @@ class _ServiceDetailsState extends State<ServiceDetails> {
                                                       onChanged: (bool? value) {
                                                         setState(() {
                                                           mnjcd2.IsSendToSupplier =
-                                                          !mnjcd2
-                                                              .IsSendToSupplier;
+                                                              !mnjcd2
+                                                                  .IsSendToSupplier;
                                                         });
                                                       },
                                                     ),
                                                     Expanded(
                                                         child: getPoppinsText(
                                                             text:
-                                                            'Send To Supplier',
+                                                                'Send To Supplier',
                                                             textAlign: TextAlign
                                                                 .start)),
                                                   ],
@@ -362,7 +575,7 @@ class _ServiceDetailsState extends State<ServiceDetails> {
                                                 height: 20,
                                                 child: Row(
                                                   mainAxisAlignment:
-                                                  MainAxisAlignment.start,
+                                                      MainAxisAlignment.start,
                                                   children: [
                                                     Checkbox(
                                                       value: mnjcd2
@@ -370,15 +583,15 @@ class _ServiceDetailsState extends State<ServiceDetails> {
                                                       onChanged: (bool? value) {
                                                         setState(() {
                                                           mnjcd2.IsReceiveFromSupplier =
-                                                          !mnjcd2
-                                                              .IsReceiveFromSupplier;
+                                                              !mnjcd2
+                                                                  .IsReceiveFromSupplier;
                                                         });
                                                       },
                                                     ),
                                                     Expanded(
                                                         child: getPoppinsText(
                                                             text:
-                                                            'Receive From Supplier',
+                                                                'Receive From Supplier',
                                                             textAlign: TextAlign
                                                                 .start)),
                                                   ],
@@ -392,7 +605,7 @@ class _ServiceDetailsState extends State<ServiceDetails> {
                                                 height: 20,
                                                 child: Row(
                                                   mainAxisAlignment:
-                                                  MainAxisAlignment.start,
+                                                      MainAxisAlignment.start,
                                                   children: [
                                                     Checkbox(
                                                       value: mnjcd2
@@ -400,15 +613,15 @@ class _ServiceDetailsState extends State<ServiceDetails> {
                                                       onChanged: (bool? value) {
                                                         setState(() {
                                                           mnjcd2.IsPurchaseRequest =
-                                                          !mnjcd2
-                                                              .IsPurchaseRequest;
+                                                              !mnjcd2
+                                                                  .IsPurchaseRequest;
                                                         });
                                                       },
                                                     ),
                                                     Expanded(
                                                         child: getPoppinsText(
                                                             text:
-                                                            'Purchase Request',
+                                                                'Purchase Request',
                                                             textAlign: TextAlign
                                                                 .start)),
                                                   ],
@@ -422,7 +635,7 @@ class _ServiceDetailsState extends State<ServiceDetails> {
                                                 height: 20,
                                                 child: Row(
                                                   mainAxisAlignment:
-                                                  MainAxisAlignment.start,
+                                                      MainAxisAlignment.start,
                                                   children: [
                                                     Checkbox(
                                                       value: mnjcd2
@@ -430,15 +643,15 @@ class _ServiceDetailsState extends State<ServiceDetails> {
                                                       onChanged: (bool? value) {
                                                         setState(() {
                                                           mnjcd2.IsPurchaseOrder =
-                                                          !mnjcd2
-                                                              .IsPurchaseOrder;
+                                                              !mnjcd2
+                                                                  .IsPurchaseOrder;
                                                         });
                                                       },
                                                     ),
                                                     Expanded(
                                                         child: getPoppinsText(
                                                             text:
-                                                            'Purchase Order',
+                                                                'Purchase Order',
                                                             textAlign: TextAlign
                                                                 .start)),
                                                   ],
@@ -452,7 +665,7 @@ class _ServiceDetailsState extends State<ServiceDetails> {
                                                 height: 20,
                                                 child: Row(
                                                   mainAxisAlignment:
-                                                  MainAxisAlignment.start,
+                                                      MainAxisAlignment.start,
                                                   children: [
                                                     Checkbox(
                                                       value: mnjcd2
@@ -460,15 +673,15 @@ class _ServiceDetailsState extends State<ServiceDetails> {
                                                       onChanged: (bool? value) {
                                                         setState(() {
                                                           mnjcd2.IsServiceConfirmation =
-                                                          !mnjcd2
-                                                              .IsServiceConfirmation;
+                                                              !mnjcd2
+                                                                  .IsServiceConfirmation;
                                                         });
                                                       },
                                                     ),
                                                     Expanded(
                                                         child: getPoppinsText(
                                                             text:
-                                                            'Service Confirmation',
+                                                                'Service Confirmation',
                                                             textAlign: TextAlign
                                                                 .start)),
                                                   ],
@@ -485,81 +698,81 @@ class _ServiceDetailsState extends State<ServiceDetails> {
                                     children: [
                                       Expanded(
                                           child: InkWell(
-                                            onTap: () async {
-                                              await showDialog(
-                                                barrierDismissible: false,
-                                                context: context,
-                                                builder: (BuildContext context) {
-                                                  return AlertDialog(
-                                                    content: Container(
-                                                      height: MediaQuery.of(context)
+                                        onTap: () async {
+                                          await showDialog(
+                                            barrierDismissible: false,
+                                            context: context,
+                                            builder: (BuildContext context) {
+                                              return AlertDialog(
+                                                content: Container(
+                                                  height: MediaQuery.of(context)
                                                           .size
                                                           .height /
-                                                          20,
-                                                      width: MediaQuery.of(context)
+                                                      20,
+                                                  width: MediaQuery.of(context)
                                                           .size
                                                           .width /
-                                                          1.5,
-                                                      child: Text(
-                                                        "Are you sure you want to delete this row?",
-                                                        style: TextStyle(
-                                                            color: Colors.black,
-                                                            fontWeight:
+                                                      1.5,
+                                                  child: Text(
+                                                    "Are you sure you want to delete this row?",
+                                                    style: TextStyle(
+                                                        color: Colors.black,
+                                                        fontWeight:
                                                             FontWeight.bold),
-                                                      ),
+                                                  ),
+                                                ),
+                                                actions: [
+                                                  MaterialButton(
+                                                    // OPTIONAL BUTTON
+                                                    shape:
+                                                        RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              40),
                                                     ),
-                                                    actions: [
-                                                      MaterialButton(
-                                                        // OPTIONAL BUTTON
-                                                        shape:
+                                                    color: barColor,
+                                                    child: Text(
+                                                      'No',
+                                                      style: TextStyle(
+                                                          color: Colors.white),
+                                                    ),
+                                                    onPressed: () {
+                                                      Navigator.pop(context);
+                                                    },
+                                                  ),
+                                                  MaterialButton(
+                                                    // OPTIONAL BUTTON
+                                                    shape:
                                                         RoundedRectangleBorder(
-                                                          borderRadius:
+                                                      borderRadius:
                                                           BorderRadius.circular(
                                                               40),
-                                                        ),
-                                                        color: barColor,
-                                                        child: Text(
-                                                          'No',
-                                                          style: TextStyle(
-                                                              color: Colors.white),
-                                                        ),
-                                                        onPressed: () {
-                                                          Navigator.pop(context);
-                                                        },
-                                                      ),
-                                                      MaterialButton(
-                                                        // OPTIONAL BUTTON
-                                                        shape:
-                                                        RoundedRectangleBorder(
-                                                          borderRadius:
-                                                          BorderRadius.circular(
-                                                              40),
-                                                        ),
-                                                        color: Colors.red,
-                                                        child: Text(
-                                                          'Yes',
-                                                          style: TextStyle(
-                                                              color: Colors.white),
-                                                        ),
-                                                        onPressed: () async {
-                                                          Navigator.pop(context);
-                                                          setState(() {
-                                                            ServiceDetails.items
-                                                                .removeAt(index);
-                                                          });
-                                                        },
-                                                      ),
-                                                    ],
-                                                  );
-                                                },
+                                                    ),
+                                                    color: Colors.red,
+                                                    child: Text(
+                                                      'Yes',
+                                                      style: TextStyle(
+                                                          color: Colors.white),
+                                                    ),
+                                                    onPressed: () async {
+                                                      Navigator.pop(context);
+                                                      setState(() {
+                                                        ServiceDetails.items
+                                                            .removeAt(index);
+                                                      });
+                                                    },
+                                                  ),
+                                                ],
                                               );
                                             },
-                                            child: getPoppinsText(
-                                                text: 'Delete',
-                                                color: Colors.red,
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 16),
-                                          )),
+                                          );
+                                        },
+                                        child: getPoppinsText(
+                                            text: 'Delete',
+                                            color: Colors.red,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 16),
+                                      )),
                                     ],
                                   ),
                                 ],

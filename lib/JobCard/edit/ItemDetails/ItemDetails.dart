@@ -3,14 +3,174 @@ import 'package:get/get.dart';
 import 'package:maintenance/Component/Common.dart';
 import 'package:maintenance/Component/CustomColor.dart';
 import 'package:maintenance/Component/CustomFont.dart';
+import 'package:maintenance/Component/GenerateTransId.dart';
 import 'package:maintenance/Component/GetFormattedDate.dart';
+import 'package:maintenance/Component/SnackbarComponent.dart';
+import 'package:maintenance/InternalRequest/ClearInternalRequestDocument.dart';
 import 'package:maintenance/JobCard/edit/ItemDetails/AddItem.dart';
+import 'package:maintenance/JobCard/edit/GeneralData.dart';
 import 'package:maintenance/Sync/SyncModels/MNJCD1.dart';
+import 'package:maintenance/Sync/SyncModels/PRITR1.dart';
+import 'package:maintenance/Sync/SyncModels/PROITR.dart';
+import 'package:maintenance/GoodsIssue/ClearGoodsIssueDocument.dart';
+import 'package:maintenance/GoodsIssue/create/GoodsIssue.dart';
+import 'package:maintenance/GoodsIssue/create/ItemDetails/ItemDetails.dart'
+as goodsIssueCreateDetails;
+import 'package:maintenance/InternalRequest/create/InternalRequest.dart';
+import 'package:maintenance/InternalRequest/create/ItemDetails/ItemDetails.dart'
+as createInternalItemDetails;
+import 'package:maintenance/Purchase/PurchaseRequest/ClearPurchaseRequest.dart';
+import 'package:maintenance/Purchase/PurchaseRequest/create/ItemDetails/ItemDetails.dart'
+as createPurchaseItemDetails;
+import 'package:maintenance/Purchase/PurchaseRequest/create/PurchaseRequest.dart';
+import 'package:maintenance/Sync/SyncModels/IMGDI1.dart';
+import 'package:maintenance/Sync/SyncModels/IMOGDI.dart';
+import 'package:maintenance/Sync/SyncModels/PROPRQ.dart';
+import 'package:maintenance/Sync/SyncModels/PRPRQ1.dart';
+import 'package:maintenance/main.dart';
 
 class ItemDetails extends StatefulWidget {
   const ItemDetails({super.key});
 
   static List<MNJCD1> items = [];
+
+  static createInternalRequest() async {
+    ClearCreateInternalRequestDocument.clearGeneralDataTextFields();
+    ClearCreateInternalRequestDocument.clearEditItems();
+    createInternalItemDetails.ItemDetails.items.clear();
+    int i=0;
+    for (MNJCD1 mnjcd1 in ItemDetails.items) {
+      if (mnjcd1.IsFromStock && mnjcd1.IsRequest) {
+        createInternalItemDetails.ItemDetails.items.add(PRITR1(
+          insertedIntoDatabase: false,
+          ID: 0,
+          TransId: '',
+          RowId: ++i,
+          ItemCode: mnjcd1.ItemCode,
+          ItemName: mnjcd1.ItemName,
+          Quantity: mnjcd1.Quantity,
+          UOM: mnjcd1.UOM,
+          LineStatus: 'Open',
+          OpenQty: mnjcd1.Quantity,
+          // TruckNo: mnjcd1.EquipmentCode,
+        ));
+      }
+    }
+    if (createInternalItemDetails.ItemDetails.items.isEmpty) {
+      getErrorSnackBar(
+          'Unable to Create Internal Request. Please ensure Item, Qty is valid and you have selected atleast one Item!');
+      return;
+    }
+
+    String TransId =
+    await GenerateTransId.getTransId(tableName: 'PROITR', docName: 'PRIR');
+
+    print(TransId);
+    ClearCreateInternalRequestDocument.setGeneralData(
+        data: PROITR(
+          RequestedCode: GeneralData.assignedUserCode,
+          RequestedName: GeneralData.assignedUserName,
+          TransId: TransId,
+          TripTransId: GeneralData.TripTransId,
+          PostingDate: DateTime.now(),
+          ValidUntill: DateTime.now().add(Duration(days: 7)),
+          DocStatus: 'Open',
+          ApprovalStatus: 'Pending',
+        ));
+
+    Get.to(() => InternalRequest(0));
+  }
+
+  static createPurchaseRequest() async {
+    ClearPurchaseRequestDocument.clearGeneralData();
+    ClearPurchaseRequestDocument.clearEditItems();
+    createPurchaseItemDetails.ItemDetails.items.clear();
+    for (MNJCD1 mnjcd1 in ItemDetails.items) {
+      if (mnjcd1.IsRequest) {
+        createPurchaseItemDetails.ItemDetails.items.add(PRPRQ1(
+          insertedIntoDatabase: false,
+          ID: 0,
+          TransId: '',
+          RowId: goodsIssueCreateDetails.ItemDetails.items.length,
+          ItemCode: mnjcd1.ItemCode,
+          ItemName: mnjcd1.ItemName,
+          Quantity: mnjcd1.Quantity,
+          UOM: mnjcd1.UOM,
+          LineStatus: 'Open',
+          OpenQty: mnjcd1.Quantity,
+        ));
+      }
+    }
+    if (createPurchaseItemDetails.ItemDetails.items.isEmpty) {
+      getErrorSnackBar(
+          'Unable to Create Purchase Request. Please ensure Item, Qty is valid and you have selected atleast one Item!');
+      return;
+    }
+    String TransId =
+    await GenerateTransId.getTransId(tableName: 'PROPRQ', docName: 'PR');
+    print(TransId);
+    ClearPurchaseRequestDocument.setGeneralData(
+        data: PROPRQ(
+          RequestedCode: GeneralData.assignedUserCode,
+          RequestedName: GeneralData.assignedUserName,
+          TransId: TransId,
+          TripTransId: GeneralData.TripTransId,
+          PostingDate: DateTime.now(),
+          ValidUntill: DateTime.now().add(Duration(days: 7)),
+          DocStatus: 'Open',
+          ApprovalStatus: 'Pending',
+        ));
+
+    Get.to(() => PurchaseRequest(0));
+  }
+
+  static createGoodsIssue() async {
+    ClearGoodsIssueDocument.clearGeneralDataTextFields();
+    ClearGoodsIssueDocument.clearEditItems();
+    goodsIssueCreateDetails.ItemDetails.items.clear();
+
+    for (MNJCD1 mnjcd1 in ItemDetails.items) {
+      if (mnjcd1.IsConsumption) {
+        goodsIssueCreateDetails.ItemDetails.items.add(IMGDI1(
+          insertedIntoDatabase: false,
+          ID: 0,
+          TransId: '',
+          RowId: goodsIssueCreateDetails.ItemDetails.items.length,
+          ItemCode: mnjcd1.ItemCode,
+          ItemName: mnjcd1.ItemName,
+          Quantity: mnjcd1.Quantity,
+          UOM: mnjcd1.UOM,
+          LineStatus: 'Open',
+          OpenQty: mnjcd1.Quantity,
+          // TruckNo: mnjcd1.EquipmentCode,
+        ));
+      }
+    }
+    if (goodsIssueCreateDetails.ItemDetails.items.isEmpty) {
+      getErrorSnackBar(
+          'Unable to Create Goods Issue. Please ensure Item, Qty is valid and you have selected atleast one Item!');
+      return;
+    }
+
+    String TransId =
+    await GenerateTransId.getTransId(tableName: 'IMOGDI', docName: 'MNGI');
+    print(TransId);
+    ClearGoodsIssueDocument.setGeneralData(
+        imogdi: IMOGDI(
+          RequestedCode: GeneralData.assignedUserCode,
+          RequestedName: GeneralData.assignedUserName,
+          TransId: TransId,
+          Currency: userModel.Currency,
+          CurrRate: double.tryParse(userModel.Rate?.toString() ?? ''),
+          TripTransId: GeneralData.TripTransId,
+          PostingDate: DateTime.now(),
+          ValidUntill: DateTime.now().add(Duration(days: 7)),
+          DocStatus: 'Open',
+          ApprovalStatus: 'Pending',
+        ));
+
+    Get.to(() => GoodsIssue(0));
+  }
 
   @override
   State<ItemDetails> createState() => _ItemDetailsState();
