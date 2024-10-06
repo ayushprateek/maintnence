@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:maintenance/Component/CustomColor.dart';
+import 'package:maintenance/Component/CustomFont.dart';
+import 'package:maintenance/Component/GetBottomSheet.dart';
 import 'package:maintenance/DatabaseInitialization.dart';
 import 'package:maintenance/Sync/SyncModels/MNVCL2.dart';
 import 'package:sqflite/sqlite_api.dart';
@@ -169,27 +171,46 @@ class _TruckDescriptionState extends State<TruckDescription> {
               return Positioned(
                 left: tirePositions[index].offset?.dx,
                 top: tirePositions[index].offset?.dy,
-                child: Draggable<int>(
-                  data: index,
-                  feedback: Container(
-                    width: 50,
-                    height: 50,
-                    child: CustomPaint(
-                      size: Size(50, 50),
-                      painter: TirePainter(image: widget.image),
+                child: InkWell(
+                  onTap: (){
+                    getBottomSheet(
+                        context: Get.context!,
+                        content: SizedBox(
+                          width: Get.width,
+                          child: SingleChildScrollView(
+                            child: Column(
+                              children: [
+                                getHeadingText(text: tirePositions[index].ZPosition?.toString()??''),
+                                getSubHeadingText(text: 'How are you?')
+                              ],
+                            ),
+                          ),
+                        ),
+                        height: 2 * Get.height / 3);
+
+                  },
+                  child: Draggable<int>(
+                    data: index,
+                    feedback: Container(
+                                          width: 50,
+                                          height: 50,
+                                          child: CustomPaint(
+                    size: Size(50, 50),
+                    painter: TirePainter(image: widget.image),
+                                          ),
+                                        ),
+                    childWhenDragging: Container(),
+                    child: DragTarget<int>(
+                      onAccept: (oldIndex) {
+                        swapTires(oldIndex, index);
+                      },
+                      builder: (context, candidateData, rejectedData) {
+                        return CustomPaint(
+                          size: Size(50, 50),
+                          painter: TirePainter(image: widget.image),
+                        );
+                      },
                     ),
-                  ),
-                  childWhenDragging: Container(),
-                  child: DragTarget<int>(
-                    onAccept: (oldIndex) {
-                      swapTires(oldIndex, index);
-                    },
-                    builder: (context, candidateData, rejectedData) {
-                      return CustomPaint(
-                        size: Size(50, 50),
-                        painter: TirePainter(image: widget.image),
-                      );
-                    },
                   ),
                 ),
               );
