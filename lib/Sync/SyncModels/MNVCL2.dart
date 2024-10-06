@@ -237,10 +237,13 @@ Future<void> deleteMNVCL2(Database db) async {
 }
 
 Future<List<MNVCL2>> retrieveMNVCL2ById(
-    BuildContext? context, String str, List l) async {
+    BuildContext? context, String str, List l,
+{
+  String? orderBy
+  }) async {
   final Database db = await initializeDB(context);
   final List<Map<String, Object?>> queryResult =
-      await db.query('MNVCL2', where: str, whereArgs: l);
+      await db.query('MNVCL2', where: str, whereArgs: l,orderBy: orderBy);
   return queryResult.map((e) => MNVCL2.fromJson(e)).toList();
 }
 
