@@ -1,4 +1,5 @@
 import 'dart:ui' as ui;
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -35,7 +36,8 @@ class _MyAppState extends State<MyApp> {
         child: MaterialButton(
           onPressed: () async {
             final ByteData data = await rootBundle.load('images/tyre.jpg');
-            ui.Image _image = await decodeImageFromList(data.buffer.asUint8List());
+            ui.Image _image =
+                await decodeImageFromList(data.buffer.asUint8List());
             Get.to(() => TruckDescription(image: _image));
           },
           child: Text('TruckDescription'),
@@ -62,6 +64,7 @@ class _TruckDescriptionState extends State<TruckDescription> {
     super.initState();
     initializeTirePositions();
   }
+
   // void initializeTirePositions()async{
   //   int numOfAxles = 0;
   //   Database db=await initializeDB(null);
@@ -104,18 +107,17 @@ class _TruckDescriptionState extends State<TruckDescription> {
   //
   //   });
   // }
-  void initializeTirePositions()async{
-    double height=Get.height/2;
-    double width=Get.width;
+  void initializeTirePositions() async {
+    double height = Get.height / 2;
+    double width = Get.width;
     int numOfAxles = 0;
-    Database db=await initializeDB(null);
-    String code='ASHOK-AMT-03';
-    List l=await db.rawQuery('''
+    Database db = await initializeDB(null);
+    String code = 'ASHOK-AMT-03';
+    List l = await db.rawQuery('''
     SELECT ifnull(Max(XAxles),0) as NumberOfAxles FROM MNVCL2 WHERE Code='$code'
     ''');
-    if(l.isNotEmpty)
-    {
-      numOfAxles=int.tryParse(l[0]['NumberOfAxles'].toString())??0;
+    if (l.isNotEmpty) {
+      numOfAxles = int.tryParse(l[0]['NumberOfAxles'].toString()) ?? 0;
     }
 
     double horizontalGap = height / (numOfAxles + 1);
@@ -124,8 +126,10 @@ class _TruckDescriptionState extends State<TruckDescription> {
     for (int i = 1; i <= numOfAxles; i++) {
       double y = i * horizontalGap;
       // Calculate the number of images per side
-      List<MNVCL2> list=await retrieveMNVCL2ById(null, 'Code = ? AND XAxles = ?', [code,i],orderBy: 'ZPosition ASC');
-      int numImages=list[0].YTyres??0;
+      List<MNVCL2> list = await retrieveMNVCL2ById(
+          null, 'Code = ? AND XAxles = ?', [code, i],
+          orderBy: 'ZPosition ASC');
+      int numImages = list[0].YTyres ?? 0;
 
       // Calculate spacing for images
       double imageGap = width / (2 * numImages + 1);
@@ -133,23 +137,20 @@ class _TruckDescriptionState extends State<TruckDescription> {
       for (int j = 1; j <= numImages; j++) {
         double xOffset = j * imageGap;
 
-        int left=j-1;
-        int right=numImages+(left);
+        int left = numImages - j;
+        int right = numImages + (j - 1);
 
         // Draw images on the left side
-        list[left].offset=Offset(verticalLineX - xOffset, y - 20);
+        list[left].offset = Offset(verticalLineX - xOffset, y - 20);
         tirePositions.add(list[left]);
 
         // Draw images on the right side
-        list[right].offset=Offset(verticalLineX + xOffset - 40, y - 20);
+        list[right].offset = Offset(verticalLineX + xOffset - 40, y - 20);
         tirePositions.add(list[right]);
       }
     }
-    setState(() {
-
-    });
+    setState(() {});
   }
-
 
   void swapTires(int oldIndex, int newIndex) {
     setState(() {
@@ -172,7 +173,7 @@ class _TruckDescriptionState extends State<TruckDescription> {
                 left: tirePositions[index].offset?.dx,
                 top: tirePositions[index].offset?.dy,
                 child: InkWell(
-                  onTap: (){
+                  onTap: () {
                     getBottomSheet(
                         context: Get.context!,
                         content: SizedBox(
@@ -180,25 +181,28 @@ class _TruckDescriptionState extends State<TruckDescription> {
                           child: SingleChildScrollView(
                             child: Column(
                               children: [
-                                getHeadingText(text: tirePositions[index].ZPosition?.toString()??''),
+                                getHeadingText(
+                                    text: tirePositions[index]
+                                            .ZPosition
+                                            ?.toString() ??
+                                        ''),
                                 getSubHeadingText(text: 'How are you?')
                               ],
                             ),
                           ),
                         ),
                         height: 2 * Get.height / 3);
-
                   },
                   child: Draggable<int>(
                     data: index,
                     feedback: Container(
-                                          width: 50,
-                                          height: 50,
-                                          child: CustomPaint(
-                    size: Size(50, 50),
-                    painter: TirePainter(image: widget.image),
-                                          ),
-                                        ),
+                      width: 50,
+                      height: 50,
+                      child: CustomPaint(
+                        size: Size(50, 50),
+                        painter: TirePainter(image: widget.image),
+                      ),
+                    ),
                     childWhenDragging: Container(),
                     child: DragTarget<int>(
                       onAccept: (oldIndex) {
@@ -223,11 +227,10 @@ class _TruckDescriptionState extends State<TruckDescription> {
 }
 
 class LinePainter extends CustomPainter {
-
   @override
   void paint(Canvas canvas, Size size) {
-    double height=Get.height/2;
-    double width=Get.width;
+    double height = Get.height / 2;
+    double width = Get.width;
     Paint paint = Paint()
       ..color = barColor
       ..strokeWidth = 4.0;
@@ -254,11 +257,11 @@ class LinePainter extends CustomPainter {
     return false;
   }
 }
+
 class TirePainter extends CustomPainter {
   final ui.Image image;
 
   TirePainter({required this.image});
-
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -274,7 +277,8 @@ class TirePainter extends CustomPainter {
     canvas.drawLine(Offset(verticalLineX, verticalLineTop),
         Offset(verticalLineX, verticalLineBottom), paint);
 
-    final Rect srcRect = Rect.fromLTWH(0, 0, image.width.toDouble(), image.height.toDouble());
+    final Rect srcRect =
+        Rect.fromLTWH(0, 0, image.width.toDouble(), image.height.toDouble());
     final Rect dstRect = Rect.fromLTWH(0, 0, size.width, size.height);
     canvas.drawImageRect(image, srcRect, dstRect, Paint());
   }
