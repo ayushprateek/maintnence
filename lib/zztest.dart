@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:maintenance/Component/CustomColor.dart';
-import 'package:maintenance/Component/CustomFont.dart';
 import 'package:maintenance/Component/GetBottomSheet.dart';
+import 'package:maintenance/Component/GetTextField.dart';
 import 'package:maintenance/DatabaseInitialization.dart';
 import 'package:maintenance/Sync/SyncModels/MNVCL2.dart';
 import 'package:sqflite/sqlite_api.dart';
@@ -129,6 +129,17 @@ class _TruckDescriptionState extends State<TruckDescription> {
       List<MNVCL2> list = await retrieveMNVCL2ById(
           null, 'Code = ? AND XAxles = ?', [code, i],
           orderBy: 'ZPosition ASC');
+      for (MNVCL2 mnvcl2 in list) {
+        mnvcl2.tyreCodeController.text = mnvcl2.TyreCode ?? '';
+        mnvcl2.serialNoController.text = mnvcl2.SerialNo ?? '';
+        mnvcl2.treadController.text = mnvcl2.Tread?.toStringAsFixed(2) ?? '';
+        mnvcl2.pressureController.text = mnvcl2.Pressure ?? '';
+        mnvcl2.remarksController.text = mnvcl2.Remarks ?? '';
+        mnvcl2.xAxlesController.text = mnvcl2.XAxles?.toStringAsFixed(0) ?? '';
+        mnvcl2.yTyresController.text = mnvcl2.YTyres?.toStringAsFixed(0) ?? '';
+        mnvcl2.zPositionController.text =
+            mnvcl2.ZPosition?.toStringAsFixed(0) ?? '';
+      }
       int numImages = list[0].YTyres ?? 0;
 
       // Calculate spacing for images
@@ -179,15 +190,66 @@ class _TruckDescriptionState extends State<TruckDescription> {
                         content: SizedBox(
                           width: Get.width,
                           child: SingleChildScrollView(
-                            child: Column(
-                              children: [
-                                getHeadingText(
-                                    text: tirePositions[index]
-                                            .ZPosition
-                                            ?.toString() ??
-                                        ''),
-                                getSubHeadingText(text: 'How are you?')
-                              ],
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const SizedBox(
+                                    height: 25,
+                                  ),
+                                  getTextFieldWithoutLookup(
+                                      controller: tirePositions[index]
+                                          .tyreCodeController,
+                                      labelText: 'TyreCode',
+                                      height: 35),
+                                  getDisabledTextFieldWithoutLookup(
+                                      controller:
+                                          tirePositions[index].xAxlesController,
+                                      labelText: 'Axles',
+                                      height: 35),
+                                  getDisabledTextFieldWithoutLookup(
+                                      controller:
+                                          tirePositions[index].yTyresController,
+                                      labelText: 'Tyre',
+                                      height: 35),
+                                  getDisabledTextFieldWithoutLookup(
+                                      controller: tirePositions[index]
+                                          .zPositionController,
+                                      labelText: 'Position',
+                                      height: 35),
+                                  if (tirePositions[index]
+                                      .serialNoController
+                                      .text
+                                      .isEmpty)
+                                    getTextFieldWithoutLookup(
+                                        controller: tirePositions[index]
+                                            .serialNoController,
+                                        labelText: 'Serial No',
+                                        height: 35)
+                                  else
+                                    getDisabledTextFieldWithoutLookup(
+                                        controller: tirePositions[index]
+                                            .serialNoController,
+                                        labelText: 'Serial No',
+                                        height: 35),
+                                  getTextFieldWithoutLookup(
+                                      controller:
+                                          tirePositions[index].treadController,
+                                      labelText: 'Tread',
+                                      height: 35),
+                                  getTextFieldWithoutLookup(
+                                      controller: tirePositions[index]
+                                          .pressureController,
+                                      labelText: 'Pressure',
+                                      height: 35),
+                                  getTextFieldWithoutLookup(
+                                      controller: tirePositions[index]
+                                          .remarksController,
+                                      labelText: 'Remarks',
+                                      height: 35),
+                                ],
+                              ),
                             ),
                           ),
                         ),
@@ -198,6 +260,15 @@ class _TruckDescriptionState extends State<TruckDescription> {
                     feedback: Container(
                       width: 50,
                       height: 50,
+                      decoration: BoxDecoration(
+                          border: Border.all(
+                              color: tirePositions[index]
+                                      .serialNoController
+                                      .text
+                                      .isEmpty
+                                  ? Colors.red
+                                  : Colors.blue,
+                              width: 1.5)),
                       child: CustomPaint(
                         size: Size(50, 50),
                         painter: TirePainter(image: widget.image),
@@ -209,9 +280,20 @@ class _TruckDescriptionState extends State<TruckDescription> {
                         swapTires(oldIndex, index);
                       },
                       builder: (context, candidateData, rejectedData) {
-                        return CustomPaint(
-                          size: Size(50, 50),
-                          painter: TirePainter(image: widget.image),
+                        return Container(
+                          decoration: BoxDecoration(
+                              border: Border.all(
+                                  color: tirePositions[index]
+                                      .serialNoController
+                                      .text
+                                      .isEmpty
+                                      ? Colors.red
+                                      : Colors.blue,
+                                  width: 1.5)),
+                          child: CustomPaint(
+                            size: Size(50, 50),
+                            painter: TirePainter(image: widget.image),
+                          ),
                         );
                       },
                     ),

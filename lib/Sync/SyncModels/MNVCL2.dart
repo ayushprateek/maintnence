@@ -26,8 +26,21 @@ class MNVCL2 {
   String? Remarks;
   DateTime? CreateDate;
   DateTime? UpdateDate;
+  ///For dev purpose
+
+
   /// for drawing tyres
   Offset? offset;
+  TextEditingController tyreCodeController=TextEditingController();
+  TextEditingController serialNoController=TextEditingController();
+  TextEditingController treadController=TextEditingController();
+  TextEditingController pressureController=TextEditingController();
+  TextEditingController remarksController=TextEditingController();
+  TextEditingController xAxlesController=TextEditingController();
+  TextEditingController yTyresController=TextEditingController();
+  TextEditingController zPositionController=TextEditingController();
+
+
 
   MNVCL2({
     this.ID,
@@ -49,24 +62,26 @@ class MNVCL2 {
     this.offset,
   });
 
-  factory MNVCL2.fromJson(Map<String, dynamic> json) => MNVCL2(
-        ID: int.tryParse(json['ID'].toString()) ?? 0,
-        Code: json['Code']?.toString() ?? '',
-        RowId: int.tryParse(json['RowId'].toString()) ?? 0,
-        TyreCode: json['TyreCode']?.toString() ?? '',
-        SerialNo: json['SerialNo']?.toString() ?? '',
-        XAxles: int.tryParse(json['XAxles'].toString()) ?? 0,
-        YTyres: int.tryParse(json['YTyres'].toString()) ?? 0,
-        Tread: double.tryParse(json['Tread'].toString()) ?? 0.0,
-        Pressure: json['Pressure']?.toString() ?? '',
-        TyreStatus: json['TyreStatus']?.toString() ?? '',
-        ZPosition: int.tryParse(json['ZPosition'].toString()) ?? 0,
-        LR: int.tryParse(json['LR'].toString()) ?? 0,
-        Attachment: json['Attachment']?.toString() ?? '',
-        Remarks: json['Remarks']?.toString() ?? '',
-        CreateDate: DateTime.tryParse(json['CreateDate'].toString()),
-        UpdateDate: DateTime.tryParse(json['UpdateDate'].toString()),
-      );
+  factory MNVCL2.fromJson(Map<String, dynamic> json){
+    return MNVCL2(
+      ID: int.tryParse(json['ID'].toString()) ?? 0,
+      Code: json['Code']?.toString() ?? '',
+      RowId: int.tryParse(json['RowId'].toString()) ?? 0,
+      TyreCode: json['TyreCode']?.toString() ?? '',
+      SerialNo: json['SerialNo']?.toString() ?? '',
+      XAxles: int.tryParse(json['XAxles'].toString()) ?? 0,
+      YTyres: int.tryParse(json['YTyres'].toString()) ?? 0,
+      Tread: double.tryParse(json['Tread'].toString()) ?? 0.0,
+      Pressure: json['Pressure']?.toString() ?? '',
+      TyreStatus: json['TyreStatus']?.toString() ?? '',
+      ZPosition: int.tryParse(json['ZPosition'].toString()) ?? 0,
+      LR: int.tryParse(json['LR'].toString()) ?? 0,
+      Attachment: json['Attachment']?.toString() ?? '',
+      Remarks: json['Remarks']?.toString() ?? '',
+      CreateDate: DateTime.tryParse(json['CreateDate'].toString()),
+      UpdateDate: DateTime.tryParse(json['UpdateDate'].toString()),
+    );
+  }
 
   Map<String, dynamic> toJson() => {
         'ID': ID,
