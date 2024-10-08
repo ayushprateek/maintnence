@@ -652,14 +652,17 @@ WHERE
                           Positioned(
                             top: -27,
                             right: -4,
-                            child: Card(
-                              child: IconButton(
-                                onPressed: () {
-                                  setCheckListData(dashboardItem: data);
-                                },
-                                icon: Icon(
-                                  Icons.add,
-                                  color: barColor,
+                            child: InkWell(
+                              onTap:(){
+                                setCheckListData(dashboardItem: data);
+                              },
+                              child: Card(
+                                child: Padding(
+                                  padding: const EdgeInsets.all(10.0),
+                                  child: Icon(
+                                    Icons.add,
+                                    color: barColor,
+                                  ),
                                 ),
                               ),
                             ),
