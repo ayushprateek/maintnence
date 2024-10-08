@@ -490,9 +490,9 @@ class _CustomDrawerState extends State<CustomDrawer> {
                   ),
                   InkWell(
                     onTap: () async{
-                      final ByteData data = await rootBundle.load('images/tyre.jpg');
-                      ui.Image _image = await decodeImageFromList(data.buffer.asUint8List());
-                      Get.to(() => TruckDescription(image: _image,));
+                      // final ByteData data = await rootBundle.load('images/tyre.jpg');
+                      // ui.Image _image = await decodeImageFromList(data.buffer.asUint8List());
+                      Get.to(() => TruckDescription());
                     },
                     child: ListTile(
                       title: Text(

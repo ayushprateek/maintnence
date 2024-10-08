@@ -11,47 +11,47 @@ import 'package:maintenance/DatabaseInitialization.dart';
 import 'package:maintenance/Sync/SyncModels/MNVCL2.dart';
 import 'package:sqflite/sqlite_api.dart';
 
-void main() {
-  WidgetsFlutterBinding.ensureInitialized();
-  runApp(GetMaterialApp(
-    debugShowCheckedModeBanner: false,
-    home: MyApp(),
-  ));
-}
-
-class MyApp extends StatefulWidget {
-  const MyApp({super.key});
-
-  @override
-  State<MyApp> createState() => _MyAppState();
-}
-
-class _MyAppState extends State<MyApp> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Custom drag'),
-      ),
-      body: Center(
-        child: MaterialButton(
-          onPressed: () async {
-            final ByteData data = await rootBundle.load('images/tyre.jpg');
-            ui.Image _image =
-                await decodeImageFromList(data.buffer.asUint8List());
-            Get.to(() => TruckDescription(image: _image));
-          },
-          child: Text('TruckDescription'),
-        ),
-      ),
-    );
-  }
-}
+// void main() {
+//   WidgetsFlutterBinding.ensureInitialized();
+//   runApp(GetMaterialApp(
+//     debugShowCheckedModeBanner: false,
+//     home: MyApp(),
+//   ));
+// }
+//
+// class MyApp extends StatefulWidget {
+//   const MyApp({super.key});
+//
+//   @override
+//   State<MyApp> createState() => _MyAppState();
+// }
+//
+// class _MyAppState extends State<MyApp> {
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(
+//         title: Text('Custom drag'),
+//       ),
+//       body: Center(
+//         child: MaterialButton(
+//           onPressed: () async {
+//             final ByteData data = await rootBundle.load('images/tyre.jpg');
+//             ui.Image _image =
+//                 await decodeImageFromList(data.buffer.asUint8List());
+//             Get.to(() => TruckDescription(image: _image));
+//           },
+//           child: Text('TruckDescription'),
+//         ),
+//       ),
+//     );
+//   }
+// }
 
 class TruckDescription extends StatefulWidget {
-  final ui.Image image;
-
-  TruckDescription({required this.image});
+  // final ui.Image image;
+  //
+  // TruckDescription({required this.image});
 
   @override
   _TruckDescriptionState createState() => _TruckDescriptionState();
@@ -59,10 +59,16 @@ class TruckDescription extends StatefulWidget {
 
 class _TruckDescriptionState extends State<TruckDescription> {
   List<MNVCL2> tirePositions = [];
+  late ui.Image image;
 
   @override
   void initState() {
     super.initState();
+    setImage();
+  }
+  void setImage()async{
+    final ByteData data = await rootBundle.load('images/tyre.jpg');
+    image = await decodeImageFromList(data.buffer.asUint8List());
     initializeTirePositions();
   }
 
@@ -251,138 +257,136 @@ class _TruckDescriptionState extends State<TruckDescription> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text('Truck Layout')),
-      body: Center(
-        child: CustomPaint(
-          painter: LinePainter(),
-          child: Stack(
-            children: List.generate(tirePositions.length, (index) {
-              return Positioned(
-                left: tirePositions[index].offset?.dx,
-                top: tirePositions[index].offset?.dy,
-                child: Column(
-                  children: [
-                    getHeadingText(text: index.toString()),
-                    InkWell(
-                      onTap: () {
-                        getBottomSheet(
-                            context: Get.context!,
-                            content: SizedBox(
-                              width: Get.width,
-                              child: SingleChildScrollView(
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      const SizedBox(
-                                        height: 25,
-                                      ),
+      body: CustomPaint(
+        painter: LinePainter(),
+        child: Stack(
+          children: List.generate(tirePositions.length, (index) {
+            return Positioned(
+              left: tirePositions[index].offset?.dx,
+              top: tirePositions[index].offset?.dy,
+              child: Column(
+                children: [
+                  getHeadingText(text: index.toString()),
+                  InkWell(
+                    onTap: () {
+                      getBottomSheet(
+                          context: Get.context!,
+                          content: SizedBox(
+                            width: Get.width,
+                            child: SingleChildScrollView(
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const SizedBox(
+                                      height: 25,
+                                    ),
+                                    getTextFieldWithoutLookup(
+                                        controller: tirePositions[index]
+                                            .tyreCodeController,
+                                        labelText: 'TyreCode',
+                                        height: 35),
+                                    getDisabledTextFieldWithoutLookup(
+                                        controller:
+                                            tirePositions[index].xAxlesController,
+                                        labelText: 'Axles',
+                                        height: 35),
+                                    getDisabledTextFieldWithoutLookup(
+                                        controller:
+                                            tirePositions[index].yTyresController,
+                                        labelText: 'Tyre',
+                                        height: 35),
+                                    getDisabledTextFieldWithoutLookup(
+                                        controller: tirePositions[index]
+                                            .zPositionController,
+                                        labelText: 'Position',
+                                        height: 35),
+                                    if (tirePositions[index]
+                                        .serialNoController
+                                        .text
+                                        .isEmpty)
                                       getTextFieldWithoutLookup(
                                           controller: tirePositions[index]
-                                              .tyreCodeController,
-                                          labelText: 'TyreCode',
-                                          height: 35),
+                                              .serialNoController,
+                                          labelText: 'Serial No',
+                                          height: 35)
+                                    else
                                       getDisabledTextFieldWithoutLookup(
-                                          controller:
-                                              tirePositions[index].xAxlesController,
-                                          labelText: 'Axles',
-                                          height: 35),
-                                      getDisabledTextFieldWithoutLookup(
-                                          controller:
-                                              tirePositions[index].yTyresController,
-                                          labelText: 'Tyre',
-                                          height: 35),
-                                      getDisabledTextFieldWithoutLookup(
                                           controller: tirePositions[index]
-                                              .zPositionController,
-                                          labelText: 'Position',
+                                              .serialNoController,
+                                          labelText: 'Serial No',
                                           height: 35),
-                                      if (tirePositions[index]
-                                          .serialNoController
-                                          .text
-                                          .isEmpty)
-                                        getTextFieldWithoutLookup(
-                                            controller: tirePositions[index]
-                                                .serialNoController,
-                                            labelText: 'Serial No',
-                                            height: 35)
-                                      else
-                                        getDisabledTextFieldWithoutLookup(
-                                            controller: tirePositions[index]
-                                                .serialNoController,
-                                            labelText: 'Serial No',
-                                            height: 35),
-                                      getTextFieldWithoutLookup(
-                                          controller:
-                                              tirePositions[index].treadController,
-                                          labelText: 'Tread',
-                                          height: 35),
-                                      getTextFieldWithoutLookup(
-                                          controller: tirePositions[index]
-                                              .pressureController,
-                                          labelText: 'Pressure',
-                                          height: 35),
-                                      getTextFieldWithoutLookup(
-                                          controller: tirePositions[index]
-                                              .remarksController,
-                                          labelText: 'Remarks',
-                                          height: 35),
-                                    ],
-                                  ),
+                                    getTextFieldWithoutLookup(
+                                        controller:
+                                            tirePositions[index].treadController,
+                                        labelText: 'Tread',
+                                        height: 35),
+                                    getTextFieldWithoutLookup(
+                                        controller: tirePositions[index]
+                                            .pressureController,
+                                        labelText: 'Pressure',
+                                        height: 35),
+                                    getTextFieldWithoutLookup(
+                                        controller: tirePositions[index]
+                                            .remarksController,
+                                        labelText: 'Remarks',
+                                        height: 35),
+                                  ],
                                 ),
                               ),
                             ),
-                            height: 2 * Get.height / 3);
-                      },
-                      child: Draggable<int>(
-                        data: index,
-                        feedback: Container(
-                          width: 50,
-                          height: 50,
-                          decoration: BoxDecoration(
-                              border: Border.all(
-                                  color: tirePositions[index]
-                                          .serialNoController
-                                          .text
-                                          .isEmpty
-                                      ? Colors.red
-                                      : Colors.blue,
-                                  width: 1.5)),
-                          child: CustomPaint(
-                            size: Size(50, 50),
-                            painter: TirePainter(image: widget.image),
                           ),
-                        ),
-                        childWhenDragging: Container(),
-                        child: DragTarget<int>(
-                          onAccept: (oldIndex) {
-                            swapTires(oldIndex, index);
-                          },
-                          builder: (context, candidateData, rejectedData) {
-                            return Container(
-                              decoration: BoxDecoration(
-                                  border: Border.all(
-                                      color: tirePositions[index]
-                                          .serialNoController
-                                          .text
-                                          .isEmpty
-                                          ? Colors.red
-                                          : Colors.blue,
-                                      width: 1.5)),
-                              child: CustomPaint(
-                                size: Size(50, 50),
-                                painter: TirePainter(image: widget.image),
-                              ),
-                            );
-                          },
+                          height: 2 * Get.height / 3);
+                    },
+                    child: Draggable<int>(
+                      data: index,
+                      feedback: Container(
+                        width: 50,
+                        height: 50,
+                        decoration: BoxDecoration(
+                            border: Border.all(
+                                color: tirePositions[index]
+                                        .serialNoController
+                                        .text
+                                        .isEmpty
+                                    ? Colors.red
+                                    : Colors.blue,
+                                width: 1.5)),
+                        child: CustomPaint(
+                          size: Size(50, 50),
+                          painter: TirePainter(image: image),
                         ),
                       ),
+                      childWhenDragging: Container(),
+                      child: DragTarget<int>(
+                        onAccept: (oldIndex) {
+                          swapTires(oldIndex, index);
+                        },
+                        builder: (context, candidateData, rejectedData) {
+                          return Container(
+                            decoration: BoxDecoration(
+                                border: Border.all(
+                                    color: tirePositions[index]
+                                        .serialNoController
+                                        .text
+                                        .isEmpty
+                                        ? Colors.red
+                                        : Colors.blue,
+                                    width: 1.5)),
+                            child: CustomPaint(
+                              size: Size(50, 50),
+                              painter: TirePainter(image: image),
+                            ),
+                          );
+                        },
+                      ),
                     ),
-                  ],
-                ),
-              );
-            }),
-          ),
+                  ),
+                ],
+              ),
+            );
+          }),
         ),
       ),
     );

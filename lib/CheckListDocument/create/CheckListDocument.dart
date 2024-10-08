@@ -7,6 +7,7 @@ import 'package:maintenance/CheckListDocument/create/Attachments.dart';
 import 'package:maintenance/CheckListDocument/create/CheckListDetails/CheckListDetails.dart';
 import 'package:maintenance/CheckListDocument/create/GeneralData.dart';
 import 'package:maintenance/CheckListDocument/create/SearchCheckListDoc.dart';
+import 'package:maintenance/CheckListDocument/create/TyreMaintenance.dart';
 import 'package:maintenance/Component/BackPressedWarning.dart';
 import 'package:maintenance/Component/CustomColor.dart';
 import 'package:maintenance/Component/CustomFont.dart';
@@ -228,7 +229,7 @@ class _CheckListDocumentState extends State<CheckListDocument> {
                   GeneralData(),
                   CheckListDetails(),
                   Attachments(),
-                  if (CheckListDocument.numOfTabs.value == 4) Container()
+                  if (CheckListDocument.numOfTabs.value == 4) TyreMaintenance()
                 ],
               ),
               floatingActionButton: FloatingActionButton(
