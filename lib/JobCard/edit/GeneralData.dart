@@ -202,6 +202,12 @@ class _GeneralDataState extends State<GeneralData> {
     'WIP',
     'Update'
   ];
+  calculateDifference() {
+    double currentReading = double.tryParse(_currentReading.text) ?? 0.0;
+    double lastReading = double.tryParse(_lastReading.text) ?? 0.0;
+    GeneralData.difference =
+        _difference.text = (currentReading - lastReading).toStringAsFixed(2);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -262,6 +268,8 @@ class _GeneralDataState extends State<GeneralData> {
                                     _equipmentCode.text = ovcl.Code ?? '';
                                 GeneralData.equipmentName =
                                     _equipmentName.text = ovcl.Name ?? '';
+                                GeneralData.lastReading = _lastReading.text = ovcl.OdometerReading?.toStringAsFixed(2) ?? '';
+                                GeneralData.lastReadingDate = _lastReadingDate.text = getFormattedDate(ovcl.UpdateDate);
                               });
                             },
                           ));
@@ -437,6 +445,7 @@ class _GeneralDataState extends State<GeneralData> {
                 labelText: 'Current Reading',
                 onChanged: (val) {
                   GeneralData.currentReading = val;
+                  calculateDifference();
                 },
               ),
               getDisabledTextField(
