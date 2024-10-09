@@ -27,6 +27,20 @@ double roundToTwoDecimal(double? value) {
     return (value * 100).roundToDouble() / 100;
   }
 }
+double roundToFourDecimal(double? value) {
+  if (value == null) {
+    return 0.0;
+  } else {
+    return (value * 10000).roundToDouble() / 10000;
+  }
+}
+double roundToZeroDecimal(double? value) {
+  if (value == null) {
+    return 0.0;
+  } else {
+    return (value).roundToDouble();
+  }
+}
 
 double getNumberWithoutComma(String formattedValue) {
   num numericValue = NumberFormat.decimalPattern().parse(formattedValue);

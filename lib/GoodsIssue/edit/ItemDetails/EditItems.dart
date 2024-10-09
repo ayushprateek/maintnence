@@ -103,6 +103,38 @@ class _EditCheckListState extends State<EditItems> {
   void initState() {
     super.initState();
   }
+  void calculate() {
+    try {
+      double qty = roundToFourDecimal(double.tryParse(_consumptionQty.text));
+      double price = roundToFourDecimal(double.tryParse(_price.text.toString()));
+      double taxRate = roundToFourDecimal(double.tryParse(_taxRate.text));
+      double discount = roundToFourDecimal(double.tryParse(_lineDiscount.text));
+      double msp =
+      roundToFourDecimal(double.tryParse(EditItems.mtv.toString()));
+      double total_tax;
+      if (CompanyDetails.ocinModel?.IsMtv == true) {
+        if (price > msp) {
+          total_tax = ((price * qty) - discount) * taxRate / 100;
+        } else {
+          total_tax = ((msp * qty) - discount) * taxRate / 100;
+        }
+      } else {
+        total_tax = ((price * qty) - discount) * taxRate / 100;
+      }
+      double lineTotal = total_tax;
+      lineTotal += (price * qty - discount);
+      lineTotal.floorToDouble();
+      setState(() {
+        _lineTotal.text = lineTotal.toStringAsFixed(2);
+        EditItems.lineTotal = lineTotal.toStringAsFixed(2);
+      });
+    } catch (e) {
+      writeToLogFile(
+          text: e.toString(),
+          fileName: StackTrace.current.toString(),
+          lineNo: 141);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -208,6 +240,7 @@ class _EditCheckListState extends State<EditItems> {
                         labelText: 'Consumption Qty',
                         onChanged: (val) {
                           EditItems.consumptionQty = val;
+                          calculate();
                         },
                         keyboardType: getDecimalKeyboardType(),
                         inputFormatters: [getDecimalRegEx()],
@@ -287,6 +320,7 @@ class _EditCheckListState extends State<EditItems> {
                         labelText: 'Price',
                         onChanged: (val) {
                           EditItems.price = val;
+                          calculate();
                         },
                         keyboardType: getDecimalKeyboardType(),
                         inputFormatters: [getDecimalRegEx()],
@@ -296,6 +330,7 @@ class _EditCheckListState extends State<EditItems> {
                         labelText: 'MTV',
                         onChanged: (val) {
                           EditItems.mtv = val;
+                          calculate();
                         },
                       ),
                       getDisabledTextField(
@@ -310,6 +345,7 @@ class _EditCheckListState extends State<EditItems> {
                                             _taxCode.text = oudp.TaxCode;
                                         EditItems.taxRate = _taxRate.text =
                                             oudp.Rate.toStringAsFixed(2);
+
                                       });
                                     }));
                           }),
@@ -318,6 +354,7 @@ class _EditCheckListState extends State<EditItems> {
                         labelText: 'Tax Rate',
                         onChanged: (val) {
                           EditItems.taxRate = val;
+                          calculate();
                         },
                       ),
                       getTextField(
@@ -325,6 +362,7 @@ class _EditCheckListState extends State<EditItems> {
                         labelText: 'Line Discount',
                         onChanged: (val) {
                           EditItems.lineDiscount = val;
+                          calculate();
                         },
                         keyboardType: getDecimalKeyboardType(),
                         inputFormatters: [getDecimalRegEx()],
