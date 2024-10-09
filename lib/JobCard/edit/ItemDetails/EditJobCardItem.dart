@@ -224,7 +224,33 @@ class _EditJobCardItemState extends State<EditJobCardItem> {
                                   ItemDetails.items[i].ItemCode) {
                                 ItemDetails.items[i].UOM =
                                     EditJobCardItem.uomCode;
-                                //todo: updating
+                                MNJCD1 mncld1 = MNJCD1(
+                                    ID: int.tryParse(EditJobCardItem.id ?? ''),
+                                    TransId: EditJobCardItem.transId,
+                                    RowId: ItemDetails.items[i].RowId,
+                                    ItemCode:
+                                    EditJobCardItem.itemCode.toString() ?? '',
+                                    ItemName:
+                                    EditJobCardItem.itemName.toString() ?? '',
+                                    UOM: EditJobCardItem.uomCode.toString() ?? '',
+                                    IsFromStock: EditJobCardItem.fromStock,
+                                    EquipmentCode: EditJobCardItem.equipmentCode,
+                                    Quantity: double.tryParse(
+                                        EditJobCardItem.quantity.toString()) ??
+                                        0.0,
+                                    SupplierCode:
+                                    EditJobCardItem.supplierCode.toString() ??
+                                        '',
+                                    SupplierName:
+                                    EditJobCardItem.supplierName.toString() ??
+                                        '',
+                                    IsConsumption: EditJobCardItem.consumption,
+                                    IsRequest: EditJobCardItem.request,
+                                    insertedIntoDatabase: ItemDetails.items[i].insertedIntoDatabase,
+                                  hasCreated: ItemDetails.items[i].hasCreated,
+                                  hasUpdated: ItemDetails.items[i].hasUpdated
+                                );
+                                ItemDetails.items[i]=mncld1;
                               }
 
                             Get.offAll(() => EditJobCard(1));

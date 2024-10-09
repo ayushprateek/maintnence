@@ -282,43 +282,41 @@ class _EditServiceState extends State<EditService> {
                                 i++)
                               if (EditService.serviceCode ==
                                   ServiceDetails.items[i].ItemCode) {
-                                ServiceDetails.items[i].EquipmentCode =
-                                    EditService.equipmentCode;
-                                ServiceDetails.items[i].ItemCode =
-                                    EditService.itemCode;
-                                ServiceDetails.items[i].ItemName =
-                                    EditService.itemCode;
-                                ServiceDetails.items[i].ServiceCode =
-                                    EditService.serviceCode;
-                                ServiceDetails.items[i].ServiceName =
-                                    EditService.serviceName;
-                                ServiceDetails.items[i].SupplierCode =
-                                    EditService.supplierCode;
-                                ServiceDetails.items[i].SupplierName =
-                                    EditService.supplierName;
-                                ServiceDetails.items[i].InfoPrice =
-                                    double.tryParse(
-                                        EditService.infoPrice?.toString() ??
-                                            "0");
-                                ServiceDetails.items[i].Quantity =
-                                    double.tryParse(
-                                        EditService.quantity?.toString() ??
-                                            "0");
-                                ServiceDetails.items[i].IsSendableItem =
-                                    EditService.isSendable;
-                                ServiceDetails.items[i].Remarks =
-                                    EditService.remarks;
-                                ServiceDetails.items[i].UOM = EditService.uom;
-                                ServiceDetails.items[i].IsServiceConfirmation =
-                                    EditService.isServiceConfirmation;
-                                ServiceDetails.items[i].IsSendToSupplier =
-                                    EditService.isSendToSupplier;
-                                ServiceDetails.items[i].IsReceiveFromSupplier =
-                                    EditService.isReceiveFromSupplier;
-                                ServiceDetails.items[i].IsPurchaseRequest =
-                                    EditService.isPurchaseRequest;
-                                ServiceDetails.items[i].IsPurchaseOrder =
-                                    EditService.isPurchaseOrder;
+                                MNJCD2 mncld1 = MNJCD2(
+                                    ID: ServiceDetails.items[i].ID,
+                                    IsServiceConfirmation:
+                                    EditService.isServiceConfirmation,
+                                    IsSendToSupplier: EditService.isSendToSupplier,
+                                    IsReceiveFromSupplier:
+                                    EditService.isReceiveFromSupplier,
+                                    IsPurchaseRequest:
+                                    EditService.isPurchaseRequest,
+                                    IsPurchaseOrder: EditService.isPurchaseOrder,
+                                    TransId: EditService.transId,
+                                    RowId: ServiceDetails.items[i].RowId,
+                                    EquipmentCode: EditService.equipmentCode,
+                                    ItemCode: EditService.itemCode,
+                                    ItemName: EditService.itemName,
+                                    Remarks: EditService.remarks,
+                                    UOM: EditService.uom,
+                                    Quantity: double.tryParse(
+                                        EditService.quantity ?? '0'),
+                                    ServiceCode:
+                                    EditService.serviceCode.toString() ?? '',
+                                    ServiceName:
+                                    EditService.serviceName.toString() ?? '',
+                                    InfoPrice: double.tryParse(
+                                        EditService.infoPrice.toString()) ??
+                                        0.0,
+                                    SupplierCode:
+                                    EditService.supplierCode.toString() ?? '',
+                                    SupplierName:
+                                    EditService.supplierName.toString() ?? '',
+                                    insertedIntoDatabase: ServiceDetails.items[i].insertedIntoDatabase,
+                                  hasCreated: ServiceDetails.items[i].hasCreated,
+                                  hasUpdated: ServiceDetails.items[i].hasUpdated
+                                );
+                                ServiceDetails.items[i]=mncld1;
                               }
 
                             Get.offAll(() => EditJobCard(2));

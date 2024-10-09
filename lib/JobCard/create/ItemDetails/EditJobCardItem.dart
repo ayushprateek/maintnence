@@ -256,7 +256,7 @@ class _EditJobCardItemState extends State<EditJobCardItem> {
                                             '',
                                     IsConsumption: EditJobCardItem.consumption,
                                     IsRequest: EditJobCardItem.request,
-                                    insertedIntoDatabase: false);
+                                    insertedIntoDatabase: false,);
                                 ItemDetails.items[i] = mncld1;
                               }
 

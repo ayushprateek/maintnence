@@ -446,7 +446,9 @@ class _EditCheckListState extends State<EditItems> {
                                                 EditItems.lineTotal ?? ''),
                                             LineStatus: 'Open',
                                             CreateDate: DateTime.now(),
-                                            insertedIntoDatabase: false,
+                                            insertedIntoDatabase: ItemDetails.items[i].insertedIntoDatabase,
+                                            hasCreated: ItemDetails.items[i].hasCreated,
+                                            hasUpdated: ItemDetails.items[i].hasUpdated
                                           );
                                           ItemDetails.items[i] = mncld1;
                                         }

@@ -283,7 +283,39 @@ class _EditCheckListState extends State<EditCheckList> {
                                   CheckListDetails.items[i].ItemCode) {
                                 CheckListDetails.items[i].UOM =
                                     EditCheckList.uomCode;
-                                //todo: updating
+                                MNCLD1 mncld1 = MNCLD1(
+                                  ID: CheckListDetails.items[i].ID,
+                                  TransId: EditCheckList.transId,
+                                  RowId: CheckListDetails.items[i].RowId,
+                                  ItemCode: EditCheckList.itemCode.toString() ?? '',
+                                  ItemName: EditCheckList.itemName.toString() ?? '',
+                                  UOM: EditCheckList.uomCode.toString() ?? '',
+                                  Description:
+                                  EditCheckList.description.toString() ?? '',
+                                  Remarks: EditCheckList.remark.toString() ?? '',
+                                  UserRemarks:
+                                  EditCheckList.userRemarks.toString() ?? '',
+                                  IsChecked: EditCheckList.isChecked,
+                                  IsFromStock: EditCheckList.fromStock,
+                                  ConsumptionQty: double.tryParse(EditCheckList
+                                      .consumptionQty
+                                      .toString()) ??
+                                      0.0,
+
+                                  SupplierCode:
+                                  EditCheckList.supplierCode.toString() ?? '',
+                                  SupplierName:
+                                  EditCheckList.supplierName.toString() ?? '',
+
+                                  IsConsumption: EditCheckList.consumption,
+                                  IsRequest: EditCheckList.request,
+                                  RequiredDate:
+                                  getDateFromString(_requiredDate.text),
+                                  insertedIntoDatabase: CheckListDetails.items[i].insertedIntoDatabase,
+                                  hasCreated: CheckListDetails.items[i].hasCreated,
+                                  hasUpdated: CheckListDetails.items[i].hasUpdated
+                                );
+                                CheckListDetails.items[i]=mncld1;
                               }
 
                             Get.offAll(() => EditCheckListDocument(1));
