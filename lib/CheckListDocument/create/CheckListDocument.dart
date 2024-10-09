@@ -154,10 +154,10 @@ class _CheckListDocumentState extends State<CheckListDocument> {
                               text:
                                   'Your data is not saved. Are you sure you want to create new form?',
                               onBackPressed: () {
-                                goToNewCheckListDocument();
+                                Get.to(()=>SearchCheckListDoc());
                               });
                         } else {
-                          goToNewCheckListDocument();
+                          Get.to(()=>SearchCheckListDoc());
                         }
                       },
                     ),
@@ -348,7 +348,7 @@ class _CheckListDocumentState extends State<CheckListDocument> {
             });
             await GenerateTransId.updateDonNum(
                 docName: 'MNCL', tableName: 'MNOCLD');
-            goToNewCheckListDocument();
+            Get.to(()=>SearchCheckListDoc());
           } catch (e) {
             writeToLogFile(
                 text: e.toString(),
