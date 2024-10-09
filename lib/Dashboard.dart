@@ -13,6 +13,7 @@ import 'package:maintenance/CheckListDocument/create/Attachments.dart'
     as checkListAttachment;
 import 'package:maintenance/Component/AppConfig.dart';
 import 'package:maintenance/Component/CheckInternet.dart';
+import 'package:maintenance/Component/Common.dart';
 import 'package:maintenance/Component/CompanyDetails.dart';
 import 'package:maintenance/Component/CustomColor.dart';
 import 'package:maintenance/Component/CustomDrawer.dart';
@@ -59,6 +60,12 @@ class _DashboardState extends State<Dashboard> {
   TextEditingController routeId = TextEditingController();
   PackageInfo? packageInfo;
   List<MaintenanceItemsQueryModel> dashboardData = [];
+
+  Map priorityMap={
+    "Due":0XFFDBEAFE,
+    "HighPriority":0XFFFEE2E2,
+    "MediumPriority":0XFFFFEDD5,
+  };
 
   Future getLocation() async {
     bool isLoading = true;
@@ -108,7 +115,9 @@ class _DashboardState extends State<Dashboard> {
     String query = '''
     SELECT 
     OVCLs.code AS EquipmentCode, 
+    OVCLs.UpdateDate AS LastServiceDate, 
     MNVCL1.CheckListCode,
+    MNOCLT.CheckType,
     MNVCL1.CheckListName,  
     MNOCLD.PostingDate AS "LastPostingDate",
     MNOCLD.CheckListStatus,
@@ -478,7 +487,7 @@ WHERE
                         children: [
                           Container(
                             decoration: BoxDecoration(
-                              color: Colors.white,
+                              color: Color(priorityMap[data.Priority]??0XFFFFFFFF),
                               shape: BoxShape.rectangle,
                               borderRadius: BorderRadius.circular(16.0),
                               boxShadow: const [
@@ -494,166 +503,197 @@ WHERE
                             width: MediaQuery.of(context).size.width,
                             child: Padding(
                               padding: const EdgeInsets.all(8.0),
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
+                              child: Column(
                                 children: [
-                                  Expanded(
-                                    flex: 8,
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
+                                  Row(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Expanded(
+                                        flex: 8,
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          children: [
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  left: 8.0, right: 8.0, top: 4.0),
+                                              child: Align(
+                                                alignment: Alignment.topLeft,
+                                                child: Text.rich(
+                                                  TextSpan(
+                                                    children: [
+                                                      getPoppinsTextSpanHeading(
+                                                          text: 'Equipment'),
+                                                      getPoppinsTextSpanDetails(
+                                                          text:
+                                                              data.equipmentCode ??
+                                                                  ''),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  left: 8.0, right: 8.0, top: 4.0),
+                                              child: Align(
+                                                alignment: Alignment.topLeft,
+                                                child: Text.rich(
+                                                  TextSpan(
+                                                    children: [
+                                                      getPoppinsTextSpanHeading(
+                                                          text: 'Check List'),
+                                                      getPoppinsTextSpanDetails(
+                                                          text:
+                                                              data.checkListName ??
+                                                                  ""),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  left: 8.0, right: 8.0, top: 4.0),
+                                              child: Align(
+                                                alignment: Alignment.topLeft,
+                                                child: Text.rich(
+                                                  TextSpan(
+                                                    children: [
+                                                      getPoppinsTextSpanHeading(
+                                                          text: 'Type'),
+                                                      getPoppinsTextSpanDetails(
+                                                          text:
+                                                              data.checkType ?? ""),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  left: 8.0, right: 8.0, top: 4.0),
+                                              child: Align(
+                                                alignment: Alignment.topLeft,
+                                                child: Text.rich(
+                                                  TextSpan(
+                                                    children: [
+                                                      getPoppinsTextSpanHeading(
+                                                          text:
+                                                              'Last Posting Date'),
+                                                      getPoppinsTextSpanDetails(
+                                                          text: getFormattedDate(
+                                                              data.LastServiceDate)),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      Expanded(
+                                        flex: 8,
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          children: [
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  left: 8.0, right: 8.0, top: 4.0),
+                                              child: Align(
+                                                alignment: Alignment.topLeft,
+                                                child: Text.rich(
+                                                  TextSpan(
+                                                    children: [
+                                                      getPoppinsTextSpanHeading(
+                                                          text:
+                                                              'Check List Status'),
+                                                      getPoppinsTextSpanDetails(
+                                                          text:
+                                                              data.checkListStatus),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  left: 8.0, right: 8.0, top: 4.0),
+                                              child: Align(
+                                                alignment: Alignment.topLeft,
+                                                child: Text.rich(
+                                                  TextSpan(
+                                                    children: [
+                                                      getPoppinsTextSpanHeading(
+                                                          text: 'Work Center'),
+                                                      getPoppinsTextSpanDetails(
+                                                          text:
+                                                              data.workCenterName),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  left: 8.0, right: 8.0, top: 4.0),
+                                              child: Align(
+                                                alignment: Alignment.topLeft,
+                                                child: Text.rich(
+                                                  TextSpan(
+                                                    children: [
+                                                      getPoppinsTextSpanHeading(
+                                                          text: 'Technician'),
+                                                      getPoppinsTextSpanDetails(
+                                                          text:
+                                                              data.technicianName),
+                                                    ],
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  if(data.checkListStatus=='Open')...[
+                                    getDivider(),
+                                    Row(
                                       children: [
-                                        Padding(
-                                          padding: const EdgeInsets.only(
-                                              left: 8.0, right: 8.0, top: 4.0),
-                                          child: Align(
-                                            alignment: Alignment.topLeft,
-                                            child: Text.rich(
-                                              TextSpan(
-                                                children: [
-                                                  getPoppinsTextSpanHeading(
-                                                      text: 'Equipment'),
-                                                  getPoppinsTextSpanDetails(
-                                                      text:
-                                                          data.equipmentCode ??
-                                                              ''),
-                                                ],
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.only(
-                                              left: 8.0, right: 8.0, top: 4.0),
-                                          child: Align(
-                                            alignment: Alignment.topLeft,
-                                            child: Text.rich(
-                                              TextSpan(
-                                                children: [
-                                                  getPoppinsTextSpanHeading(
-                                                      text: 'Check List'),
-                                                  getPoppinsTextSpanDetails(
-                                                      text:
-                                                          data.checkListName ??
-                                                              ""),
-                                                ],
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.only(
-                                              left: 8.0, right: 8.0, top: 4.0),
-                                          child: Align(
-                                            alignment: Alignment.topLeft,
-                                            child: Text.rich(
-                                              TextSpan(
-                                                children: [
-                                                  getPoppinsTextSpanHeading(
-                                                      text: 'Type'),
-                                                  getPoppinsTextSpanDetails(
-                                                      text:
-                                                          data.checkType ?? ""),
-                                                ],
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.only(
-                                              left: 8.0, right: 8.0, top: 4.0),
-                                          child: Align(
-                                            alignment: Alignment.topLeft,
-                                            child: Text.rich(
-                                              TextSpan(
-                                                children: [
-                                                  getPoppinsTextSpanHeading(
-                                                      text:
-                                                          'Last Posting Date'),
-                                                  getPoppinsTextSpanDetails(
-                                                      text: getFormattedDate(
-                                                          data.lastPostingDate)),
-                                                ],
-                                              ),
-                                            ),
-                                          ),
-                                        ),
+
+                                        Expanded(
+                                            child: InkWell(
+                                              onTap: () {
+                                                // navigateToJobCardDocument(
+                                                //     TransId:
+                                                //     snapshot.data![index].TransId ??
+                                                //         '',
+                                                //     isView: false);
+                                              },
+                                              child: getPoppinsText(
+                                                  text: 'Edit',
+                                                  color: Colors.red,
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 16),
+                                            )),
                                       ],
                                     ),
-                                  ),
-                                  Expanded(
-                                    flex: 8,
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      children: [
-                                        Padding(
-                                          padding: const EdgeInsets.only(
-                                              left: 8.0, right: 8.0, top: 4.0),
-                                          child: Align(
-                                            alignment: Alignment.topLeft,
-                                            child: Text.rich(
-                                              TextSpan(
-                                                children: [
-                                                  getPoppinsTextSpanHeading(
-                                                      text:
-                                                          'Check List Status'),
-                                                  getPoppinsTextSpanDetails(
-                                                      text:
-                                                          data.checkListStatus),
-                                                ],
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.only(
-                                              left: 8.0, right: 8.0, top: 4.0),
-                                          child: Align(
-                                            alignment: Alignment.topLeft,
-                                            child: Text.rich(
-                                              TextSpan(
-                                                children: [
-                                                  getPoppinsTextSpanHeading(
-                                                      text: 'Work Center'),
-                                                  getPoppinsTextSpanDetails(
-                                                      text:
-                                                          data.workCenterName),
-                                                ],
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.only(
-                                              left: 8.0, right: 8.0, top: 4.0),
-                                          child: Align(
-                                            alignment: Alignment.topLeft,
-                                            child: Text.rich(
-                                              TextSpan(
-                                                children: [
-                                                  getPoppinsTextSpanHeading(
-                                                      text: 'Technician'),
-                                                  getPoppinsTextSpanDetails(
-                                                      text:
-                                                          data.technicianName),
-                                                ],
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
+                                  ],
+
+
                                 ],
                               ),
                             ),
                           ),
+                          if(data.checkListStatus!='Open')
                           Positioned(
                             top: -27,
                             right: -4,
                             child: InkWell(
                               onTap:(){
+
                                 setCheckListData(dashboardItem: data);
                               },
                               child: Card(

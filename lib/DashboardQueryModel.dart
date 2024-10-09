@@ -1,10 +1,12 @@
 class MaintenanceItemsQueryModel {
   String? transId;
   String? checkListStatus;
+  String? Priority;
   String? checkType;
   String? code;
   int? id;
   DateTime? validUntilDb;
+  DateTime? LastServiceDate;
   String? validUntil;
   String? cardCode;
   String? createdBy;
@@ -31,9 +33,11 @@ class MaintenanceItemsQueryModel {
     required this.transId,
     required this.code,
     required this.checkListStatus,
+    required this.Priority,
     required this.checkType,
     required this.id,
     this.validUntilDb,
+    this.LastServiceDate,
     required this.validUntil,
     required this.cardCode,
     required this.createdBy,
@@ -61,10 +65,12 @@ class MaintenanceItemsQueryModel {
     return MaintenanceItemsQueryModel(
       transId: json['TransId']?.toString() ?? '',
       code: json['Code']?.toString() ?? '',
+      Priority: json['Priority']?.toString() ?? '',
       checkListStatus: json['CheckListStatus']?.toString() ?? '',
       checkType: json['CheckType']?.toString() ?? '',
       id: int.tryParse(json['ID'].toString()),
       validUntilDb: DateTime.tryParse(json['ValidUntilDb'].toString()),
+      LastServiceDate: DateTime.tryParse(json['LastServiceDate'].toString()),
       validUntil: json['validUntil']?.toString() ?? '',
       cardCode: json['CardCode']?.toString() ?? '',
       createdBy: json['CreatedBy']?.toString() ?? '',
@@ -93,10 +99,12 @@ class MaintenanceItemsQueryModel {
     return {
       'transId': transId,
       'CheckListStatus': checkListStatus,
+      'Priority': Priority,
       'CheckType': checkType,
       'code': code,
       'id': id,
       'validUntilDb': validUntilDb?.toIso8601String(),
+      'LastServiceDate': LastServiceDate?.toIso8601String(),
       'validUntil': validUntil,
       'cardCode': cardCode,
       'createdBy': createdBy,
