@@ -194,6 +194,9 @@ class ClearJobCardDoc {
     jcdViewGenData.GeneralData.createDate = getFormattedDate(mnojcd.CreateDate);
     jcdViewGenData.GeneralData.updateDate = getFormattedDate(mnojcd.UpdateDate);
 
+
+    jcdViewGenData.GeneralData.subject = mnojcd.Subject;
+    jcdViewGenData.GeneralData.resolution = mnojcd.Resolution;
     jcdViewGenData.GeneralData.isConsumption = mnojcd.IsConsumption ?? false;
     jcdViewGenData.GeneralData.isRequest = mnojcd.IsRequest ?? false;
     jcdViewGenData.GeneralData.isSelected = true;
@@ -236,6 +239,8 @@ class ClearJobCardDoc {
         getFormattedDate(mnojcd.ValidUntill);
     jcdEditGenData.GeneralData.lastReadingDate =
         getFormattedDate(mnojcd.LastReadingDate);
+    jcdEditGenData.GeneralData.subject = mnojcd.Subject;
+    jcdEditGenData.GeneralData.resolution = mnojcd.Resolution;
     // jcdGenData.GeneralData.lastReading = mnojcd.LastReading??'';
     jcdEditGenData.GeneralData.assignedUserCode = mnojcd.AssignedUserCode ?? '';
     jcdEditGenData.GeneralData.assignedUserName = mnojcd.AssignedUserName ?? '';
