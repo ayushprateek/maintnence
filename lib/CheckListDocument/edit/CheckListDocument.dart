@@ -92,6 +92,19 @@ class _EditCheckListDocumentState extends State<EditCheckListDocument> {
     }
   }
 
+  bool checkPurchaseRequest() {
+    bool canCreate = true;
+    for (MNCLD1 mncld1 in CheckListDetails.items) {
+      if (mncld1.IsChecked && mncld1.IsRequest) {
+        if (mncld1.ConsumptionQty == 0.0) {
+          canCreate = false;
+          break;
+        }
+      }
+    }
+    return canCreate;
+  }
+
   navigateToPurchaseRequest() async {
     ClearPurchaseRequestDocument.clearGeneralData();
     ClearPurchaseRequestDocument.clearEditItems();
@@ -159,7 +172,7 @@ class _EditCheckListDocumentState extends State<EditCheckListDocument> {
     }
     if (createInternalItemDetails.ItemDetails.items.isEmpty) {
       getErrorSnackBar(
-          'Unable to Create Internal Request. Please ensure Item, Qty is valid and you have selected atleast one Item!');
+          'Unable to Create Internal Request. Please ensure Item, Qty is valid and you have selected at least one Item!');
       return;
     }
 
@@ -179,6 +192,19 @@ class _EditCheckListDocumentState extends State<EditCheckListDocument> {
     ));
 
     Get.to(() => InternalRequest(0));
+  }
+
+  bool checkInternalRequest() {
+    bool canCreate = true;
+    for (MNCLD1 mncld1 in CheckListDetails.items) {
+      if (mncld1.IsChecked && mncld1.IsFromStock && mncld1.IsRequest) {
+        if (mncld1.ConsumptionQty == 0.0) {
+          canCreate = false;
+          break;
+        }
+      }
+    }
+    return canCreate;
   }
 
   navigateToGoodsIssue() async {
@@ -229,6 +255,19 @@ class _EditCheckListDocumentState extends State<EditCheckListDocument> {
     Get.to(() => GoodsIssue(0));
   }
 
+  bool checkGoodsIssue() {
+    bool canCreate = true;
+    for (MNCLD1 mncld1 in CheckListDetails.items) {
+      if (mncld1.IsChecked && mncld1.IsConsumption) {
+        if (mncld1.ConsumptionQty == 0.0) {
+          canCreate = false;
+          break;
+        }
+      }
+    }
+    return canCreate;
+  }
+
   navigateToJobCard() async {
     ClearJobCardDoc.clearGeneralData();
     jcdCreateItemDetails.ItemDetails.items.clear();
@@ -261,6 +300,20 @@ class _EditCheckListDocumentState extends State<EditCheckListDocument> {
     jcdCreateGenData.GeneralData.typeList = ['Preventive'];
     Get.to(() => JobCard(0));
   }
+
+  // bool checkJobCard(){
+  //   bool canCreate=true;
+  //   for (MNCLD1 mncld1 in CheckListDetails.items) {
+  //     if (mncld1.IsChecked && mncld1.IsRequest) {
+  //       if(mncld1.ConsumptionQty==0.0)
+  //       {
+  //         canCreate=false;
+  //         break;
+  //       }
+  //     }
+  //   }
+  //   return canCreate;
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -328,21 +381,36 @@ class _EditCheckListDocumentState extends State<EditCheckListDocument> {
                     if (GeneralData.approvalStatus == 'Approved')
                       PopupMenuButton<int>(
                         onSelected: (item) {
-                          double currentReading = double.tryParse(
-                                  GeneralData.currentReading?.toString() ??
-                                      '0.0') ??
-                              0.0;
-                          if (currentReading == 0.0) {
-                            getErrorSnackBar(
-                                'Current Reading must be greater that or equal to 1');
-                            return;
-                          }
+                          // double currentReading = double.tryParse(
+                          //         GeneralData.currentReading?.toString() ??
+                          //             '0.0') ??
+                          //     0.0;
+                          // if (currentReading == 0.0) {
+                          //   getErrorSnackBar(
+                          //       'Current Reading must be greater that or equal to 1');
+                          //   return;
+                          // }
                           if (item == 1) {
-                            navigateToPurchaseRequest();
+                            if (checkPurchaseRequest()) {
+                              navigateToPurchaseRequest();
+                            } else {
+                              getErrorSnackBar(
+                                  'Unable to Create Purchase Request. Please ensure Item, Qty is valid and you have selected at least one Item!');
+                            }
                           } else if (item == 2) {
-                            navigateToInternalRequest();
+                            if (checkInternalRequest()) {
+                              navigateToInternalRequest();
+                            } else {
+                              getErrorSnackBar(
+                                  'Unable to Create Internal Request. Please ensure Item, Qty is valid and you have selected at least one Item!');
+                            }
                           } else if (item == 3) {
-                            navigateToGoodsIssue();
+                            if (checkGoodsIssue()) {
+                              navigateToGoodsIssue();
+                            } else {
+                              getErrorSnackBar(
+                                  'Unable to Create Goods Issue. Please ensure Item, Qty is valid and you have selected atleast one Item!');
+                            }
                           } else if (item == 4) {
                             navigateToJobCard();
                           }
