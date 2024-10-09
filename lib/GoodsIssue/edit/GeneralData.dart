@@ -199,8 +199,8 @@ class _GeneralDataState extends State<GeneralData> {
       TextEditingController(text: GeneralData.deptCode);
   final TextEditingController _deptName =
       TextEditingController(text: GeneralData.deptName);
-  final TextEditingController _contactPersonCode = TextEditingController();
-  final TextEditingController _contactPersonName = TextEditingController();
+  // final TextEditingController _contactPersonCode = TextEditingController();
+  // final TextEditingController _contactPersonName = TextEditingController();
   final TextEditingController _localDate = TextEditingController();
 
   List<String> typeList = ['Preventive', 'Breakdown'];
@@ -284,20 +284,20 @@ class _GeneralDataState extends State<GeneralData> {
                                 _requestedName.text = ocrdModel.Name ?? '';
                             GeneralData.mobileNo =
                                 _mobileNo.text = ocrdModel.MobileNo;
-                            if (crd1Model != null) {
-                              _contactPersonName.text =
-                                  "${crd1Model.FirstName} ${crd1Model.MiddleName} ${crd1Model.LastName}";
-                            }
+                            // if (crd1Model != null) {
+                            //   _contactPersonName.text =
+                            //       "${crd1Model.FirstName} ${crd1Model.MiddleName} ${crd1Model.LastName}";
+                            // }
                           });
                         }));
                   }),
-              getDisabledTextField(
-                  controller: _contactPersonName,
-                  labelText: 'Person Name',
-                  onChanged: (val) {
-                    //todo:
-                    // _contactPersonName.text = GeneralData. = val;
-                  }),
+              // getDisabledTextField(
+              //     controller: _contactPersonName,
+              //     labelText: 'Person Name',
+              //     onChanged: (val) {
+              //       //todo:
+              //       // _contactPersonName.text = GeneralData. = val;
+              //     }),
               getDisabledTextField(
                   controller: _mobileNo,
                   labelText: 'Mobile Number',

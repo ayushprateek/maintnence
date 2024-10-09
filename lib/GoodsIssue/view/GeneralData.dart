@@ -188,8 +188,8 @@ class _GeneralDataState extends State<GeneralData> {
       TextEditingController(text: GeneralData.deptCode);
   final TextEditingController _deptName =
       TextEditingController(text: GeneralData.deptName);
-  final TextEditingController _contactPersonCode = TextEditingController();
-  final TextEditingController _contactPersonName = TextEditingController();
+  // final TextEditingController _contactPersonCode = TextEditingController();
+  // final TextEditingController _contactPersonName = TextEditingController();
   final TextEditingController _localDate = TextEditingController();
 
   List<String> typeList = ['Preventive', 'Breakdown'];
@@ -236,13 +236,13 @@ class _GeneralDataState extends State<GeneralData> {
                   }),
               getDisabledTextField(
                   controller: _requestedName, labelText: 'Request*'),
-              getDisabledTextField(
-                  controller: _contactPersonName,
-                  labelText: 'Person Name',
-                  onChanged: (val) {
-                    //todo:
-                    // _contactPersonName.text = GeneralData. = val;
-                  }),
+              // getDisabledTextField(
+              //     controller: _contactPersonName,
+              //     labelText: 'Person Name',
+              //     onChanged: (val) {
+              //       //todo:
+              //       // _contactPersonName.text = GeneralData. = val;
+              //     }),
               getDisabledTextField(
                   controller: _mobileNo,
                   labelText: 'Mobile Number',
