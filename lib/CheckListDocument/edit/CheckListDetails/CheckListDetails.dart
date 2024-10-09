@@ -581,6 +581,9 @@ class _CheckListDetailsState extends State<CheckListDetails> {
                                             child: getTextFieldWithoutLookup(
                                                 controller: mncld1
                                                     .userRemarksController,
+                                                onChanged: (val){
+                                                  mncld1.UserRemarks=val;
+                                                },
                                                 height: 30,
                                                 labelText: '')),
                                       ],

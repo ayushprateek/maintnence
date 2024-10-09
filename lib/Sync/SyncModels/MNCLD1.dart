@@ -125,8 +125,8 @@ class MNCLD1 {
           ? json['has_updated']
           : json['has_updated'] == 1,
     );
-    mncld1.consumptionQtyController.text =
-        mncld1.ConsumptionQty?.toStringAsFixed(2) ?? '0.0';
+    mncld1.consumptionQtyController.text = mncld1.ConsumptionQty?.toStringAsFixed(2) ?? '0.0';
+    mncld1.userRemarksController.text = mncld1.UserRemarks??'';
     return mncld1;
   }
 

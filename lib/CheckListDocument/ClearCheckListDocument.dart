@@ -11,14 +11,15 @@ import 'package:maintenance/CheckListDocument/create/CheckListDocument.dart';
 import 'package:maintenance/CheckListDocument/create/GeneralData.dart'
     as createGeneralData;
 ///------------------------------ EDIT ------------------------------
-import 'package:maintenance/CheckListDocument/edit/CheckListDetails/CheckListDetails.dart'
-    as editCheckListDetails;
+import 'package:maintenance/CheckListDocument/edit/CheckListDetails/CheckListDetails.dart' as editCheckListDetails;
+import 'package:maintenance/CheckListDocument/edit/Attachments.dart' as editCheckListAttachment;
 import 'package:maintenance/CheckListDocument/edit/CheckListDocument.dart';
 import 'package:maintenance/CheckListDocument/edit/GeneralData.dart'
     as editGeneralData;
 ///------------------------------ VIEW ------------------------------
 import 'package:maintenance/CheckListDocument/view/CheckListDetails/CheckListDetails.dart'
     as viewCheckListDetails;
+import 'package:maintenance/CheckListDocument/view/Attachments.dart' as viewCheckListAttachment;
 import 'package:maintenance/CheckListDocument/view/CheckListDocument.dart';
 import 'package:maintenance/CheckListDocument/view/GeneralData.dart'
     as viewGeneralData;
@@ -27,6 +28,7 @@ import 'package:maintenance/Component/GetFormattedDate.dart';
 import 'package:maintenance/Component/GetLastDocNum.dart';
 import 'package:maintenance/Component/IsAvailableTransId.dart';
 import 'package:maintenance/Sync/SyncModels/MNCLD1.dart';
+import 'package:maintenance/Sync/SyncModels/MNCLD2.dart';
 import 'package:maintenance/Sync/SyncModels/MNOCLD.dart';
 import 'package:maintenance/main.dart';
 
@@ -499,8 +501,8 @@ navigateToCheckListDocument(
     if (list.isNotEmpty) {
       ClearViewCheckListDoc.setViewCheckListDocTextFields(mnocld: list[0]);
     }
-    viewCheckListDetails.CheckListDetails.items =
-        await retrieveMNCLD1ById(null, 'TransId = ?', [TransId]);
+    viewCheckListDetails.CheckListDetails.items = await retrieveMNCLD1ById(null, 'TransId = ?', [TransId]);
+    viewCheckListAttachment.Attachments.attachments=await retrieveMNCLD2ById(null, 'TransId = ?', [TransId]);
     Get.offAll(() => ViewCheckListDocument(0));
   } else {
     List<MNOCLD> list =
@@ -510,6 +512,7 @@ navigateToCheckListDocument(
     }
     editCheckListDetails.CheckListDetails.items =
         await retrieveMNCLD1ById(null, 'TransId = ?', [TransId]);
+    editCheckListAttachment.Attachments.attachments=await retrieveMNCLD2ById(null, 'TransId = ?', [TransId]);
     Get.offAll(() => EditCheckListDocument(0));
   }
 }
