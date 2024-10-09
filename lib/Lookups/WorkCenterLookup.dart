@@ -184,7 +184,7 @@ class _WorkCenterLookupState extends State<WorkCenterLookup> {
                                                     text: 'Code'),
                                                 getPoppinsTextSpanDetails(
                                                     text: snapshot
-                                                        .data![index].Code),
+                                                        .data![index].Code??''),
                                               ],
                                             ),
                                           ),
@@ -202,7 +202,7 @@ class _WorkCenterLookupState extends State<WorkCenterLookup> {
                                                     text: 'Name'),
                                                 getPoppinsTextSpanDetails(
                                                     text: snapshot
-                                                        .data![index].Code),
+                                                        .data![index].Name??''),
                                               ],
                                             ),
                                           ),
