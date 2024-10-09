@@ -3,11 +3,13 @@ import 'package:get/get.dart';
 import 'package:maintenance/Component/Common.dart';
 import 'package:maintenance/Component/CustomColor.dart';
 import 'package:maintenance/Component/CustomFont.dart';
+import 'package:maintenance/DatabaseInitialization.dart';
 import 'package:maintenance/GoodsIssue/edit/ItemDetails/AddItems.dart';
 import 'package:maintenance/GoodsIssue/edit/ItemDetails/EditItems.dart';
 import 'package:maintenance/Sync/SyncModels/IMGDI1.dart';
 import 'package:maintenance/Sync/SyncModels/OUOM.dart';
 import 'package:maintenance/Sync/SyncModels/OWHS.dart';
+import 'package:sqflite/sqlite_api.dart';
 
 class ItemDetails extends StatefulWidget {
   const ItemDetails({super.key});
@@ -82,12 +84,10 @@ class _ItemDetailsState extends State<ItemDetails> {
                             EditItems.id = item.ID?.toString();
                             EditItems.truckNo = item.TruckNo;
                             EditItems.toWhsCode = item.ToWhsCode;
-                            List<OWHS> wareHouseList =
-                                await retrieveOWHSById(
-                                    null, 'WhsCode = ?', [item.ToWhsCode]);
+                            List<OWHS> wareHouseList = await retrieveOWHSById(
+                                null, 'WhsCode = ?', [item.ToWhsCode]);
                             if (wareHouseList.isNotEmpty) {
-                              EditItems.toWhsName =
-                                  wareHouseList[0].WhsName;
+                              EditItems.toWhsName = wareHouseList[0].WhsName;
                             }
                             EditItems.driverCode = item.DriverCode;
                             EditItems.driverName = item.DriverName;
@@ -101,17 +101,15 @@ class _ItemDetailsState extends State<ItemDetails> {
                                 item.Quantity?.toStringAsFixed(2);
                             EditItems.tripTransId = item.TripTransId;
                             EditItems.uomCode = item.UOM;
-                            List<OUOMModel> uomList =
-                                await retrieveOUOMById(
-                                    null, 'UomCode = ?', [item.UOM]);
+                            List<OUOMModel> uomList = await retrieveOUOMById(
+                                null, 'UomCode = ?', [item.UOM]);
                             if (uomList.isNotEmpty) {
                               EditItems.uomName = uomList[0].UomName;
                             }
 
                             EditItems.deptCode = item.DeptCode;
                             EditItems.deptName = item.DeptName;
-                            EditItems.price =
-                                item.Price?.toStringAsFixed(2);
+                            EditItems.price = item.Price?.toStringAsFixed(2);
                             EditItems.mtv = item.MSP?.toStringAsFixed(2);
                             EditItems.taxCode = item.TaxCode;
                             EditItems.taxRate =
@@ -441,77 +439,95 @@ class _ItemDetailsState extends State<ItemDetails> {
                                     children: [
                                       Expanded(
                                           child: InkWell(
-                                            onTap: () async {
-                                              await showDialog(
-                                                barrierDismissible: false,
-                                                context: context,
-                                                builder: (BuildContext context) {
-                                                  return AlertDialog(
-                                                    content: Container(
-                                                      height: MediaQuery.of(context)
+                                        onTap: () async {
+                                          await showDialog(
+                                            barrierDismissible: false,
+                                            context: context,
+                                            builder: (BuildContext context) {
+                                              return AlertDialog(
+                                                content: Container(
+                                                  height: MediaQuery.of(context)
                                                           .size
                                                           .height /
-                                                          20,
-                                                      width: MediaQuery.of(context)
+                                                      20,
+                                                  width: MediaQuery.of(context)
                                                           .size
                                                           .width /
-                                                          1.5,
-                                                      child: Text(
-                                                        "Are you sure you want to delete this row?",
-                                                        style: TextStyle(
-                                                            color: Colors.black,
-                                                            fontWeight:
+                                                      1.5,
+                                                  child: Text(
+                                                    "Are you sure you want to delete this row?",
+                                                    style: TextStyle(
+                                                        color: Colors.black,
+                                                        fontWeight:
                                                             FontWeight.bold),
-                                                      ),
+                                                  ),
+                                                ),
+                                                actions: [
+                                                  MaterialButton(
+                                                    // OPTIONAL BUTTON
+                                                    shape:
+                                                        RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              40),
                                                     ),
-                                                    actions: [
-                                                      MaterialButton(
-                                                        // OPTIONAL BUTTON
-                                                        shape: RoundedRectangleBorder(
-                                                          borderRadius:
-                                                          BorderRadius.circular(40),
-                                                        ),
-                                                        color: barColor,
-                                                        child: Text(
-                                                          'No',
-                                                          style: TextStyle(
-                                                              color: Colors.white),
-                                                        ),
-                                                        onPressed: () {
-                                                          Navigator.pop(context);
-                                                        },
-                                                      ),
-                                                      MaterialButton(
-                                                        // OPTIONAL BUTTON
-                                                        shape: RoundedRectangleBorder(
-                                                          borderRadius:
-                                                          BorderRadius.circular(40),
-                                                        ),
-                                                        color: Colors.red,
-                                                        child: Text(
-                                                          'Yes',
-                                                          style: TextStyle(
-                                                              color: Colors.white),
-                                                        ),
-                                                        onPressed: () async {
-                                                          ItemDetails.items
-                                                              .removeAt(index);
-                                                          Navigator.pop(context);
-                                                        },
-                                                      ),
-                                                    ],
-                                                  );
-                                                },
-                                              ).then((value) {
-                                                setState(() {});
-                                              });
+                                                    color: barColor,
+                                                    child: Text(
+                                                      'No',
+                                                      style: TextStyle(
+                                                          color: Colors.white),
+                                                    ),
+                                                    onPressed: () {
+                                                      Navigator.pop(context);
+                                                    },
+                                                  ),
+                                                  MaterialButton(
+                                                    // OPTIONAL BUTTON
+                                                    shape:
+                                                        RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              40),
+                                                    ),
+                                                    color: Colors.red,
+                                                    child: Text(
+                                                      'Yes',
+                                                      style: TextStyle(
+                                                          color: Colors.white),
+                                                    ),
+                                                    onPressed: () async {
+                                                      Database db =
+                                                          await initializeDB(
+                                                              null);
+                                                      await db.delete('IMGDI1',
+                                                          where:
+                                                              'TransId = ? AND RowId = ?',
+                                                          whereArgs: [
+                                                            ItemDetails
+                                                                .items[index]
+                                                                .TransId,
+                                                            ItemDetails
+                                                                .items[index]
+                                                                .RowId
+                                                          ]);
+                                                      ItemDetails.items
+                                                          .removeAt(index);
+                                                      Navigator.pop(context);
+                                                    },
+                                                  ),
+                                                ],
+                                              );
                                             },
-                                            child: getPoppinsText(
-                                                text: 'Delete',
-                                                color: Colors.red,
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 16),
-                                          )),
+                                          ).then((value) {
+                                            setState(() {});
+                                          });
+                                        },
+                                        child: getPoppinsText(
+                                            text: 'Delete',
+                                            color: Colors.red,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 16),
+                                      )),
                                     ],
                                   ),
                                 ],
