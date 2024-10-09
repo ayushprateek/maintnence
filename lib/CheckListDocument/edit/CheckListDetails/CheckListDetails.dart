@@ -559,6 +559,10 @@ class _CheckListDetailsState extends State<CheckListDetails> {
                                                 controller: mncld1
                                                     .consumptionQtyController,
                                                 height: 30,
+                                                onChanged: (val){
+                                                  mncld1.ConsumptionQty=double.tryParse(mncld1
+                                                      .consumptionQtyController.text)??mncld1.ConsumptionQty;
+                                                },
                                                 labelText: '')),
                                       ],
                                     ),
