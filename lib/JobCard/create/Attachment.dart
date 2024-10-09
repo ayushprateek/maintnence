@@ -232,13 +232,13 @@ class _AttachmentsState extends State<Attachments> {
                                   Attachments.attachment != "") {
                                 setState(() {
                                   Attachments.attachments.add(MNJCD3(
-                                    ID: 0,
-                                    TransId: GeneralData.transId ?? "",
-                                    RowId: Attachments.attachments.length,
-                                    Attachment: Attachments.imageFile?.path,
-                                    Remarks: Remarks.text,
-                                    CreateDate: DateTime.now(),
-                                  ));
+                                      ID: 0,
+                                      TransId: GeneralData.transId ?? "",
+                                      RowId: Attachments.attachments.length,
+                                      Attachment: Attachments.imageFile?.path,
+                                      Remarks: Remarks.text,
+                                      CreateDate: DateTime.now(),
+                                      insertedIntoDatabase: false));
                                   //Attachment.documentPaths.add(Attachments.attachment ?? "");
                                   // Attachment.documentPaths.add(
                                   //     Attachments.attachment ?? "");
@@ -323,8 +323,7 @@ class _AttachmentsState extends State<Attachments> {
                               Text.rich(
                                 TextSpan(
                                   children: [
-                                    getPoppinsTextSpanHeading(
-                                        text: 'Row ID'),
+                                    getPoppinsTextSpanHeading(text: 'Row ID'),
                                     getPoppinsTextSpanDetails(
                                         text: Attachments
                                             .attachments[index].RowId
@@ -335,8 +334,7 @@ class _AttachmentsState extends State<Attachments> {
                               Text.rich(
                                 TextSpan(
                                   children: [
-                                    getPoppinsTextSpanHeading(
-                                        text: 'Remarks'),
+                                    getPoppinsTextSpanHeading(text: 'Remarks'),
                                     getPoppinsTextSpanDetails(
                                         text: Attachments
                                             .attachments[index].Remarks
@@ -362,8 +360,7 @@ class _AttachmentsState extends State<Attachments> {
                                         textAlign: TextAlign.start,
                                         color: Colors.blue,
                                         fontWeight: FontWeight.w500,
-                                        decoration:
-                                            TextDecoration.underline),
+                                        decoration: TextDecoration.underline),
                                   )),
                                 ],
                               ),
@@ -372,94 +369,95 @@ class _AttachmentsState extends State<Attachments> {
                                 children: [
                                   Expanded(
                                       child: InkWell(
-                                        onTap: () async {
-                                          await showDialog(
-                                            barrierDismissible: false,
-                                            context: context,
-                                            builder: (BuildContext context) {
-                                              return AlertDialog(
-                                                content: Container(
-                                                  height: MediaQuery.of(context)
+                                    onTap: () async {
+                                      await showDialog(
+                                        barrierDismissible: false,
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return AlertDialog(
+                                            content: Container(
+                                              height: MediaQuery.of(context)
                                                       .size
                                                       .height /
-                                                      20,
-                                                  width: MediaQuery.of(context)
+                                                  20,
+                                              width: MediaQuery.of(context)
                                                       .size
                                                       .width /
-                                                      1.5,
-                                                  child: Text(
-                                                    "Are you sure you want to delete this row?",
-                                                    style: TextStyle(
-                                                        color: Colors.black,
-                                                        fontWeight: FontWeight.bold),
-                                                  ),
+                                                  1.5,
+                                              child: Text(
+                                                "Are you sure you want to delete this row?",
+                                                style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              ),
+                                            ),
+                                            actions: [
+                                              MaterialButton(
+                                                // OPTIONAL BUTTON
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(40),
                                                 ),
-                                                actions: [
-                                                  MaterialButton(
-                                                    // OPTIONAL BUTTON
-                                                    shape: RoundedRectangleBorder(
-                                                      borderRadius:
+                                                color: barColor,
+                                                child: Text(
+                                                  'No',
+                                                  style: TextStyle(
+                                                      color: Colors.white),
+                                                ),
+                                                onPressed: () {
+                                                  Navigator.pop(context);
+                                                },
+                                              ),
+                                              MaterialButton(
+                                                // OPTIONAL BUTTON
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius:
                                                       BorderRadius.circular(40),
-                                                    ),
-                                                    color: barColor,
-                                                    child: Text(
-                                                      'No',
-                                                      style: TextStyle(
-                                                          color: Colors.white),
-                                                    ),
-                                                    onPressed: () {
-                                                      Navigator.pop(context);
-                                                    },
-                                                  ),
-                                                  MaterialButton(
-                                                    // OPTIONAL BUTTON
-                                                    shape: RoundedRectangleBorder(
-                                                      borderRadius:
-                                                      BorderRadius.circular(40),
-                                                    ),
-                                                    color: Colors.red,
-                                                    child: Text(
-                                                      'Yes',
-                                                      style: TextStyle(
-                                                          color: Colors.white),
-                                                    ),
-                                                    onPressed: () {
-                                                      setState(() {
-                                                        Attachments.attachments
-                                                            .removeAt(index);
-                                                      });
-                                                      Get.back();
-                                                      //todo:
-                                                      // String attachment = Attachments
-                                                      //         .attachments[index]
-                                                      //         .Attachment ??
-                                                      //     '';
-                                                      // if (attachment != '') {
-                                                      //   if (attachment
-                                                      //       .contains(appPkg)) {
-                                                      //     //local image
-                                                      //     setState(() {
-                                                      //       Attachments.attachments
-                                                      //           .removeAt(index);
-                                                      //     });
-                                                      //   } else {
-                                                      //     //server image
-                                                      //   }
-                                                      // }
-                                                      // Navigator.pop(context);
-                                                    },
-                                                  ),
-                                                ],
-                                              );
-                                            },
+                                                ),
+                                                color: Colors.red,
+                                                child: Text(
+                                                  'Yes',
+                                                  style: TextStyle(
+                                                      color: Colors.white),
+                                                ),
+                                                onPressed: () {
+                                                  setState(() {
+                                                    Attachments.attachments
+                                                        .removeAt(index);
+                                                  });
+                                                  Get.back();
+                                                  //todo:
+                                                  // String attachment = Attachments
+                                                  //         .attachments[index]
+                                                  //         .Attachment ??
+                                                  //     '';
+                                                  // if (attachment != '') {
+                                                  //   if (attachment
+                                                  //       .contains(appPkg)) {
+                                                  //     //local image
+                                                  //     setState(() {
+                                                  //       Attachments.attachments
+                                                  //           .removeAt(index);
+                                                  //     });
+                                                  //   } else {
+                                                  //     //server image
+                                                  //   }
+                                                  // }
+                                                  // Navigator.pop(context);
+                                                },
+                                              ),
+                                            ],
                                           );
                                         },
-                                        child: getPoppinsText(
-                                            text: 'Delete',
-                                            color: Colors.red,
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 16),
-                                      )),
+                                      );
+                                    },
+                                    child: getPoppinsText(
+                                        text: 'Delete',
+                                        color: Colors.red,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 16),
+                                  )),
                                 ],
                               ),
                             ],

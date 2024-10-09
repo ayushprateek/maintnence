@@ -34,7 +34,7 @@ class MNJCD3 {
     this.UpdateDate,
     this.hasCreated = false,
     this.hasUpdated = false,
-    this.insertedIntoDatabase = true,
+    this.insertedIntoDatabase = false,
   });
 
   factory MNJCD3.fromJson(Map<String, dynamic> json) => MNJCD3(

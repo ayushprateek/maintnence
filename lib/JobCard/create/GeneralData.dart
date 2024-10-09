@@ -127,6 +127,7 @@ class GeneralData extends StatefulWidget {
       LastReadingDate: getDateFromString(lastReadingDate ?? ""),
 
       ApprovalStatus: approvalStatus ?? "Pending",
+      JobCardStatus: checkListStatus,
       DocStatus: docStatus,
     );
   }

@@ -536,7 +536,7 @@ class _EditJobCardState extends State<EditJobCard> {
 
               for (int i = 0; i < WhyWhyAnalysis.list.length; i++) {
                 MNJCD5 qut1model = WhyWhyAnalysis.list[i];
-                qut1model.ID = i;
+                qut1model.Code = generalData.TransId;
                 qut1model.RowId = qut1model.RowId;
 
                 qut1model.CreateDate = DateTime.now();

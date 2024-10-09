@@ -404,6 +404,7 @@ class _JobCardState extends State<JobCard> {
                 MNJCD5 qut1model = WhyWhyAnalysis.list[i];
                 qut1model.ID = i;
                 qut1model.RowId = i;
+                qut1model.Code = generalData.TransId;
                 qut1model.hasCreated = true;
                 qut1model.CreateDate = DateTime.now();
 
