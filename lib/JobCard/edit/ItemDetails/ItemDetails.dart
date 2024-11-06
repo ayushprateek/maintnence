@@ -40,7 +40,7 @@ class ItemDetails extends StatefulWidget {
     createInternalItemDetails.ItemDetails.items.clear();
     int i=0;
     for (MNJCD1 mnjcd1 in ItemDetails.items) {
-      if (mnjcd1.IsFromStock && mnjcd1.IsRequest) {
+      if (mnjcd1.IsFromStock) {
         createInternalItemDetails.ItemDetails.items.add(PRITR1(
           insertedIntoDatabase: false,
           ID: 0,

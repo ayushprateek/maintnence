@@ -96,6 +96,7 @@ class GeneralData extends StatefulWidget {
       TransId: transId,
       Subject: subject,
       Resolution: resolution,
+      LastReading: double.tryParse(lastReading?.toString()??''),
 
       //todo:
       // DocNum: docNum ?? '',
