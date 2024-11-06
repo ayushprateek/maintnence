@@ -9,8 +9,6 @@ import 'package:maintenance/CheckListDocument/create/CheckListDetails/CheckListD
 import 'package:maintenance/CheckListDocument/create/CheckListDocument.dart';
 import 'package:maintenance/CheckListDocument/create/GeneralData.dart'
     as checkListGenData;
-import 'package:maintenance/CheckListDocument/create/Attachments.dart'
-    as checkListAttachment;
 import 'package:maintenance/Component/AppConfig.dart';
 import 'package:maintenance/Component/CheckInternet.dart';
 import 'package:maintenance/Component/Common.dart';
@@ -21,6 +19,7 @@ import 'package:maintenance/Component/CustomFont.dart';
 import 'package:maintenance/Component/GenerateTransId.dart';
 import 'package:maintenance/Component/GetFormattedDate.dart';
 import 'package:maintenance/Component/GetLiveLocation.dart';
+import 'package:maintenance/Component/GetTextField.dart';
 import 'package:maintenance/Component/IsValidAppVersion.dart';
 import 'package:maintenance/Component/NotSyncDocument.dart';
 import 'package:maintenance/Component/NotificationIcon.dart';
@@ -31,7 +30,6 @@ import 'package:maintenance/DatabaseInitialization.dart';
 import 'package:maintenance/LoginPage.dart';
 import 'package:maintenance/Sync/DataSync.dart';
 import 'package:maintenance/Sync/SyncModels/MNCLD1.dart';
-import 'package:maintenance/Sync/SyncModels/MNCLD2.dart';
 import 'package:maintenance/Sync/SyncModels/MNCLM1.dart';
 import 'package:maintenance/Sync/SyncModels/MNOCLT.dart';
 import 'package:maintenance/Sync/SyncModels/MNOWCM.dart';
@@ -60,11 +58,12 @@ class _DashboardState extends State<Dashboard> {
   TextEditingController routeId = TextEditingController();
   PackageInfo? packageInfo;
   List<MaintenanceItemsQueryModel> dashboardData = [];
+  final TextEditingController _query = TextEditingController();
 
-  Map priorityMap={
-    "Due":0XFFDBEAFE,
-    "HighPriority":0XFFFEE2E2,
-    "MediumPriority":0XFFFFEDD5,
+  Map priorityMap = {
+    "Due": 0XFFDBEAFE,
+    "HighPriority": 0XFFFEE2E2,
+    "MediumPriority": 0XFFFFEDD5,
   };
 
   Future getLocation() async {
@@ -141,6 +140,18 @@ FROM
 WHERE 
    --(julianday('now') - julianday(IFNULL(MNOCLD.PostingDate, '1990-12-12'))) > MNOCLT.UnitValue AND
      MNOCLT.CheckType = 'Preventive'
+     and (
+     ifnull(OVCLs.code,'') Like "%${_query.text}%" or
+ifnull(OVCLs.UpdateDate,'') Like "%${_query.text}%" or
+ifnull(MNVCL1.CheckListCode,'') Like "%${_query.text}%" or
+ifnull(MNOCLT.CheckType,'') Like "%${_query.text}%" or
+ifnull(MNVCL1.CheckListName,'') Like "%${_query.text}%" or
+ifnull(MNOCLD.PostingDate,'') Like "%${_query.text}%" or
+ifnull(MNOCLD.CheckListStatus,'') Like "%${_query.text}%" or
+ifnull(MNVCL1.WorkCenterCode,'') Like "%${_query.text}%" or
+ifnull(MNVCL1.WorkCenterName,'') Like "%${_query.text}%" or
+ifnull(MNVCL1.TechnicianCode,'') Like "%${_query.text}%" or
+ifnull(MNVCL1.TechnicianName,'') Like "%${_query.text}%" )
     ''';
     List dataList = await db.rawQuery(query);
     print(dataList);
@@ -149,8 +160,9 @@ WHERE
         return MaintenanceItemsQueryModel.fromJson(e);
       }).toList();
       print(dashboardData.toString());
-      setState(() {});
+
     }
+    setState(() {});
   }
 
   Future<void> setVersion() async {
@@ -264,7 +276,7 @@ WHERE
       // checkListGenData.GeneralData.assignedUserName = StaticFuntion.GetEmployeeName(db, dashboardItem.TechnicianCode);
       checkListGenData.GeneralData.assignedUserName =
           dashboardItem.technicianName;
-      checkListGenData.GeneralData.checkListStatus ='Open';
+      checkListGenData.GeneralData.checkListStatus = 'Open';
       checkListGenData.GeneralData.assignedUserCode =
           dashboardItem.technicianCode;
       checkListGenData.GeneralData.equipmentName = dashboardItem.equipmentCode;
@@ -340,11 +352,11 @@ WHERE
         SELECT SUM(InQty)-SUM(OutQty) as AvailableQty FROM OINM WHERE ItemCode='${mnclm1.ItemCode}' AND WhsCode='$whsCode'
         ''');
         if (list.isNotEmpty) {
-          availableQty = double.tryParse(list[0]['AvailableQty'].toString())??0.0;
-          if(availableQty<=0.0)
-            {
-              availableQty=0.0;
-            }
+          availableQty =
+              double.tryParse(list[0]['AvailableQty'].toString()) ?? 0.0;
+          if (availableQty <= 0.0) {
+            availableQty = 0.0;
+          }
         }
         MNCLD1 mncld1 = MNCLD1(
           TransId: checkListGenData.GeneralData.transId,
@@ -475,6 +487,54 @@ WHERE
                   const SizedBox(
                     height: 25,
                   ),
+                  getTextFieldWithoutLookup(
+                      controller: _query,
+                      labelText: 'Search',
+                      suffixIcon: InkWell(
+                          onTap: () {
+                            _query.clear();
+                            dashboardQuery();
+                          },
+                          child: Icon(
+                            Icons.clear,
+                            color: barColor,
+                          ))),
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: Container(
+                      width: MediaQuery.of(context).size.width / 3.5,
+                      height: 40,
+                      child: Padding(
+                        padding: const EdgeInsets.only(
+                          bottom: 6.0,
+                          left: 8,
+                          right: 8,
+                        ),
+                        child: Material(
+                          borderRadius: BorderRadius.circular(10.0),
+                          color: barColor,
+                          elevation: 0.0,
+                          child: MaterialButton(
+                            onPressed: () async {
+                              dashboardQuery();
+                            },
+                            minWidth: MediaQuery.of(context).size.width,
+                            child: Text(
+                              "Search",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 20.0),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 35,
+                  ),
                   ListView.separated(
                     itemCount: dashboardData.length,
                     shrinkWrap: true,
@@ -487,7 +547,8 @@ WHERE
                         children: [
                           Container(
                             decoration: BoxDecoration(
-                              color: Color(priorityMap[data.Priority]??0XFFFFFFFF),
+                              color: Color(
+                                  priorityMap[data.Priority] ?? 0XFFFFFFFF),
                               shape: BoxShape.rectangle,
                               borderRadius: BorderRadius.circular(16.0),
                               boxShadow: const [
@@ -506,7 +567,8 @@ WHERE
                               child: Column(
                                 children: [
                                   Row(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Expanded(
                                         flex: 8,
@@ -516,7 +578,9 @@ WHERE
                                           children: [
                                             Padding(
                                               padding: const EdgeInsets.only(
-                                                  left: 8.0, right: 8.0, top: 4.0),
+                                                  left: 8.0,
+                                                  right: 8.0,
+                                                  top: 4.0),
                                               child: Align(
                                                 alignment: Alignment.topLeft,
                                                 child: Text.rich(
@@ -535,7 +599,9 @@ WHERE
                                             ),
                                             Padding(
                                               padding: const EdgeInsets.only(
-                                                  left: 8.0, right: 8.0, top: 4.0),
+                                                  left: 8.0,
+                                                  right: 8.0,
+                                                  top: 4.0),
                                               child: Align(
                                                 alignment: Alignment.topLeft,
                                                 child: Text.rich(
@@ -554,7 +620,9 @@ WHERE
                                             ),
                                             Padding(
                                               padding: const EdgeInsets.only(
-                                                  left: 8.0, right: 8.0, top: 4.0),
+                                                  left: 8.0,
+                                                  right: 8.0,
+                                                  top: 4.0),
                                               child: Align(
                                                 alignment: Alignment.topLeft,
                                                 child: Text.rich(
@@ -564,7 +632,8 @@ WHERE
                                                           text: 'Type'),
                                                       getPoppinsTextSpanDetails(
                                                           text:
-                                                              data.checkType ?? ""),
+                                                              data.checkType ??
+                                                                  ""),
                                                     ],
                                                   ),
                                                 ),
@@ -572,7 +641,9 @@ WHERE
                                             ),
                                             Padding(
                                               padding: const EdgeInsets.only(
-                                                  left: 8.0, right: 8.0, top: 4.0),
+                                                  left: 8.0,
+                                                  right: 8.0,
+                                                  top: 4.0),
                                               child: Align(
                                                 alignment: Alignment.topLeft,
                                                 child: Text.rich(
@@ -600,7 +671,9 @@ WHERE
                                           children: [
                                             Padding(
                                               padding: const EdgeInsets.only(
-                                                  left: 8.0, right: 8.0, top: 4.0),
+                                                  left: 8.0,
+                                                  right: 8.0,
+                                                  top: 4.0),
                                               child: Align(
                                                 alignment: Alignment.topLeft,
                                                 child: Text.rich(
@@ -610,8 +683,8 @@ WHERE
                                                           text:
                                                               'Check List Status'),
                                                       getPoppinsTextSpanDetails(
-                                                          text:
-                                                              data.checkListStatus),
+                                                          text: data
+                                                              .checkListStatus),
                                                     ],
                                                   ),
                                                 ),
@@ -619,7 +692,9 @@ WHERE
                                             ),
                                             Padding(
                                               padding: const EdgeInsets.only(
-                                                  left: 8.0, right: 8.0, top: 4.0),
+                                                  left: 8.0,
+                                                  right: 8.0,
+                                                  top: 4.0),
                                               child: Align(
                                                 alignment: Alignment.topLeft,
                                                 child: Text.rich(
@@ -628,8 +703,8 @@ WHERE
                                                       getPoppinsTextSpanHeading(
                                                           text: 'Work Center'),
                                                       getPoppinsTextSpanDetails(
-                                                          text:
-                                                              data.workCenterName),
+                                                          text: data
+                                                              .workCenterName),
                                                     ],
                                                   ),
                                                 ),
@@ -637,7 +712,9 @@ WHERE
                                             ),
                                             Padding(
                                               padding: const EdgeInsets.only(
-                                                  left: 8.0, right: 8.0, top: 4.0),
+                                                  left: 8.0,
+                                                  right: 8.0,
+                                                  top: 4.0),
                                               child: Align(
                                                 alignment: Alignment.topLeft,
                                                 child: Text.rich(
@@ -646,8 +723,8 @@ WHERE
                                                       getPoppinsTextSpanHeading(
                                                           text: 'Technician'),
                                                       getPoppinsTextSpanDetails(
-                                                          text:
-                                                              data.technicianName),
+                                                          text: data
+                                                              .technicianName),
                                                     ],
                                                   ),
                                                 ),
@@ -658,55 +735,51 @@ WHERE
                                       ),
                                     ],
                                   ),
-                                  if(data.checkListStatus=='Open')...[
+                                  if (data.checkListStatus == 'Open') ...[
                                     getDivider(),
                                     Row(
                                       children: [
-
                                         Expanded(
                                             child: InkWell(
-                                              onTap: () {
-                                                // navigateToJobCardDocument(
-                                                //     TransId:
-                                                //     snapshot.data![index].TransId ??
-                                                //         '',
-                                                //     isView: false);
-                                              },
-                                              child: getPoppinsText(
-                                                  text: 'Edit',
-                                                  color: Colors.red,
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 16),
-                                            )),
+                                          onTap: () {
+                                            // navigateToJobCardDocument(
+                                            //     TransId:
+                                            //     snapshot.data![index].TransId ??
+                                            //         '',
+                                            //     isView: false);
+                                          },
+                                          child: getPoppinsText(
+                                              text: 'Edit',
+                                              color: Colors.red,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 16),
+                                        )),
                                       ],
                                     ),
                                   ],
-
-
                                 ],
                               ),
                             ),
                           ),
-                          if(data.checkListStatus!='Open')
-                          Positioned(
-                            top: -27,
-                            right: -4,
-                            child: InkWell(
-                              onTap:(){
-
-                                setCheckListData(dashboardItem: data);
-                              },
-                              child: Card(
-                                child: Padding(
-                                  padding: const EdgeInsets.all(10.0),
-                                  child: Icon(
-                                    Icons.add,
-                                    color: barColor,
+                          if (data.checkListStatus != 'Open')
+                            Positioned(
+                              top: -27,
+                              right: -4,
+                              child: InkWell(
+                                onTap: () {
+                                  setCheckListData(dashboardItem: data);
+                                },
+                                child: Card(
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(10.0),
+                                    child: Icon(
+                                      Icons.add,
+                                      color: barColor,
+                                    ),
                                   ),
                                 ),
                               ),
                             ),
-                          ),
                         ],
                       );
                     },
