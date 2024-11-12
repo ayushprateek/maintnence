@@ -9,16 +9,16 @@ import 'package:maintenance/Component/SnackbarComponent.dart';
 import 'package:maintenance/GoodsIssue/ClearGoodsIssueDocument.dart';
 import 'package:maintenance/GoodsIssue/create/GoodsIssue.dart';
 import 'package:maintenance/GoodsIssue/create/ItemDetails/ItemDetails.dart'
-as goodsIssueCreateDetails;
+    as goodsIssueCreateDetails;
 import 'package:maintenance/InternalRequest/ClearInternalRequestDocument.dart';
 import 'package:maintenance/InternalRequest/create/InternalRequest.dart';
 import 'package:maintenance/InternalRequest/create/ItemDetails/ItemDetails.dart'
-as createInternalItemDetails;
+    as createInternalItemDetails;
 import 'package:maintenance/JobCard/edit/GeneralData.dart';
 import 'package:maintenance/JobCard/edit/ItemDetails/AddItem.dart';
 import 'package:maintenance/Purchase/PurchaseRequest/ClearPurchaseRequest.dart';
 import 'package:maintenance/Purchase/PurchaseRequest/create/ItemDetails/ItemDetails.dart'
-as createPurchaseItemDetails;
+    as createPurchaseItemDetails;
 import 'package:maintenance/Purchase/PurchaseRequest/create/PurchaseRequest.dart';
 import 'package:maintenance/Sync/SyncModels/IMGDI1.dart';
 import 'package:maintenance/Sync/SyncModels/IMOGDI.dart';
@@ -203,19 +203,43 @@ class ItemDetails extends StatefulWidget {
     String TransId =
         await GenerateTransId.getTransId(tableName: 'IMOGDI', docName: 'MNGI');
     print(TransId);
+
+    OPTRE1? oPTRE1;
+    MNOWCM? mNOWCM;
+    OEMPModel? oemp;
+    List<OPTRE1> l = await retrieveOPTRE1ById(
+        null, 'TransId = ?', [GeneralData.TripTransId]);
+    if (l.isNotEmpty) {
+      oPTRE1 = l[0];
+    }
+    List<MNOWCM> list =
+        await retrieveMNOWCMById(null, 'Code', [GeneralData.workCenterCode]);
+    if (list.isNotEmpty) {
+      mNOWCM = list[0];
+    }
+    //db.OEMPs.FirstOrDefault(x => x.Code == PROITRViewModel.PROITR.RequestedCode)?.MobileNo ?? "";
+    List<OEMPModel> pList = await retrieveOEMPById(
+        null, 'Code = ?', [GeneralData.assignedUserCode]);
+    if (pList.isNotEmpty) {
+      oemp = pList[0];
+    }
+
     ClearGoodsIssueDocument.setGeneralData(
         imogdi: IMOGDI(
-      RequestedCode: GeneralData.assignedUserCode,
-      RequestedName: GeneralData.assignedUserName,
-      TransId: TransId,
-      Currency: userModel.Currency,
-      CurrRate: double.tryParse(userModel.Rate?.toString() ?? ''),
-      TripTransId: GeneralData.TripTransId,
-      PostingDate: DateTime.now(),
-      ValidUntill: DateTime.now().add(Duration(days: 7)),
-      DocStatus: 'Open',
-      ApprovalStatus: 'Pending',
-    ));
+            RequestedCode: GeneralData.assignedUserCode,
+            RequestedName: GeneralData.assignedUserName,
+            TransId: TransId,
+            Currency: userModel.Currency,
+            CurrRate: double.tryParse(userModel.Rate?.toString() ?? ''),
+            TripTransId: GeneralData.TripTransId,
+            PostingDate: DateTime.now(),
+            ValidUntill: DateTime.now().add(Duration(days: 7)),
+            DocStatus: 'Open',
+            DeptCode: oPTRE1?.DeptCode,
+            DeptName: oPTRE1?.DeptName,
+            ToWhsCode: mNOWCM?.WhsCode,
+            ApprovalStatus: 'Pending',
+            BaseTab: 'MNJCD1'));
 
     Get.to(() => GoodsIssue(0));
   }
