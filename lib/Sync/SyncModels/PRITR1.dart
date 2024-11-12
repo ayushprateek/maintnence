@@ -12,7 +12,9 @@ import 'package:sqflite/sqlite_api.dart';
 class PRITR1 {
   int? ID;
   String? TransId;
+  String? BaseTab;
   int? RowId;
+  int? BaseRowId;
   String? ItemCode;
   String? ItemName;
   double? Quantity;
@@ -48,7 +50,9 @@ class PRITR1 {
   PRITR1({
     this.ID,
     this.TransId,
+    this.BaseTab,
     this.RowId,
+    this.BaseRowId,
     this.ItemCode,
     this.ItemName,
     this.Quantity,
@@ -85,7 +89,9 @@ class PRITR1 {
   factory PRITR1.fromJson(Map<String, dynamic> json) => PRITR1(
         ID: int.tryParse(json['ID'].toString()) ?? 0,
         TransId: json['TransId']?.toString() ?? '',
+    BaseTab: json['BaseTab']?.toString() ?? '',
         RowId: int.tryParse(json['RowId'].toString()) ?? 0,
+    BaseRowId: int.tryParse(json['BaseRowId'].toString()) ?? 0,
         ItemCode: json['ItemCode']?.toString() ?? '',
         ItemName: json['ItemName']?.toString() ?? '',
         Quantity: double.tryParse(json['Quantity'].toString()) ?? 0.0,
@@ -121,7 +127,9 @@ class PRITR1 {
   Map<String, dynamic> toJson() => {
         'ID': ID,
         'TransId': TransId,
+        'BaseTab': BaseTab,
         'RowId': RowId,
+        'BaseRowId': BaseRowId,
         'ItemCode': ItemCode,
         'ItemName': ItemName,
         'Quantity': Quantity,

@@ -8,9 +8,6 @@ import 'package:maintenance/Component/SnackbarComponent.dart';
 import 'package:maintenance/GoodsReceiptNote/ClearGRNDocument.dart';
 import 'package:maintenance/GoodsReceiptNote/create/GeneralData.dart'
     as createGrnGenData;
-import 'package:maintenance/Purchase/PurchaseOrder/create/GeneralData.dart'
-as createPurchaseOrderGenData;
-import 'package:maintenance/Purchase/PurchaseOrder/create/ItemDetails/ItemDetails.dart' as createPurchaseOrderItemDetails;
 import 'package:maintenance/GoodsReceiptNote/create/GoodsReceiptNote.dart';
 import 'package:maintenance/GoodsReceiptNote/create/ItemDetails/ItemDetails.dart'
     as createGrnItemDetails;
@@ -22,6 +19,10 @@ import 'package:maintenance/JobCard/edit/GeneralData.dart';
 import 'package:maintenance/JobCard/edit/ServiceDetails/AddServiceItem.dart';
 import 'package:maintenance/JobCard/edit/ServiceDetails/EditService.dart';
 import 'package:maintenance/Purchase/PurchaseOrder/ClearPurchaseOrder.dart';
+import 'package:maintenance/Purchase/PurchaseOrder/create/GeneralData.dart'
+    as createPurchaseOrderGenData;
+import 'package:maintenance/Purchase/PurchaseOrder/create/ItemDetails/ItemDetails.dart'
+    as createPurchaseOrderItemDetails;
 import 'package:maintenance/Purchase/PurchaseOrder/create/PurchaseOrder.dart';
 import 'package:maintenance/Purchase/PurchaseRequest/ClearPurchaseRequest.dart';
 import 'package:maintenance/Purchase/PurchaseRequest/create/GeneralData.dart'
@@ -46,22 +47,38 @@ class ServiceDetails extends StatefulWidget {
     ClearCreateInternalRequestDocument.clearGeneralDataTextFields();
     ClearCreateInternalRequestDocument.clearEditItems();
     createInternalItemDetails.ItemDetails.items.clear();
+    String fromWhs = '';
+
+    List<MNOWCM> mnowcmList = await retrieveMNOWCMById(
+        null, 'WorkCenterCode = ?', [GeneralData.workCenterCode]);
+    if (mnowcmList.isNotEmpty) {
+      fromWhs = mnowcmList[0].WhsCode ?? '';
+    }
+
     int i = 0;
     for (MNJCD2 mnjcd1 in ServiceDetails.items) {
       if (mnjcd1.IsSendToSupplier && mnjcd1.IsSendableItem) {
         createInternalItemDetails.ItemDetails.items.add(PRITR1(
-          insertedIntoDatabase: false,
-          ID: 0,
-          TransId: '',
-          RowId: ++i,
-          ItemCode: mnjcd1.ItemCode,
-          ItemName: mnjcd1.ItemName,
-          Quantity: mnjcd1.Quantity,
-          UOM: mnjcd1.UOM,
-          LineStatus: 'Open',
-          OpenQty: mnjcd1.Quantity,
-          // TruckNo: mnjcd1.EquipmentCode,
-        ));
+            insertedIntoDatabase: false,
+            ID: 0,
+            TransId: '',
+            RowId: ++i,
+            ItemCode: mnjcd1.ItemCode,
+            ItemName: mnjcd1.ItemName,
+            Quantity: mnjcd1.Quantity,
+            UOM: mnjcd1.UOM,
+            LineStatus: 'Open',
+            OpenQty: mnjcd1.Quantity,
+            //todo:
+            // TaxCode: mnjcd1.ta,
+            // TaxRate: mnjcd1.TaxRate,
+            // Discount: mnjcd1.Discount,
+            FromWhsCode: fromWhs,
+            BaseTransId: mnjcd1.TransId,
+            BaseRowId: mnjcd1.RowId,
+            TruckNo: mnjcd1.EquipmentCode,
+            BaseTab: "MNJCD2"
+            ));
       }
     }
     if (createInternalItemDetails.ItemDetails.items.isEmpty) {
@@ -73,26 +90,21 @@ class ServiceDetails extends StatefulWidget {
     String TransId =
         await GenerateTransId.getTransId(tableName: 'PROITR', docName: 'PRIR');
     print(TransId);
-    String fromWhs = '';
-
-    List<MNOWCM> mnowcmList = await retrieveMNOWCMById(
-        null, 'WorkCenterCode = ?', [GeneralData.workCenterCode]);
-    if (mnowcmList.isNotEmpty) {
-      fromWhs = mnowcmList[0].WhsCode ?? '';
-    }
 
     ClearCreateInternalRequestDocument.setGeneralData(
         data: PROITR(
-      RequestedCode: GeneralData.assignedUserCode,
-      RequestedName: GeneralData.assignedUserName,
-      TransId: TransId,
-      FromWhsCode: fromWhs,
-      TripTransId: GeneralData.TripTransId,
-      PostingDate: DateTime.now(),
-      ValidUntill: DateTime.now().add(Duration(days: 7)),
-      DocStatus: 'Open',
-      ApprovalStatus: 'Pending',
-    ));
+            RequestedCode: GeneralData.assignedUserCode,
+            RequestedName: GeneralData.assignedUserName,
+            TransId: TransId,
+            FromWhsCode: fromWhs,
+            TripTransId: GeneralData.TripTransId,
+            PostingDate: DateTime.now(),
+            ValidUntill: DateTime.now().add(Duration(days: 7)),
+            DocStatus: 'Open',
+            ApprovalStatus: 'Pending',
+            Currency: userModel.Currency,
+            CurrRate: 1,
+            BaseTab: 'MNJCD2'));
 
     Get.to(() => InternalRequest(0));
   }
@@ -152,27 +164,24 @@ class ServiceDetails extends StatefulWidget {
     Get.to(() => InternalRequest(0));
   }
 
-  static createPurchaseOrder() async{
+  static createPurchaseOrder() async {
     await ClearPurchaseOrderDocument.clearGeneralDataTextFields();
     await ClearPurchaseOrderDocument.clearEditItems();
     await ClearPurchaseOrderDocument.clearShippingAddressTextFields();
     await ClearPurchaseOrderDocument.clearBillingAddressTextFields();
     createPurchaseOrderItemDetails.ItemDetails.items.clear();
 
-
-    String TransId = await GenerateTransId.getTransId(tableName: 'PROPOR', docName: 'PROR');
-    createPurchaseOrderGenData.GeneralData.transId=TransId;
-    for(int i=0;i< ServiceDetails.items.length;i++)
-    {
-      MNJCD2 mnjcd2=ServiceDetails.items[i];
-      if(mnjcd2.IsPurchaseOrder)
-      {
+    String TransId =
+        await GenerateTransId.getTransId(tableName: 'PROPOR', docName: 'PROR');
+    createPurchaseOrderGenData.GeneralData.transId = TransId;
+    for (int i = 0; i < ServiceDetails.items.length; i++) {
+      MNJCD2 mnjcd2 = ServiceDetails.items[i];
+      if (mnjcd2.IsPurchaseOrder) {
         createPurchaseOrderItemDetails.ItemDetails.items.add(PRPOR1(
-            ItemCode: mnjcd2.ServiceCode,
-            ItemName: mnjcd2.ServiceName,
+          ItemCode: mnjcd2.ServiceCode,
+          ItemName: mnjcd2.ServiceName,
           TransId: TransId,
           RowId: i,
-
         ));
       }
     }
@@ -186,22 +195,21 @@ class ServiceDetails extends StatefulWidget {
     String TransId =
         await GenerateTransId.getTransId(tableName: 'PROPRQ', docName: 'PR');
     createPurchaseGenData.GeneralData.transId = TransId;
-    createPurchaseGenData.GeneralData.requestedCode = GeneralData.assignedUserCode;
-    createPurchaseGenData.GeneralData.requestedName = GeneralData.assignedUserName;
-    List<OCRNModel> ocrnList=await retrieveOCRNById(null, 'BranchId = ?', [userModel.BranchId]);
+    createPurchaseGenData.GeneralData.requestedCode =
+        GeneralData.assignedUserCode;
+    createPurchaseGenData.GeneralData.requestedName =
+        GeneralData.assignedUserName;
+    List<OCRNModel> ocrnList =
+        await retrieveOCRNById(null, 'BranchId = ?', [userModel.BranchId]);
 
-
-    for(int i=0;i< ServiceDetails.items.length;i++)
-    {
-      MNJCD2 mnjcd2=ServiceDetails.items[i];
-      if(mnjcd2.IsPurchaseRequest)
-      {
+    for (int i = 0; i < ServiceDetails.items.length; i++) {
+      MNJCD2 mnjcd2 = ServiceDetails.items[i];
+      if (mnjcd2.IsPurchaseRequest) {
         createPurchaseItemDetails.ItemDetails.items.add(PRPRQ1(
           ItemCode: mnjcd2.ServiceCode,
           ItemName: mnjcd2.ServiceName,
           TransId: TransId,
           RowId: i,
-
         ));
       }
     }
