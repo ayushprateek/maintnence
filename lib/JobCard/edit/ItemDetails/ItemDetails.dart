@@ -10,6 +10,9 @@ import 'package:maintenance/InternalRequest/ClearInternalRequestDocument.dart';
 import 'package:maintenance/JobCard/edit/ItemDetails/AddItem.dart';
 import 'package:maintenance/JobCard/edit/GeneralData.dart';
 import 'package:maintenance/Sync/SyncModels/MNJCD1.dart';
+import 'package:maintenance/Sync/SyncModels/MNOWCM.dart';
+import 'package:maintenance/Sync/SyncModels/OPTRE1.dart';
+import 'package:maintenance/Sync/SyncModels/OUSR.dart';
 import 'package:maintenance/Sync/SyncModels/PRITR1.dart';
 import 'package:maintenance/Sync/SyncModels/PROITR.dart';
 import 'package:maintenance/GoodsIssue/ClearGoodsIssueDocument.dart';
@@ -109,11 +112,30 @@ class ItemDetails extends StatefulWidget {
     String TransId =
     await GenerateTransId.getTransId(tableName: 'PROPRQ', docName: 'PR');
     print(TransId);
+    OPTRE1? oPTRE1 ;
+    MNOWCM? mNOWCM ;
+    List<OPTRE1> l=await retrieveOPTRE1ById(null, 'TransId = ?', [GeneralData.TripTransId]);
+    if(l.isNotEmpty)
+      {
+        oPTRE1=l[0];
+      }
+    // db.MNOWCMs.FirstOrDefault(x => x.Code == mNOJCDViewModel.MNOJCD.WorkCenterCode)?.WhsCode
+    List<MNOWCM> list=await retrieveMNOWCMById(null, 'Code', [GeneralData.workCenterCode]);
+    if(list.isNotEmpty)
+      {
+        mNOWCM=list[0];
+      }
     ClearPurchaseRequestDocument.setGeneralData(
         data: PROPRQ(
           RequestedCode: GeneralData.assignedUserCode,
           RequestedName: GeneralData.assignedUserName,
           TransId: TransId,
+          DeptCode: oPTRE1?.DeptCode,
+          DeptName: oPTRE1?.DeptName,
+          WhsCode: mNOWCM?.Code,
+          Currency: userModel.Currency,
+          CurrRate: 1,
+          BaseTab: "MNJCD1",
           TripTransId: GeneralData.TripTransId,
           PostingDate: DateTime.now(),
           ValidUntill: DateTime.now().add(Duration(days: 7)),

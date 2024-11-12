@@ -35,6 +35,7 @@ class ClearPurchaseRequestDocument {
     createPurchaseGenData.GeneralData.refNo = '';
     createPurchaseGenData.GeneralData.city = '';
     createPurchaseGenData.GeneralData.state = '';
+    createPurchaseGenData.GeneralData.BaseTab = '';
     createPurchaseGenData.GeneralData.currency = '';
     createPurchaseGenData.GeneralData.currencyRate = '';
     createPurchaseGenData.GeneralData.mobileNo = '';
@@ -82,6 +83,7 @@ class ClearPurchaseRequestDocument {
     createPurchaseGenData.GeneralData.iD = data.ID?.toString();
     createPurchaseGenData.GeneralData.transId = data.TransId;
     createPurchaseGenData.GeneralData.refNo = data.RefNo;
+    createPurchaseGenData.GeneralData.BaseTab = data.BaseTab;
     createPurchaseGenData.GeneralData.mobileNo = data.MobileNo;
     createPurchaseGenData.GeneralData.currency = data.Currency;
     createPurchaseGenData.GeneralData.currencyRate = data.CurrRate?.toStringAsFixed(2);

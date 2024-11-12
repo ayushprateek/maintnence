@@ -12,6 +12,7 @@ import 'package:sqflite/sqlite_api.dart';
 class PROPRQ {
   int? ID;
   String? TransId;
+  String? BaseTab;
   String? RefNo;
   String? MobileNo;
   DateTime? PostingDate;
@@ -52,6 +53,7 @@ class PROPRQ {
   PROPRQ({
     this.ID,
     this.TransId,
+    this.BaseTab,
     this.RefNo,
     this.MobileNo,
     this.PostingDate,
@@ -89,8 +91,9 @@ class PROPRQ {
 
   factory PROPRQ.fromJson(Map<String, dynamic> json) => PROPRQ(
         ID: int.tryParse(json['ID'].toString()) ?? 0,
-    CurrRate: double.tryParse(json['CurrRate'].toString()) ?? 0.0,
+        CurrRate: double.tryParse(json['CurrRate'].toString()) ?? 0.0,
         TransId: json['TransId']?.toString() ?? '',
+        BaseTab: json['BaseTab']?.toString() ?? '',
         RefNo: json['RefNo']?.toString() ?? '',
         MobileNo: json['MobileNo']?.toString() ?? '',
         PostingDate: DateTime.tryParse(json['PostingDate'].toString()),
@@ -104,7 +107,7 @@ class PROPRQ {
         CreateDate: DateTime.tryParse(json['CreateDate'].toString()),
         UpdateDate: DateTime.tryParse(json['UpdateDate'].toString()),
         ApprovedBy: json['ApprovedBy']?.toString() ?? '',
-    Currency: json['Currency']?.toString() ?? '',
+        Currency: json['Currency']?.toString() ?? '',
         Error: json['Error']?.toString() ?? '',
         IsPosted:
             json['IsPosted'] is bool ? json['IsPosted'] : json['IsPosted'] == 1,
@@ -130,6 +133,7 @@ class PROPRQ {
         'ID': ID,
         'CurrRate': CurrRate,
         'TransId': TransId,
+        'BaseTab': BaseTab,
         'RefNo': RefNo,
         'MobileNo': MobileNo,
         'PostingDate': PostingDate?.toIso8601String(),

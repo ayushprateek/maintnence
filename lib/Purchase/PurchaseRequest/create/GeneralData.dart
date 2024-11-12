@@ -27,6 +27,7 @@ class GeneralData extends StatefulWidget {
   static String? mobileNo;
   static String? postingDate;
   static String? validUntill;
+  static String? BaseTab;
   static String? approvalStatus;
   static String? docStatus;
   static String? permanentTransId;
@@ -88,6 +89,7 @@ class GeneralData extends StatefulWidget {
     return PROPRQ(
         ID: int.tryParse(iD ?? ''),
         TransId: transId,
+        BaseTab: BaseTab,
         PermanentTransId: permanentTransId ?? '',
         PostingDate: getDateFromString(postingDate ?? ""),
         ValidUntill: getDateFromString(validUntill ?? ''),
