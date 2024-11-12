@@ -34,6 +34,7 @@ class MNOJCD {
   DateTime? CloseDate;
   DateTime? LastReadingDate;
   double? LastReading;
+  double? CurrentReading;
   String? AssignedUserCode;
   String? AssignedUserName;
   bool? WarrentyApplicable;
@@ -75,6 +76,7 @@ class MNOJCD {
     this.CloseDate,
     this.LastReadingDate,
     this.LastReading,
+    this.CurrentReading,
     this.AssignedUserCode,
     this.AssignedUserName,
     this.WarrentyApplicable,
@@ -117,6 +119,7 @@ class MNOJCD {
         CloseDate: DateTime.tryParse(json['CloseDate'].toString()),
         LastReadingDate: DateTime.tryParse(json['LastReadingDate'].toString()),
         LastReading: double.tryParse(json['LastReading'].toString()),
+    CurrentReading: double.tryParse(json['CurrentReading'].toString()),
         AssignedUserCode: json['AssignedUserCode']?.toString() ?? '',
         AssignedUserName: json['AssignedUserName']?.toString() ?? '',
         WarrentyApplicable: json['WarrentyApplicable'] is bool
@@ -165,6 +168,7 @@ class MNOJCD {
         'CloseDate': CloseDate?.toIso8601String(),
         'LastReadingDate': LastReadingDate?.toIso8601String(),
         'LastReading': LastReading,
+        'CurrentReading': CurrentReading,
         'AssignedUserCode': AssignedUserCode,
         'AssignedUserName': AssignedUserName,
         'WarrentyApplicable': WarrentyApplicable,

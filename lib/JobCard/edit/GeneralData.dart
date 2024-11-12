@@ -21,6 +21,7 @@ class GeneralData extends StatefulWidget {
   static bool isSelected = false, hasCreated = false, hasUpdated = false;
 
   static String? iD;
+
   //todo: clear TripTransId while opening
   static String? TripTransId;
   static String? permanentTransId;
@@ -97,7 +98,7 @@ class GeneralData extends StatefulWidget {
       TransId: transId,
       Subject: subject,
       Resolution: resolution,
-      TripTransId:TripTransId,
+      TripTransId: TripTransId,
 
       //todo:
       // DocNum: docNum ?? '',
@@ -127,6 +128,7 @@ class GeneralData extends StatefulWidget {
       //todo
       // LastReading: lastReading,
       LastReadingDate: getDateFromString(lastReadingDate ?? ""),
+      CurrentReading: double.tryParse(currentReading?.toString() ?? ''),
 
       ApprovalStatus: approvalStatus ?? "Pending",
       DocStatus: docStatus,
@@ -202,6 +204,7 @@ class _GeneralDataState extends State<GeneralData> {
     'WIP',
     'Update'
   ];
+
   calculateDifference() {
     double currentReading = double.tryParse(_currentReading.text) ?? 0.0;
     double lastReading = double.tryParse(_lastReading.text) ?? 0.0;
@@ -268,8 +271,11 @@ class _GeneralDataState extends State<GeneralData> {
                                     _equipmentCode.text = ovcl.Code ?? '';
                                 GeneralData.equipmentName =
                                     _equipmentName.text = ovcl.Name ?? '';
-                                GeneralData.lastReading = _lastReading.text = ovcl.OdometerReading?.toStringAsFixed(2) ?? '';
-                                GeneralData.lastReadingDate = _lastReadingDate.text = getFormattedDate(ovcl.UpdateDate);
+                                GeneralData.lastReading = _lastReading.text =
+                                    ovcl.OdometerReading?.toStringAsFixed(2) ??
+                                        '';
+                                GeneralData.lastReadingDate = _lastReadingDate
+                                    .text = getFormattedDate(ovcl.UpdateDate);
                               });
                             },
                           ));

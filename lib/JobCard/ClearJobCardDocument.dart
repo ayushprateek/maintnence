@@ -331,6 +331,7 @@ goToNewJobCardDocument() async {
   String TransId =
       await GenerateTransId.getTransId(tableName: 'MNOJCD', docName: 'MNJC');
   jcdCreateGenData.GeneralData.transId = TransId;
+  JobCard.saveButtonPressed=false;
   Get.offAll(() => JobCard(0));
 }
 
