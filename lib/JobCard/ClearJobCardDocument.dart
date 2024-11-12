@@ -337,6 +337,7 @@ goToNewJobCardDocument() async {
 
 navigateToJobCardDocument(
     {required String TransId, required bool isView}) async {
+
   if (isView) {
     List<MNOJCD> list =
         await retrieveMNOJCDById(null, 'TransId = ?', [TransId]);
@@ -367,8 +368,14 @@ navigateToJobCardDocument(
         await retrieveMNJCD1ById(null, 'TransId = ?', [TransId]);
     jcdEditServiceDetails.ServiceDetails.items =
         await retrieveMNJCD2ById(null, 'TransId = ?', [TransId]);
+
+
     jcdEditAttachment.Attachments.attachments =
         await retrieveMNJCD3ById(null, 'TransId = ?', [TransId]);
+    for(MNJCD3 mnjcd3 in jcdEditAttachment.Attachments.attachments)
+    {
+      mnjcd3.insertedIntoDatabase=true;
+    }
 
     jcdEditWhyWhyAnalysis.WhyWhyAnalysis.list =
         await retrieveMNJCD5ById(null, 'Code = ?', [TransId]);
@@ -376,6 +383,7 @@ navigateToJobCardDocument(
         await retrieveMNJCD6ById(null, 'TransId = ?', [TransId]);
     // jcdEditSectionDetails.SectionDetails.list =
     //     await retrieveMNJCD7ById(null, 'TransId = ?', [TransId]);
+    EditJobCard.saveButtonPressed=false;
 
     Get.offAll(() => EditJobCard(0));
   }
