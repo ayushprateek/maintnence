@@ -77,8 +77,7 @@ class ServiceDetails extends StatefulWidget {
             BaseTransId: mnjcd1.TransId,
             BaseRowId: mnjcd1.RowId,
             TruckNo: mnjcd1.EquipmentCode,
-            BaseTab: "MNJCD2"
-            ));
+            BaseTab: "MNJCD2"));
       }
     }
     if (createInternalItemDetails.ItemDetails.items.isEmpty) {
@@ -113,6 +112,13 @@ class ServiceDetails extends StatefulWidget {
     ClearCreateInternalRequestDocument.clearGeneralDataTextFields();
     ClearCreateInternalRequestDocument.clearEditItems();
     createInternalItemDetails.ItemDetails.items.clear();
+    String toWhs = '';
+
+    List<MNOWCM> mnowcmList = await retrieveMNOWCMById(
+        null, 'WorkCenterCode = ?', [GeneralData.workCenterCode]);
+    if (mnowcmList.isNotEmpty) {
+      toWhs = mnowcmList[0].WhsCode ?? '';
+    }
     int i = 0;
     for (MNJCD2 mnjcd1 in ServiceDetails.items) {
       if (mnjcd1.IsSendToSupplier && mnjcd1.IsSendableItem) {
@@ -127,7 +133,15 @@ class ServiceDetails extends StatefulWidget {
           UOM: mnjcd1.UOM,
           LineStatus: 'Open',
           OpenQty: mnjcd1.Quantity,
-          // TruckNo: mnjcd1.EquipmentCode,
+          TruckNo: mnjcd1.EquipmentCode,
+          //todo:
+          // TaxCode : x.TaxCode,
+          // TaxRate : x.TaxRate,
+          // Discount : x.Discount,
+          ToWhsCode: toWhs,
+          BaseTransId: mnjcd1.TransId,
+          BaseRowId: mnjcd1.RowId,
+          BaseTab: "MNJCD2",
         ));
       }
     }
@@ -141,13 +155,7 @@ class ServiceDetails extends StatefulWidget {
         await GenerateTransId.getTransId(tableName: 'PROITR', docName: 'PRIR');
 
     print(TransId);
-    String toWhs = '';
 
-    List<MNOWCM> mnowcmList = await retrieveMNOWCMById(
-        null, 'WorkCenterCode = ?', [GeneralData.workCenterCode]);
-    if (mnowcmList.isNotEmpty) {
-      toWhs = mnowcmList[0].WhsCode ?? '';
-    }
     ClearCreateInternalRequestDocument.setGeneralData(
         data: PROITR(
       RequestedCode: GeneralData.assignedUserCode,
