@@ -32,6 +32,7 @@ import 'package:maintenance/Purchase/PurchaseRequest/create/ItemDetails/ItemDeta
 import 'package:maintenance/Sync/SyncModels/MNJCD2.dart';
 import 'package:maintenance/Sync/SyncModels/MNOWCM.dart';
 import 'package:maintenance/Sync/SyncModels/OCRN.dart';
+import 'package:maintenance/Sync/SyncModels/OPTRE1.dart';
 import 'package:maintenance/Sync/SyncModels/PRITR1.dart';
 import 'package:maintenance/Sync/SyncModels/PROITR.dart';
 import 'package:maintenance/Sync/SyncModels/PRPOR1.dart';
@@ -203,12 +204,32 @@ class ServiceDetails extends StatefulWidget {
     String TransId =
         await GenerateTransId.getTransId(tableName: 'PROPRQ', docName: 'PR');
     createPurchaseGenData.GeneralData.transId = TransId;
-    createPurchaseGenData.GeneralData.requestedCode =
-        GeneralData.assignedUserCode;
-    createPurchaseGenData.GeneralData.requestedName =
-        GeneralData.assignedUserName;
-    List<OCRNModel> ocrnList =
-        await retrieveOCRNById(null, 'BranchId = ?', [userModel.BranchId]);
+    createPurchaseGenData.GeneralData.requestedCode = GeneralData.assignedUserCode;
+    createPurchaseGenData.GeneralData.requestedName = GeneralData.assignedUserName;
+    OPTRE1? oPTRE1;
+    MNOWCM? mNOWCM;
+
+    List<OPTRE1> l = await retrieveOPTRE1ById(
+        null, 'TransId = ?', [GeneralData.TripTransId]);
+    if (l.isNotEmpty) {
+      oPTRE1 = l[0];
+    }
+    List<MNOWCM> list =
+    await retrieveMNOWCMById(null, 'Code', [GeneralData.workCenterCode]);
+    if (list.isNotEmpty) {
+      mNOWCM = list[0];
+    }
+
+
+    createPurchaseGenData.GeneralData.tripTransId = GeneralData.TripTransId;
+    createPurchaseGenData.GeneralData.deptCode = oPTRE1?.DeptCode;
+    createPurchaseGenData.GeneralData.deptName = oPTRE1?.DeptName;
+    createPurchaseGenData.GeneralData.whsCode = mNOWCM?.WhsCode;
+    createPurchaseGenData.GeneralData.currency = userModel.Currency;
+    createPurchaseGenData.GeneralData.currencyRate ='1';
+    createPurchaseGenData.GeneralData.BaseTab = "MNJCD2";
+    // List<OCRNModel> ocrnList =
+    //     await retrieveOCRNById(null, 'BranchId = ?', [userModel.BranchId]);
 
     for (int i = 0; i < ServiceDetails.items.length; i++) {
       MNJCD2 mnjcd2 = ServiceDetails.items[i];
