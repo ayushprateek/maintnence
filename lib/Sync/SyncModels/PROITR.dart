@@ -44,12 +44,14 @@ class PROITR {
   String? TripTransId;
   String? DeptCode;
   String? DeptName;
+  String? BaseTab;
   bool hasCreated;
   bool hasUpdated;
 
   PROITR({
     this.ID,
     this.TransId,
+    this.BaseTab,
     this.RequestedCode,
     this.RequestedName,
     this.RefNo,
@@ -89,6 +91,7 @@ class PROITR {
   factory PROITR.fromJson(Map<String, dynamic> json) => PROITR(
         ID: int.tryParse(json['ID'].toString()) ?? 0,
         TransId: json['TransId']?.toString() ?? '',
+    BaseTab: json['BaseTab']?.toString() ?? '',
         RequestedCode: json['RequestedCode']?.toString() ?? '',
         RequestedName: json['RequestedName']?.toString() ?? '',
         RefNo: json['RefNo']?.toString() ?? '',
@@ -128,6 +131,7 @@ class PROITR {
 
   Map<String, dynamic> toJson() => {
         'ID': ID,
+        'BaseTab': BaseTab,
         'TransId': TransId,
         'RequestedCode': RequestedCode,
         'RequestedName': RequestedName,

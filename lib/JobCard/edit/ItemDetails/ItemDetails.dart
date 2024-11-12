@@ -6,31 +6,32 @@ import 'package:maintenance/Component/CustomFont.dart';
 import 'package:maintenance/Component/GenerateTransId.dart';
 import 'package:maintenance/Component/GetFormattedDate.dart';
 import 'package:maintenance/Component/SnackbarComponent.dart';
-import 'package:maintenance/InternalRequest/ClearInternalRequestDocument.dart';
-import 'package:maintenance/JobCard/edit/ItemDetails/AddItem.dart';
-import 'package:maintenance/JobCard/edit/GeneralData.dart';
-import 'package:maintenance/Sync/SyncModels/MNJCD1.dart';
-import 'package:maintenance/Sync/SyncModels/MNOWCM.dart';
-import 'package:maintenance/Sync/SyncModels/OPTRE1.dart';
-import 'package:maintenance/Sync/SyncModels/OUSR.dart';
-import 'package:maintenance/Sync/SyncModels/PRITR1.dart';
-import 'package:maintenance/Sync/SyncModels/PROITR.dart';
 import 'package:maintenance/GoodsIssue/ClearGoodsIssueDocument.dart';
 import 'package:maintenance/GoodsIssue/create/GoodsIssue.dart';
 import 'package:maintenance/GoodsIssue/create/ItemDetails/ItemDetails.dart'
 as goodsIssueCreateDetails;
+import 'package:maintenance/InternalRequest/ClearInternalRequestDocument.dart';
 import 'package:maintenance/InternalRequest/create/InternalRequest.dart';
 import 'package:maintenance/InternalRequest/create/ItemDetails/ItemDetails.dart'
 as createInternalItemDetails;
+import 'package:maintenance/JobCard/edit/GeneralData.dart';
+import 'package:maintenance/JobCard/edit/ItemDetails/AddItem.dart';
 import 'package:maintenance/Purchase/PurchaseRequest/ClearPurchaseRequest.dart';
 import 'package:maintenance/Purchase/PurchaseRequest/create/ItemDetails/ItemDetails.dart'
 as createPurchaseItemDetails;
 import 'package:maintenance/Purchase/PurchaseRequest/create/PurchaseRequest.dart';
 import 'package:maintenance/Sync/SyncModels/IMGDI1.dart';
 import 'package:maintenance/Sync/SyncModels/IMOGDI.dart';
+import 'package:maintenance/Sync/SyncModels/MNJCD1.dart';
+import 'package:maintenance/Sync/SyncModels/MNOWCM.dart';
+import 'package:maintenance/Sync/SyncModels/OEMP.dart';
+import 'package:maintenance/Sync/SyncModels/OPTRE1.dart';
+import 'package:maintenance/Sync/SyncModels/PRITR1.dart';
 import 'package:maintenance/Sync/SyncModels/PROPRQ.dart';
 import 'package:maintenance/Sync/SyncModels/PRPRQ1.dart';
 import 'package:maintenance/main.dart';
+
+import '../../../Sync/SyncModels/PROITR.dart';
 
 class ItemDetails extends StatefulWidget {
   const ItemDetails({super.key});
@@ -41,7 +42,7 @@ class ItemDetails extends StatefulWidget {
     ClearCreateInternalRequestDocument.clearGeneralDataTextFields();
     ClearCreateInternalRequestDocument.clearEditItems();
     createInternalItemDetails.ItemDetails.items.clear();
-    int i=0;
+    int i = 0;
     for (MNJCD1 mnjcd1 in ItemDetails.items) {
       if (mnjcd1.IsFromStock) {
         createInternalItemDetails.ItemDetails.items.add(PRITR1(
@@ -66,20 +67,45 @@ class ItemDetails extends StatefulWidget {
     }
 
     String TransId =
-    await GenerateTransId.getTransId(tableName: 'PROITR', docName: 'PRIR');
+        await GenerateTransId.getTransId(tableName: 'PROITR', docName: 'PRIR');
 
     print(TransId);
+    OPTRE1? oPTRE1;
+    MNOWCM? mNOWCM;
+    OEMPModel? oemp;
+    List<OPTRE1> l = await retrieveOPTRE1ById(
+        null, 'TransId = ?', [GeneralData.TripTransId]);
+    if (l.isNotEmpty) {
+      oPTRE1 = l[0];
+    }
+    List<MNOWCM> list =
+        await retrieveMNOWCMById(null, 'Code', [GeneralData.workCenterCode]);
+    if (list.isNotEmpty) {
+      mNOWCM = list[0];
+    }
+    //db.OEMPs.FirstOrDefault(x => x.Code == PROITRViewModel.PROITR.RequestedCode)?.MobileNo ?? "";
+    List<OEMPModel> pList = await retrieveOEMPById(
+        null, 'Code = ?', [GeneralData.assignedUserCode]);
+    if (pList.isNotEmpty) {
+      oemp = pList[0];
+    }
     ClearCreateInternalRequestDocument.setGeneralData(
         data: PROITR(
-          RequestedCode: GeneralData.assignedUserCode,
-          RequestedName: GeneralData.assignedUserName,
-          TransId: TransId,
-          TripTransId: GeneralData.TripTransId,
-          PostingDate: DateTime.now(),
-          ValidUntill: DateTime.now().add(Duration(days: 7)),
-          DocStatus: 'Open',
-          ApprovalStatus: 'Pending',
-        ));
+      RequestedCode: GeneralData.assignedUserCode,
+      RequestedName: GeneralData.assignedUserName,
+      TransId: TransId,
+      TripTransId: GeneralData.TripTransId,
+      PostingDate: DateTime.now(),
+      ValidUntill: DateTime.now().add(Duration(days: 7)),
+      DocStatus: 'Open',
+      ApprovalStatus: 'Pending',
+      DeptCode: oPTRE1?.DeptCode,
+      DeptName: oPTRE1?.DeptName,
+      Currency: userModel.Currency,
+      FromWhsCode: mNOWCM?.WhsCode,
+      MobileNo: oemp?.MobileNo,
+      BaseTab: "MNCLD1",
+    ));
 
     Get.to(() => InternalRequest(0));
   }
@@ -110,38 +136,38 @@ class ItemDetails extends StatefulWidget {
       return;
     }
     String TransId =
-    await GenerateTransId.getTransId(tableName: 'PROPRQ', docName: 'PR');
+        await GenerateTransId.getTransId(tableName: 'PROPRQ', docName: 'PR');
     print(TransId);
-    OPTRE1? oPTRE1 ;
-    MNOWCM? mNOWCM ;
-    List<OPTRE1> l=await retrieveOPTRE1ById(null, 'TransId = ?', [GeneralData.TripTransId]);
-    if(l.isNotEmpty)
-      {
-        oPTRE1=l[0];
-      }
+    OPTRE1? oPTRE1;
+    MNOWCM? mNOWCM;
+    List<OPTRE1> l = await retrieveOPTRE1ById(
+        null, 'TransId = ?', [GeneralData.TripTransId]);
+    if (l.isNotEmpty) {
+      oPTRE1 = l[0];
+    }
     // db.MNOWCMs.FirstOrDefault(x => x.Code == mNOJCDViewModel.MNOJCD.WorkCenterCode)?.WhsCode
-    List<MNOWCM> list=await retrieveMNOWCMById(null, 'Code', [GeneralData.workCenterCode]);
-    if(list.isNotEmpty)
-      {
-        mNOWCM=list[0];
-      }
+    List<MNOWCM> list =
+        await retrieveMNOWCMById(null, 'Code', [GeneralData.workCenterCode]);
+    if (list.isNotEmpty) {
+      mNOWCM = list[0];
+    }
     ClearPurchaseRequestDocument.setGeneralData(
         data: PROPRQ(
-          RequestedCode: GeneralData.assignedUserCode,
-          RequestedName: GeneralData.assignedUserName,
-          TransId: TransId,
-          DeptCode: oPTRE1?.DeptCode,
-          DeptName: oPTRE1?.DeptName,
-          WhsCode: mNOWCM?.Code,
-          Currency: userModel.Currency,
-          CurrRate: 1,
-          BaseTab: "MNJCD1",
-          TripTransId: GeneralData.TripTransId,
-          PostingDate: DateTime.now(),
-          ValidUntill: DateTime.now().add(Duration(days: 7)),
-          DocStatus: 'Open',
-          ApprovalStatus: 'Pending',
-        ));
+      RequestedCode: GeneralData.assignedUserCode,
+      RequestedName: GeneralData.assignedUserName,
+      TransId: TransId,
+      DeptCode: oPTRE1?.DeptCode,
+      DeptName: oPTRE1?.DeptName,
+      WhsCode: mNOWCM?.Code,
+      Currency: userModel.Currency,
+      CurrRate: 1,
+      BaseTab: "MNJCD1",
+      TripTransId: GeneralData.TripTransId,
+      PostingDate: DateTime.now(),
+      ValidUntill: DateTime.now().add(Duration(days: 7)),
+      DocStatus: 'Open',
+      ApprovalStatus: 'Pending',
+    ));
 
     Get.to(() => PurchaseRequest(0));
   }
@@ -175,21 +201,21 @@ class ItemDetails extends StatefulWidget {
     }
 
     String TransId =
-    await GenerateTransId.getTransId(tableName: 'IMOGDI', docName: 'MNGI');
+        await GenerateTransId.getTransId(tableName: 'IMOGDI', docName: 'MNGI');
     print(TransId);
     ClearGoodsIssueDocument.setGeneralData(
         imogdi: IMOGDI(
-          RequestedCode: GeneralData.assignedUserCode,
-          RequestedName: GeneralData.assignedUserName,
-          TransId: TransId,
-          Currency: userModel.Currency,
-          CurrRate: double.tryParse(userModel.Rate?.toString() ?? ''),
-          TripTransId: GeneralData.TripTransId,
-          PostingDate: DateTime.now(),
-          ValidUntill: DateTime.now().add(Duration(days: 7)),
-          DocStatus: 'Open',
-          ApprovalStatus: 'Pending',
-        ));
+      RequestedCode: GeneralData.assignedUserCode,
+      RequestedName: GeneralData.assignedUserName,
+      TransId: TransId,
+      Currency: userModel.Currency,
+      CurrRate: double.tryParse(userModel.Rate?.toString() ?? ''),
+      TripTransId: GeneralData.TripTransId,
+      PostingDate: DateTime.now(),
+      ValidUntill: DateTime.now().add(Duration(days: 7)),
+      DocStatus: 'Open',
+      ApprovalStatus: 'Pending',
+    ));
 
     Get.to(() => GoodsIssue(0));
   }
@@ -340,10 +366,11 @@ class _ItemDetailsState extends State<ItemDetails> {
                                                   TextSpan(
                                                     children: [
                                                       getPoppinsTextSpanHeading(
-                                                          text: 'EquipmentCode'),
-                                                      getPoppinsTextSpanDetails(
                                                           text:
-                                                          mnjcd1.EquipmentCode ??
+                                                              'EquipmentCode'),
+                                                      getPoppinsTextSpanDetails(
+                                                          text: mnjcd1
+                                                                  .EquipmentCode ??
                                                               ''),
                                                     ],
                                                   ),
@@ -433,7 +460,8 @@ class _ItemDetailsState extends State<ItemDetails> {
                                                     ),
                                                     Expanded(
                                                         child: getPoppinsText(
-                                                            text: 'Internal Request',
+                                                            text:
+                                                                'Internal Request',
                                                             textAlign: TextAlign
                                                                 .start)),
                                                   ],
@@ -498,7 +526,8 @@ class _ItemDetailsState extends State<ItemDetails> {
                                                     ),
                                                     Expanded(
                                                         child: getPoppinsText(
-                                                            text: 'Purchase Request',
+                                                            text:
+                                                                'Purchase Request',
                                                             textAlign: TextAlign
                                                                 .start)),
                                                   ],
@@ -537,8 +566,7 @@ class _ItemDetailsState extends State<ItemDetails> {
                                                   TextSpan(
                                                     children: [
                                                       getPoppinsTextSpanHeading(
-                                                          text:
-                                                              'Req Date'),
+                                                          text: 'Req Date'),
                                                       getPoppinsTextSpanDetails(
                                                           text: getFormattedDate(
                                                               mnjcd1
@@ -558,77 +586,81 @@ class _ItemDetailsState extends State<ItemDetails> {
                                     children: [
                                       Expanded(
                                           child: InkWell(
-                                            onTap: () async {
-                                              await showDialog(
-                                                barrierDismissible: false,
-                                                context: context,
-                                                builder: (BuildContext context) {
-                                                  return AlertDialog(
-                                                    content: Container(
-                                                      height: MediaQuery.of(context)
+                                        onTap: () async {
+                                          await showDialog(
+                                            barrierDismissible: false,
+                                            context: context,
+                                            builder: (BuildContext context) {
+                                              return AlertDialog(
+                                                content: Container(
+                                                  height: MediaQuery.of(context)
                                                           .size
                                                           .height /
-                                                          20,
-                                                      width: MediaQuery.of(context)
+                                                      20,
+                                                  width: MediaQuery.of(context)
                                                           .size
                                                           .width /
-                                                          1.5,
-                                                      child: Text(
-                                                        "Are you sure you want to delete this row?",
-                                                        style: TextStyle(
-                                                            color: Colors.black,
-                                                            fontWeight:
+                                                      1.5,
+                                                  child: Text(
+                                                    "Are you sure you want to delete this row?",
+                                                    style: TextStyle(
+                                                        color: Colors.black,
+                                                        fontWeight:
                                                             FontWeight.bold),
-                                                      ),
+                                                  ),
+                                                ),
+                                                actions: [
+                                                  MaterialButton(
+                                                    // OPTIONAL BUTTON
+                                                    shape:
+                                                        RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              40),
                                                     ),
-                                                    actions: [
-                                                      MaterialButton(
-                                                        // OPTIONAL BUTTON
-                                                        shape: RoundedRectangleBorder(
-                                                          borderRadius:
-                                                          BorderRadius.circular(40),
-                                                        ),
-                                                        color: barColor,
-                                                        child: Text(
-                                                          'No',
-                                                          style: TextStyle(
-                                                              color: Colors.white),
-                                                        ),
-                                                        onPressed: () {
-                                                          Navigator.pop(context);
-                                                        },
-                                                      ),
-                                                      MaterialButton(
-                                                        // OPTIONAL BUTTON
-                                                        shape: RoundedRectangleBorder(
-                                                          borderRadius:
-                                                          BorderRadius.circular(40),
-                                                        ),
-                                                        color: Colors.red,
-                                                        child: Text(
-                                                          'Yes',
-                                                          style: TextStyle(
-                                                              color: Colors.white),
-                                                        ),
-                                                        onPressed: () async {
-                                                          ItemDetails.items
-                                                              .removeAt(index);
-                                                          Navigator.pop(context);
-                                                        },
-                                                      ),
-                                                    ],
-                                                  );
-                                                },
-                                              ).then((value) {
-                                                setState(() {});
-                                              });
+                                                    color: barColor,
+                                                    child: Text(
+                                                      'No',
+                                                      style: TextStyle(
+                                                          color: Colors.white),
+                                                    ),
+                                                    onPressed: () {
+                                                      Navigator.pop(context);
+                                                    },
+                                                  ),
+                                                  MaterialButton(
+                                                    // OPTIONAL BUTTON
+                                                    shape:
+                                                        RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              40),
+                                                    ),
+                                                    color: Colors.red,
+                                                    child: Text(
+                                                      'Yes',
+                                                      style: TextStyle(
+                                                          color: Colors.white),
+                                                    ),
+                                                    onPressed: () async {
+                                                      ItemDetails.items
+                                                          .removeAt(index);
+                                                      Navigator.pop(context);
+                                                    },
+                                                  ),
+                                                ],
+                                              );
                                             },
-                                            child: getPoppinsText(
-                                                text: 'Delete',
-                                                color: Colors.red,
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 16),
-                                          )),
+                                          ).then((value) {
+                                            setState(() {});
+                                          });
+                                        },
+                                        child: getPoppinsText(
+                                            text: 'Delete',
+                                            color: Colors.red,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 16),
+                                      )),
                                     ],
                                   ),
                                 ],
