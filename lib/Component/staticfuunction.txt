@@ -1,0 +1,1370 @@
+using GSF.Net.Smtp;
+using LinqKit;
+using LitplUtils.SharedModels;
+
+//For getting email 
+using MailKit;
+using MailKit.Net.Imap;
+using MailKit.Search;
+using MailKit.Security;
+using Microsoft.Ajax.Utilities;
+using MimeKit;
+using MYBUSINESS.Controllers.CommonController;
+using MYBUSINESS.CustomClasses;
+using MYBUSINESS.HRMS.ViewModels;
+using MYBUSINESS.Models;
+using MYBUSINESS.Models;
+using NPOI.SS.Formula.Functions;
+using NPOI.SS.Formula.Functions;
+using Org.BouncyCastle.Bcpg.OpenPgp;
+using Org.BouncyCastle.Utilities.Net;
+using System;
+using System.Collections.Generic;
+using System.Configuration;
+using System.Data;
+using System.Data.Entity;
+using System.Data.SqlClient;
+using System.Globalization;
+using System.Linq;
+using System.Net;
+using System.Net.Mail;
+using System.Reflection;
+using System.Security.Cryptography;
+using System.Text;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
+using System.Threading.Tasks;
+using System.Web;
+using System.Web.Mvc;
+using System.Windows.Input;
+using static ICSharpCode.SharpZipLib.Zip.ExtendedUnixData;
+
+public class EmailDetails
+{
+  public string Subject { get; set; }
+  public string Body { get; set; }
+  public string From { get; set; }
+  public string Date { get; set; }
+  public bool IsReply { get; set; }
+  public bool IsForward { get; set; }
+}
+
+namespace MYBUSINESS.CustomClasses
+{
+  public static class StaticFuntion
+  {
+
+    private static readonly BusinessContext _db = new BusinessContext();
+    static StaticFuntion() { }
+
+    public static void UpdateOdometerInOVCL(BusinessContext db, string EquipmentCode, decimal? OdometerReading)
+    {
+      decimal decimalOdometerReading = OdometerReading ?? 0;
+      try
+      {
+        OVCL oVCL = db.OVCLs.FirstOrDefault(x => x.Code == EquipmentCode);
+        if (oVCL != null)
+        {
+          if (oVCL.OdometerReading < decimalOdometerReading)
+          {
+            oVCL.OdometerReading = decimalOdometerReading;
+            oVCL.UpdateDate = DateTime.Now;
+            _ = db.Entry(oVCL).State = EntityState.Modified;
+            _ = db.SaveChanges();
+          }
+        }
+      }
+      catch (Exception) { }
+    }
+
+    // IsInventoryItem
+    public static bool IsInventoryItem(BusinessContext db, string ItemCode)
+    {
+      return db.OITMs.FirstOrDefault(x => x.ItemCode == ItemCode)?.IsInventoryItem ?? false;
+    }
+
+    // get Item Weight
+    public static decimal GetItemWeightByQuantity(string ItemCode, decimal? Quantity)
+    {
+      // if quantity is null then set it to 1 
+      // it means it will return single item weight
+      return (_db.OITMs.FirstOrDefault(x => x.ItemCode == ItemCode)?.Weight ?? 0) * (Quantity ?? 0);
+    }
+
+    // get qty by ItemCode and Weight
+    public static decimal GetItemQuantityByWeight(string ItemCode, decimal? Weight)
+    {
+      // weight divided by single item weight
+      return (Weight ?? 0) / GetItemWeightByQuantity(ItemCode, 1);
+    }
+
+    public static List<MNTTP1> GetPairedEquipments(string inputValue)
+    {
+      List<MNTTP1> MNTTP1s = new List<MNTTP1>();
+      // Get the latest MNOTTP record for the given EquipmentCode
+      MNOTTP mNOTTP = _db.MNOTTPs
+          .Where(m => m.EquipmentCode == inputValue)
+          .OrderByDescending(m => m.CreateDate)
+          .FirstOrDefault();
+
+      if (mNOTTP != null)
+      {
+        // Get the associated MNTTP1 records
+        MNTTP1s = _db.MNTTP1
+            .Where(m => m.TransId == mNOTTP.TransId && m.StartDate < DateTime.Now && m.EndDate > DateTime.Now)
+            .ToList();
+      }
+      return MNTTP1s;
+    }
+
+    public static string GetLocalCurrency(BusinessContext db)
+    {
+      return db.OCINs.FirstOrDefault().LCurr;
+    }
+
+    public static string GetAttachmentPath(MYBUSINESS.Models.Common common, HttpPostedFileBase ImageData = null, string AttachmentUrlId = null)
+    {
+      string path = "";
+      if (ImageData != null)
+      {
+        path = common.UploadFileInServer(ImageData, "GeneraralAttachmentsV1");
+      }
+      else if (AttachmentUrlId != null)
+      {
+        path = AttachmentUrlId;
+      }
+      return path;
+    }
+
+    public static string GetWhsCodeByItemCode(string ItemCode)
+    {
+      return _db.IWHS.FirstOrDefault(x => x.ItemCode == ItemCode)?.WhsCode ?? "";
+    }
+    public static string GetWhsCodeByBranchId(string BranchCode)
+    {
+      return _db.OWHS.FirstOrDefault(x => x.BranchId == BranchCode)?.WhsCode ?? "";
+    }
+
+    public static string GetEquipmentGroupCodeByEquipmentCode(string EquipmentCode)
+    {
+      return _db.OVCLs.FirstOrDefault(x => x.Code == EquipmentCode)?.EquipmentGroupCode ?? "";
+    }
+    public static string GetWorkCenterNameByCode(string Code)
+    {
+      return _db.MNOWCMs.FirstOrDefault(x => x.Code == Code)?.Name ?? "";
+    }
+    public static int GetNumberOfItemsByTransId(string controllerName, string TransId)
+    {
+      switch (controllerName)
+      {
+        case "OQUTs":
+          return _db.QUT1.Where(x => x.TransId == TransId).Count();
+        case "ORDRs":
+          return _db.RDR1.Where(x => x.TransId == TransId).Count();
+        case "OINVs":
+          return _db.INV1.Where(x => x.TransId == TransId).Count();
+        default: return 0;
+      }
+    }
+
+    public static TROTR AddTROTRS(TROTR TROTRS, TRTRS1 tRTRS1, BusinessContext db, OUSR user)
+    {
+      string errorMessage = "";
+      string TransID = Models.Common.GetTransId_Save("TRTT", ref errorMessage);
+      TROTRS.TransId = TransID;
+
+      try
+      {
+        bool isAnyEntryExist = db.TROTRS.Any(x => x.TripTransId == TROTRS.TripTransId && x.TruckNo == TROTRS.TruckNo);
+        if (isAnyEntryExist)
+        {
+          // int? rowId = db.TRTRS1.Where(x => x.TransId == TROTRS.TransId)?.Max(x => x.RowId) ?? -1;
+          // get max from trtrs1 where we can found entry cannot found may can null but we neeul to assing -1 if there is something wrong
+          int rowId = db.TRTRS1.Where(x => x.TransId == TROTRS.TransId).Max(x => x.RowId) ?? -1;
+          rowId++;
+          tRTRS1.RowId = rowId;
+
+          tRTRS1.TransId = TROTRS.TransId;
+          // Set other properties for tRTRS1
+          tRTRS1.DriverCode = tRTRS1.DriverCode;
+          tRTRS1.DriverName = tRTRS1.DriverName;
+          tRTRS1.RouteCode = tRTRS1.RouteCode;
+          tRTRS1.RouteName = tRTRS1.RouteName;
+          tRTRS1.OdometerReading = tRTRS1.OdometerReading;
+          tRTRS1.AvailableFuel = tRTRS1.AvailableFuel;
+          tRTRS1.LoadWeight = tRTRS1.LoadWeight;
+          
+          db.TRTRS1.Add(tRTRS1);
+          db.SaveChanges();
+          return TROTRS;
+        }
+        else
+        {
+          tRTRS1.RowId = 0;
+          // Set dates and user info
+          TROTRS.CreateDate = DateTime.Now;
+          TROTRS.UpdateDate = DateTime.Now;
+          TROTRS.CreatedBy = user.UserCode;
+          TROTRS.BranchId = user.BranchId.ToString();
+
+          // Set TRTRS1 properties
+          tRTRS1.TransId = TransID;
+          tRTRS1.DriverCode = tRTRS1.DriverCode;
+          tRTRS1.DriverName = tRTRS1.DriverName;
+          tRTRS1.RouteCode = tRTRS1.RouteCode;
+          tRTRS1.RouteName = tRTRS1.RouteName;
+          tRTRS1.OdometerReading = tRTRS1.OdometerReading;
+          tRTRS1.AvailableFuel = tRTRS1.AvailableFuel;
+          tRTRS1.LoadWeight = tRTRS1.LoadWeight;
+
+          db.TROTRS.Add(TROTRS);
+          db.TRTRS1.Add(tRTRS1);
+
+          db.SaveChanges();
+          return TROTRS;
+        }
+      }
+      catch (Exception ex)
+      {
+        // Log the exception (logging mechanism not shown here)
+        throw new Exception("An error occurred while adding TROTR and TRTRS1 records.", ex);
+      }
+    }
+
+    public static TRTRS1 AddTRTRS1(BusinessContext db, OUSR user, TRTRS1 TRTRS1, string TripTransId, string TruckNo)
+    {
+      TROTR TROTRS = db.TROTRS.FirstOrDefault(x => x.TripTransId == TripTransId && x.TruckNo == TruckNo);
+      int RowId = db.TRTRS1.Where(x => x.TransId == TROTRS.TransId)?.Max(y => y.RowId) ?? -1;
+      RowId = ++RowId;
+
+      TRTRS1.TransId = TROTRS.TransId;
+      TRTRS1.RowId = RowId;
+      TRTRS1.CreateDate = DateTime.Now;
+      TRTRS1.UpdateDate = DateTime.Now;
+
+      decimal OdometerReading = 0;
+      if (!decimal.TryParse(TRTRS1.OdometerReading, out decimal result))
+      {
+        OdometerReading = 0;
+      }
+      else
+      {
+        OdometerReading = result;
+      }
+      StaticFuntion.UpdateOdometerInOVCL(db, TROTRS.TruckNo, OdometerReading);
+
+      decimal LoadWeight = 0;
+      try
+      {
+        if (TRTRS1?.LoadWeight == null)
+        {
+          LoadWeight = db.OPTRE1.Where(x => x.TransId == TROTRS.TripTransId && x.TruckNo == TROTRS.TruckNo).Sum(y => y.LoadQty) ?? 0;
+        }
+      }
+      catch (Exception ex)
+      {
+        LoadWeight = 0;
+      }
+
+      TRTRS1.LoadWeight = LoadWeight;
+
+      TRTRS1 = db.TRTRS1.Add(TRTRS1);
+      _ = db.SaveChanges();
+
+      // now close expense capture and create cash reconciliation if applicable
+      CloseDocuments.CloseDocumentsByTripTracking(db, user, TRTRS1.TransId);
+
+
+      return TRTRS1;
+    }
+
+    //////////////////////////////////////Getting reiceived mails for generating supprot through email ////////////////
+    public static List<EmailDetails> FetchUnseenEmails(string email, string password, string server, int port)
+    {
+      var unseenEmails = new List<EmailDetails>();
+      using (var client = new ImapClient())
+      {
+        client.Connect(server, port, SecureSocketOptions.SslOnConnect); // Use SSL/TLS
+        client.Authenticate(email, password);
+        var inbox = client.Inbox;
+        inbox.Open(MailKit.FolderAccess.ReadWrite); // Open the inbox with read-write access
+                                                    // Get the UIDs of all unseen messages in the inbox
+        var unseenUids = inbox.Search(SearchQuery.NotSeen);
+
+        foreach (var uid in unseenUids)
+        {
+          // Fetch the full message
+          var message = inbox.GetMessage(uid);
+          bool isReply = IsReply(message.Subject, message.TextBody);
+          bool isForward = IsForward(message.Subject, message.TextBody);
+          // Add the details to the list
+          unseenEmails.Add(new EmailDetails
+          {
+            Subject = message.Subject,
+            From = message.From.ToString(),
+            Body = message.TextBody,
+            Date = message.Date.ToString(),
+            IsReply = isReply,
+            IsForward = isForward
+          });
+
+          // Mark the message as seen
+          inbox.AddFlags(uid, MessageFlags.Seen, true);
+        }
+      }
+
+      return unseenEmails;
+    }
+
+    private static bool IsReply(string subject, string body)
+    {
+      // For example, checking for "Re:" in the subject or common reply headers in the body
+      return subject.StartsWith("Re:", StringComparison.OrdinalIgnoreCase) ||
+             Regex.IsMatch(body, @"(?i)(From:|Sent:|To:|Subject:|Cc:|Bcc:)");
+    }
+
+    // Check if the email is a forward based on common patterns
+    private static bool IsForward(string subject, string body)
+    {
+      // For example, checking for "Fwd:" in the subject or common forward headers in the body
+      return subject.StartsWith("Fwd:", StringComparison.OrdinalIgnoreCase) ||
+             Regex.IsMatch(body, @"(?i)(From:|Sent:|To:|Subject:|Cc:|Bcc:)");
+    }
+
+    //////////////////////////////////////Getting reiceived End ////////////////
+    public static bool SendEmailForTicketNotification(
+      List<string> emailList,
+      string TransId,
+      string employeeName,
+      string Remarks,
+      string complaintHandler,
+      string IssueRemarks,
+      string Subject, int ID
+      )
+    {
+      bool isEmailSent = false;
+      if (false)
+      {
+        return isEmailSent;
+      }
+      //////////////////
+      StaticFuntion.SendEmail(
+      emailList,
+          $"New Ticket Raised TicketId: {TransId}",
+            $@"
+                Dear {employeeName},
+                We're addressing a reported issue concerning {Subject}.
+                Your cooperation in resolving this matter promptly is appreciated. 
+                Please engage with us to ensure a respectful workplace for all.
+                Best regards,
+                LITPL
+              -- Document Details --
+              Subject: {Subject}
+              Manager: {complaintHandler}
+              Activity Remarks: {Remarks}
+              Issue Remarks: {IssueRemarks}
+              Document Action:http://103.191.130.12:7009/SUOISUs/Edit/{ID}
+              Document Details:http://103.191.130.12:7009/SUOISUs/Details/{ID}
+            ");
+      //////////////////
+      return isEmailSent;
+    }
+
+    public static bool SendEmailForComplaintNotification(
+      List<string> emails,
+      string TransId,
+      string employeeName,
+      string Remarks,
+      string complaintHandler
+      )
+    {
+      bool isEmailSent = false;
+      if (false)
+      {
+        return isEmailSent;
+      }
+      //////////////////
+      StaticFuntion.SendEmail(
+      emails,
+          $"Urgent Employee Complaint Notification",
+            $@"
+                Dear {employeeName},
+
+                We're addressing a reported issue concerning {Remarks}. Your cooperation in resolving this matter promptly is appreciated. Please engage with us to ensure a respectful workplace for all. Contact {complaintHandler} for queries.
+
+                Best regards,
+                {"Rohit"}
+              -- Document Details --
+              Document Details: http://103.187.248.161:9211/LITPL_OOAL/Index?DocID={1}
+            ");
+      //////////////////
+      return isEmailSent;
+    }
+
+
+
+    public static bool SendEmailForTicketActivityNotification(
+     List<string> emailList,
+     string TransId,
+     string employeeName,
+     string Remarks,
+     string complaintHandler,
+     int ID
+     )
+    {
+      bool isEmailSent = false;
+      if (false)
+      {
+        return isEmailSent;
+      }
+      //////////////////
+      StaticFuntion.SendEmail(
+      emailList,
+          $"New Activity Raised For Issue {TransId} Notification",
+            $@"
+                Dear {employeeName},
+
+                We're addressing a reported issue concerning No.{TransId}  new activity is generated . Your cooperation in resolving this matter promptly is appreciated. Please engage with us to ensure a respectful workplace for all. Contact {complaintHandler} for queries.
+
+                
+                 Document Details:- http://103.191.130.12:7009/SUOITAs/Edit/{ID}
+
+                Best regards,
+                  LINK IDEAS TECHNOLOGY PVT. LTD.
+            ");
+      //////////////////
+      return isEmailSent;
+    }
+
+    public static bool SendEmail(List<string> emails, string emailSubject, string emailBody)
+    {
+      //////////////////
+      bool isEmailSent = false;
+      try
+      {
+        // get from web config
+        string EmailAddress, EmailHost, EmailPort, EmailPassword, EmailEnableSsl, EmailUseDefaultCredentials;
+        EmailAddress = ConfigurationSettings.AppSettings["EmailAddress"].ToString();
+        EmailHost = ConfigurationSettings.AppSettings["EmailHost"].ToString();
+        EmailPort = ConfigurationSettings.AppSettings["EmailPort"].ToString();
+        EmailPassword = ConfigurationSettings.AppSettings["EmailPassword"].ToString();
+        EmailEnableSsl = ConfigurationSettings.AppSettings["EmailEnableSsl"].ToString();
+        EmailUseDefaultCredentials = ConfigurationSettings.AppSettings["EmailUseDefaultCredentials"].ToString();
+
+        // end
+        MailMessage mailMessage = new MailMessage();
+        mailMessage.From = new MailAddress(EmailAddress);
+        if (emails.Count > 0)
+        {
+          foreach (string email in emails)
+          {
+            try
+            {
+              mailMessage.To.Add(email);
+
+            }
+            catch (Exception) { }
+          }
+        }
+        mailMessage.Subject = emailSubject;
+        mailMessage.Body = emailBody;
+
+        SmtpClient smtpClient = new SmtpClient();
+        smtpClient.Host = EmailHost;
+        smtpClient.Port = int.Parse(EmailPort);
+        smtpClient.UseDefaultCredentials = EmailUseDefaultCredentials == "true" ? true : false;
+        smtpClient.Credentials = new NetworkCredential(EmailAddress, EmailPassword);
+        smtpClient.EnableSsl = EmailEnableSsl == "true" ? true : false;
+        try
+        {
+          smtpClient.Send(mailMessage);
+          Console.WriteLine("Email Sent Successfully.");
+          isEmailSent = true;
+        }
+        catch (Exception ex)
+        {
+          Console.WriteLine("Error: " + ex.Message);
+          isEmailSent = false;
+        }
+      }
+      catch (Exception ex)
+      {
+        isEmailSent = false;
+      }
+      return isEmailSent;
+      //////////////////
+    }
+
+    public static string GetDGLMAPPINGAcctNameByAcctCode(string acctCode)
+    {
+      return _db.DGLMAPPINGs.FirstOrDefault(X => X.AcctCode == acctCode)?.AcctName ?? "";
+    }
+
+    [Obsolete("We must need to pass db object to this function")]
+    public static OCIN GetOCIN()
+    {
+      return _db.OCINs.FirstOrDefault();
+    }
+    public static OCIN GetOCIN(BusinessContext db)
+    {
+      return db.OCINs.FirstOrDefault();
+    }
+    public static string GetConfigNumberStep(OCIN oCIN = null)
+    {
+      string configNumberStep = ".01";
+      if (oCIN == null)
+      {
+        oCIN = (OCIN)HttpContext.Current.Session["OCINs"];
+        configNumberStep = oCIN?.ConfigNumberStep ?? ".01";
+      }
+      try
+      {
+        configNumberStep = _db.OCINs.FirstOrDefault()?.ConfigNumberStep ?? ".01";
+      }
+      catch (Exception) { }
+
+      return configNumberStep;
+    }
+    public static string GetMobileCode(OCIN oCIN = null)
+    {
+      string mobileDialCode = "+91";
+      if (oCIN == null)
+      {
+        oCIN = (OCIN)HttpContext.Current.Session["OCINs"];
+      }
+      try
+      {
+        mobileDialCode = _db.OCRies.Where(x => x.Code == oCIN.CountryCode).FirstOrDefault()?.MobileDialCode ?? mobileDialCode;
+      }
+      catch (Exception ex) { }
+
+      return mobileDialCode;
+    }
+    public static string ConvertDbToUIDateTimeString(DateTime? dateTime, OCIN oCIN = null)
+    {
+      if (dateTime == null)
+      {
+        return "";
+      }
+      else
+      {
+        if (oCIN == null)
+        {
+          try
+          {
+            oCIN = _db.OCINs.FirstOrDefault();
+          }
+          catch (Exception ex) { }
+        }
+        if (oCIN?.DateFormat == "dd/MMM/yyyy")
+        {
+          return dateTime.Value.ToString("dd/MMM/yyyy");
+        }
+        else
+        {
+          return dateTime.Value.ToString("dd/mm/yyyy");
+        }
+      }
+    }
+    public static string ConvertDecimalToThousandSeparatedString(decimal number)
+    {
+      // Create a culture info to ensure correct thousand separator placement
+      CultureInfo culture = CultureInfo.CreateSpecificCulture("en-US");
+      // // Remove the thousand separator from the decimal part
+      //NumberFormatInfo numberFormat = culture.NumberFormat;
+      // numberFormat.NumberDecimalSeparator = ".";
+      // numberFormat.NumberGroupSeparator = ",";
+      string formattedNumber = number.ToString("#,0.########", culture);
+      return formattedNumber;
+    }
+
+    public static string ConvertDbDateTimeToUITimeString(DateTime? dateTime = null, TimeSpan? time = null)
+    {
+      if (dateTime == null)
+      {
+        if (time == null)
+        {
+          return "";
+        }
+        else
+        {
+          return time?.ToString(@"hh\:mm"); // 12-hour format
+        }
+      }
+      else
+      {
+        return dateTime?.ToString("HH:mm"); // "hh:mm tt"; // 12-hour format with AM/PM
+      }
+    }
+
+    public static OMSP GetSingleItemPriceByCardCode(string ItemCode, string CardCode)
+    {
+      // TODO::: why we have created this we already have this type of function
+      // Start Date and End Date validation
+      // if multiple result in same date range then select latest one
+      OMSP oMSP = (from OMSP in _db.OMSPs join OCRD in _db.OCRDs on OMSP.PriceListCode equals OCRD.PriceListCode where OMSP.ItemCode == ItemCode && OCRD.Code == CardCode select OMSP).DistinctBy(x => x.ItemCode).FirstOrDefault();
+      return oMSP;
+    }
+
+    public static List<ECP1QueryModels> GetECP1QueryModelsByRPTransIdAndEmpCode(BusinessContext db, string RPTransId, string EmpCode)
+    {
+      List<string> CRTransIdList = db.OECPs.Where(x => x.RPTransId == RPTransId && x.EmpId == EmpCode).Select(y => y.TransId).ToList();
+      List<ECP1QueryModels> allExpenses = (from ec1 in db.ECP1
+                                           join ecp2 in db.ECP2 on ec1.TransId equals ecp2.TransId
+                                           where CRTransIdList.Contains(ec1.TransId)
+                                           select new ECP1QueryModels()
+                                           {
+                                             TransId = ec1.TransId,
+                                             ExpId = ec1.ExpId.ToString(),
+                                             ExpShortDesc = ec1.ExpShortDesc,
+                                             Currency = ecp2.Currency,
+                                           }).ToList();
+
+      List<ECP1QueryModels> allExpenses2 = (from exr1 in db.EXR1
+                                            join oexrs in db.OEXRs
+                                            on exr1.TransId equals oexrs.TransId
+                                            where CRTransIdList.Contains(oexrs.CRTransId)
+                                            select new ECP1QueryModels()
+                                            {
+                                              TransId = oexrs.CRTransId,
+                                              ExpId = exr1.ExpId.ToString(),
+                                              ExpShortDesc = exr1.ExpShortDesc,
+                                              Currency = exr1.Currency,
+                                            }).ToList();
+
+      List<ECP1QueryModels> joinedExpenses = allExpenses.Union(allExpenses2).DistinctBy(x => new { x.ExpId, x.Currency }).ToList();
+
+      joinedExpenses.ForEach(x =>
+      {
+        List<ECP1> ecp1s = db.ECP1.Where(c => CRTransIdList.Contains(c.TransId) && c.ExpId.ToString() == x.ExpId && c.Currency == x.Currency).ToList();
+        List<OEXR> oEXRs = db.OEXRs.Where(c => CRTransIdList.Contains(c.CRTransId)).ToList();
+        List<string> OEXRTransIdList = oEXRs.Select(zz => zz.TransId).ToList();
+        decimal expenseCapturedAmt = 0;
+        decimal expenseApprovedAmt = 0;
+        try
+        {
+          expenseCapturedAmt = db.EXR1.Where(y => OEXRTransIdList.Contains(y.TransId) && y.ExpId.ToString() == x.ExpId && y.Currency == x.Currency).Sum(z => z.Amount) ?? 0;
+        }
+        catch (Exception ex) { }
+        try
+        {
+          expenseApprovedAmt = db.EXR1.Where(y => OEXRTransIdList.Contains(y.TransId) && y.ExpId.ToString() == x.ExpId && y.Currency == x.Currency && y.LineApprovalStatus == "Approved").Sum(z => z.AAmount) ?? 0;
+        }
+        catch (Exception ex) { }
+        x.RequestedAmt = ecp1s.Sum(zz => zz.RAmount);
+        x.ApprovedAmt = ecp1s.Sum(zz => zz.AAmount);
+        x.ReqApprvAmount = ecp1s.Sum(zz => zz.AAmount);
+        x.ExpenseCapturedAmt = expenseCapturedAmt;
+        x.ExpenseApprovedAmt = expenseApprovedAmt;
+      });
+
+      return joinedExpenses;
+    }
+
+    public static List<ReconcilationQueryModel> GetCurrencyWiseSummaryByRPTransIdAndEmpCode(BusinessContext db, string RPTransId, string EmpCode)
+    {
+      List<string> ListOfNotReconciledCRTransId = (from oecp in db.OECPs
+                                                   where !(from orct in db.ORCTs
+                                                           where oecp.RPTransId == orct.RPTransId && oecp.EmpId == orct.EmpId
+                                                           select true).Any()
+                                                   select oecp.TransId).ToList();
+
+      List<ReconcilationQueryModel> ReconcilationQueryModels =
+        (from oecp in db.OECPs
+         join ecp2 in db.ECP2 on oecp.TransId equals ecp2.TransId
+         where oecp.ApprovalStatus == "Approved" && ListOfNotReconciledCRTransId.Contains(oecp.TransId)
+         && oecp.RPTransId == RPTransId
+         && oecp.EmpId == EmpCode
+         select new ReconcilationQueryModel()
+         {
+           TotalRequestAmount = ecp2.TotalRequestedAmt,
+           TotalApprovedAmount = ecp2.TotalApprovedAmt,
+           CRTransId = oecp.TransId,
+           EmpCode = oecp.EmpId,
+           EmpName = oecp.EmpName,
+           EmpGroupId = oecp.EmpGroupId,
+           EmpDesc = oecp.EmpDesc,
+           RPTransId = oecp.RPTransId,
+           Currency = ecp2.Currency,
+         }).DistinctBy(x => new { x.CRTransId, x.Currency }).ToList();
+
+      // Assuming ReconcilationQueryModels is the original collection
+      IEnumerable<IGrouping<string, ReconcilationQueryModel>> groupedModels = ReconcilationQueryModels.GroupBy(x => x.Currency);
+      // List to hold the final result
+      List<ReconcilationQueryModel> NewReconcilationQueryModels = new List<ReconcilationQueryModel>();
+
+      foreach (IGrouping<string, ReconcilationQueryModel> g in groupedModels)
+      {
+        string currency = g.Key;
+        decimal? totalRequestAmount = g.Sum(zz => zz.TotalRequestAmount);
+        decimal? totalApprovedAmount = g.Sum(zz => zz.TotalApprovedAmount);
+        List<string> CRTransIds = g.Select(oecp => oecp.CRTransId).ToList(); // Gather all TransIds in the group
+
+        // Fetch ExpenseCapture for the current group
+        decimal expenseCapture = (from oexr in db.OEXRs
+                                  join exr1 in db.EXR1 on oexr.TransId equals exr1.TransId
+                                  where CRTransIds.Contains(oexr.CRTransId) && oexr.ApprovalStatus == "Approved" &&
+                                  exr1.Currency == currency
+                                  select exr1.AAmount).Sum() ?? 0;
+
+        // Fetch TotalCashHandOver for the current group
+        decimal totalCashHandOver = (from ocsh in db.OCSHes
+                                     join csh1 in db.CSH1 on ocsh.TransId equals csh1.TransId
+                                     where CRTransIds.Contains(ocsh.CRTransId) && ocsh.ApprovalStatus == "Approved" &&
+                                      csh1.Currency == currency
+                                     select csh1.HandoverAmt).Sum() ?? 0;
+
+        // Create ReconcilationQueryModel for the current group
+        ReconcilationQueryModel reconcilationQueryModel = new ReconcilationQueryModel
+        {
+          TotalRequestAmount = totalRequestAmount,
+          TotalApprovedAmount = totalApprovedAmount,
+          ExpenseCapture = expenseCapture,
+          TotalCashHandOver = totalCashHandOver,
+          CRTransId = g.First().CRTransId, // Assuming TransId is the same for all in the group
+          EmpCode = g.First().EmpCode,
+          EmpName = g.First().EmpName,
+          EmpGroupId = g.First().EmpGroupId,
+          EmpDesc = g.First().EmpDesc,
+          RPTransId = g.First().RPTransId,
+          Currency = currency
+        };
+
+        NewReconcilationQueryModels.Add(reconcilationQueryModel);
+      }
+
+      // Now reconciledModels list contains the transformed data
+
+      ReconcilationQueryModels = NewReconcilationQueryModels
+                                                .GroupBy(x => new { x.RPTransId, x.EmpCode, x.Currency })
+                                                .Select(g => new ReconcilationQueryModel
+                                                {
+                                                  TotalRequestAmount = g.Sum(zz => zz.TotalRequestAmount),
+                                                  TotalApprovedAmount = g.Sum(zz => zz.TotalApprovedAmount),
+                                                  ExpenseCapture = g.Sum(zz => zz.ExpenseCapture),
+                                                  TotalCashHandOver = g.Sum(zz => zz.TotalCashHandOver),
+                                                  EmpCode = g.First().EmpCode,
+                                                  EmpName = g.First().EmpName,
+                                                  EmpGroupId = g.First().EmpGroupId,
+                                                  EmpDesc = g.First().EmpDesc,
+                                                  AdditionalAmount = g.Sum(zz => zz.AdditionalAmount),
+                                                  ApproveAditionalAmount = g.Sum(zz => zz.ApproveAditionalAmount),
+                                                  RPTransId = g.First().RPTransId,
+                                                  CRTransIdList = g.Select(aa => aa.CRTransId).ToList(),
+                                                  Currency = g.First().Currency,
+                                                  //IsAnyOEXRApproved = db.OEXRs.Any(zz => g.Select(aa => aa.CRTransId).Contains(zz.CRTransId) && (zz.ApprovalStatus == "Approved" || zz.ApprovalStatus == "Rejected"))
+                                                }).ToList();
+
+      // Now process the `IsAnyOEXRApproved` field separately
+      foreach (ReconcilationQueryModel item in ReconcilationQueryModels)
+      {
+        List<string> crTransIds = item.CRTransIdList;
+        item.IsAnyOEXRApproved = db.OEXRs
+            .Any(zz => crTransIds.Contains(zz.CRTransId) && (zz.ApprovalStatus == "Approved" || zz.ApprovalStatus == "Rejected"));
+      }
+
+      // intentionally commented below line because now expense capture is optional
+      //ReconcilationQueryModels = ReconcilationQueryModels.Where(x => x.IsAnyOEXRApproved == true).ToList();
+
+      return ReconcilationQueryModels;
+    }
+
+    //public static string ConvertDbTimeToUITimeString(DateTime? dateTime, OCIN oCIN = null)
+    //{
+    //  if (dateTime == null)
+    //  {
+    //    return "";
+    //  }
+    //  else
+    //  {
+    //    if (oCIN == null)
+    //    {
+    //      oCIN = (OCIN)HttpContext.Current.Session["OCINs"];
+    //    }
+    //    if (oCIN.DateFormat == "dd/MMM/yyyy")
+    //    {
+    //      return dateTime.Value.ToString("dd/MMM/yyyy");
+    //    }
+    //    else
+    //    {
+    //      return dateTime.Value.ToString("dd/mm/yyyy");
+    //    }
+    //  }
+    //}
+
+    public static IEnumerable<T> DistinctBy<T, TKey>(this IEnumerable<T> items, Func<T, TKey> property)
+    {
+      return items.GroupBy(property).Select(x => x.First());
+    }
+
+    public static string GetUserName(string userCode)
+    {
+      return _db.OUSRs.FirstOrDefault(x => x.UserCode == userCode)?.Name ?? "";
+    }
+    public static string GetEmployeeName(BusinessContext db, string code)
+    {
+      string fullName = "";
+      EmplolyeeName emplolyeeName = db.OEMPs.Where(x => x.Code == code).Select(x => new EmplolyeeName() { FirstName = x.FirstName, LastName = x.LastName, MiddleName = x.MiddleName }).FirstOrDefault();
+      if (emplolyeeName != null)
+      {
+        fullName = emplolyeeName.FirstName + ' ' + emplolyeeName.MiddleName + ' ' + emplolyeeName.LastName;
+      }
+      try
+      {
+        fullName = fullName.Replace("  ", " ");
+      }
+      catch (Exception) { }
+      return fullName;
+    }
+    public static string GetRouteNameByRouteCode(BusinessContext db, string routeCode)
+    {
+      try
+      {
+        return db.ROUTs.FirstOrDefault(x => x.RouteCode == routeCode).RouteName;
+      }
+      catch (Exception)
+      {
+        return "";
+      }
+    }
+    public static string GetEmployeeNameByEmpId(BusinessContext db, int? id)
+    {
+      string fullName = "";
+      EmplolyeeName emplolyeeName = db.OEMPs.Where(x => x.ID == id).Select(x => new EmplolyeeName() { FirstName = x.FirstName, LastName = x.LastName, MiddleName = x.MiddleName }).FirstOrDefault();
+      if (emplolyeeName != null)
+      {
+        fullName = emplolyeeName.FirstName + ' ' + emplolyeeName.MiddleName + ' ' + emplolyeeName.LastName;
+
+      }
+      return fullName;
+    }
+    public static string GetcustomerName(BusinessContext db, string code)
+    {
+      string fullName = "";
+      EmplolyeeName emplolyeeName = db.OCRDs.Where(x => x.Code == code).Select(x => new EmplolyeeName() { FirstName = x.FirstName, LastName = x.LastName, MiddleName = x.MiddleName }).FirstOrDefault();
+      if (emplolyeeName != null)
+      {
+        fullName = emplolyeeName.FirstName + ' ' + emplolyeeName.MiddleName + ' ' + emplolyeeName.LastName;
+
+      }
+      return fullName;
+    }
+
+    public static string HashPassword(string password)
+    {
+      // Convert the password string to a byte array
+      byte[] passwordBytes = Encoding.UTF8.GetBytes(password);
+
+      // Create an instance of the SHA256 hash algorithm
+      SHA256 sha256 = SHA256.Create();
+
+      // Compute the hash value of the password byte array
+      byte[] hashBytes = sha256.ComputeHash(passwordBytes);
+
+      // Convert the hash value to a string
+      string hash = BitConverter.ToString(hashBytes).Replace("-", "").ToLower();
+
+      return hash;
+    }
+    public static bool CheckPassword(string hashedPassword, string password)
+    {
+
+      if (string.IsNullOrEmpty(password))
+      {
+        return false;
+      }
+      // Hash the input password
+      string inputHash = HashPassword(password);
+
+      // Compare the hashed input password with the stored hashed password
+      bool match = (hashedPassword == inputHash);
+
+      return match;
+    }
+    public static bool GetLocalDate()
+    {
+      OCIN oCIN = (OCIN)HttpContext.Current.Session["OCINs"];
+
+      return oCIN.IsLocalDate == true ? true : false;
+    }
+
+    public static int GetHoliday(DateTime fromDate, DateTime endDate)
+    {
+      var date = DateTime.Today; //Set start date
+      List<bool?> Weekdays = new List<bool?>();
+      int sum = 0;
+      int i = 0;
+      DateTime Base = endDate.AddDays(1);
+      int x = DateTime.DaysInMonth(endDate.Year, endDate.Month);
+      while (fromDate.Day <= endDate.Day)
+      {
+        if (GetWeekdays().Contains(fromDate.DayOfWeek.ToString()))
+        {
+          sum += 1;
+        }
+        Console.WriteLine(fromDate.DayOfWeek.ToString());
+        fromDate = fromDate.AddDays(1);
+      }
+      return sum;
+    }
+    public static List<string> GetWeekdays()
+    {
+      string day = "";
+      List<string> ListOfWeekDay = new List<string>();
+      OUSR user = (OUSR)HttpContext.Current.Session["CurrentUser"];
+
+      using (BusinessContext db = new BusinessContext())
+      {
+        var workday = db.HROWPLs.Where(x => x.BranchId == user.BranchId.ToString() && x.Active == true).FirstOrDefault();
+        if (workday.IsSunday == false)
+        {
+          ListOfWeekDay.Add("Sunday");
+        }
+        if (workday.IsMonday == false)
+        {
+          ListOfWeekDay.Add("Monday");
+        }
+        if (workday.IsTuesday == false)
+        {
+          ListOfWeekDay.Add("Tuesday");
+        }
+        if (workday.IsWednesday == false)
+        {
+          ListOfWeekDay.Add("Wednesday");
+        }
+        if (workday.IsThrusday == false)
+        {
+          ListOfWeekDay.Add("Thursday");
+        }
+        if (workday.IsFriday == false)
+        {
+          ListOfWeekDay.Add("Friday");
+        }
+        if (workday.IsSaturday == false)
+        {
+          ListOfWeekDay.Add("Saturday");
+        }
+      }
+      return ListOfWeekDay;
+    }
+
+    public static List<OCRD> GetCustomerListByCRD8(string userCode, List<string> bpTypes = null)
+    {
+      List<string> uSR1BranchList = _db.USR1.Where(y => y.UserCode == userCode).Select(x => x.BranchId).ToList();
+      if (bpTypes != null)
+      {
+        return (from ocrd in _db.OCRDs
+                join crd8 in _db.CRD8
+                on ocrd.Code equals crd8.Code
+                where
+                ocrd.Active == true &&
+                uSR1BranchList.Contains(crd8.BPLID) &&
+                bpTypes.Contains(ocrd.BPType)
+                select ocrd).Distinct().Take(20).ToList();
+      }
+      else
+      {
+        // TODO::: remove sql code and convert it to linq
+      }
+
+      string allUserBranchs = "";
+      allUserBranchs = string.Join(", ", uSR1BranchList.Select(x => $"'{x}'"));
+      DataTable DT = new DataTable();
+      DT = Common.getDatatable("Select TOP 20 T0.Code,  T0.FirstName, T0.Currency, T0.PaymentTermCode, T0.PaymentTermName, T0.PaymentTermDays from OCRD T0 Inner Join CRD8 T1 On T0.Code=T1.Code Where T0.Active = 1 and T0.BPType='" + "C" + "' And  T1.BPLID IN (" + allUserBranchs + ") ");
+      List<OCRD> OCRD_L = new List<OCRD>();
+      OCRD_L = Common.ConvertDataTable<OCRD>(DT);
+
+      return OCRD_L.Distinct().ToList();
+    }
+
+    public static string GetCategoryName(string categoryCode)
+    {
+      string name = "";
+      using (BusinessContext db = new BusinessContext())
+      {
+        name = db.SUOPRCs.Where(x => x.CategoryCode == categoryCode).FirstOrDefault().CategoryName;
+      }
+      return name;
+    }
+
+    public static List<OUSR> GetUserList(string projectCode)
+    {
+      List<OUSR> USERS = new List<OUSR>();
+      using (BusinessContext db = new BusinessContext())
+      {
+
+        USERS = (from SRUOPU in db.SUOPRUs join SUPRU1 in db.SUPRU1 on SRUOPU.Code equals SUPRU1.Code join OUSR in db.OUSRs on SUPRU1.UserCode equals OUSR.UserCode where SRUOPU.ProjectCode == projectCode && OUSR.Type == "Employee" && OUSR.Active == true select OUSR).DistinctBy(x => x.UserCode).ToList();
+      }
+      return USERS.DistinctBy(x => x.UserCode).ToList();
+    }
+
+
+    public static List<OCRD> GetCustomerList(string useCode)
+    {
+      List<OCRD> USERS = new List<OCRD>();
+      using (BusinessContext db = new BusinessContext())
+      {
+
+        USERS = (from SRUOPU in db.OCRDs join SUPRU1 in db.SUOATEs on SRUOPU.Code equals SUPRU1.RaisedBy where SUPRU1.EmpCode == useCode select SRUOPU).ToList();
+      }
+      return USERS.DistinctBy(x => x.Code).ToList();
+    }
+
+    public static int GetTicketDetails(string ticketCode)
+    {
+      int id = 0;
+      using (BusinessContext db = new BusinessContext())
+      {
+        id = db.SUOISUs.Where(x => x.TransId == ticketCode).FirstOrDefault().ID;
+      }
+      return id;
+    }
+
+    public static List<OCRDQueryModels> GetNearByCustomer(List<OCRDQueryModels> queryModel)
+    {
+      Common common = new Common();
+      List<OCRDQueryModels> oCRDQueryModelsInsider = new List<OCRDQueryModels>();
+      using (BusinessContext db = new BusinessContext())
+      {
+        OCRDQueryModels oCRDQueryModels = new OCRDQueryModels();
+        oCRDQueryModelsInsider = db.OCRDs.Where(o => o.Code == "FC0001").ToList().Select(x => oCRDQueryModels.ConvertQueryModel(x)).ToList();
+      }
+      foreach (OCRDQueryModels oCRDQueryModels1 in queryModel)
+      {
+        _ = common.GetNearByLocation(oCRDQueryModels1);
+      }
+      oCRDQueryModelsInsider?.ForEach(x =>
+        {
+          x.IsNearBy = true;
+        });
+      return oCRDQueryModelsInsider;
+    }
+
+    public static int GetIDAssignEmployee(string ticketCode)
+    {
+      int id = 0;
+      using (BusinessContext db = new BusinessContext())
+      {
+        //id = db.SUOATEs.Where(x => x.TicketCode == ticketCode).FirstOrDefault().ID;
+        id = db.SUOATEs.FirstOrDefault(x => x.TicketCode == ticketCode)?.ID ?? 0;
+      }
+      return id;
+    }
+    public static string GetProjectName(string projectCode)
+    {
+      string projectName = "";
+      using (BusinessContext db = new BusinessContext())
+      {
+        projectName = db.SUOPRMs.Where(x => x.ProjectCode == projectCode).FirstOrDefault().ProjectName;
+      }
+      return projectName;
+    }
+
+    public static List<string> GetReportColumns(string tableName)
+    {
+      List<string> columnNames = new List<string>();
+      using (BusinessContext db = new BusinessContext())
+      {
+        string namespaces = "MYBUSINESS.Models";
+        var path = $"{namespaces}.{tableName}";
+        var type = Type.GetType(path);
+        var table = db.Set(type);
+        PropertyInfo[] props = type.GetProperties();
+        foreach (var prp in props)
+        {
+          columnNames.Add(prp.Name);
+        }
+
+      }
+      return columnNames;
+    }
+    public static async Task<List<dynamic>> GetReportData(string tableName)
+    {
+      using (BusinessContext db = new BusinessContext())
+      {
+        // db.GetType().get
+        string namespaces = "MYBUSINESS.Models";
+        var path = $"{namespaces}.{tableName}";
+        Type type = Type.GetType(path);
+        var table = db.Set(type);
+        var x = Activator.CreateInstance(type);
+        var tableData = await table.SqlQuery($"select * from {tableName}").ToListAsync();
+
+        return tableData;
+
+
+      }
+
+
+    }
+
+    public static List<string> GetRemoveList(List<string> columns, List<string> removeColumns)
+    {
+      foreach (string list in removeColumns)
+      {
+        columns.Remove(list);
+      }
+      return columns;
+    }
+
+    public static PropertyInfo[] GetPropertyName(PropertyInfo[] props, List<string> removePropertiesName)
+    {
+      PropertyInfo[] array = { };
+      return array = props.Where(x => !removePropertiesName.Contains(x.Name)).ToArray();
+    }
+    public static string ConvertObjectToDate(List<string> date, string name)
+    {
+      string x = "";
+
+
+      return x = date.Where(y => y == name).FirstOrDefault();
+    }
+
+    //////
+    ////// Transport/maintenence/oinm
+    public static decimal GetAvailableItemsFromOINM(BusinessContext db, string ItemCode, string WhsCode)
+    {
+      // here currency is not applicable becasue we are just getting the available items
+      decimal availableItems = (db.OINMs.Where(x => x.ItemCode == ItemCode && x.WhsCode == WhsCode)?.Sum(y => y.InQty) ?? 0)
+                  -
+                  (db.OINMs.Where(x => x.ItemCode == ItemCode && x.WhsCode == WhsCode)?.Sum(y => y.OutQty) ?? 0);
+
+      return availableItems;
+    }
+
+    public static decimal GetPriceByOINM(string ItemCode, string WhsCode, BusinessContext db)
+    {
+      decimal inOutQtyIntoPriceDifference = (db.OINMs.Where(x => x.ItemCode == ItemCode && x.WhsCode == WhsCode)?.Sum(y => y.InQty * y.Price) ?? 0)
+                  -
+                  (db.OINMs.Where(x => x.ItemCode == ItemCode && x.WhsCode == WhsCode)?.Sum(y => y.OutQty * y.Price) ?? 0);
+
+      decimal inOutQtyDifference = (db.OINMs.Where(x => x.ItemCode == ItemCode && x.WhsCode == WhsCode)?.Sum(y => y.InQty) ?? 0)
+                  -
+                  (db.OINMs.Where(x => x.ItemCode == ItemCode && x.WhsCode == WhsCode)?.Sum(y => y.OutQty) ?? 0);
+      // TODO::: handle divide by zero exception here
+      inOutQtyDifference = inOutQtyDifference <= 0 ? 1 : inOutQtyDifference;
+      return inOutQtyIntoPriceDifference / inOutQtyDifference;
+    }
+    //////
+    //////
+
+
+    /// for salalry calcualation
+    public static decimal? SalaryCalculation(string empcode, BusinessContext db)
+    {
+      var data = db.OEMPs.Where(x => x.Code == empcode).FirstOrDefault();
+      SalaryCalculation salaryCalculation = new SalaryCalculation()
+      {
+        Deduction = GetDeduction(data.EmpGroupId, 50000, db),
+        Contribution = GetContribution(data.EmpGroupId, 50000, db),
+        Earning = GetContribution(data.EmpGroupId, 50000, db),
+        NoOfWorkingDay = db.HROABKs.Where(x => x.EmpCode == data.Code).Count(),
+
+      };
+
+      decimal? totalSalary = (salaryCalculation.Contribution + salaryCalculation.Earning - salaryCalculation.Deduction) + (salaryCalculation.NoOfWorkingDay) * (50000 / 30);
+      return totalSalary;
+    }
+
+
+    public static decimal? GetDeduction(string empgroupId, decimal? salary, BusinessContext db)
+    {
+      var deducation = (from HROADT in db.HROADTs join HRDDT1 in db.HRDDT1 on HROADT.Code equals HRDDT1.Code join HRDDT2 in db.HRDDT2 on HROADT.Code equals HRDDT2.Code where HRDDT1.FromSalary <= salary && HRDDT1.ToSalary >= salary && HRDDT2.EmpGroupId.ToString() == empgroupId.ToString() select HRDDT1).ToList().Select(x => x.ToSalary = GetCalculateDeductionAndContribution(x.FType, salary, x.Amount)).Sum();
+      return deducation;
+    }
+
+    public static decimal? GetContribution(string empgroupId, decimal? salary, BusinessContext db)
+    {
+      var deducation = (from HROCNT in db.HROCNTs join HRCNT1 in db.HRCNT1 on HROCNT.Code equals HRCNT1.Code join HRCNT2 in db.HRCNT2 on HROCNT.Code equals HRCNT2.Code where HRCNT1.FromSalary <= salary && HRCNT1.ToSalary >= salary && HRCNT2.EmpGroupId.ToString() == empgroupId.ToString() select HRCNT1).ToList().Select(x => x.ToSalary = GetCalculateDeductionAndContribution(x.FType, salary, x.Amount)).Sum();
+      return deducation;
+    }
+    public static decimal? GetEarning(string empgroupId, decimal? salary, BusinessContext db)
+    {
+      var deducation = (from HROERN in db.HROERNs join HRERN1 in db.HRERN1 on HROERN.Code equals HRERN1.Code join HRERN2 in db.HRERN2 on HROERN.Code equals HRERN2.Code where HRERN1.FromSalary <= salary && HRERN1.ToSalary >= salary && HRERN2.EmpGroupId.ToString() == empgroupId.ToString() select HRERN1).ToList().Select(x => x.ToSalary = GetCalculateDeductionAndContribution(x.FType, salary, x.Amount)).Sum();
+      return deducation;
+    }
+
+    public static decimal? GetCalculateDeductionAndContribution(string type, decimal? salary, decimal? percentage)
+    {
+      decimal? totalSalary = null;
+      if (type == "Percentage")
+      {
+        totalSalary = (salary * percentage) / 100;
+      }
+      else
+      {
+        totalSalary = salary + percentage;
+      }
+      return totalSalary;
+    }
+    //// end salary calculation
+    ///
+
+    public static string GetTaskName(string taskTransId)
+    {
+      string name = "";
+      using (BusinessContext db = new BusinessContext())
+      {
+        name = db.INOTLTs.Where(x => x.TransId == taskTransId).FirstOrDefault()?.TaskName;
+      }
+      return name;
+    }
+
+    public static string GetProjectName(string projectCode, BusinessContext db)
+    {
+      return db.SUOPRMs.SingleOrDefault(x => x.ProjectCode == projectCode).ProjectName;
+    }
+
+    public static string GetTimeAgoString(DateTime? dateTimeInput)
+    {
+      if (dateTimeInput == null)
+      {
+        return "";
+      }
+      DateTime dateTime = (DateTime)(dateTimeInput != null ? dateTimeInput : DateTime.UtcNow);
+      TimeSpan timeDifference = DateTime.UtcNow - dateTime.ToUniversalTime();
+
+      if (timeDifference.TotalMinutes < 1)
+      {
+        return "just now";
+      }
+      else if (timeDifference.TotalMinutes < 60)
+      {
+        return $"{(int)timeDifference.TotalMinutes} {((int)timeDifference.TotalMinutes == 1 ? "min" : "mins")} ago";
+      }
+      else if (timeDifference.TotalHours < 24)
+      {
+        return $"{(int)timeDifference.TotalHours} {((int)timeDifference.TotalHours == 1 ? "hour" : "hours")} ago";
+      }
+      else
+      {
+        int days = (int)timeDifference.TotalDays;
+        return $"{days} {(days == 1 ? "day" : "days")} ago";
+      }
+    }
+
+    public static List<SUOPBI> GetSUOPBIs(OUSR user, List<SUOPBI> sUOPBIList)
+    {
+      OEMP oEMP = _db.OEMPs.Where(x => x.Code == user.EmpId).FirstOrDefault();
+      List<string> childOEMPCodeList = _db.OEMPs.Where(x => x.ReportingToEmpCode == user.EmpId).Select(y => y.Code).ToList();
+      List<SUOITA> sUOITAs = new List<SUOITA>();
+      sUOITAs = _db.SUOITAs.GroupBy(t => t.BaseTransId)
+           .Select(group => group.OrderByDescending(t => t.CreateDate).FirstOrDefault())
+           .Where(x => x.AssignToEmpCode == user.EmpId).ToList();
+
+      if (oEMP.IsTeamLeader == true)
+      {
+        List<SUOITA> sUOITA2s = _db.SUOITAs
+             .GroupBy(t => t.BaseTransId)
+             .Select(group => group.OrderByDescending(t => t.CreateDate).FirstOrDefault())
+             .Where(x => childOEMPCodeList.Contains(x.AssignToEmpCode))
+             .ToList();
+        sUOITAs.AddRange(sUOITA2s);
+      }
+      //List<string> transIdList = sUOITAs.Select(x => x.BaseTransId).ToList();
+      //List<SUOISU> sUOISUs = _db.SUOISUs.Where(x => transIdList.Contains(x.TransId)).ToList();
+
+      List<SUOPBI> sUOPBIs = (from suopbis in _db.SUOPBIs
+                              join suoitas in sUOITAs on suopbis.TransId equals suoitas.BaseTransId
+                              where suopbis.DocStatus != "Close"
+                              select new SUOPBI()
+                              {
+                                TransId = suopbis.TransId,
+                              }).ToList();
+
+      return sUOPBIs;
+    }
+
+    public static bool UpdateTruckAndTrailerStatus(string turckNo, string AvalabilityStatus, BusinessContext db, string EngagedRPTransId = null)
+    {
+      try
+      {
+        OVCL oVCL = db.OVCLs.FirstOrDefault(x => x.Code == turckNo);
+        oVCL.EngagedRPTransId = EngagedRPTransId;
+        oVCL.TruckStatus = AvalabilityStatus;
+        oVCL.UpdateDate = DateTime.Now;
+        db.Entry(oVCL).State = EntityState.Modified;
+        _ = db.SaveChanges();
+
+        MNOTTP mNOTTP = db.MNOTTPs.FirstOrDefault(x => x.EquipmentCode == oVCL.Code);
+        List<MNTTP1> mNTTP1s = db.MNTTP1.Where(x => x.EquipmentCode == mNOTTP.EquipmentCode).ToList();
+        foreach (var item in mNTTP1s)
+        {
+          OVCL oVCLTrailers = db.OVCLs.FirstOrDefault(x => x.Code == item.EquipmentCode);
+          oVCLTrailers.EngagedRPTransId = EngagedRPTransId;
+          oVCLTrailers.TruckStatus = AvalabilityStatus;
+          oVCLTrailers.UpdateDate = DateTime.Now;
+          db.Entry(oVCLTrailers).State = EntityState.Modified;
+          _ = db.SaveChanges();
+        }
+      }
+      catch (Exception ex) { }
+
+      return true;
+    }
+
+    public static decimal GetAvailableItemsFromOSRI(string SerialNum, string WhsCode)
+    {
+      decimal sRI1temp1 = _db.SRI1.Where(x => x.SerialNum == SerialNum && x.Direction == 1)?.Sum(y => y.Direction) ?? 0;
+      decimal sRI1temp2 = Math.Abs(_db.SRI1.Where(x => x.SerialNum == SerialNum && x.Direction == -1).Sum(y => y.Direction) ?? 0);
+
+      decimal availableItems = sRI1temp1 - sRI1temp2;
+
+      return availableItems;
+    }
+
+    public static List<SUOISU> GetSUOISUs(OUSR user, List<SUOISU> sUOISUList)
+    {
+
+      //if (user?.Type == "Customer")
+      //{
+      //  return (from suoisus in _db.SUOISUs
+      //          where suoisus.DocStatus != "Close"
+      //          && suoisus.CreatedBy == user.UserCode
+      //          select new SUOISU()
+      //          {
+      //            TransId = suoisus.TransId,
+      //          }).ToList();
+      //}
+
+      OEMP oEMP = _db.OEMPs.Where(x => x.Code == user.EmpId).FirstOrDefault();
+      List<string> childOEMPCodeList = _db.OEMPs.Where(x => x.ReportingToEmpCode == user.EmpId).Select(y => y.Code).ToList();
+      List<SUOITA> sUOITAs = new List<SUOITA>();
+      sUOITAs = _db.SUOITAs.GroupBy(t => t.BaseTransId)
+           .Select(group => group.OrderByDescending(t => t.CreateDate).FirstOrDefault())
+           .Where(x => x.AssignToEmpCode == user.EmpId).ToList();
+
+      if (oEMP?.IsTeamLeader == true)
+      {
+        List<SUOITA> sUOITA2s = _db.SUOITAs
+             .GroupBy(t => t.BaseTransId)
+             .Select(group => group.OrderByDescending(t => t.CreateDate).FirstOrDefault())
+             .Where(x => childOEMPCodeList.Contains(x.AssignToEmpCode))
+             .ToList();
+        sUOITAs.AddRange(sUOITA2s);
+      }
+      //List<string> transIdList = sUOITAs.Select(x => x.BaseTransId).ToList();
+      //List<SUOISU> sUOISUs = _db.SUOISUs.Where(x => transIdList.Contains(x.TransId)).ToList();
+
+      List<SUOISU> sUOISUs = (from suoisus in sUOISUList
+                              join suoitas in sUOITAs on suoisus.TransId equals suoitas.BaseTransId
+                              where suoisus.DocStatus != "Close"
+                              select new SUOISU()
+                              {
+                                TransId = suoisus.TransId,
+                              }).ToList();
+
+
+
+
+      return sUOISUs;
+    }
+
+    internal static void SendEmailForApproval(List<string> emails, ApprovalEmailModel approvalEmailModel)
+    {
+      throw new NotImplementedException();
+    }
+  }
+}
+
+

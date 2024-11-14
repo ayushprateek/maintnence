@@ -18,8 +18,10 @@ import 'package:maintenance/Sync/SyncModels/MNOCLM.dart';
 import 'package:maintenance/Sync/SyncModels/MNOCLT.dart';
 import 'package:maintenance/Sync/SyncModels/MNODTM.dart';
 import 'package:maintenance/Sync/SyncModels/MNOEQG.dart';
+import 'package:maintenance/Sync/SyncModels/MNOTTP.dart';
 import 'package:maintenance/Sync/SyncModels/MNOVCL.dart';
 import 'package:maintenance/Sync/SyncModels/MNOWCM.dart';
+import 'package:maintenance/Sync/SyncModels/MNTTP1.dart';
 import 'package:maintenance/Sync/SyncModels/MNVCL1.dart';
 import 'package:maintenance/Sync/SyncModels/MNVCL2.dart';
 import 'package:maintenance/Sync/SyncModels/OAMR.dart';
@@ -131,6 +133,8 @@ class GetAllMaster1 {
     this.troemm,
     this.mnodtm,
     this.mnclm1,
+    this.mnottp,
+    this.mnttp1,
   });
 
 //----------- VARIABLES ----------
@@ -195,6 +199,8 @@ class GetAllMaster1 {
   List<TROEMM>? troemm;
   List<MNODTM>? mnodtm;
   List<MNCLM1>? mnclm1;
+  List<MNOTTP>? mnottp;
+  List<MNTTP1>? mnttp1;
 
 //----------- FROM JSON ----------
   factory GetAllMaster1.fromJson(Map<String, dynamic> json) => GetAllMaster1(
@@ -309,8 +315,9 @@ class GetAllMaster1 {
             List<TROEMM>.from(json["TROEMM"].map((x) => TROEMM.fromJson(x))),
         mnodtm:
             List<MNODTM>.from(json["MNODTM"].map((x) => MNODTM.fromJson(x))),
-        mnclm1:
-            List<MNCLM1>.from(json["MNCLM1"].map((x) => MNCLM1.fromJson(x))),
+        mnclm1: List<MNCLM1>.from(json["MNCLM1"].map((x) => MNCLM1.fromJson(x))),
+        mnottp: List<MNOTTP>.from(json["MNOTTP"].map((x) => MNOTTP.fromJson(x))),
+        mnttp1: List<MNTTP1>.from(json["MNTTP1"].map((x) => MNTTP1.fromJson(x))),
       );
 
 //----------- TO JSON ----------
@@ -373,6 +380,8 @@ class GetAllMaster1 {
         "TROEMM": List<dynamic>.from(troemm ?? [].map((x) => x.toJson())),
         "MNODTM": List<dynamic>.from(mnodtm ?? [].map((x) => x.toJson())),
         "MNCLM1": List<dynamic>.from(mnclm1 ?? [].map((x) => x.toJson())),
+        "MNOTTP": List<dynamic>.from(mnottp ?? [].map((x) => x.toJson())),
+        "MNTTP1": List<dynamic>.from(mnttp1 ?? [].map((x) => x.toJson())),
       };
 
 //----------- INSERT ----------
@@ -540,5 +549,7 @@ class GetAllMaster1 {
     await insertTROEMM(db, list: getAll.troemm);
     await insertMNODTM(db, list: getAll.mnodtm);
     await insertMNCLM1(db, list: getAll.mnclm1);
+    await insertMNOTTP(db, list: getAll.mnottp);
+    await insertMNTTP1(db, list: getAll.mnttp1);
   }
 }
