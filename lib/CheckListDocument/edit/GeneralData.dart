@@ -479,6 +479,7 @@ class _GeneralDataState extends State<GeneralData> {
                     getDisabledTextField(
                       controller: _permanentTransId,
                       labelText: 'Permanent Trans Id',
+                      iconColor: barColor,
                       onChanged: (val) {
                         GeneralData.permanentTransId = val;
                       },
@@ -486,6 +487,7 @@ class _GeneralDataState extends State<GeneralData> {
                     getDisabledTextField(
                       controller: _docNum,
                       labelText: 'ERP Docnum',
+                      iconColor: barColor,
                       onChanged: (val) {
                         GeneralData.docNum = val;
                       },
@@ -493,6 +495,7 @@ class _GeneralDataState extends State<GeneralData> {
                     getDisabledTextField(
                       controller: _docEntry,
                       labelText: 'Doc Entry',
+                      iconColor: barColor,
                       onChanged: (val) {
                         GeneralData.docEntry = val;
                       },

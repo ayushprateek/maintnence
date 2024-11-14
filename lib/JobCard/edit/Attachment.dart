@@ -112,8 +112,14 @@ class _AttachmentsState extends State<Attachments> {
                                 style: TextStyle(color: Colors.white),
                               ),
                               onPressed: () async {
-                                File? selectedFile =
-                                    await customPickImage(ImageSource.gallery);
+                                Attachments.imageFile =
+                                await customPickImage(ImageSource.gallery);
+                                rowId.text =
+                                    Attachments.attachments.length.toString();
+                                Attachments.attachment = attachment.text =
+                                    Attachments.imageFile?.path ?? '';
+
+                                setState(() {});
                                 Get.back();
                               },
                             ),
