@@ -287,10 +287,15 @@ Future<void> deleteMNOTTP(Database db) async {
 }
 
 Future<List<MNOTTP>> retrieveMNOTTPById(
-    BuildContext? context, String str, List l) async {
+    BuildContext? context, String str, List l,
+{
+  String? orderBy,
+  int? limit
+}
+    ) async {
   final Database db = await initializeDB(context);
   final List<Map<String, Object?>> queryResult =
-      await db.query('MNOTTP', where: str, whereArgs: l);
+      await db.query('MNOTTP', where: str, whereArgs: l,orderBy: orderBy,limit: limit);
   return queryResult.map((e) => MNOTTP.fromJson(e)).toList();
 }
 

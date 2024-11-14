@@ -24,6 +24,7 @@ import 'package:maintenance/Component/IsValidAppVersion.dart';
 import 'package:maintenance/Component/NotSyncDocument.dart';
 import 'package:maintenance/Component/NotificationIcon.dart';
 import 'package:maintenance/Component/SnackbarComponent.dart';
+import 'package:maintenance/Component/StaticFunctions.dart';
 import 'package:maintenance/CustomLocationPermission.dart';
 import 'package:maintenance/DashboardQueryModel.dart';
 import 'package:maintenance/DatabaseInitialization.dart';
@@ -33,6 +34,7 @@ import 'package:maintenance/Sync/SyncModels/MNCLD1.dart';
 import 'package:maintenance/Sync/SyncModels/MNCLM1.dart';
 import 'package:maintenance/Sync/SyncModels/MNOCLT.dart';
 import 'package:maintenance/Sync/SyncModels/MNOWCM.dart';
+import 'package:maintenance/Sync/SyncModels/MNTTP1.dart';
 import 'package:maintenance/main.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:sqflite/sqflite.dart';
@@ -119,6 +121,7 @@ class _DashboardState extends State<Dashboard> {
     MNOCLT.CheckType,
     MNVCL1.CheckListName,  
     MNOCLD.PostingDate AS "LastPostingDate",
+    MNOCLD.TransId,
     MNOCLD.CheckListStatus,
     MNVCL1.WorkCenterCode,
     MNVCL1.WorkCenterName,
@@ -160,7 +163,6 @@ ifnull(MNVCL1.TechnicianName,'') Like "%${_query.text}%" )
         return MaintenanceItemsQueryModel.fromJson(e);
       }).toList();
       print(dashboardData.toString());
-
     }
     setState(() {});
   }
@@ -741,15 +743,80 @@ ifnull(MNVCL1.TechnicianName,'') Like "%${_query.text}%" )
                                       children: [
                                         Expanded(
                                             child: InkWell(
-                                          onTap: () {
-                                            // navigateToJobCardDocument(
-                                            //     TransId:
-                                            //     snapshot.data![index].TransId ??
-                                            //         '',
-                                            //     isView: false);
+                                          onTap: () async {
+
+//                                             List<MNTTP1> mNTTP1s =
+//                                                 await StaticFunctions
+//                                                     .GetPairedEquipments(
+//                                                         data.equipmentCode ??
+//                                                             '');
+//
+//                                             List<String> equipmentCodes = [];
+//                                             for (MNTTP1 mnttp1 in mNTTP1s) {
+//                                               if (mnttp1.EquipmentCode !=
+//                                                       null &&
+//                                                   mnttp1.EquipmentCode != '') {
+//                                                 equipmentCodes
+//                                                     .add(mnttp1.EquipmentCode!);
+//                                               }
+//                                             }
+//                                             equipmentCodes
+//                                                 .add(data.equipmentCode!);
+//
+//                                             List<MNOWCM> mnocmList =
+//                                                 await retrieveMNOWCMById(
+//                                                     null,
+//                                                     'Code = ?',
+//                                                     [data.workCenterCode]);
+//                                             String? wareHouseCode;
+//                                             if (mnocmList.isNotEmpty) {
+//                                               wareHouseCode =
+//                                                   mnocmList[0].WhsCode;
+//                                             }
+//                                             String str = '';
+//                                             for (int i = 0;
+//                                                 i < equipmentCodes.length;
+//                                                 i++) {
+//                                               if (i ==
+//                                                   equipmentCodes.length - 1) {
+//                                                 str += "'${equipmentCodes[0]}'";
+//                                               } else {
+//                                                 str +=
+//                                                     "'${equipmentCodes[0]}',";
+//                                               }
+//                                             }
+//                                             print(str);
+//                                             Database db =
+//                                                 await initializeDB(null);
+//                                             String query = '''
+//                                             SELECT
+//     ovcl.Code AS EquipmentCode,
+//     mnclm1.ItemCode,
+//     mnclm1.ItemName,
+//     mnclm1.UOM,
+//     mnclm1.CheckListDesc AS Description,
+//     mnclm1.Remarks,
+//     mnclm1.Attachment
+// FROM OVCL ovcl
+// JOIN MNOCLM mnoclm ON ovcl.EquipmentGroupCode = mnoclm.EquipmentGroupCode
+// JOIN MNCLM1 mnclm1 ON mnoclm.Code = mnclm1.Code
+// WHERE ovcl.Code IN ($str)
+// AND mnoclm.CheckListCode ='${data.checkListCode}'
+// AND mnoclm.Code = mnclm1.Code
+//
+//                                             ''';
+//                                             List l = await db.rawQuery(query);
+//                                             l.forEach((result) async {
+//                                               result['AvailableQty'] =
+//                                                   await StaticFunctions
+//                                                       .GetAvailableItemsFromOINM(
+//                                                           result.ItemCode,
+//                                                           wareHouseCode ?? '');
+//                                             });
+                                          navigateToCheckListDocument(TransId: data.transId??'', isView: false);
                                           },
                                           child: getPoppinsText(
-                                              text: 'Edit',
+                                              text: 'Edit${data.transId}',
                                               color: Colors.red,
                                               fontWeight: FontWeight.bold,
                                               fontSize: 16),
