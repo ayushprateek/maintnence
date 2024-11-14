@@ -78,8 +78,8 @@ class ItemDetails extends StatefulWidget {
     if (l.isNotEmpty) {
       oPTRE1 = l[0];
     }
-    List<MNOWCM> list =
-        await retrieveMNOWCMById(null, 'Code', [GeneralData.workCenterCode]);
+    List<MNOWCM> list = await retrieveMNOWCMById(
+        null, 'Code = ?', [GeneralData.workCenterCode]);
     if (list.isNotEmpty) {
       mNOWCM = list[0];
     }
@@ -146,8 +146,8 @@ class ItemDetails extends StatefulWidget {
       oPTRE1 = l[0];
     }
     // db.MNOWCMs.FirstOrDefault(x => x.Code == mNOJCDViewModel.MNOJCD.WorkCenterCode)?.WhsCode
-    List<MNOWCM> list =
-        await retrieveMNOWCMById(null, 'Code', [GeneralData.workCenterCode]);
+    List<MNOWCM> list = await retrieveMNOWCMById(
+        null, 'Code = ?', [GeneralData.workCenterCode]);
     if (list.isNotEmpty) {
       mNOWCM = list[0];
     }
@@ -212,8 +212,8 @@ class ItemDetails extends StatefulWidget {
     if (l.isNotEmpty) {
       oPTRE1 = l[0];
     }
-    List<MNOWCM> list =
-        await retrieveMNOWCMById(null, 'Code', [GeneralData.workCenterCode]);
+    List<MNOWCM> list = await retrieveMNOWCMById(
+        null, 'Code = ?', [GeneralData.workCenterCode]);
     if (list.isNotEmpty) {
       mNOWCM = list[0];
     }
