@@ -47,6 +47,7 @@ class MNOCLD {
   bool? IsRequest;
   bool hasCreated;
   bool hasUpdated;
+  bool IsTyreMaintenence;
 
   MNOCLD({
     this.ID,
@@ -86,12 +87,13 @@ class MNOCLD {
     this.IsRequest,
     this.hasCreated = false,
     this.hasUpdated = false,
+    this.IsTyreMaintenence = false,
   });
 
   factory MNOCLD.fromJson(Map<String, dynamic> json) => MNOCLD(
         ID: int.tryParse(json['ID'].toString()) ?? 0,
         PermanentTransId: json['PermanentTransId']?.toString() ?? '',
-    TripTransId: json['TripTransId']?.toString() ?? '',
+        TripTransId: json['TripTransId']?.toString() ?? '',
         TransId: json['TransId']?.toString() ?? '',
         DocEntry: int.tryParse(json['DocEntry'].toString()) ?? 0,
         DocNum: json['DocNum']?.toString() ?? '',
@@ -99,6 +101,7 @@ class MNOCLD {
         DocStatus: json['DocStatus']?.toString() ?? '',
         hasCreated: json['has_created'] == 1,
         hasUpdated: json['has_updated'] == 1,
+        IsTyreMaintenence: json['IsTyreMaintenence'] == 1,
         ApprovalStatus: json['ApprovalStatus']?.toString() ?? '',
         CheckListStatus: json['CheckListStatus']?.toString() ?? '',
         ObjectCode: json['ObjectCode']?.toString() ?? '',
@@ -152,6 +155,7 @@ class MNOCLD {
         'WorkCenterName': WorkCenterName,
         "has_created": hasCreated ? 1 : 0,
         "has_updated": hasUpdated ? 1 : 0,
+        "IsTyreMaintenence": IsTyreMaintenence ? 1 : 0,
         'OpenDate': OpenDate?.toIso8601String(),
         'CloseDate': CloseDate?.toIso8601String(),
         'PostingDate': PostingDate?.toIso8601String(),
