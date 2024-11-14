@@ -816,7 +816,7 @@ ifnull(MNVCL1.TechnicianName,'') Like "%${_query.text}%" )
                                           navigateToCheckListDocument(TransId: data.transId??'', isView: false);
                                           },
                                           child: getPoppinsText(
-                                              text: 'Edit${data.transId}',
+                                              text: 'Edit ${data.transId}',
                                               color: Colors.red,
                                               fontWeight: FontWeight.bold,
                                               fontSize: 16),

@@ -354,7 +354,7 @@ class _GeneralDataState extends State<GeneralData> {
                   onChanged: (val) {
                     _closeDate.text = GeneralData.closeDate = val;
                   }),
-              getTextField(
+              getDisabledTextField(
                   controller: _currentReading,
                   labelText: 'Current Reading',
                   onChanged: (val) {
